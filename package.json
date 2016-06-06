@@ -22,13 +22,16 @@
   "dependencies": {
     "babel-polyfill": "6.8.0",
     "jquery": "2.2.3",
+    "material-ui": "^0.15.0",
     "react": "15.0.2",
     "react-dom": "15.0.2",
     "react-redux": "4.4.5",
     "react-router": "2.4.0",
     "react-router-redux": "4.0.4",
+    "react-tap-event-plugin": "^1.0.0",
     "redux": "3.5.2",
     "redux-thunk": "2.0.1",
+    "semantic-ui-css": "^2.1.8",
     "toastr": "2.1.2"
   },
   "devDependencies": {
@@ -65,7 +68,6 @@
     "redux-immutable-state-invariant": "1.2.3",
     "redux-mock-store": "1.0.2",
     "rimraf": "2.5.2",
-    "semantic-ui-css": "^2.1.8",
     "style-loader": "0.13.1",
     "url-loader": "0.5.7",
     "webpack": "1.13.0",

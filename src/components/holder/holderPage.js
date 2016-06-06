@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as holderActions from '../../actions/holderActions';
+import RaisedButton from 'material-ui/RaisedButton';
 import toastr from 'toastr';
 
 toastr.options.closeButton = true;
@@ -42,13 +43,14 @@ class HolderPage extends React.Component {
     return (
       <div>
         <h1>Holder</h1>
-        <div onClick={this.addMoreToHolder} className="ui labeled button" tabIndex="0">
-          <div className="ui blue button">
-            <i className="pointing up icon"></i> Click Me
-          </div>
-          <a className="ui basic blue left pointing label">
-            {this.sumOfArray(this.props.holder) || 0}
-          </a>
+        <div onClick={this.addMoreToHolder}>
+          <RaisedButton label={this.sumOfArray(this.props.holder) || 0} >
+            <div onClick={this.addMoreToHolder} className="ui labeled button" tabIndex="0">
+              <div className="ui blue button">
+                <i className="pointing up icon"></i> Click Me
+              </div>
+            </div>
+          </RaisedButton>
         </div>
       </div>
     );
