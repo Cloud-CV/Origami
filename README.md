@@ -1,6 +1,6 @@
 # CloudCVfy Webapp
 
-Current Status: A basic skeleton of app with some components, actions, reducers and their tests in place in place.
+Current Status: A skeletal app with Github OAuth2 login in place and a blank user profile.
 
 ## Build instructions
 

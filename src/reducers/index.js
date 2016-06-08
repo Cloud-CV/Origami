@@ -2,9 +2,11 @@
 
 import {combineReducers} from 'redux';
 import holder from './holderReducer';
+import login from './loginReducer';
 
 const rootReducer = combineReducers({
-  holder
+  holder,
+  login
 });
 
 export default rootReducer;

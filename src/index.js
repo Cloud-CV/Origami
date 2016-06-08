@@ -12,6 +12,7 @@ import {loadHolder} from './actions/holderActions';
 import '../node_modules/semantic-ui-css/semantic.min.css';
 import '../node_modules/semantic-ui-css/semantic.min.js';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import {green300, green700} from 'material-ui/styles/colors';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import '../node_modules/toastr/build/toastr.min.css';
 import './styles/styles.css';
@@ -20,9 +21,19 @@ const store = configureStore();
 store.dispatch(loadHolder());
 injectTapEventPlugin();
 
+const muiTheme = getMuiTheme({
+  palette: {
+    primary1Color: green300,
+    primary2Color: green700
+  },
+  appBar: {
+    height: 45
+  }
+});
+
 render(
   <Provider store={store}>
-    <MuiThemeProvider muiTheme={getMuiTheme()}>
+    <MuiThemeProvider muiTheme={getMuiTheme(muiTheme)}>
       <Router history={browserHistory} routes={routes}/>
     </MuiThemeProvider>
   </Provider>,

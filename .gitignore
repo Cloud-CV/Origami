@@ -24,3 +24,6 @@ node_modules
 
 # Webstorm specific files
 .idea
+
+# Config
+outCalls/config.js

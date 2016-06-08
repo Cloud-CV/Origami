@@ -2,8 +2,6 @@
 #app {
     font-family: 'Roboto', sans-serif;;
     color: #4d4d4d;
-    min-width: 550px;
-    max-width: 850px;
     margin: 0 auto;
 }
 
@@ -13,4 +11,9 @@ a.active {
 
 nav {
     padding-top: 20px;
+}
+
+#loginButton {
+  color: inherit;
+  text-decoration: inherit;
 }
