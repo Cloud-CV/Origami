@@ -48,22 +48,22 @@ app.get('/user', function(req, res) {
   res.redirect('/');
 });
 
-function authed(req, res, next){
-  if (req.user){
-    next();
-  } else {
-    res.redirect('/auth/github');
-  }
-}
-
-app.get('/repo/tocttou/:repo', authed, function(req, res) {
-  request
-    .get('https://api.github.com/repos/tocttou/' + req.params.repo)
-    .set('Authorization', 'token ' + req.user.accessToken)
-    .end(function(err, res) {
-      console.log(err || res);
-    });
-});
+// function authed(req, res, next){
+//   if (req.user){
+//     next();
+//   } else {
+//     res.redirect('/auth/github');
+//   }
+// }
+//
+// app.get('/repo/tocttou/:repo', authed, function(req, res) {
+//   request
+//     .get('https://api.github.com/repos/tocttou/' + req.params.repo)
+//     .set('Authorization', 'token ' + req.user.accessToken)
+//     .end(function(err, res) {
+//       console.log(err || res);
+//     });
+// });
 
 app.get('*', function(req, res) {
   res.sendFile(path.resolve( __dirname, '../src/index.html'));

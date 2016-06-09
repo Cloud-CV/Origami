@@ -19,12 +19,27 @@ class App extends React.Component {
     this.popoutToggle = this.popoutToggle.bind(this);
     this.logout = this.logout.bind(this);
     this.PopupCenter = this.PopupCenter.bind(this);
+    this.readSessionFlag = this.readSessionFlag.bind(this);
+    this.clearSessionFlag = this.clearSessionFlag.bind(this);
+    this.setSessionFlag = this.setSessionFlag.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     if(this.props.login != nextProps.login) {
       this.setState({login: nextProps.login});
     }
+  }
+
+  readSessionFlag() {
+    return sessionStorage.getItem('access_token') ? sessionStorage.getItem('access_token') : false;
+  }
+
+  clearSessionFlag() {
+    sessionStorage.clear();
+  }
+
+  setSessionFlag(access_token) {
+    sessionStorage.setItem('access_token', access_token);
   }
 
   PopupCenter(url, title, w, h) {
@@ -60,27 +75,35 @@ class App extends React.Component {
     let winClosed = setInterval(function () {
       if(win.location.search.indexOf('?status=passed&token=') == 0) {
         that.props.actions.Login();
+        that.setSessionFlag(win.location.search.substr(21));
         win.close();
       } else if (win.location.search.indexOf('?status=failed') == 0) {
         win.close();
       }
       if (win.closed) {
         clearInterval(winClosed);
-        console.log('closed!');
       }}, 250);
   }
 
   logout() {
     this.props.actions.Logout();
+    this.clearSessionFlag();
     window.location = '/logout';
   }
 
   render() {
-    console.log(this.state.login);
+    if(this.readSessionFlag()) {
+      this.props.actions.Login();
+    }
     return (
       <div>
         <AppBar
-          title="CloudCVfy Your Code!"
+          title={
+            <Link to="/"
+              style={{textDecoration: 'none', color: "inherit"}}>
+              CloudCVfy Your Code!
+            </Link>
+          }
           showMenuIconButton = {false}
           iconElementRight={
           this.state.login ?

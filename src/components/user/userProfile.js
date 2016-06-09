@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
+import {Link, browserHistory} from 'react-router';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as loginActions from '../../actions/loginActions';
@@ -15,9 +15,8 @@ class UserProfile extends React.Component {
   render() {
     return (
       <div className="jumbotron">
-        <Link to="/">
-          <p>Userprofile</p>
-        </Link>
+        {!this.props.login && browserHistory.push('/')}
+        Welcome!
       </div>
     );
   }
