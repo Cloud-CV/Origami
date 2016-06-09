@@ -123,7 +123,7 @@ class App extends React.Component {
              <FlatButton className="loginButton" onTouchTap={this.popoutToggle} label="Login" />
           }
         />
-        <div className="ui fluid centered padded grid">
+        <div className="ui fluid padded grid">
           {this.props.children}
         </div>
       </div>

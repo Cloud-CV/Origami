@@ -20,10 +20,6 @@ const store = configureStore();
 injectTapEventPlugin();
 
 const muiTheme = getMuiTheme({
-  palette: {
-    primary1Color: green300,
-    primary2Color: green700
-  },
   appBar: {
     height: 45
   }

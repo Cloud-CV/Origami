@@ -18,7 +18,7 @@ class HomePage extends React.Component {
           </div></div>
           {this.props.login &&
             <div className="column"><div className="ui raised fluid padded text container segment">
-              <Link to={this.props.login ? '/user/build' : '/'}
+              <Link to={this.props.login ? '/user' : '/'}
                     style={{textDecoration: 'none', color: "inherit"}}>
                 Build Demos
               </Link>
