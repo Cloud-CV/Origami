@@ -1,10 +1,10 @@
-import React, {PropTypes} from 'react';
-import {connect} from 'react-redux';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 import AppBar from 'material-ui/AppBar';
-import {Link, browserHistory} from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
-import {bindActionCreators} from 'redux';
+import { bindActionCreators } from 'redux';
 import * as loginActions from '../actions/loginActions';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
@@ -73,7 +73,7 @@ class App extends React.Component {
     let win = this.PopupCenter("/auth/github", "Authorize CloudCV", '900', '500');
     let that = this;
     let winClosed = setInterval(function () {
-      if(win.location.search.indexOf('?status=passed&token=') == 0) {
+      if (win.location.search.indexOf('?status=passed&token=') == 0) {
         that.props.actions.Login();
         that.setSessionFlag(win.location.search.substr(21));
         win.close();
@@ -92,7 +92,7 @@ class App extends React.Component {
   }
 
   render() {
-    if(this.readSessionFlag()) {
+    if (this.readSessionFlag()) {
       this.props.actions.Login();
     }
     return (

@@ -1,7 +1,7 @@
-import React, {PropTypes} from 'react';
-import {Link, browserHistory} from 'react-router';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { PropTypes } from 'react';
+import { Link, browserHistory } from 'react-router';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as loginActions from '../../actions/loginActions';
 import toastr from 'toastr';
 

@@ -1,19 +1,27 @@
 import expect from 'expect';
-import {createStore} from 'redux';
+import { createStore } from 'redux';
 import rootReducer from '../reducers';
 import initialState from '../reducers/initialState';
-import * as holderActions from '../actions/holderActions';
+import { enableLoginSuccess, disableLoginSuccess } from './loginActions';
 
 describe('Store Test', () => {
-  it('should handle adding data to holder', () => {
+  it('doing Login should set the state: login to true', () => {
     const store = createStore(rootReducer, initialState);
-    const holderOne = [1, 2, 3];
+    const login = false;
 
-    const addHolder = holderActions.addHolderSuccess(holderOne);
-    store.dispatch(addHolder);
+    store.dispatch(enableLoginSuccess());
 
-    const actualHolder = store.getState().holder;
-    const expected = [1, 2, 3];
-    expect(actualHolder).toEqual(expected);
+    const login_later = store.getState().login;
+    expect(login).toEqual(!login_later);
+  });
+
+  it('doing Logout should set the state: login to false', () => {
+    const store = createStore(rootReducer, initialState);
+    const login = true;
+
+    store.dispatch(disableLoginSuccess());
+
+    const login_later = store.getState().login;
+    expect(login).toEqual(!login_later);
   });
 });
