@@ -75,7 +75,7 @@ class App extends React.Component {
     let that = this;
     let winClosed = setInterval(function () {
       if (win.location.search.indexOf('?status=passed&token=') == 0) {
-        that.props.actions.Login();
+        that.props.loginactions.Login();
         const temp = win.location.search.substr(21).split('&');
         const access_token = temp[0];
         const username = temp[1].split('=')[1];
@@ -90,14 +90,14 @@ class App extends React.Component {
   }
 
   logout() {
-    this.props.actions.Logout();
+    this.props.loginactions.Logout();
     this.clearSessionFlag();
     window.location = '/logout';
   }
 
   render() {
     if (this.readSessionToken()) {
-      this.props.actions.Login();
+      this.props.loginactions.Login();
     }
     return (
       <div>
@@ -133,7 +133,7 @@ class App extends React.Component {
 
 App.propTypes = {
   children: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired,
+  loginactions: PropTypes.object.isRequired,
   login: PropTypes.bool.isRequired
 };
 
@@ -145,7 +145,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(loginActions, dispatch)
+    loginactions: bindActionCreators(loginActions, dispatch)
   };
 }
 

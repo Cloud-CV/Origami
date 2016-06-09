@@ -21,7 +21,6 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "babel-polyfill": "6.8.0",
-    "github": "1.1.2",
     "jquery": "2.2.3",
     "material-ui": "0.15.0",
     "react": "15.1.0",

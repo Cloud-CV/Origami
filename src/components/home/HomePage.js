@@ -31,7 +31,7 @@ class HomePage extends React.Component {
 }
 
 HomePage.propTypes = {
-  actions: PropTypes.object.isRequired,
+  loginactions: PropTypes.object.isRequired,
   login: PropTypes.bool.isRequired
 };
 
@@ -43,7 +43,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(loginActions, dispatch)
+    loginactions: bindActionCreators(loginActions, dispatch)
   };
 }
 

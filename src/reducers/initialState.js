@@ -1,3 +1,4 @@
 export default {
-  login: false
+  login: false,
+  user: {}
 };
