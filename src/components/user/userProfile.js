@@ -12,10 +12,13 @@ class UserProfile extends React.Component {
     super(props, context);
   }
 
+  componentWillMount() {
+    !this.props.login && browserHistory.push('/');
+  }
+
   render() {
     return (
       <div className="jumbotron">
-        {!this.props.login && browserHistory.push('/')}
         Welcome!
       </div>
     );

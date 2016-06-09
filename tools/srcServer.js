@@ -35,7 +35,7 @@ app.get('/auth/github', passport.authenticate('github',
 
 app.get('/auth/github/callback', passport.authenticate('github',
   {failureRedirect: '/login?status=failed' }), function(req, res) {
-  res.redirect('/login?status=passed&token='+req.user.accessToken);
+  res.redirect('/login?status=passed&token='+req.user.accessToken+'&username='+req.user.username);
 });
 
 app.get('/logout', function(req, res){

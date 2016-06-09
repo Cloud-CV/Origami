@@ -19,7 +19,7 @@ class App extends React.Component {
     this.popoutToggle = this.popoutToggle.bind(this);
     this.logout = this.logout.bind(this);
     this.PopupCenter = this.PopupCenter.bind(this);
-    this.readSessionFlag = this.readSessionFlag.bind(this);
+    this.readSessionToken = this.readSessionToken.bind(this);
     this.clearSessionFlag = this.clearSessionFlag.bind(this);
     this.setSessionFlag = this.setSessionFlag.bind(this);
   }
@@ -30,7 +30,7 @@ class App extends React.Component {
     }
   }
 
-  readSessionFlag() {
+  readSessionToken() {
     return sessionStorage.getItem('access_token') ? sessionStorage.getItem('access_token') : false;
   }
 
@@ -38,8 +38,9 @@ class App extends React.Component {
     sessionStorage.clear();
   }
 
-  setSessionFlag(access_token) {
+  setSessionFlag(access_token, username) {
     sessionStorage.setItem('access_token', access_token);
+    sessionStorage.setItem('username', username);
   }
 
   PopupCenter(url, title, w, h) {
@@ -75,7 +76,10 @@ class App extends React.Component {
     let winClosed = setInterval(function () {
       if (win.location.search.indexOf('?status=passed&token=') == 0) {
         that.props.actions.Login();
-        that.setSessionFlag(win.location.search.substr(21));
+        const temp = win.location.search.substr(21).split('&');
+        const access_token = temp[0];
+        const username = temp[1].split('=')[1];
+        that.setSessionFlag(access_token, username);
         win.close();
       } else if (win.location.search.indexOf('?status=failed') == 0) {
         win.close();
@@ -92,7 +96,7 @@ class App extends React.Component {
   }
 
   render() {
-    if (this.readSessionFlag()) {
+    if (this.readSessionToken()) {
       this.props.actions.Login();
     }
     return (
@@ -116,10 +120,10 @@ class App extends React.Component {
               <MenuItem onTouchTap={this.logout} primaryText="Sign out" />
             </IconMenu>
             :
-             <FlatButton onTouchTap={this.popoutToggle} label="Login" />
+             <FlatButton className="loginButton" onTouchTap={this.popoutToggle} label="Login" />
           }
         />
-        <div className="ui raised very padded segment container">
+        <div className="ui fluid centered padded grid">
           {this.props.children}
         </div>
       </div>
