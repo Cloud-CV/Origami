@@ -1,9 +1,9 @@
 import request from 'superagent';
 
-export function getRepo(username, repoName) {
+export function getRepo(repoName) {
   return new Promise(function(resolve, reject) {
     request
-      .get('https://api.github.com/repos/'+username+'/'+repoName)
+      .get('https://api.github.com/repos/'+ sessionStorage.getItem('username') +'/'+repoName)
       .set('Authorization', 'token ' + sessionStorage.getItem('access_token'))
       .set('Accept', 'application/json')
       .end(function(err, res){
@@ -16,10 +16,10 @@ export function getRepo(username, repoName) {
   });
 }
 
-export function checkDockerfile(username, repoName) {
+export function checkDockerfile(repoName) {
   return new Promise(function(resolve, reject) {
     request
-      .get('https://api.github.com/repos/'+username+'/'+repoName+'/contents')
+      .get('https://api.github.com/repos/'+ sessionStorage.getItem('username') +'/'+repoName+'/contents')
       .set('Authorization', 'token ' + sessionStorage.getItem('access_token'))
       .set('Accept', 'application/json')
       .end(function(err, res){
@@ -27,12 +27,13 @@ export function checkDockerfile(username, repoName) {
           reject(err);
         } else {
           let allFileNames = JSON.parse(res.text).map(file => file.name);
-          if (allFileNames.indexOf('Dockerfile') == -1) {
-            reject('Dockerfile not found!');
-          } else if (allFileNames.indexOf('docker_compose.yml') == -1) {
-            reject('docker_compose.yml not found!');
+          if (allFileNames.indexOf('docker-compose.yml') == -1) {
+            reject('docker-compose.yml not found!');
           } else {
-            resolve(true);
+            resolve(
+              [`https://${sessionStorage.getItem('access_token')}:x-oauth-basic@github.com/${sessionStorage.getItem('username')}/${repoName}`,
+                sessionStorage.getItem('username'), repoName]
+            );
           }
         }
       });

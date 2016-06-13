@@ -6,14 +6,16 @@ import HomePageComponent from './components/home/HomePage';
 import AboutPageComponent from './components/about/AboutPage';
 import UserProfileComponent from './components/user/userProfile';
 import LoginComponent from './components/stateless/login';
-import DeploymentPageComponent from './components/deployment/deploymentPage';
+import RegisterGithubPageComponent from './components/deployment/BuildWIthGithub/registerPage';
+import SelectInputComponentsGithubPageComponent from './components/deployment/BuildWIthGithub/selectInputComponentPage';
 
 export default(
   <Route path="/" component={App}>
     <IndexRoute component={HomePageComponent} />
     <Route path="about" component={AboutPageComponent} />
     <Route path="user" component={UserProfileComponent} />
-    <Route path="user/repo/:repoId" component={DeploymentPageComponent} />
+    <Route path="user/repo/:repoId" component={RegisterGithubPageComponent} />
+    <Route path="user/repo/:repoId/inputcomponent" component={SelectInputComponentsGithubPageComponent} />
     <Route path="login*" component={LoginComponent} />
     <Route path="*" component={PageNotfoundHandler} />
   </Route>

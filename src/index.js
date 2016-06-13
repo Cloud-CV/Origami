@@ -11,7 +11,6 @@ import configureStore from './store/configureStore.js';
 import '../node_modules/semantic-ui-css/semantic.min.css';
 import '../node_modules/semantic-ui-css/semantic.min.js';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {green300, green700} from 'material-ui/styles/colors';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import '../node_modules/toastr/build/toastr.min.css';
 import './styles/styles.css';

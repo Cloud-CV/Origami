@@ -80,6 +80,7 @@ class App extends React.Component {
         const access_token = temp[0];
         const username = temp[1].split('=')[1];
         that.setSessionFlag(access_token, username);
+        browserHistory.push('/user');
         win.close();
       } else if (win.location.search.indexOf('?status=failed') == 0) {
         win.close();
@@ -105,7 +106,7 @@ class App extends React.Component {
           title={
             <Link to="/"
               style={{textDecoration: 'none', color: "inherit"}}>
-              CloudCVfy Your Code!
+              CVFY
             </Link>
           }
           showMenuIconButton = {false}
@@ -120,7 +121,10 @@ class App extends React.Component {
               <MenuItem onTouchTap={this.logout} primaryText="Sign out" />
             </IconMenu>
             :
-             <FlatButton className="loginButton" onTouchTap={this.popoutToggle} label="Login" />
+             <span className="loginButton" onClick={this.popoutToggle}>
+                <FlatButton label="Login"
+                style={{margin: "5%", color: "white"}}/>
+             </span>
           }
         />
         <div className="ui fluid padded grid">

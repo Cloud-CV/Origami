@@ -1,4 +1,5 @@
 export default {
   login: false,
-  user: {}
+  user: {},
+  githubDemoModel: {}
 };
