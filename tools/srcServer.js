@@ -58,6 +58,6 @@ app.listen(port, function(err) {
   if (err) {
     console.log(err);
   } else {
-    console.log(`visit http://localhost:${port}`.yellow);
+    console.log(`visit http://0.0.0.0:${port}`.yellow);
   }
 });

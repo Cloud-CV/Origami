@@ -130,7 +130,7 @@ class RegisterPage extends React.Component {
                     disabled
                     hintText="Appname"
                     defaultValue={this.state.currentRepo.name}
-                    floatingLabelText="Name of your demo application"
+                    floatingLabelText={this.state.currentRepo.name}
                   /><br />
                   <TextField
                     hintText="Demo description"

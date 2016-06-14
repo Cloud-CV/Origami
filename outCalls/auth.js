@@ -6,7 +6,7 @@ const passport = require('passport'),
 passport.use(new GithubStrategy({
     clientID: CLIENT_ID,
     clientSecret: CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/github/callback"
+    callbackURL: "http://0.0.0.0:3000/auth/github/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     //Based on profile return from Github, find existing user

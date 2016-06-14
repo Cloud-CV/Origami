@@ -1,14 +1,22 @@
 import React, { PropTypes } from 'react';
 import { grey700 } from 'material-ui/styles/colors';
 
-const CustomCard = ({header, heading, displayData, buttonData}) => {
+const CustomCard = ({header, heading, width, centeredParent, centeredSegment, displayData, buttonData}) => {
+
+  const parentClass = `${width ? width : "four"} wide stackable ${centeredParent ? "" : "centered"} column`;
+  const cardClass = `ui card segment ${centeredSegment ? "centered" : ""}`;
 
   return (
-    <div className="four wide stackable centered column">
-      <div className="ui card segment">
+    <div className={parentClass}>
+      <div className={cardClass}>
         <div className="content">
           <div className="header">{header}</div>
         </div>
+        {heading &&
+          <div className="content">
+            <div className="heading">{heading}</div>
+          </div>
+        }
         <div className="content">
           <div className="ui small feed">
             <div className="event">
@@ -40,6 +48,9 @@ const CustomCard = ({header, heading, displayData, buttonData}) => {
 CustomCard.propTypes = {
   header: PropTypes.string.isRequired,
   heading: PropTypes.string,
+  width: PropTypes.string,
+  centeredParent: PropTypes.bool,
+  centeredSegment: PropTypes.bool,
   displayData: PropTypes.array.isRequired,
   buttonData: PropTypes.array.isRequired
 };

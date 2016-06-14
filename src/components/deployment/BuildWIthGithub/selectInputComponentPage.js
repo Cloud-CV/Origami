@@ -2,8 +2,8 @@ import React, { PropTypes } from 'react';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import CircularProgress from 'material-ui/CircularProgress';
 import * as githubDemoModelActions from '../../../actions/githubDemoModelActions';
+import { getInputComponentById, getAllInputComponentsForShowcase } from '../../inputcomponents';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -16,9 +16,7 @@ class SelectInputComponentPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      showOutput: 'hidden'
     };
-    this.toggleShow = this.toggleShow.bind(this);
   }
 
   componentWillMount() {
@@ -27,23 +25,28 @@ class SelectInputComponentPage extends React.Component {
   componentWillReceiveProps(nextProps) {
   }
 
-  toggleShow() {
-    this.setState({showOutput: this.state.showOutput == 'visible' ? 'hidden' : 'visible'});
-  }
-
   render() {
-
-    console.log(this.props.githubDemoModel);
 
     return (
       <div className="ui relaxed stackable grid fluid container">
 
+        <div className="sixteen wide column stretched row">
+          <div className="row" >
+            <h1>Select Input Component</h1>
+          </div>
 
-        {this.state.showOutput == 'hidden' &&
-        <div className="centered row" style={{marginTop: "30vh"}}>
-          <CircularProgress size={1.5} />
-        </div>}
+          <div className="ui horizontal divider row" >
+            <span><hr /></span>
+          </div>
 
+          <div className="fifteen wide column stretched stackable centered row">
+            <div className="ui three column stackable grid" style={{marginLeft: "3%"}}>
+              {getAllInputComponentsForShowcase().map((showcasecard, index) =>
+                showcasecard
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
