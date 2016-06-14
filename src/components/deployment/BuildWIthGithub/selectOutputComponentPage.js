@@ -3,33 +3,34 @@ import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as githubDemoModelActions from '../../../actions/githubDemoModelActions';
-import * as inputComponentDemoModelActions from '../../../actions/inputComponentDemoModelActions';
-import { getAllInputComponentsForShowcase } from '../../inputcomponents';
+import * as outputComponentDemoModelActions from '../../../actions/outputComponentDemoModelActions';
+import { getAllOutputComponentsForShowcase } from '../../outputcomponents';
 import toastr from 'toastr';
 
 toastr.options.closeButton = true;
 
-class SelectInputComponentPage extends React.Component {
+class SelectOutputComponentPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      inputComponentDemoModel: {}
+      outputComponentDemoModel: {}
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.state.inputComponentDemoModel != nextProps.inputComponentDemoModel) {
-      this.setState({inputComponentDemoModel: nextProps.inputComponentDemoModel});
+    if(this.state.outputComponentDemoModel != nextProps.outputComponentDemoModel) {
+      this.setState({outputComponentDemoModel: nextProps.outputComponentDemoModel});
     }
   }
 
   render() {
+    console.log(this.state.outputComponentDemoModel);
     return (
       <div className="ui relaxed stackable grid fluid container">
 
         <div className="sixteen wide column stretched row">
           <div className="row" >
-            <h1>Select Input Component</h1>
+            <h1>Select Output Component</h1>
           </div>
 
           <div className="ui horizontal divider row" >
@@ -38,11 +39,11 @@ class SelectInputComponentPage extends React.Component {
 
           <div className="fifteen wide column stretched stackable centered row">
             <div className="ui three column stackable grid" style={{marginLeft: "3%"}}>
-              {getAllInputComponentsForShowcase({
+              {getAllOutputComponentsForShowcase({
                 githubDemoModel: this.props.githubDemoModel,
-                inputComponentDemoModel: this.props.inputComponentDemoModel,
+                outputComponentDemoModel: this.props.outputComponentDemoModel,
                 githubModelActions: this.props.githubModelActions,
-                inputComponentModelActions: this.props.inputComponentModelActions,
+                outputComponentDemoModelActions: this.props.outputComponentDemoModelActions,
                 params: this.props.params
               }).map((showcasecard, index) =>
                 showcasecard
@@ -55,13 +56,13 @@ class SelectInputComponentPage extends React.Component {
   }
 }
 
-SelectInputComponentPage.propTypes = {
+SelectOutputComponentPage.propTypes = {
   login: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
   githubDemoModel: PropTypes.object.isRequired,
-  inputComponentDemoModel: PropTypes.object.isRequired,
+  outputComponentDemoModel: PropTypes.object.isRequired,
   githubModelActions: PropTypes.object.isRequired,
-  inputComponentModelActions: PropTypes.object.isRequired,
+  outputComponentDemoModelActions: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired
 };
 
@@ -70,15 +71,15 @@ function mapStateToProps(state, ownProps) {
     login: state.login,
     user: state.user,
     githubDemoModel: state.githubDemoModel,
-    inputComponentDemoModel: state.inputComponentDemoModel
+    outputComponentDemoModel: state.outputComponentDemoModel
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     githubModelActions: bindActionCreators(githubDemoModelActions, dispatch),
-    inputComponentModelActions: bindActionCreators(inputComponentDemoModelActions, dispatch)
+    outputComponentDemoModelActions: bindActionCreators(outputComponentDemoModelActions, dispatch)
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SelectInputComponentPage);
+export default connect(mapStateToProps, mapDispatchToProps)(SelectOutputComponentPage);

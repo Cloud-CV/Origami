@@ -5,10 +5,6 @@ let db = mongoose.connection;
 let Schema = mongoose.Schema;
 export let model = mongoose.model;
 
-export const baseInputComponentSchema = new Schema({
-  id: Number
-});
-
 export const inputComponentSchema = new Schema({
   id: Number,
   baseComponentId: Number,

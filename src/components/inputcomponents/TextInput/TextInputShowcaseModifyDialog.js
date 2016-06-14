@@ -3,7 +3,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import OverloadedTextField from './overloadedTextField';
+import OverloadedTextField from './OverloadedTextField';
 
 class TextInputShowcaseModifyDialog extends React.Component {
   constructor(props, context) {

@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import SingleInput from './singleInput';
+import SingleInput from './SingleInput';
 import RaisedButton from 'material-ui/RaisedButton';
 
 

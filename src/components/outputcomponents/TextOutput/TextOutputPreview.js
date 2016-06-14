@@ -1,14 +1,14 @@
 import React, { PropTypes } from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import TextInput from './TextInput';
+import TextOutput from './TextOutput';
 
 
-class TextInputPreview extends React.Component {
+class TextOutputPreview extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      labels: props.functions.getLabels(),
+      headers: props.functions.getHeaders(),
       open: true
     };
     this.hidePreviewDialog = props.functions.hidePreviewDialog;
@@ -31,20 +31,24 @@ class TextInputPreview extends React.Component {
       />
     ];
     return(<Dialog
-      title="Preview Text Input Component"
+      title="Preview Text Output Component"
       actions={actions}
       modal
       autoScrollBodyContent
       open={this.state.open}>
-      <TextInput
-      labels={this.state.labels}
-      sendAddr=""/>
+      <TextOutput
+        headers={this.state.headers}
+        data={
+          Array(this.state.headers.length).fill(
+            "Text Output sent from your code!"
+          )
+        }/>
     </Dialog>);
   }
 }
 
-TextInputPreview.propTypes = {
+TextOutputPreview.propTypes = {
   functions: PropTypes.object.isRequired
 };
 
-export default TextInputPreview;
+export default TextOutputPreview;

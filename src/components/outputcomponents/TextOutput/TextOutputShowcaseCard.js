@@ -1,27 +1,27 @@
 import React, { PropTypes } from 'react';
 import { browserHistory } from 'react-router';
 import CustomCard from '../../stateless/cards';
-import TextInputShowcaseModifyDialog from './TextInputShowcaseModifyDialog';
-import TextInputPreview from './TextInputPreview';
+import TextOutputShowcaseModifyDialog from './TextOutputShowcaseModifyDialog';
+import TextOutputPreview from './TextOutputPreview';
 import toastr from 'toastr';
 
-class TextInputShowcaseCard extends React.Component {
+class TextOutputShowcaseCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      labels: [],
+      headers: [],
       modifyDialogDisplay: false,
       previewDialogDisplay: false
     };
     this.githubDemoModel = props.demoProps.githubDemoModel;
-    this.inputComponentDemoModel = props.demoProps.inputComponentDemoModel;
+    this.outputComponentDemoModel = props.demoProps.outputComponentDemoModel;
     this.githubModelActions = props.demoProps.githubModelActions;
-    this.inputComponentModelActions = props.demoProps.inputComponentModelActions;
+    this.outputComponentDemoModelActions = props.demoProps.outputComponentDemoModelActions;
     this.showModifyDialog = this.showModifyDialog.bind(this);
     this.showPreviewDialog = this.showPreviewDialog.bind(this);
-    this.updateInputComponentModel = this.updateInputComponentModel.bind(this);
-    this.updateLabels = this.updateLabels.bind(this);
-    this.getLabels = this.getLabels.bind(this);
+    this.updateOutputComponentModel = this.updateOutputComponentModel.bind(this);
+    this.updateHeaders = this.updateHeaders.bind(this);
+    this.getHeaders = this.getHeaders.bind(this);
     this.hideModifyDialog = this.hideModifyDialog.bind(this);
     this.hidePreviewDialog = this.hidePreviewDialog.bind(this);
   }
@@ -42,39 +42,37 @@ class TextInputShowcaseCard extends React.Component {
     this.setState({previewDialogDisplay: false});
   }
 
-  updateInputComponentModel() {
+  updateOutputComponentModel() {
     if(Object.keys(this.githubDemoModel).length == 0) {
       toastr.error('Registration info not found! Register again');
       browserHistory.push('/');
     } else {
-      this.inputComponentModelActions.updateInputComponentModel({
+      this.outputComponentDemoModelActions.updateOutputComponentModel({
         id: this.githubDemoModel.id,
         baseComponentId: 1,
-        props: this.state.labels
-      }).then(() => {
-        browserHistory.push(`/user/repo/${this.props.demoProps.params.repoId}/outputcomponent`)
+        props: this.state.headers
       });
     }
   }
 
-  updateLabels(data) {
-    this.setState({labels: data});
+  updateHeaders(data) {
+    this.setState({headers: data});
   }
 
-  getLabels() {
-    return this.state.labels;
+  getHeaders() {
+    return this.state.headers;
   }
 
   render() {
     return (
       <div>
         <CustomCard
-          header="Text Input"
+          header="Text Output"
           width="five"
           centeredParent
           centeredSegment
           displayData = {[
-          'Number of inputs: ' + this.state.labels.length
+          'Number of Outputs: ' + this.state.headers.length
         ]}
           buttonData = {[
           {
@@ -87,21 +85,21 @@ class TextInputShowcaseCard extends React.Component {
           },
           {
             label: "Use",
-            onDeployClick: () => this.updateInputComponentModel()
+            onDeployClick: () => this.updateOutputComponentModel()
           }
         ]}
         />
-        {this.state.modifyDialogDisplay && <TextInputShowcaseModifyDialog
+        {this.state.modifyDialogDisplay && <TextOutputShowcaseModifyDialog
           functions={{
-            updateLabels: this.updateLabels,
+            updateHeaders: this.updateHeaders,
             hideModifyDialog: this.hideModifyDialog,
-            getLabels: this.getLabels
+            getHeaders: this.getHeaders
           }}
         />}
 
-        {this.state.previewDialogDisplay && <TextInputPreview
+        {this.state.previewDialogDisplay && <TextOutputPreview
           functions={{
-            getLabels: this.getLabels,
+            getHeaders: this.getHeaders,
             hidePreviewDialog: this.hidePreviewDialog
           }}
         />}
@@ -111,9 +109,9 @@ class TextInputShowcaseCard extends React.Component {
   }
 }
 
-TextInputShowcaseCard.propTypes = {
+TextOutputShowcaseCard.propTypes = {
   demoProps: PropTypes.object.isRequired
 };
 
-export default TextInputShowcaseCard;
+export default TextOutputShowcaseCard;
 
