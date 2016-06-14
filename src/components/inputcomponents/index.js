@@ -11,8 +11,9 @@ export function getInputComponentById(id, props, sendAddr) {
   }
 }
 
-export function getAllInputComponentsForShowcase() {
+export function getAllInputComponentsForShowcase(data) {
   return [
-    <TextInputShowcaseCard key={Math.random()}/>
+    <TextInputShowcaseCard key={Math.random()}
+      demoProps={data}/>
   ];
 }

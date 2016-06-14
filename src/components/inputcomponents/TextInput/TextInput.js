@@ -25,6 +25,7 @@ const TextInput = ({labels, sendAddr}) => {
     <div>
       <form id="send-text" className="six wide stackable stretched ui input" >
         <div key={Math.random()}>
+          <br /><br />
           {labels.map((label, index) =>
             [<SingleInput key={Math.random()} index={index} label={label} />,
               <br key={Math.random()} />,
@@ -32,7 +33,9 @@ const TextInput = ({labels, sendAddr}) => {
           )}
         </div>
       </form><br />
-      <RaisedButton label="Send" primary onClick={sendRequest(sendAddr)}/>
+      <RaisedButton label="Send" primary
+                    key={Math.random()}
+                    onClick={() => {sendRequest(sendAddr);}}/>
     </div>
   );
 };

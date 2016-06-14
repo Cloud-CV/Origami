@@ -94,7 +94,7 @@ class TextInputShowcaseModifyDialog extends React.Component {
             {this.state.textFields.map(field =>
               [field, <br key={Math.random()} />]
             )}
-            <RaisedButton label="Add" primary onClick={() => this.addMoreTextFields()}
+            <RaisedButton key={Math.random()} label="Add Field" primary onClick={() => this.addMoreTextFields()}
               style={{marginTop: "2%"}}/>
           </Dialog>);
   }

@@ -1,5 +1,6 @@
 export default {
   login: false,
   user: {},
-  githubDemoModel: {}
+  githubDemoModel: {},
+  inputComponentDemoModel: {}
 };

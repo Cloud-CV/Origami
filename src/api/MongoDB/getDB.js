@@ -12,22 +12,21 @@ export const baseInputComponentSchema = new Schema({
 export const inputComponentSchema = new Schema({
   id: Number,
   baseComponentId: Number,
-  token: String,
-  props: String
+  props: Array
 });
 
 export const outputComponentSchema = new Schema({
   id: Number,
   baseComponentId: Number,
-  token: String,
-  props: String
+  props: Array
 });
 
 export const githubDemoSchema = new Schema({
   name:  String,
   id: Number,
   description: String,
-  timestamp:   Number,
+  timestamp: Number,
+  token: String,
   dockerContainerId: String,
   inputComponentId: String,
   outputComponentId: String
