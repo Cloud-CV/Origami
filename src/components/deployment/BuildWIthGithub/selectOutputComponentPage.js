@@ -24,7 +24,6 @@ class SelectOutputComponentPage extends React.Component {
   }
 
   render() {
-    console.log(this.state.outputComponentDemoModel);
     return (
       <div className="ui relaxed stackable grid fluid container">
 

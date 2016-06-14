@@ -9,6 +9,7 @@ import * as loginActions from '../actions/loginActions';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import FlatButton from 'material-ui/FlatButton';
+import io from 'socket.io-client';
 
 class App extends React.Component {
   constructor(props, context) {
@@ -22,6 +23,11 @@ class App extends React.Component {
     this.readSessionToken = this.readSessionToken.bind(this);
     this.clearSessionFlag = this.clearSessionFlag.bind(this);
     this.setSessionFlag = this.setSessionFlag.bind(this);
+  }
+
+  getChildContext() {
+    let socket = io();
+    return {socket};
   }
 
   componentWillReceiveProps(nextProps) {
@@ -139,6 +145,10 @@ App.propTypes = {
   children: PropTypes.object.isRequired,
   loginactions: PropTypes.object.isRequired,
   login: PropTypes.bool.isRequired
+};
+
+App.childContextTypes = {
+  socket: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {

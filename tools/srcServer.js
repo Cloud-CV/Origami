@@ -13,6 +13,10 @@ import colors from 'colors';
 
 const port = 3000;
 const app = express();
+let http = require('http').Server(app);
+let io = require('socket.io')(http);
+const process = require('process');
+const spawn = require('child_process').spawn;
 const compiler = webpack(config);
 
 app.use(require('webpack-dev-middleware')(compiler, {
@@ -52,9 +56,12 @@ app.get('*', function(req, res) {
   res.sendFile(path.resolve( __dirname, '../src/index.html'));
 });
 
-//API
+//Socket
 
-app.listen(port, function(err) {
+io.on('connection', function(socket){
+});
+
+http.listen(port, function(err) {
   if (err) {
     console.log(err);
   } else {
