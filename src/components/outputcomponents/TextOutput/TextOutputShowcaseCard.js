@@ -51,6 +51,8 @@ class TextOutputShowcaseCard extends React.Component {
         id: this.githubDemoModel.id,
         baseComponentId: 1,
         props: this.state.headers
+      }).then(() => {
+        browserHistory.push(`/user/repo/${this.props.demoProps.params.repoId}/build`);
       });
     }
   }

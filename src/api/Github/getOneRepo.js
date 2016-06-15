@@ -31,10 +31,29 @@ export function checkDockerfile(repoName) {
             reject('docker-compose.yml not found!');
           } else {
             resolve(
-              [`https://${sessionStorage.getItem('access_token')}:x-oauth-basic@github.com/${sessionStorage.getItem('username')}/${repoName}`,
-                sessionStorage.getItem('username'), repoName]
+              downloadDockercomposeFile(
+                [`https://${sessionStorage.getItem('access_token')}:x-oauth-basic@github.com/${sessionStorage.getItem('username')}/${repoName}`,
+                  sessionStorage.getItem('username'), repoName,
+                  JSON.parse(res.text)[allFileNames.indexOf('docker-compose.yml')]['download_url']]
+              )
             );
           }
+        }
+      });
+  });
+}
+
+function downloadDockercomposeFile(clone_data) {
+  return new Promise((resolve, reject) => {
+    request
+      .get(clone_data[3])
+      .end((err, res) => {
+        if (err) {
+          reject(err);
+        } else {
+          let tempclonedata = Object.assign([], clone_data);
+          tempclonedata[3] = res.text;
+          resolve(tempclonedata);
         }
       });
   });

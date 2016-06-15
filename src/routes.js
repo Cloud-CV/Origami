@@ -9,6 +9,7 @@ import LoginComponent from './components/stateless/login';
 import RegisterGithubPageComponent from './components/deployment/BuildWIthGithub/registerPage';
 import SelectInputComponentsGithubPageComponent from './components/deployment/BuildWIthGithub/selectInputComponentPage';
 import SelectOutputComponentsGithubPageComponent from './components/deployment/BuildWIthGithub/selectOutputComponentPage';
+import GHBuildPageComponent from './components/deployment/BuildWIthGithub/ghBuildPage';
 
 export default(
   <Route path="/" component={App}>
@@ -18,6 +19,7 @@ export default(
     <Route path="user/repo/:repoId" component={RegisterGithubPageComponent} />
     <Route path="user/repo/:repoId/inputcomponent" component={SelectInputComponentsGithubPageComponent} />
     <Route path="user/repo/:repoId/outputcomponent" component={SelectOutputComponentsGithubPageComponent} />
+    <Route path="user/repo/:repoId/build" component={GHBuildPageComponent} />
     <Route path="login*" component={LoginComponent} />
     <Route path="*" component={PageNotfoundHandler} />
   </Route>

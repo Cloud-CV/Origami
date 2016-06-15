@@ -23,7 +23,6 @@ export const githubDemoSchema = new Schema({
   description: String,
   timestamp: Number,
   token: String,
-  dockerContainerId: String,
-  inputComponentId: String,
-  outputComponentId: String
+  dockercomposeFile: String,
+  dockerContainerId: String
 });

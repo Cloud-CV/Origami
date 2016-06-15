@@ -24,6 +24,7 @@
     "jquery": "2.2.3",
     "material-ui": "0.15.0",
     "mongoose": "^4.5.0",
+    "portfinder": "^1.0.3",
     "react": "15.1.0",
     "react-dom": "15.1.0",
     "react-redux": "4.4.5",

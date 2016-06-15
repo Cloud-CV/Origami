@@ -20,10 +20,15 @@ class RegisterPage extends React.Component {
       showOutput: 'hidden',
       currentRepo: {},
       showDockerModalState: false,
+      showSideHelp: true,
       dockerModalError: '',
       githubDemoModel: {},
-      description: ''
+      description: '',
+      freePortForCode: '',
+      currentPort: '',
+      dockercomposeFile: ''
     };
+    this.socket = this.context.socket;
     this.toggleShow = this.toggleShow.bind(this);
     this.toggleDockerModalShow = this.toggleDockerModalShow.bind(this);
     this.goBack = this.goBack.bind(this);
@@ -35,21 +40,36 @@ class RegisterPage extends React.Component {
     getRepo(this.props.params.repoId)
       .then(currentRepo => {
         this.setState({currentRepo: JSON.parse(currentRepo)});
-      }).then(() => {
-      this.toggleShow();
-    }).then(() => {
-        checkDockerfile(this.props.params.repoId).then(status => {
-          toastr.success('docker-compose.yml found');
-        }).catch(err => {
-          if (err == 'Error: Not Found') {
-            toastr.error("Coudn't fetch repository contents");
-            browserHistory.push('/user');
-          } else {
-            this.setState({dockerModalError: err});
-            this.toggleDockerModalShow();
-          }
+      })
+      .then(() => {
+        this.socket.emit('fetchfreeport');
+        this.socket.emit('fetchcurrentport');
+        this.socket.on('fetchedport', (port) => {
+          this.setState({freePortForCode: port});
         });
-      }).catch(err => {
+        this.socket.on('fetchedcurrentport', (port) => {
+          this.setState({currentPort: port});
+        });
+      })
+      .then(() => {
+        this.toggleShow();
+      })
+      .then(() => {
+        checkDockerfile(this.props.params.repoId).then(status => {
+            toastr.success('docker-compose.yml found');
+            this.setState({dockercomposeFile: status[3]});
+            this.setState({showSideHelp: false});
+          })
+          .catch(err => {
+            if (err == 'Error: Not Found') {
+              toastr.error("Coudn't fetch repository contents");
+              browserHistory.push('/user');
+            } else {
+              this.setState({dockerModalError: err});
+            }
+          });
+      })
+      .catch(err => {
         toastr.error(err);
       });
   }
@@ -65,12 +85,18 @@ class RegisterPage extends React.Component {
 
   saveGithubDemoModelData() {
     this.props.githubModelActions.updateGithubDemoModel({
-      name:  this.state.currentRepo.name,
+      name: this.state.currentRepo.name,
       id: this.state.currentRepo.id,
       description: this.state.description,
-      timestamp:   Date.now()
+      timestamp: Date.now(),
+      token: `gh:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`,
+      dockercomposeFile: this.state.dockercomposeFile
     }).then(() => {
-      browserHistory.push(`/user/repo/${this.props.params.repoId}/inputcomponent`);
+      if(this.state.dockerModalError) {
+        this.toggleDockerModalShow();
+      } else {
+        browserHistory.push(`/user/repo/${this.props.params.repoId}/inputcomponent`);
+      }
     });
   }
 
@@ -87,7 +113,7 @@ class RegisterPage extends React.Component {
   }
 
   goBack() {
-    browserHistory.push('/');
+    browserHistory.push('/user');
   }
 
   render() {
@@ -149,10 +175,25 @@ class RegisterPage extends React.Component {
                      style={{height: "90%", marginTop: "10%"}}>
                   <hr /></div>
                 <div className="column">
+
+                  {this.state.dockerModalError &&
                   <div className="ui raise fluid very padded container text">
-                    <br /><br /><br /><br /><br />
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                  </div>
+                    <br />
+                    <div className="ui container segment">
+                      Insert help text here
+                    </div>
+                  </div>}
+
+                  {!this.state.dockerModalError && !this.state.showSideHelp &&
+                  <div className="ui raise fluid very padded container text">
+                    <br />
+                    <div className="ui container segment">
+                      Token: &nbsp;&nbsp;&nbsp;
+                      <b>{`gh:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`}</b><br />
+                      Insert info about how to proceed with the deployment
+                    </div>
+                  </div>}
+
                 </div>
               </div>
             </div>
@@ -179,6 +220,10 @@ RegisterPage.propTypes = {
   user: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired,
   githubModelActions: PropTypes.object.isRequired
+};
+
+RegisterPage.contextTypes = {
+  socket: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
