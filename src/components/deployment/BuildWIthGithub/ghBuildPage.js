@@ -3,7 +3,6 @@ import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { checkDockerfile } from '../../../api/Github/getOneRepo';
-import * as githubDemoModelActions from '../../../actions/githubDemoModelActions';
 import RaisedButton from 'material-ui/RaisedButton';
 import toastr from 'toastr';
 
@@ -21,11 +20,11 @@ class GHBuildPage extends React.Component {
   }
 
   componentWillMount() {
-    checkDockerfile(this.props.params.repoId).then(clone_data => {
+    checkDockerfile(this.props.githubDemoModel.name, this.props.githubDemoModel.id).then(clone_data => {
       return clone_data;
       })
       .then(clone_data => {
-        this.socket.emit('startdeployment', clone_data.slice(0, 3).toString());
+        this.socket.emit('startdeployment', clone_data.toString());
 
         this.socket.on('datafromterminal', (data) => {
           this.setState({data: [...this.state.data, data]});
@@ -55,7 +54,7 @@ class GHBuildPage extends React.Component {
   }
 
   goToDemoPage() {
-    alert('yolo');
+    browserHistory.push(`/user/repo/${this.props.params.repoName}/demo`);
   }
 
   render() {
@@ -87,8 +86,8 @@ class GHBuildPage extends React.Component {
                     </div>
                     <div className="extra content">
                         <b>{"Running on port: " +
-                        this.props.githubDemoModel.token.split(':')[3]
-                        }</b>-
+                        this.props.githubDemoModel.token.split(':')[4]
+                        }</b>
                       <RaisedButton
                         label="Go To Demo"
                         primary
@@ -124,8 +123,9 @@ GHBuildPage.propTypes = {
   login: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired,
-  githubModelActions: PropTypes.object.isRequired,
-  githubDemoModel: PropTypes.object.isRequired
+  githubDemoModel: PropTypes.object.isRequired,
+  outputComponentDemoModel: PropTypes.object.isRequired,
+  inputComponentDemoModel: PropTypes.object.isRequired
 };
 
 GHBuildPage.contextTypes = {
@@ -136,13 +136,14 @@ function mapStateToProps(state, ownProps) {
   return {
     login: state.login,
     user: state.user,
-    githubDemoModel: state.githubDemoModel
+    githubDemoModel: state.githubDemoModel,
+    inputComponentDemoModel: state.inputComponentDemoModel,
+    outputComponentDemoModel: state.outputComponentDemoModel
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    githubModelActions: bindActionCreators(githubDemoModelActions, dispatch)
   };
 }
 

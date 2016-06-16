@@ -1,8 +1,9 @@
+/*eslint-disable react/forbid-prop-types */
 import React, { PropTypes } from 'react';
 
 const singleOutput = (props) => {
   return (
-    <div className="ui card"
+    <div className="ui card centered"
          id={"output-text-" + props.index}>
       <div className="content">
         <div className="header">{props.header}</div>
@@ -24,7 +25,7 @@ const singleOutput = (props) => {
 
 singleOutput.propTypes = {
   header: PropTypes.string.isRequired,
-  data: PropTypes.string.isRequired,
+  data: PropTypes.any.isRequired,
   index: PropTypes.number.isRequired
 };
 

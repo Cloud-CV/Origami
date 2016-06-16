@@ -52,7 +52,7 @@ class TextOutputShowcaseCard extends React.Component {
         baseComponentId: 1,
         props: this.state.headers
       }).then(() => {
-        browserHistory.push(`/user/repo/${this.props.demoProps.params.repoId}/build`);
+        browserHistory.push(`/user/repo/${this.props.demoProps.params.repoName}/build`);
       });
     }
   }

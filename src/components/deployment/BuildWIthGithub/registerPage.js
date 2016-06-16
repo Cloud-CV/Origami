@@ -37,7 +37,7 @@ class RegisterPage extends React.Component {
   }
 
   componentWillMount() {
-    getRepo(this.props.params.repoId)
+    getRepo(this.props.params.repoName)
       .then(currentRepo => {
         this.setState({currentRepo: JSON.parse(currentRepo)});
       })
@@ -55,7 +55,7 @@ class RegisterPage extends React.Component {
         this.toggleShow();
       })
       .then(() => {
-        checkDockerfile(this.props.params.repoId).then(status => {
+        checkDockerfile(this.props.params.repoName).then(status => {
             toastr.success('docker-compose.yml found');
             this.setState({dockercomposeFile: status[3]});
             this.setState({showSideHelp: false});
@@ -89,13 +89,13 @@ class RegisterPage extends React.Component {
       id: this.state.currentRepo.id,
       description: this.state.description,
       timestamp: Date.now(),
-      token: `gh:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`,
+      token: `gh:local:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`,
       dockercomposeFile: this.state.dockercomposeFile
     }).then(() => {
       if(this.state.dockerModalError) {
         this.toggleDockerModalShow();
       } else {
-        browserHistory.push(`/user/repo/${this.props.params.repoId}/inputcomponent`);
+        browserHistory.push(`/user/repo/${this.props.params.repoName}/inputcomponent`);
       }
     });
   }
@@ -160,7 +160,7 @@ class RegisterPage extends React.Component {
                   /><br />
                   <TextField
                     hintText="Demo description"
-                    defaultValue={this.state.currentRepo.description}
+                    defaultValue={this.state.description}
                     onChange={this.updateDescription}
                     multiLine
                     rows={2}
@@ -171,8 +171,7 @@ class RegisterPage extends React.Component {
                                 onClick={this.saveGithubDemoModelData}/>
                 </div>
 
-                <div className="ui vertical internal divider"
-                     style={{height: "90%", marginTop: "10%"}}>
+                <div className="ui vertical internal divider">
                   <hr /></div>
                 <div className="column">
 
@@ -180,6 +179,8 @@ class RegisterPage extends React.Component {
                   <div className="ui raise fluid very padded container text">
                     <br />
                     <div className="ui container segment">
+                      Token: &nbsp;&nbsp;&nbsp;
+                      <b>{`gh:local:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`}</b><br />
                       Insert help text here
                     </div>
                   </div>}
@@ -189,7 +190,7 @@ class RegisterPage extends React.Component {
                     <br />
                     <div className="ui container segment">
                       Token: &nbsp;&nbsp;&nbsp;
-                      <b>{`gh:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`}</b><br />
+                      <b>{`gh:local:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`}</b><br />
                       Insert info about how to proceed with the deployment
                     </div>
                   </div>}

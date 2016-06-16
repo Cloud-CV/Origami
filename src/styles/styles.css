@@ -3,16 +3,3 @@
     color: #4d4d4d;
     margin: 0 auto;
 }
-
-a.active {
-    color: orange;
-}
-
-nav {
-    padding-top: 20px;
-}
-
-#loginButton {
-  color: inherit;
-  text-decoration: inherit;
-}

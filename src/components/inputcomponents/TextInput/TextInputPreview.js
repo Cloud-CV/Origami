@@ -30,15 +30,17 @@ class TextInputPreview extends React.Component {
         onTouchTap={this.handleOk}
       />
     ];
-    return(<Dialog
-      title="Preview Text Input Component"
-      actions={actions}
-      modal
-      autoScrollBodyContent
-      open={this.state.open}>
-      <TextInput
-      labels={this.state.labels}
-      sendAddr=""/>
+    return(
+      <Dialog
+        title="Preview Text Input Component"
+        actions={actions}
+        modal
+        autoScrollBodyContent
+        open={this.state.open}>
+        <TextInput
+          context="preview"
+          labels={this.state.labels}
+          sendAddr=""/>
     </Dialog>);
   }
 }

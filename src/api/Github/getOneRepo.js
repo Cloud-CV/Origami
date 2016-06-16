@@ -16,7 +16,7 @@ export function getRepo(repoName) {
   });
 }
 
-export function checkDockerfile(repoName) {
+export function checkDockerfile(repoName, repoId) {
   return new Promise(function(resolve, reject) {
     request
       .get('https://api.github.com/repos/'+ sessionStorage.getItem('username') +'/'+repoName+'/contents')
@@ -34,7 +34,7 @@ export function checkDockerfile(repoName) {
               downloadDockercomposeFile(
                 [`https://${sessionStorage.getItem('access_token')}:x-oauth-basic@github.com/${sessionStorage.getItem('username')}/${repoName}`,
                   sessionStorage.getItem('username'), repoName,
-                  JSON.parse(res.text)[allFileNames.indexOf('docker-compose.yml')]['download_url']]
+                  JSON.parse(res.text)[allFileNames.indexOf('docker-compose.yml')]['download_url'], repoId]
               )
             );
           }

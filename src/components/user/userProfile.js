@@ -3,6 +3,9 @@ import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as userActions from '../../actions/userActions';
+import * as githubDemoModelActions from '../../actions/githubDemoModelActions';
+import * as inputComponentDemoModelActions from '../../actions/inputComponentDemoModelActions';
+import * as outputComponentDemoModelActions from '../../actions/outputComponentDemoModelActions';
 import Toggle from 'material-ui/Toggle';
 import CircularProgress from 'material-ui/CircularProgress';
 import CustomCard from '../stateless/cards';
@@ -24,7 +27,9 @@ class UserProfile extends React.Component {
     this.makeCardRepo = this.makeCardRepo.bind(this);
     this.toggleAllRepoButton = this.toggleAllRepoButton.bind(this);
     this.getLanguage = this.getLanguage.bind(this);
+    this.killDemo = this.killDemo.bind(this);
     this.goToDeployPage = this.goToDeployPage.bind(this);
+    this.goToDemoPage = this.goToDemoPage.bind(this);
   }
 
   componentWillMount() {
@@ -59,8 +64,16 @@ class UserProfile extends React.Component {
     });
   }
 
+  killDemo() {
+    toastr.success(`initiated kill, for application: <h1>${this.props.githubDemoModel.name}</h1>`);
+  }
+
   goToDeployPage(repo) {
     browserHistory.push('/user/repo/' + repo.name);
+  }
+
+  goToDemoPage(repo) {
+    browserHistory.push(`user/repo/${this.props.githubDemoModel.name}/demo`);
   }
 
   getLanguage(repo) {
@@ -74,6 +87,10 @@ class UserProfile extends React.Component {
   }
 
   render() {
+    console.log(this.props.githubDemoModel);
+    console.log(this.props.inputComponentDemoModel);
+    console.log(this.props.outputComponentDemoModel);
+
     return (
       <div className="ui relaxed stackable grid fluid container">
 
@@ -116,6 +133,7 @@ class UserProfile extends React.Component {
                 {this.state.userRepos.map(repo =>
                   <CustomCard
                     header={repo.name}
+                    width="five"
                     key={repo.id}
                     displayData={[
                       repo.private ? 'Private' : 'Public',
@@ -123,8 +141,22 @@ class UserProfile extends React.Component {
                     ]}
                     buttonData={[
                       {
-                        label: "Deploy",
-                        onDeployClick: () => this.goToDeployPage(repo)
+                        label: "Kill",
+                        onDeployClick: () => this.killDemo(),
+                        display: this.props.githubDemoModel.name === repo.name ?
+                          "" : "None"
+                      },
+                      {
+                        label: "Modify",
+                        onDeployClick: () => alert('to be implemented, yo!'),
+                        display: this.props.githubDemoModel.name === repo.name ?
+                          "" : "None"
+                      },
+                      {
+                        label: this.props.githubDemoModel.name === repo.name ?
+                         "Demo" : "Deploy",
+                        onDeployClick: () => this.props.githubDemoModel.name === repo.name ?
+                         this.goToDemoPage() : this.goToDeployPage(repo)
                       }
                     ]}
                   />
@@ -142,19 +174,31 @@ class UserProfile extends React.Component {
 UserProfile.propTypes = {
   login: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
-  useractions: PropTypes.object.isRequired
+  githubDemoModel: PropTypes.object.isRequired,
+  inputComponentDemoModel: PropTypes.object.isRequired,
+  outputComponentDemoModel: PropTypes.object.isRequired,
+  useractions: PropTypes.object.isRequired,
+  githubModelActions: PropTypes.object.isRequired,
+  inputComponentModelActions: PropTypes.object.isRequired,
+  outputComponentDemoModelActions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     login: state.login,
-    user: state.user
+    user: state.user,
+    githubDemoModel: state.githubDemoModel,
+    inputComponentDemoModel: state.inputComponentDemoModel,
+    outputComponentDemoModel: state.outputComponentDemoModel
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    useractions: bindActionCreators(userActions, dispatch)
+    useractions: bindActionCreators(userActions, dispatch),
+    githubModelActions: bindActionCreators(githubDemoModelActions, dispatch),
+    inputComponentModelActions: bindActionCreators(inputComponentDemoModelActions, dispatch),
+    outputComponentDemoModelActions: bindActionCreators(outputComponentDemoModelActions, dispatch)
   };
 }
 

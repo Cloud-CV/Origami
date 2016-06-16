@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { grey700 } from 'material-ui/styles/colors';
+import { cyan100 } from 'material-ui/styles/colors';
 
 const CustomCard = ({header, heading, width, centeredParent, centeredSegment, displayData, buttonData}) => {
 
@@ -9,7 +10,7 @@ const CustomCard = ({header, heading, width, centeredParent, centeredSegment, di
   return (
     <div className={parentClass}>
       <div className={cardClass}>
-        <div className="content">
+        <div className="content" style={{backgroundColor: cyan100}}>
           <div className="header">{header}</div>
         </div>
         {heading &&
@@ -34,6 +35,7 @@ const CustomCard = ({header, heading, width, centeredParent, centeredSegment, di
         <div className="extra content">
           {buttonData.map((button, index) =>
             <button key={index}
+                    style={{display: button.display}}
                     className="ui button"
                     onClick={button.onDeployClick}>
               {button.label}

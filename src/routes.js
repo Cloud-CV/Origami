@@ -10,16 +10,18 @@ import RegisterGithubPageComponent from './components/deployment/BuildWIthGithub
 import SelectInputComponentsGithubPageComponent from './components/deployment/BuildWIthGithub/selectInputComponentPage';
 import SelectOutputComponentsGithubPageComponent from './components/deployment/BuildWIthGithub/selectOutputComponentPage';
 import GHBuildPageComponent from './components/deployment/BuildWIthGithub/ghBuildPage';
+import GHDemoPageComponent from './components/deployment/BuildWIthGithub/ghDemoPage';
 
 export default(
   <Route path="/" component={App}>
     <IndexRoute component={HomePageComponent} />
     <Route path="about" component={AboutPageComponent} />
     <Route path="user" component={UserProfileComponent} />
-    <Route path="user/repo/:repoId" component={RegisterGithubPageComponent} />
-    <Route path="user/repo/:repoId/inputcomponent" component={SelectInputComponentsGithubPageComponent} />
-    <Route path="user/repo/:repoId/outputcomponent" component={SelectOutputComponentsGithubPageComponent} />
-    <Route path="user/repo/:repoId/build" component={GHBuildPageComponent} />
+    <Route path="user/repo/:repoName" component={RegisterGithubPageComponent} />
+    <Route path="user/repo/:repoName/inputcomponent" component={SelectInputComponentsGithubPageComponent} />
+    <Route path="user/repo/:repoName/outputcomponent" component={SelectOutputComponentsGithubPageComponent} />
+    <Route path="user/repo/:repoName/build" component={GHBuildPageComponent} />
+    <Route path="user/repo/:repoName/demo" component={GHDemoPageComponent} />
     <Route path="login*" component={LoginComponent} />
     <Route path="*" component={PageNotfoundHandler} />
   </Route>
