@@ -38,7 +38,7 @@ class TextOutputPreview extends React.Component {
       open={this.state.open}>
       <TextOutput
         headers={this.state.headers}
-        context="demo"
+        calling_context="demo"
         data={
           Array(this.state.headers.length).fill(
             "Text Output sent from your code!"

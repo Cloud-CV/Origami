@@ -6,6 +6,8 @@ export default function inputComponentDemoModelReducer(state = initialState.inpu
     case types.ADD_INPUT_COMPONENT_DEMO_MODEL_SUCCESS:
       return Object.assign(
         Object.assign({}, state), action.model);
+    case types.KILL_INPUT_COMPONENT_DEMO_MODEL_SUCCESS:
+      return initialState.inputComponentDemoModel;
     default:
       return state;
   }

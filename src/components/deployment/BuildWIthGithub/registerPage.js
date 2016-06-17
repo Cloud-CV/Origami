@@ -26,7 +26,8 @@ class RegisterPage extends React.Component {
       description: '',
       freePortForCode: '',
       currentPort: '',
-      dockercomposeFile: ''
+      dockercomposeFile: '',
+      saveButton: true
     };
     this.socket = this.context.socket;
     this.toggleShow = this.toggleShow.bind(this);
@@ -57,6 +58,7 @@ class RegisterPage extends React.Component {
       .then(() => {
         checkDockerfile(this.props.params.repoName).then(status => {
             toastr.success('docker-compose.yml found');
+            this.setState({saveButton: false});
             this.setState({dockercomposeFile: status[3]});
             this.setState({showSideHelp: false});
           })
@@ -65,6 +67,7 @@ class RegisterPage extends React.Component {
               toastr.error("Coudn't fetch repository contents");
               browserHistory.push('/user');
             } else {
+              this.setState({saveButton: false});
               this.setState({dockerModalError: err});
             }
           });
@@ -167,6 +170,7 @@ class RegisterPage extends React.Component {
                     rowsMax={8}
                   /><br />
                   <RaisedButton label="Save"
+                                disabled={this.state.saveButton}
                                 primary style={{marginLeft: "30%"}}
                                 onClick={this.saveGithubDemoModelData}/>
                 </div>

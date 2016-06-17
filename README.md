@@ -1,6 +1,8 @@
 # CloudCVfy Webapp
 
-Current Status: An app with profile displayed from Github and a skeletal build page.
+Current Status: An app that works.
+
+###Incomplete instructions:
 
 ## Build instructions
 

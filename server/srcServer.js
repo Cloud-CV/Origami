@@ -17,8 +17,10 @@ let http = require('http').Server(app);
 let io = require('socket.io')(http);
 
 const rimraf = require('rimraf');
+const mkdirp = require('mkdirp');
 const process = require('process');
 const spawn = require('child_process').spawn;
+const fs = require('fs');
 
 const compiler = webpack(config);
 
@@ -136,12 +138,32 @@ io.on('connection', function(socket){
       });
 
     });
+
+    // Kill procedure
+
+    socket.on('startkillprocedure', (username, repoId, dockercomposefile) => {
+      mkdirp(`/tmp/${username}/${repoId}/`, function (err) {
+        if (err) {
+          console.error(err);
+        } else {
+          fs.writeFile(`/tmp/${username}/${repoId}/docker-compose.yml`, dockercomposefile, err => {
+            if (err) {
+              console.log(err);
+            } else {
+              const shutdown = spawn('docker-compose', ['-f', `/tmp/${username}/${repoId}/docker-compose.yml`,
+              'down', '--rmi', 'all', '-v', '--remove-orphan']);
+              shutdown.on('close', code => {
+                socket.emit('killstatus', code);
+              });
+            }
+          });
+        }
+      });
+    });
+
+
+
   });
-
-
-  // Kill procedure
-
-
 });
 
 function filterColors(data) {

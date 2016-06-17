@@ -23,6 +23,7 @@ class UserProfile extends React.Component {
       showOutput: 'hidden',
       allRepoShow: false
     };
+    this.socket = this.context.socket;
     this.toggleShow = this.toggleShow.bind(this);
     this.makeCardRepo = this.makeCardRepo.bind(this);
     this.toggleAllRepoButton = this.toggleAllRepoButton.bind(this);
@@ -66,6 +67,19 @@ class UserProfile extends React.Component {
 
   killDemo() {
     toastr.success(`initiated kill, for application: <h1>${this.props.githubDemoModel.name}</h1>`);
+    this.socket.emit('startkillprocedure', this.state.user.login,
+      this.props.githubDemoModel.id,
+      this.props.githubDemoModel.dockercomposeFile);
+    this.socket.on('killstatus', (status) => {
+      if (status == '0') {
+        toastr.success(`Killed: <h1>${this.props.githubDemoModel.name}</h1>`);
+        this.props.githubModelActions.killGithubDemoModel();
+        this.props.inputComponentModelActions.killInputComponentModel();
+        this.props.outputComponentDemoModelActions.killOutputComponentModel();
+      } else {
+        toastr.error(`Failed killing: <h1>${this.props.githubDemoModel.name}</h1>`);
+      }
+    });
   }
 
   goToDeployPage(repo) {
@@ -181,6 +195,10 @@ UserProfile.propTypes = {
   githubModelActions: PropTypes.object.isRequired,
   inputComponentModelActions: PropTypes.object.isRequired,
   outputComponentDemoModelActions: PropTypes.object.isRequired
+};
+
+UserProfile.contextTypes = {
+  socket: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
