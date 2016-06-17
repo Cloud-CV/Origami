@@ -4,7 +4,7 @@ logs
 *.log
 npm-debug.log*
 
-# Coverage directory used by server like istanbul
+# Coverage directory used by tools like istanbul
 coverage
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)

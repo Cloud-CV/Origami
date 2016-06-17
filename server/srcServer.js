@@ -1,5 +1,4 @@
 import express from 'express';
-import expresssession from 'express-session';
 import webpack from 'webpack';
 import path from 'path';
 import config from '../webpack.config.dev';
@@ -33,7 +32,13 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
 //authentication
-app.use(expresssession({secret: APP_SECRET, resave: true, saveUninitialized: true}));
+
+let session = require("express-session")({
+  secret: APP_SECRET,
+  resave: true,
+  saveUninitialized: true
+});
+app.use(session);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -64,67 +69,78 @@ app.get('*', function(req, res) {
 
 io.on('connection', function(socket){
 
-  app.post('/inject', function(req, res) {
-    io.sockets.emit('injectoutputdata', req.body);
-    res.sendStatus(200);
-  });
+  socket.on('savesessiontoken', sessiontoken => {
+    socket.join(sessiontoken);
 
-  socket.on('fetchfreeport', () => {
-    portfinder.getPort((err, port) => {
-      socket.emit('fetchedport', port);
+    app.post('/inject', function(req, res) {
+      io.sockets.in(req.body.socketId).emit('injectoutputdata', req.body);
+      res.sendStatus(200);
     });
-  });
 
-  socket.on('fetchcurrentport', () => {
-    socket.emit('fetchedcurrentport', port);
-  });
-
-  socket.on('startdeployment', clone_data => {
-
-    const clone_url = clone_data.split(',')[0];
-    const username = clone_data.split(',')[1];
-    const reponame = clone_data.split(',')[2];
-    const repoid = clone_data.split(',')[4];
-    const clone_dir = '/tmp/'+username+'/'+repoid+'/';
-
-    rimraf(clone_dir, (err) => {
-      if (err) {
-        console.log(err);
-      }
-
-      const clone = spawn('git', ['clone', clone_url, clone_dir]);
-
-      clone.stdout.on('data', (data) => {
-        socket.emit('datafromterminal', filterColors(data));
+    socket.on('fetchfreeport', () => {
+      portfinder.getPort((err, port) => {
+        socket.emit('fetchedport', port);
       });
+    });
 
-      clone.stderr.on('data', (data) => {
-        socket.emit('errorfromterminal', filterColors(data));
-      });
+    socket.on('fetchcurrentport', () => {
+      socket.emit('fetchedcurrentport', port);
+    });
 
-      clone.on('close', (code) => {
-        socket.emit('cloningcomplete', code);
 
-        if (code == '0') {
-          const docker = spawn('docker-compose', ['-f', clone_dir + '/docker-compose.yml','up', '-d']);
+    // Deployment procedure
 
-          docker.stdout.on('data', (data) => {
-            socket.emit('datafromterminal', filterColors(data));
-          });
+    socket.on('startdeployment', clone_data => {
 
-          docker.stderr.on('data', (data) => {
-            socket.emit('errorfromterminal', filterColors(data));
-          });
+      const clone_url = clone_data.split(',')[0];
+      const username = clone_data.split(',')[1];
+      const reponame = clone_data.split(',')[2];
+      const repoid = clone_data.split(',')[4];
+      const clone_dir = '/tmp/'+username+'/'+repoid+'/';
 
-          docker.on('close', (code) => {
-            socket.emit('deploymentcomplete', code);
-          });
+      rimraf(clone_dir, (err) => {
+        if (err) {
+          console.log(err);
         }
+
+        const clone = spawn('git', ['clone', clone_url, clone_dir]);
+
+        clone.stdout.on('data', (data) => {
+          socket.emit('datafromterminal', filterColors(data));
+        });
+
+        clone.stderr.on('data', (data) => {
+          socket.emit('errorfromterminal', filterColors(data));
+        });
+
+        clone.on('close', (code) => {
+          socket.emit('cloningcomplete', code);
+
+          if (code == '0') {
+            const docker = spawn('docker-compose', ['-f', clone_dir + '/docker-compose.yml','up', '-d']);
+
+            docker.stdout.on('data', (data) => {
+              socket.emit('datafromterminal', filterColors(data));
+            });
+
+            docker.stderr.on('data', (data) => {
+              socket.emit('errorfromterminal', filterColors(data));
+            });
+
+            docker.on('close', (code) => {
+              socket.emit('deploymentcomplete', code);
+            });
+          }
+        });
+
       });
 
     });
-
   });
+
+
+  // Kill procedure
+
 
 });
 

@@ -14,12 +14,13 @@ class GHDemoPage extends React.Component {
       outputData: []
     };
     this.socket = this.context.socket;
+    this.socketId = this.context.socketId;
   }
 
   componentWillMount() {
     this.socket.on('injectoutputdata', data => {
       this.setState({
-        outputData: Object.assign(Object.assign([], this.state.outputData), data)
+        outputData: Object.assign(Object.assign([], this.state.outputData), data.data)
       });
     });
     this.socket.on('malformedoutputdata', () => {
@@ -50,8 +51,8 @@ class GHDemoPage extends React.Component {
                     Input
                   </h2>
                   {getInputComponentById(this.props.inputComponentDemoModel.baseComponentId,
-                    this.props.inputComponentDemoModel.props, "demo",
-                    "http://0.0.0.0:" + this.props.githubDemoModel.token.split(':')[4] + "/event"
+                    this.props.inputComponentDemoModel.props, "demo", this.socketId,
+                    "http://0.0.0.0:" + '8000' + "/event"
                   )}
                 </div>
 
@@ -86,7 +87,8 @@ GHDemoPage.propTypes = {
 };
 
 GHDemoPage.contextTypes = {
-  socket: PropTypes.object.isRequired
+  socket: PropTypes.object.isRequired,
+  socketId: PropTypes.string.isRequired
 };
 
 function mapStateToProps(state, ownProps) {

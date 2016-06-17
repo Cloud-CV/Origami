@@ -23,11 +23,18 @@ class App extends React.Component {
     this.readSessionToken = this.readSessionToken.bind(this);
     this.clearSessionFlag = this.clearSessionFlag.bind(this);
     this.setSessionFlag = this.setSessionFlag.bind(this);
+    this.socket = io();
+    this.socketId = Math.random().toString(36);
+    this.socket.on('connect', () => {
+      this.socket.emit('savesessiontoken', this.socketId);
+    });
   }
 
   getChildContext() {
-    let socket = io();
-    return {socket};
+    return {
+      socket: this.socket,
+      socketId: this.socketId
+    };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -148,7 +155,8 @@ App.propTypes = {
 };
 
 App.childContextTypes = {
-  socket: PropTypes.object.isRequired
+  socket: PropTypes.object.isRequired,
+  socketId: PropTypes.string.isRequired
 };
 
 function mapStateToProps(state, ownProps) {

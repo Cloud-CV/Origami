@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
-import { grey700 } from 'material-ui/styles/colors';
-import { cyan100 } from 'material-ui/styles/colors';
+import { grey700, cyan100 } from 'material-ui/styles/colors';
 
 const CustomCard = ({header, heading, width, centeredParent, centeredSegment, displayData, buttonData}) => {
 

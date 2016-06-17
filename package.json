@@ -21,7 +21,6 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "babel-polyfill": "6.8.0",
-    "express.oi": "0.0.20",
     "jquery": "2.2.3",
     "material-ui": "0.15.0",
     "mongoose": "^4.5.0",

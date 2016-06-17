@@ -38,7 +38,7 @@ class TextInputPreview extends React.Component {
         autoScrollBodyContent
         open={this.state.open}>
         <TextInput
-          context="preview"
+          calling_context="preview"
           labels={this.state.labels}
           sendAddr=""/>
     </Dialog>);
