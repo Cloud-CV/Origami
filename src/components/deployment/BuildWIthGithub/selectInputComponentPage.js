@@ -37,7 +37,7 @@ class SelectInputComponentPage extends React.Component {
           </div>
 
           <div className="fifteen wide column stretched stackable centered row">
-            <div className="ui three column stackable grid" style={{marginLeft: "3%"}}>
+            <div className="ui three padded column stackable grid" style={{marginLeft: "3%"}}>
               {getAllInputComponentsForShowcase({
                 githubDemoModel: this.props.githubDemoModel,
                 inputComponentDemoModel: this.props.inputComponentDemoModel,

@@ -1,16 +1,16 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 
-let Schema = mongoose.Schema;
-let model = mongoose.model;
-
-const githubDemoSchema = new Schema({
+const githubDemoSchema = mongoose.Schema({
   name:  String,
-  id: Number,
+  id: {
+    type: String,
+    unique: true
+  },
   description: String,
   timestamp: Number,
   token: String,
-  dockercomposeFile: String,
-  dockerContainerId: String
+  dockercomposeFile: String
 });
 
-export default model("githubDemo", githubDemoSchema);
+export default mongoose.model("githubDemo", githubDemoSchema);
+

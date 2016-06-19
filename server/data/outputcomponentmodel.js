@@ -1,12 +1,12 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 
-let Schema = mongoose.Schema;
-let model = mongoose.model;
-
-const outputComponentSchema = new Schema({
-  id: Number,
+const outputComponentSchema = mongoose.Schema({
+  id: {
+    type: String,
+    unique: true
+  },
   baseComponentId: Number,
   props: Array
 });
 
-export default model("outputComponent", outputComponentSchema);
+export default mongoose.model("outputComponent", outputComponentSchema);

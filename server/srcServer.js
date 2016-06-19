@@ -3,10 +3,15 @@ import webpack from 'webpack';
 import path from 'path';
 import config from '../webpack.config.dev';
 import * as portfinder from 'portfinder';
+import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import { APP_SECRET } from '../outCalls/config';
 const passport = require('../outCalls/auth');
 import colors from 'colors';
+
+import githubDemoModelController from './controlller/githubdemomodelController';
+import inputComponentModelController from './controlller/inputcomponentModelController';
+import outputComponentModelController  from './controlller/outputcomponentController';
 
 /* eslint-disable no-console */
 
@@ -44,6 +49,8 @@ app.use(session);
 app.use(passport.initialize());
 app.use(passport.session());
 
+// routes
+
 app.get('/auth/github', passport.authenticate('github',
   {scope: ['user', 'repo']}
 ));
@@ -62,6 +69,15 @@ app.get('/logout', function(req, res){
 app.get('/user', function(req, res) {
   res.redirect('/');
 });
+
+// API routes
+
+app.use('/api/githubdemomodel', githubDemoModelController);
+app.use('/api/inputmodel', inputComponentModelController);
+app.use('/api/outputmodel', outputComponentModelController);
+
+
+// Catch all route
 
 app.get('*', function(req, res) {
   res.sendFile(path.resolve( __dirname, '../src/index.html'));
@@ -179,4 +195,7 @@ http.listen(port, function(err) {
     console.log(`visit http://0.0.0.0:${port}`.yellow);
   }
 });
+
+mongoose.connect("mongodb://0.0.0.0/demo");
+
 

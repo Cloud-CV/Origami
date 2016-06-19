@@ -101,10 +101,6 @@ class UserProfile extends React.Component {
   }
 
   render() {
-    console.log(this.props.githubDemoModel);
-    console.log(this.props.inputComponentDemoModel);
-    console.log(this.props.outputComponentDemoModel);
-
     return (
       <div className="ui relaxed stackable grid fluid container">
 
