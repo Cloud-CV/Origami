@@ -65,8 +65,18 @@ class NonGHUserProfile extends React.Component {
     });
   }
 
-  modifyProject(projectId) {
-    alert(projectId);
+  modifyProject(project) {
+    let dataToUpdate = {
+      name: project.name,
+      id: project.id,
+      description: project.description,
+      timestamp: project.timestamp,
+      token: project.token,
+      status: project.status
+    };
+    this.props.nonghModelActions.updateNonGHDemoModel(dataToUpdate).then(() => {
+      browserHistory.push(`/ngh/user/${project.name}/${project.id}/inputcomponent`);
+    });
   }
 
   goToDemoPage(projectId) {
@@ -144,7 +154,7 @@ class NonGHUserProfile extends React.Component {
                       },
                       {
                         label: "Modify",
-                        onDeployClick: () => this.modifyProject(project.id),
+                        onDeployClick: () => this.modifyProject(project),
                         display: ""
                       },
                       {

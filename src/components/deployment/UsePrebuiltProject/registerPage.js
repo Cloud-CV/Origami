@@ -72,6 +72,7 @@ class RegisterPage extends React.Component {
       let dataToPut = {
         name: this.state.name,
         id: this.state.id,
+        address: this.state.address,
         description: this.state.description,
         timestamp: Date.now(),
         token: `nongh:${this.state.address}:${this.state.id}:${this.state.currentPort}:${this.state.freePortForCode}`,
@@ -162,11 +163,22 @@ class RegisterPage extends React.Component {
 
                   <div className="ui raise fluid very padded container text">
                     <br />
-                    <div className="ui container segment">
-                      Token: &nbsp;&nbsp;&nbsp;
-                      <b>{`nongh:${this.state.address}:${this.state.id}:${this.state.currentPort}:${this.state.freePortForCode}`}&nbsp;&nbsp;&nbsp;
-                        {this.validateIP() ? <GoAhead color={green500} /> : <StopNow color={red500} />}</b><br />
-                      Insert info about how to proceed with the deployment
+                    <div className="ui relaxed grid container segment">
+                      <div className="two column row">
+                        <div className="thirteen wide column">
+                          Token: &nbsp;&nbsp;&nbsp;
+                          <b>{`nongh:${this.state.address}:${this.state.id}:${this.state.currentPort}:${this.state.freePortForCode}`}</b>
+                          <br />Your code will run on port: {this.state.freePortForCode}
+                        </div>
+                        <div className="three wide column">
+                          {this.validateIP() ? <GoAhead style={{height: '', width: ''}} color={green500} /> : <StopNow style={{height: '', width: ''}} color={red500} />}
+                        </div>
+                      </div>
+                      <div className="one column row">
+                        <div className="sixteen wide column">
+                          Insert info about how to proceed with deployment
+                        </div>
+                      </div>
                     </div>
                   </div>
 

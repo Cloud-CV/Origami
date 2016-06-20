@@ -57,10 +57,14 @@ class TextOutputShowcaseCard extends React.Component {
         baseComponentId: 1,
         props: this.state.headers
       }).then(() => {
-        if (this.demoModel.status === 'input') {
+        if (this.forwardAddressAlternate) {
+          if (this.demoModel.status === 'input') {
+            browserHistory.push(this.forwardAddress);
+          } else if (this.demoModel.status === 'demo') {
+            browserHistory.push(this.forwardAddressAlternate);
+          }
+        } else {
           browserHistory.push(this.forwardAddress);
-        } else if (this.demoModel.status === 'demo') {
-          browserHistory.push(this.forwardAddressAlternate);
         }
       });
     }

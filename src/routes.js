@@ -12,6 +12,7 @@ import RegisterNonGHPageComponent from './components/deployment/UsePrebuiltProje
 import SelectInputComponentsGithubPageComponent from './components/deployment/BuildWIthGithub/selectInputComponentPage';
 import SelectInputComponentsNonGHPageComponent from './components/deployment/UsePrebuiltProject/selectInputComponentPage';
 import SelectOutputComponentsGithubPageComponent from './components/deployment/BuildWIthGithub/selectOutputComponentPage';
+import SelectOutputComponentsNonGHPageComponent from './components/deployment/UsePrebuiltProject/selectOutputComponentPage';
 import GHBuildPageComponent from './components/deployment/BuildWIthGithub/ghBuildPage';
 import GHDemoPageComponent from './components/deployment/BuildWIthGithub/ghDemoPage';
 
@@ -28,6 +29,7 @@ export default(
     <Route path="ngh/user" component={NonGHUserProfileComponent} />
     <Route path="ngh/user/register" component={RegisterNonGHPageComponent} />
     <Route path="ngh/user/:repoName/:repoId/inputcomponent" component={SelectInputComponentsNonGHPageComponent} />
+    <Route path="ngh/user/:repoName/:repoId/outputcomponent" component={SelectOutputComponentsNonGHPageComponent} />
     <Route path="login*" component={LoginComponent} />
     <Route path="*" component={PageNotfoundHandler} />
   </Route>
