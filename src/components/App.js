@@ -99,7 +99,7 @@ class App extends React.Component {
         const access_token = temp[0];
         const username = temp[1].split('=')[1];
         that.setSessionFlag(access_token, username);
-        browserHistory.push('/user');
+        browserHistory.push('/');
         win.close();
       } else if (win.location.search.indexOf('?status=failed') == 0) {
         win.close();

@@ -15,7 +15,7 @@ import toastr from 'toastr';
 
 toastr.options.closeButton = true;
 
-class UserProfile extends React.Component {
+class GHUserProfile extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -164,9 +164,10 @@ class UserProfile extends React.Component {
           <div className="seven wide column" >
             <div>
               <div className="row" ><br /><br /><br /><br /><br /></div>
-              <div className="row" ><br /><br /><br /><br /></div>
+              <div className="row" ><br /><br /></div>
               <h1 className="row">{this.state.user.name}</h1>
               <h3 className="row">{this.state.user.login}</h3>
+              <h4 className="row">Build from Github</h4>
             </div>
           </div>
 
@@ -223,7 +224,7 @@ class UserProfile extends React.Component {
   }
 }
 
-UserProfile.propTypes = {
+GHUserProfile.propTypes = {
   login: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
   githubDemoModel: PropTypes.object.isRequired,
@@ -235,7 +236,7 @@ UserProfile.propTypes = {
   outputComponentDemoModelActions: PropTypes.object.isRequired
 };
 
-UserProfile.contextTypes = {
+GHUserProfile.contextTypes = {
   socket: PropTypes.object.isRequired
 };
 
@@ -258,4 +259,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(GHUserProfile);
