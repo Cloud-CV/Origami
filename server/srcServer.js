@@ -10,6 +10,7 @@ const passport = require('../outCalls/auth');
 import colors from 'colors';
 
 import githubDemoModelController from './controlller/githubdemomodelController';
+import nonghDemoModelController from './controlller/nonghdemomodelController';
 import inputComponentModelController from './controlller/inputcomponentModelController';
 import outputComponentModelController  from './controlller/outputcomponentController';
 
@@ -73,6 +74,7 @@ app.get('/user', function(req, res) {
 // API routes
 
 app.use('/api/githubdemomodel', githubDemoModelController);
+app.use('/api/nonghdemomodel', nonghDemoModelController);
 app.use('/api/inputmodel', inputComponentModelController);
 app.use('/api/outputmodel', outputComponentModelController);
 

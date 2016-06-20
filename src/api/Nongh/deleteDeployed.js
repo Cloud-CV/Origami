@@ -1,7 +1,7 @@
 import request from 'superagent';
 
-export function deleteDeployed(repoId) {
-  let URL = `http://0.0.0.0:3000/api/githubdemomodel/${repoId}`;
+export function deleteDeployed(id) {
+  let URL = `http://0.0.0.0:3000/api/nonghdemomodel/${id}`;
   return new Promise(function(resolve, reject) {
     request
       .delete(URL)

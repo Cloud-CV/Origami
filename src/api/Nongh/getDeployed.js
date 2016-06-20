@@ -1,9 +1,9 @@
 import request from 'superagent';
 
-export function getDeployed(repoId) {
-  let URL = 'http://0.0.0.0:3000/api/githubdemomodel';
-  if (repoId) {
-    URL += `/${repoId}`;
+export function getDeployed(id) {
+  let URL = 'http://0.0.0.0:3000/api/nonghdemomodel';
+  if (id) {
+    URL += `/${id}`;
   }
   return new Promise(function(resolve, reject) {
     request

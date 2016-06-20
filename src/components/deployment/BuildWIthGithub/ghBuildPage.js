@@ -58,7 +58,7 @@ class GHBuildPage extends React.Component {
       this.props.githubModelActions.updateGithubDemoModel(Object.assign({},
         this.props.githubDemoModel, {status: 'demo'})
       ).then(() => {
-        browserHistory.push(`/user/repo/${this.props.params.repoName}/demo`);
+        browserHistory.push(`/user/repo/${this.props.params.repoName}/${this.props.params.repoId}/demo`);
       });
     });
   }

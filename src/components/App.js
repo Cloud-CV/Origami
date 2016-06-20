@@ -15,7 +15,8 @@ class App extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      login: false
+      login: false,
+      displayLogin: ''
     };
     this.popoutToggle = this.popoutToggle.bind(this);
     this.logout = this.logout.bind(this);
@@ -40,6 +41,11 @@ class App extends React.Component {
   componentWillReceiveProps(nextProps) {
     if(this.props.login != nextProps.login) {
       this.setState({login: nextProps.login});
+    }
+    if (window.location.pathname.split('/').slice(-1)[0] === 'demo') {
+      this.setState({displayLogin: 'none'});
+    } else {
+      this.setState({displayLogin: ''});
     }
   }
 
@@ -117,6 +123,8 @@ class App extends React.Component {
       <div>
         <AppBar
           title={
+          this.state.displayLogin === 'none' ?
+            <div style={{textDecoration: 'none', color: "inherit"}}>CVFY</div> :
             <Link to="/"
               style={{textDecoration: 'none', color: "inherit"}}>
               CVFY
@@ -126,6 +134,7 @@ class App extends React.Component {
           iconElementRight={
           this.state.login ?
             <IconMenu
+              style={{display: this.state.displayLogin}}
               iconButtonElement={
                 <IconButton><MoreVertIcon /></IconButton>
               }
@@ -134,7 +143,7 @@ class App extends React.Component {
               <MenuItem onTouchTap={this.logout} primaryText="Sign out" />
             </IconMenu>
             :
-             <span className="loginButton" onClick={this.popoutToggle}>
+             <span className="loginButton" style={{display: this.state.displayLogin}} onClick={this.popoutToggle}>
                 <FlatButton label="Login"
                 style={{margin: "5%", color: "white"}}/>
              </span>

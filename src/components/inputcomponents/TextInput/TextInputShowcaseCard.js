@@ -56,7 +56,7 @@ class TextInputShowcaseCard extends React.Component {
         baseComponentId: 1,
         props: this.state.labels
       }).then(() => {
-        browserHistory.push(`/user/repo/${this.props.demoProps.params.repoName}/outputcomponent`);
+        browserHistory.push(`/user/repo/${this.props.demoProps.params.repoName}/${this.props.demoProps.params.repoId}/outputcomponent`);
       });
     }
   }

@@ -102,8 +102,7 @@ class RegisterPage extends React.Component {
       };
       this.props.githubModelActions.addToDBGithubDemoModel(dataToUpdate).then(() => {
         this.props.githubModelActions.updateGithubDemoModel(dataToUpdate).then(() => {
-          browserHistory.push(`/user/repo/${this.props.params.repoName}/inputcomponent`);
-          toastr.success("registered application");
+          browserHistory.push(`/user/repo/${this.props.params.repoName}/${this.props.params.repoId}/inputcomponent`);
         });
       });
     }
@@ -138,7 +137,6 @@ class RegisterPage extends React.Component {
 
     return (
       <div className="ui relaxed stackable grid fluid container">
-
 
         {this.state.showOutput == 'hidden' &&
         <div className="centered row" style={{marginTop: "30vh"}}>

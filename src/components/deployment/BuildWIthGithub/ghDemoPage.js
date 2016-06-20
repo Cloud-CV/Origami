@@ -3,6 +3,8 @@ import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { getInputComponentById } from '../../inputcomponents';
 import { getOutputComponentById } from '../../outputcomponents';
+import { getDeployed } from '../../../api/GithubLocal/getDeployed';
+import { getComponentDeployed } from '../../../api/CommonLocal/getComponentDeployed';
 import toastr from 'toastr';
 
 toastr.options.closeButton = true;
@@ -11,7 +13,10 @@ class GHDemoPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      outputData: []
+      outputData: [],
+      inputModel: {},
+      outputModel: {},
+      demoModel: {}
     };
     this.socket = this.context.socket;
     this.socketId = this.context.socketId;
@@ -26,16 +31,25 @@ class GHDemoPage extends React.Component {
     this.socket.on('malformedoutputdata', () => {
       toastr.error('Malformed output data received');
     });
+    getDeployed(this.props.params.repoId).then(data => {
+      this.setState({demoModel: JSON.parse(data)[0]});
+    });
+    getComponentDeployed(this.props.params.repoId, 'input').then(data => {
+      this.setState({inputModel: JSON.parse(data)[0]});
+    });
+    getComponentDeployed(this.props.params.repoId, 'output').then(data => {
+      this.setState({outputModel: JSON.parse(data)[0]});
+    });
   }
 
   render() {
     return (
       <div className="ui relaxed stackable grid fluid container">
-
+        {this.state.demoModel &&
         <div className="sixteen wide column stretched row" style={{visibility: this.state.showOutput}}>
           <div className="row" >
-            <h1>{"Demo: " + this.props.githubDemoModel.name}</h1>
-            {this.props.githubDemoModel.description}
+            <h1>{this.state.demoModel.name}</h1>
+            {this.state.demoModel.description}
           </div>
 
           <div className="ui horizontal divider row" >
@@ -50,9 +64,10 @@ class GHDemoPage extends React.Component {
                   <h2 className="ui row">
                     Input
                   </h2>
-                  {getInputComponentById(this.props.inputComponentDemoModel.baseComponentId,
-                    this.props.inputComponentDemoModel.props, "demo", this.socketId,
-                    "http://0.0.0.0:" + this.props.githubDemoModel.token.split(':')[4] + "/event"
+                  {Object.keys(this.state.demoModel).length && Object.keys(this.state.inputModel).length &&
+                  getInputComponentById(this.state.inputModel.baseComponentId,
+                    this.state.inputModel.props, "demo", this.socketId,
+                    "http://0.0.0.0:" + this.state.demoModel.token.split(':')[4] + "/event"
                   )}
                 </div>
 
@@ -63,8 +78,9 @@ class GHDemoPage extends React.Component {
                   <h2 className="ui row">
                     Output
                   </h2>
-                  {getOutputComponentById(this.props.outputComponentDemoModel.baseComponentId,
-                    this.props.outputComponentDemoModel.props, "demo", this.state.outputData
+                  {Object.keys(this.state.demoModel).length && Object.keys(this.state.outputModel).length &&
+                  getOutputComponentById(this.state.outputModel.baseComponentId,
+                    this.state.outputModel.props, "demo", this.state.outputData
                   )}
                 </div>
 
@@ -72,6 +88,7 @@ class GHDemoPage extends React.Component {
             </div>
           </div>
         </div>
+        }
       </div>
     );
   }

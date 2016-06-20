@@ -93,7 +93,7 @@ class UserProfile extends React.Component {
       status: currentSelectedRepo.status
     };
     this.props.githubModelActions.updateGithubDemoModel(dataToUpdate).then(() => {
-      browserHistory.push(`/user/repo/${currentSelectedRepo.name}/inputcomponent`);
+      browserHistory.push(`/user/repo/${currentSelectedRepo.name}/${currentSelectedRepo.id}/inputcomponent`);
     });
   }
 
@@ -125,11 +125,11 @@ class UserProfile extends React.Component {
   }
 
   goToDeployPage(repo) {
-    browserHistory.push('/user/repo/' + repo.name);
+    browserHistory.push(`/user/repo/${repo.name}/${repo.id}`);
   }
 
   goToDemoPage(repo) {
-    browserHistory.push(`user/repo/${this.props.githubDemoModel.name}/demo`);
+    browserHistory.push(`user/repo/${repo.name}/${repo.id}/demo`);
   }
 
   getLanguage(repo) {
@@ -208,7 +208,7 @@ class UserProfile extends React.Component {
                         label: this.findDeployedRepoById(repo.id) ?
                          "Demo" : "Deploy",
                         onDeployClick: () => this.findDeployedRepoById(repo.id) ?
-                         this.goToDemoPage() : this.goToDeployPage(repo)
+                         this.goToDemoPage(repo) : this.goToDeployPage(repo)
                       }
                     ]}
                   />
