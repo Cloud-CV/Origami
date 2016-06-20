@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import * as githubDemoModelActions from '../../../actions/githubDemoModelActions';
 import * as outputComponentDemoModelActions from '../../../actions/outputComponentDemoModelActions';
 import { getAllOutputComponentsForShowcase } from '../../outputcomponents';
+import { getComponentDeployed } from '../../../api/CommonLocal/getComponentDeployed';
 import toastr from 'toastr';
 
 toastr.options.closeButton = true;
@@ -15,6 +16,19 @@ class SelectOutputComponentPage extends React.Component {
     this.state = {
       outputComponentDemoModel: {}
     };
+  }
+
+  componentWillMount() {
+    getComponentDeployed(this.props.githubDemoModel.id, 'output').then(outputComponentSeedData => {
+      if (JSON.parse(outputComponentSeedData).length != 0) {
+        let dataToSeed = {
+          id: JSON.parse(outputComponentSeedData)[0].id,
+          baseComponentId: JSON.parse(outputComponentSeedData)[0].baseComponentId,
+          props: JSON.parse(outputComponentSeedData)[0].props
+        };
+        this.setState({outputComponentDemoModel: dataToSeed});
+      }
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -40,7 +54,7 @@ class SelectOutputComponentPage extends React.Component {
             <div className="ui three padded column stackable grid" style={{marginLeft: "3%"}}>
               {getAllOutputComponentsForShowcase({
                 githubDemoModel: this.props.githubDemoModel,
-                outputComponentDemoModel: this.props.outputComponentDemoModel,
+                outputComponentDemoModel: this.state.outputComponentDemoModel,
                 githubModelActions: this.props.githubModelActions,
                 outputComponentDemoModelActions: this.props.outputComponentDemoModelActions,
                 params: this.props.params

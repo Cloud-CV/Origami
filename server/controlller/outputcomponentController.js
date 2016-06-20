@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import Outputcomponentmodel from '../data/inputcomponentmodel';
+import Outputcomponentmodel from '../data/outputcomponentmodel';
 import express from 'express';
 
 let router = express.Router();

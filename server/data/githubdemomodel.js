@@ -9,7 +9,8 @@ const githubDemoSchema = mongoose.Schema({
   description: String,
   timestamp: Number,
   token: String,
-  dockercomposeFile: String
+  dockercomposeFile: String,
+  status: String
 });
 
 export default mongoose.model("githubDemo", githubDemoSchema);

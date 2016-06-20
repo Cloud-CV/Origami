@@ -52,7 +52,7 @@ class GHDemoPage extends React.Component {
                   </h2>
                   {getInputComponentById(this.props.inputComponentDemoModel.baseComponentId,
                     this.props.inputComponentDemoModel.props, "demo", this.socketId,
-                    "http://0.0.0.0:" + '8000' + "/event"
+                    "http://0.0.0.0:" + this.props.githubDemoModel.token.split(':')[4] + "/event"
                   )}
                 </div>
 

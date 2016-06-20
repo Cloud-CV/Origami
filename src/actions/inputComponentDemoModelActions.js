@@ -1,4 +1,8 @@
 import * as types from './actionTypes';
+import { getComponentDeployed } from '../api/CommonLocal/getComponentDeployed';
+import { addComponentDeployed } from '../api/CommonLocal/addComponentDeployed';
+import { modifyComponentDeployed } from '../api/CommonLocal/modifyComponentDeployed';
+import { deleteComponentDeployed } from '../api/CommonLocal/deleteComponentDeployed';
 
 export function updateInputComponentModelSuccess(model) {
   return {type: types.ADD_INPUT_COMPONENT_DEMO_MODEL_SUCCESS, model};
@@ -11,16 +15,35 @@ export function killInputComponentModelSuccess() {
 export function updateInputComponentModel(newModelData) {
   return function(dispatch) {
     return new Promise((resolve, reject) => {
-      dispatch(updateInputComponentModelSuccess(newModelData));
-      resolve('dispatched input component model update call');
+      getComponentDeployed(newModelData.id, 'input').then(data => {
+        if (JSON.parse(data).length > 0) {
+          modifyComponentDeployed(newModelData, 'input').then(() => {
+              dispatch(updateInputComponentModelSuccess(newModelData));
+              resolve('dispatched input component model update call');
+            })
+            .catch(err => {
+              reject('cannot dispatch input component model update call');
+            });
+        } else {
+          addComponentDeployed(newModelData, 'input').then(() => {
+              dispatch(updateInputComponentModelSuccess(newModelData));
+              resolve('dispatched input component model update call');
+            })
+            .catch(err => {
+              reject('cannot dispatch input component model update call');
+            });
+        }
+      });
     });
   };
 }
 
-export function killInputComponentModel() {
+export function killInputComponentModel(repoId) {
   return function(dispatch) {
     return new Promise((reject, resolve) => {
-      dispatch(killInputComponentModelSuccess());
+      deleteComponentDeployed(repoId, 'input').then(() => {
+        dispatch(killInputComponentModelSuccess());
+      });
     });
   };
 }

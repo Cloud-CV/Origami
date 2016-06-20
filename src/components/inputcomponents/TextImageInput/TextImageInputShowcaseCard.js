@@ -8,8 +8,12 @@ import toastr from 'toastr';
 class TextImageInputShowcaseCard extends React.Component {
   constructor(props) {
     super(props);
+    let initLabels = [];
+    if (props.demoProps.inputComponentDemoModel.baseComponentId == '2') {
+      initLabels = props.demoProps.inputComponentDemoModel.props;
+    }
     this.state = {
-      labels: [],
+      labels: initLabels,
       modifyDialogDisplay: false,
       previewDialogDisplay: false
     };

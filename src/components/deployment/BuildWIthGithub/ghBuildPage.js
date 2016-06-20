@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import * as githubDemoModelActions from '../../../actions/githubDemoModelActions';
 import { checkDockerfile } from '../../../api/Github/getOneRepo';
 import RaisedButton from 'material-ui/RaisedButton';
 import toastr from 'toastr';
@@ -21,7 +22,7 @@ class GHBuildPage extends React.Component {
 
   componentWillMount() {
     checkDockerfile(this.props.githubDemoModel.name, this.props.githubDemoModel.id).then(clone_data => {
-      return clone_data;
+        return clone_data;
       })
       .then(clone_data => {
         this.socket.emit('startdeployment', clone_data.toString());
@@ -35,16 +36,13 @@ class GHBuildPage extends React.Component {
         });
 
         this.socket.on('cloningcomplete', (statusCode) => {
-          if (statusCode == '0') {
-            toastr.success('Git clone successful');
-          } else {
+          if (statusCode != '0') {
             toastr.error('Git clone failed');
           }
         });
 
         this.socket.on('deploymentcomplete', (status) => {
           if (status == '0') {
-            toastr.success('Deployment successfull');
             this.setState({demoPageButtonEnable: false});
           } else {
             toastr.error('Deployment failed');
@@ -54,7 +52,15 @@ class GHBuildPage extends React.Component {
   }
 
   goToDemoPage() {
-    browserHistory.push(`/user/repo/${this.props.params.repoName}/demo`);
+    this.props.githubModelActions.addToDBGithubDemoModel(Object.assign({},
+      this.props.githubDemoModel, {status: 'demo'})
+    ).then(() => {
+      this.props.githubModelActions.updateGithubDemoModel(Object.assign({},
+        this.props.githubDemoModel, {status: 'demo'})
+      ).then(() => {
+        browserHistory.push(`/user/repo/${this.props.params.repoName}/demo`);
+      });
+    });
   }
 
   render() {
@@ -85,9 +91,9 @@ class GHBuildPage extends React.Component {
                       </div>
                     </div>
                     <div className="extra content">
-                        <b>{"Running on port: " +
-                        this.props.githubDemoModel.token.split(':')[4]
-                        }</b>
+                      <b>{"Running on port: " +
+                      this.props.githubDemoModel.token.split(':')[4]
+                      }</b>
                       <RaisedButton
                         label="Go To Demo"
                         primary
@@ -125,7 +131,8 @@ GHBuildPage.propTypes = {
   params: PropTypes.object.isRequired,
   githubDemoModel: PropTypes.object.isRequired,
   outputComponentDemoModel: PropTypes.object.isRequired,
-  inputComponentDemoModel: PropTypes.object.isRequired
+  inputComponentDemoModel: PropTypes.object.isRequired,
+  githubModelActions: PropTypes.object.isRequired
 };
 
 GHBuildPage.contextTypes = {
@@ -144,6 +151,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    githubModelActions: bindActionCreators(githubDemoModelActions, dispatch)
   };
 }
 

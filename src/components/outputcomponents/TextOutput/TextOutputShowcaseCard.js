@@ -8,8 +8,12 @@ import toastr from 'toastr';
 class TextOutputShowcaseCard extends React.Component {
   constructor(props) {
     super(props);
+    let initHeaders = [];
+    if (props.demoProps.outputComponentDemoModel.baseComponentId == '1') {
+      initHeaders = props.demoProps.outputComponentDemoModel.props;
+    }
     this.state = {
-      headers: [],
+      headers: initHeaders,
       modifyDialogDisplay: false,
       previewDialogDisplay: false
     };
@@ -52,7 +56,11 @@ class TextOutputShowcaseCard extends React.Component {
         baseComponentId: 1,
         props: this.state.headers
       }).then(() => {
-        browserHistory.push(`/user/repo/${this.props.demoProps.params.repoName}/build`);
+        if (this.githubDemoModel.status === 'input') {
+          browserHistory.push(`/user/repo/${this.props.demoProps.params.repoName}/build`);
+        } else if (this.githubDemoModel.status === 'demo') {
+          browserHistory.push(`/user/repo/${this.props.demoProps.params.repoName}/demo`);
+        }
       });
     }
   }

@@ -6,6 +6,7 @@ import * as userActions from '../../actions/userActions';
 import * as githubDemoModelActions from '../../actions/githubDemoModelActions';
 import * as inputComponentDemoModelActions from '../../actions/inputComponentDemoModelActions';
 import * as outputComponentDemoModelActions from '../../actions/outputComponentDemoModelActions';
+import { getDeployed } from '../../api/GithubLocal/getDeployed';
 import Toggle from 'material-ui/Toggle';
 import CircularProgress from 'material-ui/CircularProgress';
 import CustomCard from '../stateless/cards';
@@ -21,7 +22,8 @@ class UserProfile extends React.Component {
       user: {},
       userRepos: [],
       showOutput: 'hidden',
-      allRepoShow: false
+      allRepoShow: false,
+      allDeployed: []
     };
     this.socket = this.context.socket;
     this.toggleShow = this.toggleShow.bind(this);
@@ -31,11 +33,21 @@ class UserProfile extends React.Component {
     this.killDemo = this.killDemo.bind(this);
     this.goToDeployPage = this.goToDeployPage.bind(this);
     this.goToDemoPage = this.goToDemoPage.bind(this);
+    this.findDeployedRepoById = this.findDeployedRepoById.bind(this);
+    this.removefromallDeployed = this.removefromallDeployed.bind(this);
+    this.modifyGithubDemo = this.modifyGithubDemo.bind(this);
   }
 
   componentWillMount() {
     !this.props.login && browserHistory.push('/');
     this.props.useractions.LoadUser()
+      .then(() => {
+        getDeployed().then((alldeployedRepos) => {
+          this.setState({allDeployed: JSON.parse((alldeployedRepos))});
+        }).catch(err => {
+          toastr.error(err);
+        });
+      })
       .catch(err => {
         toastr.error("Error: " + err);
     });
@@ -65,20 +77,50 @@ class UserProfile extends React.Component {
     });
   }
 
-  killDemo() {
-    toastr.success(`initiated kill, for application: <h1>${this.props.githubDemoModel.name}</h1>`);
-    this.socket.emit('startkillprocedure', this.state.user.login,
-      this.props.githubDemoModel.id,
-      this.props.githubDemoModel.dockercomposeFile);
-    this.socket.on('killstatus', (status) => {
-      if (status == '0') {
-        toastr.success(`Killed: <h1>${this.props.githubDemoModel.name}</h1>`);
-        this.props.githubModelActions.killGithubDemoModel();
-        this.props.inputComponentModelActions.killInputComponentModel();
-        this.props.outputComponentDemoModelActions.killOutputComponentModel();
-      } else {
-        toastr.error(`Failed killing: <h1>${this.props.githubDemoModel.name}</h1>`);
-      }
+  findDeployedRepoById(repoId) {
+    return this.state.allDeployed.find(x => x.id === repoId.toString());
+  }
+
+  modifyGithubDemo(repoId) {
+    let currentSelectedRepo = this.findDeployedRepoById(repoId);
+    let dataToUpdate = {
+      name: currentSelectedRepo.name,
+      id: currentSelectedRepo.id,
+      description: currentSelectedRepo.description,
+      timestamp: currentSelectedRepo.timestamp,
+      token: currentSelectedRepo.token,
+      dockercomposeFile: currentSelectedRepo.dockercomposeFile,
+      status: currentSelectedRepo.status
+    };
+    this.props.githubModelActions.updateGithubDemoModel(dataToUpdate).then(() => {
+      browserHistory.push(`/user/repo/${currentSelectedRepo.name}/inputcomponent`);
+    });
+  }
+
+  removefromallDeployed(repoId) {
+    let tempallDeployed = Object.assign([], this.state.allDeployed);
+    tempallDeployed.splice(tempallDeployed.findIndex(x => x.id === repoId.toString()), 1);
+    this.setState({allDeployed: tempallDeployed});
+  }
+
+  killDemo(repoId) {
+    let currentSelectedRepo = this.findDeployedRepoById(repoId);
+    this.props.githubModelActions.killGithubDemoModel(repoId).then(() => {
+      toastr.success(`initiated kill, for application: <h1>${currentSelectedRepo.name}</h1>`);
+      this.socket.emit('startkillprocedure', this.state.user.login,
+        currentSelectedRepo.id,
+        currentSelectedRepo.dockercomposeFile);
+      this.socket.on('killstatus', (status) => {
+        if (status == '0') {
+          this.removefromallDeployed(repoId);
+          this.props.inputComponentModelActions.killInputComponentModel(repoId);
+          this.props.outputComponentDemoModelActions.killOutputComponentModel(repoId);
+        } else {
+          toastr.error(`Failed killing: <h1>${currentSelectedRepo.name}</h1>`);
+        }
+      });
+    }).catch(err => {
+      toastr.error(err);
     });
   }
 
@@ -152,20 +194,20 @@ class UserProfile extends React.Component {
                     buttonData={[
                       {
                         label: "Kill",
-                        onDeployClick: () => this.killDemo(),
-                        display: this.props.githubDemoModel.name === repo.name ?
+                        onDeployClick: () => this.killDemo(repo.id),
+                        display: this.findDeployedRepoById(repo.id) ?
                           "" : "None"
                       },
                       {
                         label: "Modify",
-                        onDeployClick: () => alert('to be implemented, yo!'),
-                        display: this.props.githubDemoModel.name === repo.name ?
+                        onDeployClick: () => this.modifyGithubDemo(repo.id),
+                        display: this.findDeployedRepoById(repo.id) ?
                           "" : "None"
                       },
                       {
-                        label: this.props.githubDemoModel.name === repo.name ?
+                        label: this.findDeployedRepoById(repo.id) ?
                          "Demo" : "Deploy",
-                        onDeployClick: () => this.props.githubDemoModel.name === repo.name ?
+                        onDeployClick: () => this.findDeployedRepoById(repo.id) ?
                          this.goToDemoPage() : this.goToDeployPage(repo)
                       }
                     ]}

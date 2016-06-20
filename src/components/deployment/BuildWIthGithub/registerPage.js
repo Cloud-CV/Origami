@@ -51,6 +51,7 @@ class RegisterPage extends React.Component {
         this.socket.on('fetchedcurrentport', (port) => {
           this.setState({currentPort: port});
         });
+
       })
       .then(() => {
         this.toggleShow();
@@ -87,20 +88,25 @@ class RegisterPage extends React.Component {
   }
 
   saveGithubDemoModelData() {
-    this.props.githubModelActions.updateGithubDemoModel({
-      name: this.state.currentRepo.name,
-      id: this.state.currentRepo.id,
-      description: this.state.description,
-      timestamp: Date.now(),
-      token: `gh:local:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`,
-      dockercomposeFile: this.state.dockercomposeFile
-    }).then(() => {
-      if(this.state.dockerModalError) {
-        this.toggleDockerModalShow();
-      } else {
-        browserHistory.push(`/user/repo/${this.props.params.repoName}/inputcomponent`);
-      }
-    });
+    if(this.state.dockerModalError) {
+      this.toggleDockerModalShow();
+    } else {
+      let dataToUpdate = {
+        name: this.state.currentRepo.name,
+        id: this.state.currentRepo.id,
+        description: this.state.description,
+        timestamp: Date.now(),
+        token: `gh:local:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`,
+        dockercomposeFile: this.state.dockercomposeFile,
+        status: 'input'
+      };
+      this.props.githubModelActions.addToDBGithubDemoModel(dataToUpdate).then(() => {
+        this.props.githubModelActions.updateGithubDemoModel(dataToUpdate).then(() => {
+          browserHistory.push(`/user/repo/${this.props.params.repoName}/inputcomponent`);
+          toastr.success("registered application");
+        });
+      });
+    }
   }
 
   updateDescription(e) {

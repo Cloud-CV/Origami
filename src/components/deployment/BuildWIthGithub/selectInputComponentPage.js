@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import * as githubDemoModelActions from '../../../actions/githubDemoModelActions';
 import * as inputComponentDemoModelActions from '../../../actions/inputComponentDemoModelActions';
 import { getAllInputComponentsForShowcase } from '../../inputcomponents';
+import { getComponentDeployed } from '../../../api/CommonLocal/getComponentDeployed';
 import toastr from 'toastr';
 
 toastr.options.closeButton = true;
@@ -15,6 +16,19 @@ class SelectInputComponentPage extends React.Component {
     this.state = {
       inputComponentDemoModel: {}
     };
+  }
+
+  componentWillMount() {
+    getComponentDeployed(this.props.githubDemoModel.id, 'input').then(inputComponentSeedData => {
+      if (JSON.parse(inputComponentSeedData).length != 0) {
+        let dataToSeed = {
+          id: JSON.parse(inputComponentSeedData)[0].id,
+          baseComponentId: JSON.parse(inputComponentSeedData)[0].baseComponentId,
+          props: JSON.parse(inputComponentSeedData)[0].props
+        };
+        this.setState({inputComponentDemoModel: dataToSeed});
+      }
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -40,7 +54,7 @@ class SelectInputComponentPage extends React.Component {
             <div className="ui three padded column stackable grid" style={{marginLeft: "3%"}}>
               {getAllInputComponentsForShowcase({
                 githubDemoModel: this.props.githubDemoModel,
-                inputComponentDemoModel: this.props.inputComponentDemoModel,
+                inputComponentDemoModel: this.state.inputComponentDemoModel,
                 githubModelActions: this.props.githubModelActions,
                 inputComponentModelActions: this.props.inputComponentModelActions,
                 params: this.props.params
