@@ -53,10 +53,11 @@ class SelectOutputComponentPage extends React.Component {
           <div className="fifteen wide column stretched stackable centered row">
             <div className="ui three padded column stackable grid" style={{marginLeft: "3%"}}>
               {getAllOutputComponentsForShowcase({
-                githubDemoModel: this.props.githubDemoModel,
+                demoModel: this.props.githubDemoModel,
                 outputComponentDemoModel: this.state.outputComponentDemoModel,
-                githubModelActions: this.props.githubModelActions,
                 outputComponentDemoModelActions: this.props.outputComponentDemoModelActions,
+                forwardAddress: `/user/repo/${this.props.githubDemoModel.name}/${this.props.githubDemoModel.id}/build`,
+                forwardAddressAlternate: `/user/repo/${this.props.githubDemoModel.name}/${this.props.githubDemoModel.id}/demo`,
                 params: this.props.params
               }).map((showcasecard, index) =>
                 showcasecard

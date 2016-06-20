@@ -17,10 +17,10 @@ class TextImageInputShowcaseCard extends React.Component {
       modifyDialogDisplay: false,
       previewDialogDisplay: false
     };
-    this.githubDemoModel = props.demoProps.githubDemoModel;
+    this.demoModel = props.demoProps.demoModel;
     this.inputComponentDemoModel = props.demoProps.inputComponentDemoModel;
-    this.githubModelActions = props.demoProps.githubModelActions;
     this.inputComponentModelActions = props.demoProps.inputComponentModelActions;
+    this.forwardAddress = props.demoProps.forwardAddress;
     this.showModifyDialog = this.showModifyDialog.bind(this);
     this.showPreviewDialog = this.showPreviewDialog.bind(this);
     this.updateInputComponentModel = this.updateInputComponentModel.bind(this);
@@ -47,16 +47,16 @@ class TextImageInputShowcaseCard extends React.Component {
   }
 
   updateInputComponentModel() {
-    if(Object.keys(this.githubDemoModel).length == 0) {
+    if(Object.keys(this.demoModel).length == 0) {
       toastr.error('Registration info not found! Register again');
       browserHistory.push('/');
     } else {
       this.inputComponentModelActions.updateInputComponentModel({
-        id: this.githubDemoModel.id,
+        id: this.demoModel.id,
         baseComponentId: 2,
         props: this.state.labels
       }).then(() => {
-        browserHistory.push(`/user/repo/${this.props.demoProps.params.repoName}/${this.props.demoProps.params.repoId}/outputcomponent`);
+        browserHistory.push(this.forwardAddress);
       });
     }
   }

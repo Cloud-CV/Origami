@@ -26,6 +26,7 @@
     "mkdirp": "^0.5.1",
     "mongoose": "^4.5.0",
     "portfinder": "^1.0.3",
+    "range_check": "^1.2.0",
     "react": "15.1.0",
     "react-dom": "15.1.0",
     "react-redux": "4.4.5",

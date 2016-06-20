@@ -8,7 +8,9 @@ import GHUserProfileComponent from './components/user/ghUserProfile';
 import NonGHUserProfileComponent from './components/user/nonghUserProfile';
 import LoginComponent from './components/stateless/login';
 import RegisterGithubPageComponent from './components/deployment/BuildWIthGithub/registerPage';
+import RegisterNonGHPageComponent from './components/deployment/UsePrebuiltProject/registerPage';
 import SelectInputComponentsGithubPageComponent from './components/deployment/BuildWIthGithub/selectInputComponentPage';
+import SelectInputComponentsNonGHPageComponent from './components/deployment/UsePrebuiltProject/selectInputComponentPage';
 import SelectOutputComponentsGithubPageComponent from './components/deployment/BuildWIthGithub/selectOutputComponentPage';
 import GHBuildPageComponent from './components/deployment/BuildWIthGithub/ghBuildPage';
 import GHDemoPageComponent from './components/deployment/BuildWIthGithub/ghDemoPage';
@@ -24,6 +26,8 @@ export default(
     <Route path="user/repo/:repoName/:repoId/build" component={GHBuildPageComponent} />
     <Route path="user/repo/:repoName/:repoId/demo" component={GHDemoPageComponent} />
     <Route path="ngh/user" component={NonGHUserProfileComponent} />
+    <Route path="ngh/user/register" component={RegisterNonGHPageComponent} />
+    <Route path="ngh/user/:repoName/:repoId/inputcomponent" component={SelectInputComponentsNonGHPageComponent} />
     <Route path="login*" component={LoginComponent} />
     <Route path="*" component={PageNotfoundHandler} />
   </Route>

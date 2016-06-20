@@ -7,6 +7,8 @@ import * as nonghDemoModelActions from '../../actions/nonghDemoModelActions';
 import * as inputComponentDemoModelActions from '../../actions/inputComponentDemoModelActions';
 import * as outputComponentDemoModelActions from '../../actions/outputComponentDemoModelActions';
 import { getDeployed } from '../../api/Nongh/getDeployed';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 import CircularProgress from 'material-ui/CircularProgress';
 import CustomCard from '../stateless/cards';
 import userRepos from '../../api/Github/userRepos';
@@ -27,6 +29,7 @@ class NonGHUserProfile extends React.Component {
     this.deleteDemo = this.deleteDemo.bind(this);
     this.modifyProject = this.modifyProject.bind(this);
     this.goToDemoPage = this.goToDemoPage.bind(this);
+    this.goToRegisterPage = this.goToRegisterPage.bind(this);
   }
 
   componentWillMount() {
@@ -51,7 +54,15 @@ class NonGHUserProfile extends React.Component {
   }
 
   deleteDemo(projectId) {
-    alert(projectId);
+    this.props.nonghModelActions.killNonGHDemoModel(projectId).then(() => {
+      this.props.inputComponentModelActions.killInputComponentModel(projectId);
+      this.props.outputComponentDemoModelActions.killOutputComponentModel(projectId);
+      getDeployed().then((alldeployedRepos) => {
+        this.setState({allDeployed: JSON.parse((alldeployedRepos))});
+      }).catch(err => {
+        toastr.error(err);
+      });
+    });
   }
 
   modifyProject(projectId) {
@@ -60,6 +71,10 @@ class NonGHUserProfile extends React.Component {
 
   goToDemoPage(projectId) {
     alert(projectId);
+  }
+
+  goToRegisterPage() {
+    browserHistory.push('/ngh/user/register');
   }
 
 
@@ -90,22 +105,36 @@ class NonGHUserProfile extends React.Component {
               <div className="row" ><br /><br /></div>
               <h1 className="row">{this.state.user.name}</h1>
               <h3 className="row">{this.state.user.login}</h3>
-              <h4 className="row">Prebuilt Project</h4>
+              <h4 className="row">Prebuilt Projects</h4>
+            </div>
+          </div>
+
+          <div className="five wide column">
+            <div>
+              <div className="row" ><br /><br /><br /><br /><br /></div>
+              <div className="row" ><br /><br /><br /><br /></div>
+              <div className="row" ><br /><br /><br /><br /></div>
+              <FloatingActionButton style={{float: "right"}}
+                                    onMouseDown={this.goToRegisterPage}>
+                <ContentAdd />
+              </FloatingActionButton>
             </div>
           </div>
 
           <span className="ui horizontal divider row"><hr /></span>
 
           {this.state.allDeployed &&
-          <div className="center aligned row">
-            <div className="ui twelve column grid centered">
+          <div className="fifteen wide column stretched stackable centered row">
+            <div className="ui three padded column stackable grid">
               {this.state.allDeployed.map(project =>
                 <CustomCard
                   header={project.name}
                   width="five"
+                  centeredParent
                   key={project.id}
                   displayData={[
-                      project.token.split(':')[1]
+                      "IP: " + project.token.split(':')[1],
+                      "Port: " + project.token.split(':')[4]
                     ]}
                   buttonData={[
                       {

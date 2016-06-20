@@ -36,6 +36,7 @@ class GHUserProfile extends React.Component {
     this.findDeployedRepoById = this.findDeployedRepoById.bind(this);
     this.removefromallDeployed = this.removefromallDeployed.bind(this);
     this.modifyGithubDemo = this.modifyGithubDemo.bind(this);
+    this.getDisplayForDemoButton = this.getDisplayForDemoButton.bind(this);
   }
 
   componentWillMount() {
@@ -50,7 +51,7 @@ class GHUserProfile extends React.Component {
       })
       .catch(err => {
         toastr.error("Error: " + err);
-    });
+      });
     this.makeCardRepo(this.state.allRepoShow);
   }
 
@@ -136,6 +137,14 @@ class GHUserProfile extends React.Component {
     return "Language: " + repo.language;
   }
 
+  getDisplayForDemoButton(repoId) {
+    let currentSelectedRepo = this.findDeployedRepoById(repoId);
+    if (currentSelectedRepo) {
+      return currentSelectedRepo.status === 'input' ? "None" : "";
+    }
+    return "";
+  }
+
 
 
   toggleShow() {
@@ -148,9 +157,9 @@ class GHUserProfile extends React.Component {
 
 
         {this.state.showOutput == 'hidden' &&
-          <div className="centered row" style={{marginTop: "30vh"}}>
-            <CircularProgress size={1.5} />
-          </div>}
+        <div className="centered row" style={{marginTop: "30vh"}}>
+          <CircularProgress size={1.5} />
+        </div>}
 
 
         {this.state.user &&
@@ -181,18 +190,19 @@ class GHUserProfile extends React.Component {
           <br /><br />
 
           {this.state.userRepos &&
-            <div className="center aligned row">
-              <div className="ui twelve column grid centered">
-                {this.state.userRepos.map(repo =>
-                  <CustomCard
-                    header={repo.name}
-                    width="five"
-                    key={repo.id}
-                    displayData={[
+          <div className="fifteen wide column stretched stackable centered row">
+            <div className="ui three padded column stackable grid">
+              {this.state.userRepos.map(repo =>
+                <CustomCard
+                  header={repo.name}
+                  width="five"
+                  centeredParent
+                  key={repo.id}
+                  displayData={[
                       repo.private ? 'Private' : 'Public',
                       this.getLanguage(repo)
                     ]}
-                    buttonData={[
+                  buttonData={[
                       {
                         label: "Kill",
                         onDeployClick: () => this.killDemo(repo.id),
@@ -209,13 +219,14 @@ class GHUserProfile extends React.Component {
                         label: this.findDeployedRepoById(repo.id) ?
                          "Demo" : "Deploy",
                         onDeployClick: () => this.findDeployedRepoById(repo.id) ?
-                         this.goToDemoPage(repo) : this.goToDeployPage(repo)
+                         this.goToDemoPage(repo) : this.goToDeployPage(repo),
+                         display: this.getDisplayForDemoButton(repo.id)
                       }
                     ]}
-                  />
-                )}
-              </div>
+                />
+              )}
             </div>
+          </div>
           }
 
         </div>}

@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as githubDemoModelActions from '../../../actions/githubDemoModelActions';
+import * as nonghDemoModelActions from '../../../actions/nonghDemoModelActions';
 import * as inputComponentDemoModelActions from '../../../actions/inputComponentDemoModelActions';
 import { getAllInputComponentsForShowcase } from '../../inputcomponents';
 import { getComponentDeployed } from '../../../api/CommonLocal/getComponentDeployed';
@@ -19,7 +19,7 @@ class SelectInputComponentPage extends React.Component {
   }
 
   componentWillMount() {
-    getComponentDeployed(this.props.githubDemoModel.id, 'input').then(inputComponentSeedData => {
+    getComponentDeployed(this.props.nonghDemoModel.id, 'input').then(inputComponentSeedData => {
       if (JSON.parse(inputComponentSeedData).length != 0) {
         let dataToSeed = {
           id: JSON.parse(inputComponentSeedData)[0].id,
@@ -53,10 +53,10 @@ class SelectInputComponentPage extends React.Component {
           <div className="fifteen wide column stretched stackable centered row">
             <div className="ui three padded column stackable grid" style={{marginLeft: "3%"}}>
               {getAllInputComponentsForShowcase({
-                demoModel: this.props.githubDemoModel,
+                demoModel: this.props.nonghDemoModel,
                 inputComponentDemoModel: this.state.inputComponentDemoModel,
                 inputComponentModelActions: this.props.inputComponentModelActions,
-                forwardAddress: `/user/repo/${this.props.githubDemoModel.name}/${this.props.githubDemoModel.id}/outputcomponent`,
+                forwardAddress: `/ngh/user/${this.props.nonghDemoModel.name}/${this.props.nonghDemoModel.id}/outputcomponent`,
                 params: this.props.params
               }).map((showcasecard, index) =>
                 showcasecard
@@ -72,9 +72,9 @@ class SelectInputComponentPage extends React.Component {
 SelectInputComponentPage.propTypes = {
   login: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
-  githubDemoModel: PropTypes.object.isRequired,
+  nonghDemoModel: PropTypes.object.isRequired,
   inputComponentDemoModel: PropTypes.object.isRequired,
-  githubModelActions: PropTypes.object.isRequired,
+  nonghModelActions: PropTypes.object.isRequired,
   inputComponentModelActions: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired
 };
@@ -83,14 +83,14 @@ function mapStateToProps(state, ownProps) {
   return {
     login: state.login,
     user: state.user,
-    githubDemoModel: state.githubDemoModel,
+    nonghDemoModel: state.nonghDemoModel,
     inputComponentDemoModel: state.inputComponentDemoModel
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    githubModelActions: bindActionCreators(githubDemoModelActions, dispatch),
+    nonghModelActions: bindActionCreators(nonghDemoModelActions, dispatch),
     inputComponentModelActions: bindActionCreators(inputComponentDemoModelActions, dispatch)
   };
 }

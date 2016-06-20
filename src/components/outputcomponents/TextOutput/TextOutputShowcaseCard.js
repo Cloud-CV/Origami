@@ -17,10 +17,11 @@ class TextOutputShowcaseCard extends React.Component {
       modifyDialogDisplay: false,
       previewDialogDisplay: false
     };
-    this.githubDemoModel = props.demoProps.githubDemoModel;
+    this.demoModel = props.demoProps.demoModel;
     this.outputComponentDemoModel = props.demoProps.outputComponentDemoModel;
-    this.githubModelActions = props.demoProps.githubModelActions;
     this.outputComponentDemoModelActions = props.demoProps.outputComponentDemoModelActions;
+    this.forwardAddress = props.demoProps.forwardAddress;
+    this.forwardAddressAlternate = props.demoProps.forwardAddressAlternate;
     this.showModifyDialog = this.showModifyDialog.bind(this);
     this.showPreviewDialog = this.showPreviewDialog.bind(this);
     this.updateOutputComponentModel = this.updateOutputComponentModel.bind(this);
@@ -47,19 +48,19 @@ class TextOutputShowcaseCard extends React.Component {
   }
 
   updateOutputComponentModel() {
-    if(Object.keys(this.githubDemoModel).length == 0) {
+    if(Object.keys(this.demoModel).length == 0) {
       toastr.error('Registration info not found! Register again');
       browserHistory.push('/');
     } else {
       this.outputComponentDemoModelActions.updateOutputComponentModel({
-        id: this.githubDemoModel.id,
+        id: this.demoModel.id,
         baseComponentId: 1,
         props: this.state.headers
       }).then(() => {
-        if (this.githubDemoModel.status === 'input') {
-          browserHistory.push(`/user/repo/${this.props.demoProps.params.repoName}/${this.props.demoProps.params.repoId}/build`);
-        } else if (this.githubDemoModel.status === 'demo') {
-          browserHistory.push(`/user/repo/${this.props.demoProps.params.repoName}/${this.props.demoProps.params.repoId}/demo`);
+        if (this.demoModel.status === 'input') {
+          browserHistory.push(this.forwardAddress);
+        } else if (this.demoModel.status === 'demo') {
+          browserHistory.push(this.forwardAddressAlternate);
         }
       });
     }
