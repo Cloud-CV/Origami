@@ -140,7 +140,7 @@ class RegisterPage extends React.Component {
                     onChange={this.updateName}
                   /><br />
                   <TextField
-                    hintText="192.168.121.1"
+                    hintText="0.0.0.0"
                     errorText={this.state.addressErrorText}
                     floatingLabelText="IP of service (no http://)"
                     onChange={this.updateAddress}

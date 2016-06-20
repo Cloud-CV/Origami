@@ -123,8 +123,6 @@ class App extends React.Component {
       <div>
         <AppBar
           title={
-          this.state.displayLogin === 'none' ?
-            <div style={{textDecoration: 'none', color: "inherit"}}>CVFY</div> :
             <Link to="/"
               style={{textDecoration: 'none', color: "inherit"}}>
               CVFY

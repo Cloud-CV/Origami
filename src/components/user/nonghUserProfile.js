@@ -79,8 +79,8 @@ class NonGHUserProfile extends React.Component {
     });
   }
 
-  goToDemoPage(projectId) {
-    alert(projectId);
+  goToDemoPage(project) {
+    browserHistory.push(`/ngh/user/${project.name}/${project.id}/demo`);
   }
 
   goToRegisterPage() {
@@ -159,7 +159,7 @@ class NonGHUserProfile extends React.Component {
                       },
                       {
                         label: "Demo",
-                        onDeployClick: () => this.goToDemoPage(project.id)
+                        onDeployClick: () => this.goToDemoPage(project)
                       }
                     ]}
                 />
