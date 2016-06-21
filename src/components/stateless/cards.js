@@ -4,7 +4,7 @@ import { grey700, cyan100 } from 'material-ui/styles/colors';
 const CustomCard = ({header, heading, width, centeredParent, centeredSegment, displayData, buttonData}) => {
 
   const parentClass = `${width ? width : "four"} wide stackable ${centeredParent ? "" : "centered"} column`;
-  const cardClass = `ui card segment ${centeredSegment ? "centered" : ""}`;
+  const cardClass = `ui card blue segment ${centeredSegment ? "centered" : ""}`;
 
   return (
     <div className={parentClass}>
@@ -35,7 +35,7 @@ const CustomCard = ({header, heading, width, centeredParent, centeredSegment, di
           {buttonData.map((button, index) =>
             <button key={index}
                     style={{display: button.display}}
-                    className="ui button"
+                    className="ui basic blue button"
                     onClick={button.onDeployClick}>
               {button.label}
             </button>

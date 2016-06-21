@@ -115,7 +115,7 @@ class NonGHUserProfile extends React.Component {
               <div className="row" ><br /><br /></div>
               <h1 className="row">{this.state.user.name}</h1>
               <h3 className="row">{this.state.user.login}</h3>
-              <h4 className="row">Prebuilt Projects</h4>
+              <h4 className="row">Use Own Deployment</h4>
             </div>
           </div>
 

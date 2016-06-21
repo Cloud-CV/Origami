@@ -20,7 +20,7 @@ import NGHDemoPageComponent from './components/deployment/UsePrebuiltProject/ngh
 export default(
   <Route path="/" component={App}>
     <IndexRoute component={HomePageComponent} />
-    <Route path="about" component={AboutPageComponent} />
+    <Route path="documentation" component={AboutPageComponent} />
 
     <Route path="user" component={GHUserProfileComponent} />
     <Route path="user/repo/:repoName/:repoId" component={RegisterGithubPageComponent} />

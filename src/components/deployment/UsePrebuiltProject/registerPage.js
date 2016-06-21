@@ -25,10 +25,11 @@ class RegisterPage extends React.Component {
       nonghDemoModel: {},
       name: '',
       description: '',
-      freePortForCode: '',
       nameErrorText: '',
       addressErrorText: '',
+      portErrorText: '',
       address: '',
+      port: '',
       currentPort: ''
     };
     this.socket = this.context.socket;
@@ -37,7 +38,9 @@ class RegisterPage extends React.Component {
     this.updateDescription = this.updateDescription.bind(this);
     this.updateAddress = this.updateAddress.bind(this);
     this.updateName = this.updateName.bind(this);
+    this.updatePort = this.updatePort.bind(this);
     this.validateIP = this.validateIP.bind(this);
+    this.validatePort= this.validatePort.bind(this);
   }
 
   componentWillMount() {
@@ -49,14 +52,10 @@ class RegisterPage extends React.Component {
         this.setState({description: JSON.parse(singleRepo)[0].description});
       }
     }).then(() => {
-      this.socket.emit('fetchfreeport');
       this.socket.emit('fetchcurrentport');
-      this.socket.on('fetchedport', (port) => {
-        this.setState({freePortForCode: port});
-        this.socket.on('fetchedcurrentport', (port) => {
-          this.setState({currentPort: port});
-          this.toggleShow();
-        });
+      this.socket.on('fetchedcurrentport', (port) => {
+        this.setState({currentPort: port});
+        this.toggleShow();
       });
     });
   }
@@ -73,19 +72,24 @@ class RegisterPage extends React.Component {
     } else {
       this.setState({addressErrorText: ""});
     }
+    if (!this.validatePort(this.state.port)) {
+      this.setState({portErrorText: "Invalid port number"});
+    } else {
+      this.setState({portErrorText: ""});
+    }
     if (this.state.name.length == 0) {
       this.setState({nameErrorText: "Invalid Project Name"});
     } else {
       this.setState({nameErrorText: ""});
     }
-    if (this.state.name.length > 0 && this.validateIP()) {
+    if (this.state.name.length > 0 && this.validateIP() && this.validatePort(this.state.port)) {
       let dataToPut = {
         name: this.state.name,
         id: this.state.id,
         address: this.state.address,
         description: this.state.description,
         timestamp: Date.now(),
-        token: `nongh:${this.state.address}:${this.state.id}:${this.state.currentPort}:${this.state.freePortForCode}`,
+        token: `nongh:${this.state.address}:${this.state.id}:${this.state.currentPort}:${this.state.port}`,
         status: 'input'
       };
       this.props.nonghModelActions.addToDBNonGHDemoModel(dataToPut).then(() => {
@@ -104,6 +108,10 @@ class RegisterPage extends React.Component {
     this.setState({address: e.target.value});
   }
 
+  updatePort(e) {
+    this.setState({port: e.target.value});
+  }
+
   updateName(e) {
     this.setState({name: e.target.value});
   }
@@ -113,6 +121,20 @@ class RegisterPage extends React.Component {
       return false;
     } else {
       return rangeCheck.validIp(this.state.address);
+    }
+  }
+
+  validatePort(port) {
+
+    function isNumeric(value) {
+      return /^\d+$/.test(value);
+    }
+
+    if (isNumeric(port)) {
+      const portNumber = parseInt(port);
+      return !!(portNumber >= 0 && portNumber <= 65535);
+    } else {
+      return false;
     }
   }
 
@@ -158,6 +180,13 @@ class RegisterPage extends React.Component {
                     onChange={this.updateAddress}
                   /><br />
                   <TextField
+                    hintText="8000"
+                    errorText={this.state.portErrorText}
+                    floatingLabelText="Port for service"
+                    value={this.state.port}
+                    onChange={this.updatePort}
+                  /><br />
+                  <TextField
                     hintText="Description"
                     value={this.state.description}
                     onChange={this.updateDescription}
@@ -180,11 +209,11 @@ class RegisterPage extends React.Component {
                       <div className="two column row">
                         <div className="thirteen wide column">
                           Token: &nbsp;&nbsp;&nbsp;
-                          <b>{`nongh:${this.state.address}:${this.state.id}:${this.state.currentPort}:${this.state.freePortForCode}`}</b>
-                          <br />Your code will run on port: {this.state.freePortForCode}
+                          <b>{`nongh:${this.state.address}:${this.state.id}:${this.state.currentPort}:${this.state.port}`}</b>
+                          <br />Your code will run on port: {this.state.port}
                         </div>
                         <div className="three wide column">
-                          {this.validateIP() ? <GoAhead style={{height: '', width: ''}} color={green500} /> : <StopNow style={{height: '', width: ''}} color={red500} />}
+                          {this.validateIP() && this.validatePort(this.state.port) ? <GoAhead style={{height: '', width: ''}} color={green500} /> : <StopNow style={{height: '', width: ''}} color={red500} />}
                         </div>
                       </div>
                       <div className="one column row">

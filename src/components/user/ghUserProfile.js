@@ -165,18 +165,19 @@ class GHUserProfile extends React.Component {
         {this.state.user &&
         <div className="sixteen column stretched row" style={{visibility: this.state.showOutput}}>
 
-          <div className="four wide column ui raised segment" >
-            <img className="ui fluid bottom aligned medium image" onLoad={this.toggleShow}
-                 src={this.state.user.avatar_url} />
+          <div className="four wide column ui raised rounded segment" >
+            <div className="ui fluid bottom aligned medium rounded image">
+              <div className="ui medium ribbon black label">@{this.state.user.login}</div>
+              <img className="" onLoad={this.toggleShow}
+                   src={this.state.user.avatar_url} />
+            </div>
           </div>
 
           <div className="seven wide column" >
             <div>
-              <div className="row" ><br /><br /><br /><br /><br /></div>
-              <div className="row" ><br /><br /></div>
+              <div className="row" ><br /><br /><br /><br /><br /><br /><br /><br /><br /></div>
               <h1 className="row">{this.state.user.name}</h1>
-              <h3 className="row">{this.state.user.login}</h3>
-              <h4 className="row">Build from Github</h4>
+              <h4 className="row">Build From Github</h4>
             </div>
           </div>
 
