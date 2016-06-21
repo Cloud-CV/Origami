@@ -94,7 +94,7 @@ class GHUserProfile extends React.Component {
       status: currentSelectedRepo.status
     };
     this.props.githubModelActions.updateGithubDemoModel(dataToUpdate).then(() => {
-      browserHistory.push(`/user/repo/${currentSelectedRepo.name}/${currentSelectedRepo.id}/inputcomponent`);
+      browserHistory.push(`/user/repo/${currentSelectedRepo.name}/${currentSelectedRepo.id}/`);
     });
   }
 

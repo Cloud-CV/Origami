@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { getRepo, checkDockerfile } from '../../../api/Github/getOneRepo';
 import CircularProgress from 'material-ui/CircularProgress';
 import * as githubDemoModelActions from '../../../actions/githubDemoModelActions';
+import { getDeployed } from '../../../api/GithubLocal/getDeployed';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -25,6 +26,7 @@ class RegisterPage extends React.Component {
       githubDemoModel: {},
       description: '',
       freePortForCode: '',
+      currentRepoFromDB: {},
       currentPort: '',
       dockercomposeFile: '',
       saveButton: true
@@ -54,11 +56,20 @@ class RegisterPage extends React.Component {
 
       })
       .then(() => {
+        getDeployed(this.state.currentRepo.id).then(singleRepo => {
+          if (singleRepo) {
+            this.setState({description: JSON.parse(singleRepo)[0].description});
+          }
+        });
+      })
+      .then((singleRepo) => {
         this.toggleShow();
       })
-      .then(() => {
+      .then((singleRepo) => {
         checkDockerfile(this.props.params.repoName).then(status => {
+          if (this.state.description.length == 0) {
             toastr.success('docker-compose.yml found');
+          }
             this.setState({saveButton: false});
             this.setState({dockercomposeFile: status[3]});
             this.setState({showSideHelp: false});
@@ -167,7 +178,7 @@ class RegisterPage extends React.Component {
                   /><br />
                   <TextField
                     hintText="Demo description"
-                    defaultValue={this.state.description}
+                    value={this.state.description}
                     onChange={this.updateDescription}
                     multiLine
                     rows={2}

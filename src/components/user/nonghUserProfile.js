@@ -75,7 +75,7 @@ class NonGHUserProfile extends React.Component {
       status: project.status
     };
     this.props.nonghModelActions.updateNonGHDemoModel(dataToUpdate).then(() => {
-      browserHistory.push(`/ngh/user/${project.name}/${project.id}/inputcomponent`);
+      browserHistory.push(`/ngh/user/${project.name}/${project.id}/register`);
     });
   }
 

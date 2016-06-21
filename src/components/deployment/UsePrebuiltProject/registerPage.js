@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import CircularProgress from 'material-ui/CircularProgress';
 import * as nonghDemoModelActions from '../../../actions/nonghDemoModelActions';
 import rangeCheck from 'range_check';
+import { getDeployed } from '../../../api/Nongh/getDeployed';
 import RaisedButton from 'material-ui/RaisedButton';
 import StopNow from 'material-ui/svg-icons/action/pan-tool';
 import GoAhead from 'material-ui/svg-icons/action/check-circle';
@@ -40,13 +41,22 @@ class RegisterPage extends React.Component {
   }
 
   componentWillMount() {
-    this.socket.emit('fetchfreeport');
-    this.socket.emit('fetchcurrentport');
-    this.socket.on('fetchedport', (port) => {
-      this.setState({freePortForCode: port});
-      this.socket.on('fetchedcurrentport', (port) => {
-        this.setState({currentPort: port});
-        this.toggleShow();
+    getDeployed(this.props.params.repoId).then(singleRepo => {
+      if (JSON.parse(singleRepo).length != 0) {
+        this.setState({id: JSON.parse(singleRepo)[0].id});
+        this.setState({name: JSON.parse(singleRepo)[0].name});
+        this.setState({address: JSON.parse(singleRepo)[0].address});
+        this.setState({description: JSON.parse(singleRepo)[0].description});
+      }
+    }).then(() => {
+      this.socket.emit('fetchfreeport');
+      this.socket.emit('fetchcurrentport');
+      this.socket.on('fetchedport', (port) => {
+        this.setState({freePortForCode: port});
+        this.socket.on('fetchedcurrentport', (port) => {
+          this.setState({currentPort: port});
+          this.toggleShow();
+        });
       });
     });
   }
@@ -136,6 +146,7 @@ class RegisterPage extends React.Component {
                   <TextField
                     hintText="MyApp"
                     floatingLabelText="Appname"
+                    value={this.state.name}
                     errorText={this.state.nameErrorText}
                     onChange={this.updateName}
                   /><br />
@@ -143,10 +154,12 @@ class RegisterPage extends React.Component {
                     hintText="0.0.0.0"
                     errorText={this.state.addressErrorText}
                     floatingLabelText="IP of service (no http://)"
+                    value={this.state.address}
                     onChange={this.updateAddress}
                   /><br />
                   <TextField
                     hintText="Description"
+                    value={this.state.description}
                     onChange={this.updateDescription}
                     multiLine
                     rows={2}
