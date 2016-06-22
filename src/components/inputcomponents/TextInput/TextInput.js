@@ -13,7 +13,7 @@ function sendRequest(sendAddr, calling_context) {
       contentType: false,
       cache: false,
       processData: false,
-      async: false,
+      async: true,
       success: data => {
       },
       error: (xhr, textStatus, errorThrown) => {
