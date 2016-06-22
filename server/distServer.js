@@ -8,7 +8,8 @@ import compression from 'compression';
 import * as portfinder from 'portfinder';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
-import { APP_SECRET } from '../outCalls/config';
+
+const appConfig  = require('../outCalls/config');
 const passport = require('../outCalls/auth');
 
 import githubDemoModelController from './controlller/githubdemomodelController';
@@ -36,7 +37,7 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
 let session = require("express-session")({
-  secret: APP_SECRET,
+  secret: appConfig.APP_SECRET,
   resave: true,
   saveUninitialized: true
 });
@@ -198,7 +199,7 @@ http.listen(port, function(err) {
   if (err) {
     console.log(err);
   } else {
-    console.log(`visit http://0.0.0.0:${port}`.yellow);
+    console.log(`visit http://${appConfig.CLIENT_IP}:${port}`.yellow);
   }
 });
 

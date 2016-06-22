@@ -1,7 +1,8 @@
 import request from 'superagent';
+const appConfig  = require('../../../outCalls/config');
 
 export function addDeployed(repoData) {
-  let URL = 'http://0.0.0.0:3000/api/githubdemomodel';
+  let URL = `http://${appConfig.CLIENT_IP}:3000/api/githubdemomodel`;
   return new Promise(function(resolve, reject) {
     request
       .post(URL)

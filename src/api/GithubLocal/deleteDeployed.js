@@ -1,7 +1,8 @@
 import request from 'superagent';
+const appConfig  = require('../../../outCalls/config');
 
 export function deleteDeployed(repoId) {
-  let URL = `http://0.0.0.0:3000/api/githubdemomodel/${repoId}`;
+  let URL = `http://${appConfig.CLIENT_IP}:3000/api/githubdemomodel/${repoId}`;
   return new Promise(function(resolve, reject) {
     request
       .delete(URL)
