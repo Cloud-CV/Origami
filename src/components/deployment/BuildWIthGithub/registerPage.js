@@ -8,6 +8,9 @@ import * as githubDemoModelActions from '../../../actions/githubDemoModelActions
 import { getDeployed } from '../../../api/GithubLocal/getDeployed';
 import { getWebAppStatus } from '../../../api/Generic/getWebAppStatus';
 import Dialog from 'material-ui/Dialog';
+import StopNow from 'material-ui/svg-icons/action/pan-tool';
+import GoAhead from 'material-ui/svg-icons/action/check-circle';
+import { red500, green500 } from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
 import Checkbox from 'material-ui/Checkbox';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -46,6 +49,7 @@ class RegisterPage extends React.Component {
     this.toggleDockerModalShow = this.toggleDockerModalShow.bind(this);
     this.goBack = this.goBack.bind(this);
     this.onLocalDeploymentCheckBoxCheck = this.onLocalDeploymentCheckBoxCheck.bind(this);
+    this.validateTempwebaddress = this.validateTempwebaddress.bind(this);
     this.saveGithubDemoModelData = this.saveGithubDemoModelData.bind(this);
     this.updateDescription = this.updateDescription.bind(this);
   }
@@ -162,6 +166,16 @@ class RegisterPage extends React.Component {
     }
   }
 
+  validateTempwebaddress() {
+    if (this.state.webappUnreachableErrorText.length > 0 && this.state.tempwebaddress === this.state.webappaddress) {
+      return false;
+    }
+    if (this.state.webappLocalUnreachableErrorText.length > 0 && this.state.tempwebaddress === '0.0.0.0') {
+      return false;
+    }
+    return true;
+  }
+
   updateDescription(e) {
     this.setState({description: e.target.value});
   }
@@ -260,25 +274,42 @@ class RegisterPage extends React.Component {
                   {this.state.dockerModalError &&
                   <div className="ui raise fluid very padded container text">
                     <br />
-                    <div className="ui container segment">
-                      Token: &nbsp;&nbsp;&nbsp;
-                      <b>{`gh:${this.state.tempwebaddress}:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`}</b><br />
-                      Insert help text here
+                    <div className="ui relaxed grid container segment">
+                      <div className="two column row">
+                        <div className="thirteen wide column">
+                          <u>Token:</u>
+                          <h4>{`gh:${this.state.tempwebaddress}:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`}</h4>
+                        </div>
+                        <div className="three wide column">
+                          {this.validateTempwebaddress() ? <GoAhead style={{height: '', width: ''}} color={green500} /> : <StopNow style={{height: '', width: ''}} color={red500} />}
+                        </div>
+                      </div>
+                      <div className="one column row">
+                        <div className="sixteen wide column">
+                          Insert info about how to proceed with deployment
+                        </div>
+                      </div>
                     </div>
                   </div>}
 
                   {!this.state.dockerModalError && !this.state.showSideHelp &&
                   <div className="ui raise fluid very padded container text">
                     <br />
-                    <div className="ui container segment">
-                      Token: &nbsp;&nbsp;&nbsp;
-                      {this.state.returning ?
-                        <b>{this.state.temptoken}</b>
-                        :
-                        <b>{`gh:${this.state.tempwebaddress}:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`}</b>
-                      }
-                      <br />
-                      Insert info about how to proceed with the deployment
+                    <div className="ui relaxed grid container segment">
+                      <div className="two column row">
+                        <div className="thirteen wide column">
+                          <u>Token:</u>
+                          <h4>{`gh:${this.state.tempwebaddress}:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`}</h4>
+                        </div>
+                        <div className="three wide column">
+                          {this.validateTempwebaddress() ? <GoAhead style={{height: '', width: ''}} color={green500} /> : <StopNow style={{height: '', width: ''}} color={red500} />}
+                        </div>
+                      </div>
+                      <div className="one column row">
+                        <div className="sixteen wide column">
+                          Insert info about how to proceed with deployment
+                        </div>
+                      </div>
                     </div>
                   </div>}
 

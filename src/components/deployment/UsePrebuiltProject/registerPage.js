@@ -291,7 +291,6 @@ class RegisterPage extends React.Component {
                         <div className="thirteen wide column">
                           <u>Token:</u>
                           <h4>{`nongh:${this.state.address}:${this.state.id}:${this.state.currentPort}:${this.state.port}:${this.state.tempwebaddress}`}</h4>
-                          <br />Your code will run on port: {this.state.port}
                         </div>
                         <div className="three wide column">
                           {this.validateTempwebaddress() && this.validateIP() && this.validatePort(this.state.port) ? <GoAhead style={{height: '', width: ''}} color={green500} /> : <StopNow style={{height: '', width: ''}} color={red500} />}
