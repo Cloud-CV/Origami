@@ -91,17 +91,17 @@ app.get('*', function(req, res) {
   res.sendFile(path.resolve( __dirname, '../src/index.html'));
 });
 
+app.post('/inject', function(req, res) {
+  io.sockets.in(req.body.socketId).emit('injectoutputdata', req.body);
+  res.sendStatus(200);
+});
+
 //Socket
 
 io.on('connection', function(socket){
 
   socket.on('savesessiontoken', sessiontoken => {
     socket.join(sessiontoken);
-
-    app.post('/inject', function(req, res) {
-      io.sockets.in(req.body.socketId).emit('injectoutputdata', req.body);
-      res.sendStatus(200);
-    });
 
     socket.on('fetchfreeport', () => {
       portfinder.getPort((err, port) => {
