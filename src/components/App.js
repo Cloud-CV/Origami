@@ -38,6 +38,14 @@ class App extends React.Component {
     };
   }
 
+  componentWillMount() {
+    const dataInit = localStorage.getItem('gh_access_token_time');
+    if (!dataInit || parseInt(Date.now()) - parseInt(dataInit) >= 86400000) {
+      this.clearSessionFlag();
+      browserHistory.push('/');
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if(this.props.login != nextProps.login) {
       this.setState({login: nextProps.login});
@@ -50,16 +58,17 @@ class App extends React.Component {
   }
 
   readSessionToken() {
-    return sessionStorage.getItem('access_token') ? sessionStorage.getItem('access_token') : false;
+    return localStorage.getItem('access_token') ? localStorage.getItem('access_token') : false;
   }
 
   clearSessionFlag() {
-    sessionStorage.clear();
+    localStorage.clear();
   }
 
   setSessionFlag(access_token, username) {
-    sessionStorage.setItem('access_token', access_token);
-    sessionStorage.setItem('username', username);
+    localStorage.setItem('access_token', access_token);
+    localStorage.setItem('username', username);
+    localStorage.setItem('gh_access_token_time', Date.now());
   }
 
   PopupCenter(url, title, w, h) {
