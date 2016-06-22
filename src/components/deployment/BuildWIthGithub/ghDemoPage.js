@@ -67,7 +67,7 @@ class GHDemoPage extends React.Component {
                   {Object.keys(this.state.demoModel).length && Object.keys(this.state.inputModel).length &&
                   getInputComponentById(this.state.inputModel.baseComponentId,
                     this.state.inputModel.props, "demo", this.socketId,
-                    `http://0.0.0.0:${this.state.demoModel.token.split(':')[4]}/event`
+                    `http://${this.state.demoModel.token.split(':')[1]}:${this.state.demoModel.token.split(':')[4]}/event`
                   )}
                 </div>
 

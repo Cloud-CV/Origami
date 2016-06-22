@@ -22,6 +22,7 @@ const app = express();
 let http = require('http').Server(app);
 let io = require('socket.io')(http);
 
+const externalip = require('externalip');
 const rimraf = require('rimraf');
 const mkdirp = require('mkdirp');
 const process = require('process');
@@ -51,6 +52,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // routes
+
+app.get('/alive', function(req, res) {
+  res.sendStatus(200);
+});
 
 app.get('/auth/github', passport.authenticate('github',
   {scope: ['user', 'repo']}
@@ -105,6 +110,16 @@ io.on('connection', function(socket){
 
     socket.on('fetchcurrentport', () => {
       socket.emit('fetchedcurrentport', port);
+    });
+
+    socket.on('getpublicipaddress', () => {
+      externalip(function (err, ip) {
+        if (!err) {
+          socket.emit('gotpublicip', ip);
+        } else {
+          socket.emit('erroringettingpublicip', err);
+        }
+      });
     });
 
 

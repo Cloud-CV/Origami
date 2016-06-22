@@ -28,6 +28,7 @@ class NonGHUserProfile extends React.Component {
     this.toggleShow = this.toggleShow.bind(this);
     this.deleteDemo = this.deleteDemo.bind(this);
     this.modifyProject = this.modifyProject.bind(this);
+    this.getDisplayForDemoButton = this.getDisplayForDemoButton.bind(this);
     this.goToDemoPage = this.goToDemoPage.bind(this);
     this.goToRegisterPage = this.goToRegisterPage.bind(this);
   }
@@ -79,6 +80,13 @@ class NonGHUserProfile extends React.Component {
     });
   }
 
+  getDisplayForDemoButton(project) {
+    if (project) {
+      return project.status === 'input' ? "None" : "";
+    }
+    return "";
+  }
+
   goToDemoPage(project) {
     browserHistory.push(`/ngh/user/${project.name}/${project.id}/demo`);
   }
@@ -104,17 +112,18 @@ class NonGHUserProfile extends React.Component {
         {this.state.user &&
         <div className="sixteen column stretched row" style={{visibility: this.state.showOutput}}>
 
-          <div className="four wide column ui raised segment" >
-            <img className="ui fluid bottom aligned medium image" onLoad={this.toggleShow}
-                 src={this.state.user.avatar_url} />
+          <div className="four wide column ui raised rounded segment" >
+            <div className="ui fluid bottom aligned medium rounded image">
+              <div className="ui medium ribbon black label">@{this.state.user.login}</div>
+              <img className="" onLoad={this.toggleShow}
+                   src={this.state.user.avatar_url} />
+            </div>
           </div>
 
           <div className="seven wide column" >
             <div>
-              <div className="row" ><br /><br /><br /><br /><br /></div>
-              <div className="row" ><br /><br /></div>
+              <div className="row" ><br /><br /><br /><br /><br /><br /><br /><br /><br /></div>
               <h1 className="row">{this.state.user.name}</h1>
-              <h3 className="row">{this.state.user.login}</h3>
               <h4 className="row">Use Own Deployment</h4>
             </div>
           </div>
@@ -149,17 +158,16 @@ class NonGHUserProfile extends React.Component {
                   buttonData={[
                       {
                         label: "Delete",
-                        onDeployClick: () => this.deleteDemo(project.id),
-                        display: ""
+                        onDeployClick: () => this.deleteDemo(project.id)
                       },
                       {
                         label: "Modify",
-                        onDeployClick: () => this.modifyProject(project),
-                        display: ""
+                        onDeployClick: () => this.modifyProject(project)
                       },
                       {
                         label: "Demo",
-                        onDeployClick: () => this.goToDemoPage(project)
+                        onDeployClick: () => this.goToDemoPage(project),
+                        display: this.getDisplayForDemoButton(project)
                       }
                     ]}
                 />

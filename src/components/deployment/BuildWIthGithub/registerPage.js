@@ -6,8 +6,10 @@ import { getRepo, checkDockerfile } from '../../../api/Github/getOneRepo';
 import CircularProgress from 'material-ui/CircularProgress';
 import * as githubDemoModelActions from '../../../actions/githubDemoModelActions';
 import { getDeployed } from '../../../api/GithubLocal/getDeployed';
+import { getWebAppStatus } from '../../../api/Generic/getWebAppStatus';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import Checkbox from 'material-ui/Checkbox';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import toastr from 'toastr';
@@ -28,13 +30,22 @@ class RegisterPage extends React.Component {
       freePortForCode: '',
       currentRepoFromDB: {},
       currentPort: '',
+      webappaddress: '',
+      tempwebaddress: '',
+      deploymentBoxSelectedStatus: false,
+      webappUnreachableErrorText: '',
+      webappLocalUnreachableErrorText: '',
+      showLocalDeploymentCheckBox: false,
       dockercomposeFile: '',
+      temptoken: '',
+      returning: false,
       saveButton: true
     };
     this.socket = this.context.socket;
     this.toggleShow = this.toggleShow.bind(this);
     this.toggleDockerModalShow = this.toggleDockerModalShow.bind(this);
     this.goBack = this.goBack.bind(this);
+    this.onLocalDeploymentCheckBoxCheck = this.onLocalDeploymentCheckBoxCheck.bind(this);
     this.saveGithubDemoModelData = this.saveGithubDemoModelData.bind(this);
     this.updateDescription = this.updateDescription.bind(this);
   }
@@ -45,31 +56,50 @@ class RegisterPage extends React.Component {
         this.setState({currentRepo: JSON.parse(currentRepo)});
       })
       .then(() => {
+        getDeployed(this.state.currentRepo.id).then(singleRepo => {
+          if (JSON.parse(singleRepo).length > 0) {
+            this.setState({returning: true});
+            this.setState({tempwebaddress: JSON.parse(singleRepo)[0].token.split(':')[1]});
+            if (JSON.parse(singleRepo)[0].token.split(':')[1] === '0.0.0.0') {
+              this.setState({showLocalDeploymentCheckBox: true});
+            }
+            this.setState({temptoken: JSON.parse(singleRepo)[0].token});
+            this.setState({description: JSON.parse(singleRepo)[0].description});
+          }
+        });
+      })
+      .then(() => {
         this.socket.emit('fetchfreeport');
         this.socket.emit('fetchcurrentport');
+        this.socket.emit('getpublicipaddress');
         this.socket.on('fetchedport', (port) => {
           this.setState({freePortForCode: port});
         });
         this.socket.on('fetchedcurrentport', (port) => {
           this.setState({currentPort: port});
         });
-
-      })
-      .then(() => {
-        getDeployed(this.state.currentRepo.id).then(singleRepo => {
-          if (singleRepo) {
-            this.setState({description: JSON.parse(singleRepo)[0].description});
-          }
+        this.socket.on('gotpublicip', (ip) => {
+          this.setState({webappaddress: ip}, () => {
+            if (this.state.tempwebaddress.length == 0) {
+              this.setState({tempwebaddress: this.state.webappaddress});
+            }
+          });
+          getWebAppStatus(ip).then(() => {
+          }).catch(err => {
+            this.setState({webappUnreachableErrorText: 'This WebApp cannot be reached on its public IP'});
+            this.setState({showLocalDeploymentCheckBox: true});
+          });
+          this.toggleShow();
+        });
+        this.socket.on('erroringettingpublicip', err => {
+          toastr.error('Error in getting public IP :(');
         });
       })
-      .then((singleRepo) => {
-        this.toggleShow();
-      })
-      .then((singleRepo) => {
+      .then(() => {
         checkDockerfile(this.props.params.repoName).then(status => {
-          if (this.state.description.length == 0) {
-            toastr.success('docker-compose.yml found');
-          }
+            if (!this.state.returning) {
+              toastr.success('docker-compose.yml found');
+            }
             this.setState({saveButton: false});
             this.setState({dockercomposeFile: status[3]});
             this.setState({showSideHelp: false});
@@ -98,6 +128,19 @@ class RegisterPage extends React.Component {
     }
   }
 
+  onLocalDeploymentCheckBoxCheck(e) {
+    if (!this.state.deploymentBoxSelectedStatus) {
+      getWebAppStatus('0.0.0.0').then(() => {
+        })
+        .catch(err => {
+          this.setState({webappLocalUnreachableErrorText: "This WebApp cannot be reached locally on 0.0.0.0"});
+        });
+    }
+    let selectionPool = ['0.0.0.0', this.state.webappaddress];
+    this.setState({tempwebaddress: selectionPool[this.state.deploymentBoxSelectedStatus ? 1 : 0]});
+    this.setState({deploymentBoxSelectedStatus: !this.state.deploymentBoxSelectedStatus});
+  }
+
   saveGithubDemoModelData() {
     if(this.state.dockerModalError) {
       this.toggleDockerModalShow();
@@ -107,7 +150,7 @@ class RegisterPage extends React.Component {
         id: this.state.currentRepo.id,
         description: this.state.description,
         timestamp: Date.now(),
-        token: `gh:local:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`,
+        token: `gh:${this.state.tempwebaddress}:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`,
         dockercomposeFile: this.state.dockercomposeFile,
         status: 'input'
       };
@@ -145,7 +188,6 @@ class RegisterPage extends React.Component {
         onTouchTap={this.goBack}
       />
     ];
-
     return (
       <div className="ui relaxed stackable grid fluid container">
 
@@ -168,7 +210,7 @@ class RegisterPage extends React.Component {
           <div className="row">
             <div className="ui relaxed stackable grid container">
               <div className="two column row">
-                <div className="column center aligned">
+                <div className="column centered center aligned">
 
                   <TextField
                     disabled
@@ -184,6 +226,27 @@ class RegisterPage extends React.Component {
                     rows={2}
                     rowsMax={8}
                   /><br />
+                  {this.state.webappUnreachableErrorText.length > 0 &&
+                  <div className="ui raised compact centered red segment" style={{color: 'red', marginLeft: '20%'}}>
+                    {this.state.webappUnreachableErrorText}<br />
+                  </div>
+                  }
+                  {this.state.webappLocalUnreachableErrorText.length > 0 &&
+                  <div className="ui raised compact centered red segment" style={{color: 'red', marginLeft: '20%'}}>
+                    {this.state.webappLocalUnreachableErrorText}<br />
+                  </div>
+                  }
+                  {this.state.showLocalDeploymentCheckBox &&
+                  <div className="" style={{marginLeft: '27%', maxWidth: '45%'}}>
+                    <Checkbox
+                      checked={this.state.deploymentBoxSelectedStatus}
+                      disabled={this.state.returning}
+                      onCheck={this.onLocalDeploymentCheckBoxCheck}
+                      label="WebApp is running locally"
+                    />
+                  </div>
+                  }
+                  <br />
                   <RaisedButton label="Save"
                                 disabled={this.state.saveButton}
                                 primary style={{marginLeft: "30%"}}
@@ -199,7 +262,7 @@ class RegisterPage extends React.Component {
                     <br />
                     <div className="ui container segment">
                       Token: &nbsp;&nbsp;&nbsp;
-                      <b>{`gh:local:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`}</b><br />
+                      <b>{`gh:${this.state.tempwebaddress}:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`}</b><br />
                       Insert help text here
                     </div>
                   </div>}
@@ -209,7 +272,12 @@ class RegisterPage extends React.Component {
                     <br />
                     <div className="ui container segment">
                       Token: &nbsp;&nbsp;&nbsp;
-                      <b>{`gh:local:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`}</b><br />
+                      {this.state.returning ?
+                        <b>{this.state.temptoken}</b>
+                        :
+                        <b>{`gh:${this.state.tempwebaddress}:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`}</b>
+                      }
+                      <br />
                       Insert info about how to proceed with the deployment
                     </div>
                   </div>}
