@@ -14,13 +14,14 @@ Follow issues template to file an issue unless it is a feature request.
 2. clone this repo
 3. copy `outCalls/config.sample.js` to `outCalls/config.js` and edit it accordingly. Add the APP_SECRET as a random long string.
 4. `npm i`
+5. Run mongodb at default port (you can use the docker-compose.yml file given in DBSetup/MongoDB)
 
 ### Development
 
-5. `npm start -s`
+6. `npm start -s`
 
 ### Production
 
-5. `npm run build -s`
+6. `npm run build -s`
 
 (building for production will take some time and require > 1GB ram - use swap if your machine doesn't have meet the requirements)
