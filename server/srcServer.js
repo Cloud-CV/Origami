@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import express from 'express';
 import webpack from 'webpack';
 import path from 'path';
@@ -13,8 +15,6 @@ import githubDemoModelController from './controlller/githubdemomodelController';
 import nonghDemoModelController from './controlller/nonghdemomodelController';
 import inputComponentModelController from './controlller/inputcomponentModelController';
 import outputComponentModelController  from './controlller/outputcomponentController';
-
-/* eslint-disable no-console */
 
 const port = 3000;
 const app = express();

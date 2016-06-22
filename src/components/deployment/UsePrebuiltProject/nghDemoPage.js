@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { getInputComponentById } from '../../inputcomponents';
 import { getOutputComponentById } from '../../outputcomponents';
 import { getDeployed } from '../../../api/Nongh/getDeployed';
+import { modifyDeployed } from '../../../api/Nongh/modifyDeployed';
 import { getComponentDeployed } from '../../../api/CommonLocal/getComponentDeployed';
 import toastr from 'toastr';
 
@@ -33,6 +34,9 @@ class NGHDemoPage extends React.Component {
     });
     getDeployed(this.props.params.repoId).then(data => {
       this.setState({demoModel: JSON.parse(data)[0]});
+      if (JSON.parse(data)[0].status == 'input') {
+        modifyDeployed(Object.assign({}, JSON.parse(data)[0], {status: 'demo'})).then();
+      }
     });
     getComponentDeployed(this.props.params.repoId, 'input').then(data => {
       this.setState({inputModel: JSON.parse(data)[0]});

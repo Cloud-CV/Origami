@@ -1,4 +1,4 @@
-import {CLIENT_ID, CLIENT_SECRET} from './config';
+import { CLIENT_ID, CLIENT_SECRET, CLIENT_IP } from './config';
 
 const passport = require('passport'),
   GithubStrategy = require('passport-github').Strategy;
@@ -6,15 +6,11 @@ const passport = require('passport'),
 passport.use(new GithubStrategy({
     clientID: CLIENT_ID,
     clientSecret: CLIENT_SECRET,
-    callbackURL: "http://0.0.0.0:3000/auth/github/callback"
+    callbackURL: `http://${CLIENT_IP || '0.0.0.0'}:3000/auth/github/callback`
   },
   function(accessToken, refreshToken, profile, done) {
-    //Based on profile return from Github, find existing user
     let user = profile;
-
     user['accessToken'] = accessToken;
-
-    //Return user model
     return done(null, user);
   })
 );
