@@ -56,21 +56,23 @@ class RegisterPage extends React.Component {
 
   componentWillMount() {
     getDeployed(this.props.params.repoId).then(singleRepo => {
-      if (JSON.parse(singleRepo).length != 0) {
-        this.setState({returning: true});
-        this.setState({tempwebaddress: JSON.parse(singleRepo)[0].token.split(':')[1]});
-        if (JSON.parse(singleRepo)[0].token.split(':')[1] === '0.0.0.0') {
-          this.setState({showLocalDeploymentCheckBox: true});
-        }
-        this.setState({id: JSON.parse(singleRepo)[0].id});
-        this.setState({name: JSON.parse(singleRepo)[0].name});
-        this.setState({address: JSON.parse(singleRepo)[0].token.split(':')[1]});
-        this.setState({tempwebaddress: JSON.parse(singleRepo)[0].token.split(':')[5]});
-        this.setState({port: JSON.parse(singleRepo)[0].token.split(':')[4]});
-        this.setState({description: JSON.parse(singleRepo)[0].description});
-        if (JSON.parse(singleRepo)[0].token.split(':')[5] === '0.0.0.0') {
-          this.setState({deploymentBoxSelectedStatus: true});
-        }
+      if (this.props.params.repoId) {
+        if (JSON.parse(singleRepo).length != 0) {
+          this.setState({returning: true});
+          this.setState({tempwebaddress: JSON.parse(singleRepo)[0].token.split(':')[1]});
+          if (JSON.parse(singleRepo)[0].token.split(':')[1] === '0.0.0.0') {
+            this.setState({showLocalDeploymentCheckBox: true});
+          }
+          this.setState({id: JSON.parse(singleRepo)[0].id});
+          this.setState({name: JSON.parse(singleRepo)[0].name});
+          this.setState({address: JSON.parse(singleRepo)[0].token.split(':')[1]});
+          this.setState({tempwebaddress: JSON.parse(singleRepo)[0].token.split(':')[5]});
+          this.setState({port: JSON.parse(singleRepo)[0].token.split(':')[4]});
+          this.setState({description: JSON.parse(singleRepo)[0].description});
+          if (JSON.parse(singleRepo)[0].token.split(':')[5] === '0.0.0.0') {
+            this.setState({deploymentBoxSelectedStatus: true});
+          }
+      }
       }
     }).then(() => {
       this.socket.emit('fetchcurrentport');
