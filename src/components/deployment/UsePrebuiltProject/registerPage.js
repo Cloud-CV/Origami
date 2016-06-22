@@ -36,6 +36,7 @@ class RegisterPage extends React.Component {
       webappaddress: '',
       tempwebaddress: '',
       deploymentBoxSelectedStatus: false,
+      status: '',
       webappUnreachableErrorText: '',
       webappLocalUnreachableErrorText: '',
       showLocalDeploymentCheckBox: false,
@@ -65,6 +66,7 @@ class RegisterPage extends React.Component {
           }
           this.setState({id: JSON.parse(singleRepo)[0].id});
           this.setState({name: JSON.parse(singleRepo)[0].name});
+          this.setState({status: JSON.parse(singleRepo)[0].status});
           this.setState({address: JSON.parse(singleRepo)[0].token.split(':')[1]});
           this.setState({tempwebaddress: JSON.parse(singleRepo)[0].token.split(':')[5]});
           this.setState({port: JSON.parse(singleRepo)[0].token.split(':')[4]});
@@ -142,7 +144,7 @@ class RegisterPage extends React.Component {
         description: this.state.description,
         timestamp: Date.now(),
         token: `nongh:${this.state.address}:${this.state.id}:${this.state.currentPort}:${this.state.port}:${this.state.tempwebaddress}`,
-        status: 'input'
+        status: this.state.status || 'input'
       };
       this.props.nonghModelActions.addToDBNonGHDemoModel(dataToPut).then(() => {
         this.props.nonghModelActions.updateNonGHDemoModel(dataToPut).then(() => {
