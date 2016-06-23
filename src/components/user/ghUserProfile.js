@@ -65,7 +65,7 @@ class GHUserProfile extends React.Component {
     let repoType = allRepoShow ? 'all' : 'owner';
     userRepos(repoType)
       .then(repos => {
-        this.setState({userRepos: JSON.parse(repos)});
+        this.setState({userRepos: repos});
       })
       .catch(err => {
         toastr.error("Error: " + err);
