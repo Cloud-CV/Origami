@@ -18,6 +18,7 @@ class TextInputShowcaseModifyDialog extends React.Component {
     this.hideModifyDialog = props.functions.hideModifyDialog;
     this.makeTextFieldsFromParentLabels = this.makeTextFieldsFromParentLabels.bind(this);
     this.addLocalLabels = this.addLocalLabels.bind(this);
+    this.deleteLocalLabels = this.deleteLocalLabels.bind(this);
     this.addMoreTextFields = this.addMoreTextFields.bind(this);
     this.getNewField = this.getNewField.bind(this);
     this.handleOk = this.handleOk.bind(this);
@@ -28,12 +29,21 @@ class TextInputShowcaseModifyDialog extends React.Component {
     let tempText = [];
     allLabels.map((label, index) => {
       tempText.push(
-        <TextField
-          key={Math.random()}
-          hintText="Label"
-          defaultValue={label}
-          onChange={(e) => this.addLocalLabels(index, e.target.value)}
-        />);
+        <div>
+          <TextField
+            key={Math.random()}
+            hintText="Label"
+            defaultValue={label}
+            onChange={(e) => this.addLocalLabels(index, e.target.value)}
+          />
+          &nbsp;&nbsp;&nbsp;
+          <RaisedButton
+            label="Delete"
+            primary
+            onMouseDown={() => this.deleteLocalLabels(index)}
+          />
+        </div>
+      );
     });
     return tempText;
   }
@@ -44,12 +54,22 @@ class TextInputShowcaseModifyDialog extends React.Component {
     this.setState({labels: templabels});
   }
 
+  deleteLocalLabels(elementId) {
+    let templabels = Object.assign([], this.state.labels);
+    let temptextfield = Object.assign([], this.state.textFields);
+    templabels.splice(elementId, 1);
+    temptextfield.splice(elementId, 1);
+    this.setState({labels: templabels});
+    this.setState({textFields: temptextfield});
+  }
+
   getNewField() {
     return (
       <OverloadedTextField
         data={{
         labelLength: this.state.labels.length,
-        addLocalLabels: this.addLocalLabels
+        addLocalLabels: this.addLocalLabels,
+        deleteLocalLabels: this.deleteLocalLabels
         }} />
     );
   }

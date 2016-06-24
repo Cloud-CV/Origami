@@ -18,6 +18,7 @@ class TextOutputShowcaseModifyDialog extends React.Component {
     this.hideModifyDialog = props.functions.hideModifyDialog;
     this.makeTextFieldsFromParentHeaders = this.makeTextFieldsFromParentHeaders.bind(this);
     this.addLocalHeaders = this.addLocalHeaders.bind(this);
+    this.deleteLocalHeaders = this.deleteLocalHeaders.bind(this);
     this.addMoreTextFields = this.addMoreTextFields.bind(this);
     this.getNewField = this.getNewField.bind(this);
     this.handleOk = this.handleOk.bind(this);
@@ -28,12 +29,21 @@ class TextOutputShowcaseModifyDialog extends React.Component {
     let tempText = [];
     allHeaders.map((header, index) => {
       tempText.push(
-        <TextField
-          key={Math.random()}
-          hintText="Header"
-          defaultValue={header}
-          onChange={(e) => this.addLocalHeaders(index, e.target.value)}
-        />);
+        <div>
+          <TextField
+            key={Math.random()}
+            hintText="Header"
+            defaultValue={header}
+            onChange={(e) => this.addLocalHeaders(index, e.target.value)}
+          />
+          &nbsp;&nbsp;&nbsp;
+          <RaisedButton
+            label="Delete"
+            primary
+            onMouseDown={() => this.deleteLocalHeaders(index)}
+          />
+        </div>
+      );
     });
     return tempText;
   }
@@ -44,12 +54,22 @@ class TextOutputShowcaseModifyDialog extends React.Component {
     this.setState({headers: temptext});
   }
 
+  deleteLocalHeaders(elementId) {
+    let temptext = Object.assign([], this.state.headers);
+    let temptextfield = Object.assign([], this.state.textFields);
+    temptext.splice(elementId, 1);
+    temptextfield.splice(elementId, 1);
+    this.setState({headers: temptext});
+    this.setState({textFields: temptextfield});
+  }
+
   getNewField() {
     return (
       <OverloadedTextOutput
         data={{
         headerLength: this.state.headers.length,
-        addLocalHeaders: this.addLocalHeaders
+        addLocalHeaders: this.addLocalHeaders,
+        deleteLocalHeaders: this.deleteLocalHeaders
         }} />
     );
   }
