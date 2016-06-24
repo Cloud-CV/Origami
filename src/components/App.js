@@ -18,9 +18,8 @@ class App extends React.Component {
       login: false,
       displayLogin: ''
     };
-    this.popoutToggle = this.popoutToggle.bind(this);
+    this.initiateLogin = this.initiateLogin.bind(this);
     this.logout = this.logout.bind(this);
-    this.PopupCenter = this.PopupCenter.bind(this);
     this.readSessionToken = this.readSessionToken.bind(this);
     this.clearSessionFlag = this.clearSessionFlag.bind(this);
     this.setSessionFlag = this.setSessionFlag.bind(this);
@@ -42,7 +41,6 @@ class App extends React.Component {
     const dataInit = localStorage.getItem('gh_access_token_time');
     if (!dataInit || parseInt(Date.now()) - parseInt(dataInit) >= 86400000) {
       this.clearSessionFlag();
-      browserHistory.push('/');
     }
   }
 
@@ -71,52 +69,8 @@ class App extends React.Component {
     localStorage.setItem('gh_access_token_time', Date.now());
   }
 
-  PopupCenter(url, title, w, h) {
-    let dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
-    let dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;
-
-    let width = window.innerWidth ?
-      window.innerWidth : document.documentElement.clientWidth ?
-      document.documentElement.clientWidth : screen.width;
-    let height = window.innerHeight ?
-      window.innerHeight : document.documentElement.clientHeight ?
-      document.documentElement.clientHeight : screen.height;
-
-    let left = ((width / 2) - (w / 2)) + dualScreenLeft;
-    let top = ((height / 2) - (h / 2)) + dualScreenTop;
-    let newWindow = window.open(url, title,
-      'scrollbars=yes, width=' + w + ', height=' + h +
-      ', top=' + top + ', left=' + left);
-
-    // Puts focus on the newWindow
-    if (window.focus) {
-      newWindow.focus();
-    }
-
-    return newWindow;
-  }
-
-  popoutToggle() {
-    let x = screen.width/2 - 1000/2;
-    let y = screen.height/2 - 600/2;
-    let win = this.PopupCenter("/auth/github", "Authorize CloudCV", '900', '500');
-    let that = this;
-    let winClosed = setInterval(function () {
-      if (win.location.search.indexOf('?status=passed&token=') == 0) {
-        that.props.loginactions.Login();
-        const temp = win.location.search.substr(21).split('&');
-        const access_token = temp[0];
-        const username = temp[1].split('=')[1];
-        that.setSessionFlag(access_token, username);
-        win.close(function() {
-          browserHistory.push('/');
-        });
-      } else if (win.location.search.indexOf('?status=failed') == 0) {
-        win.close();
-      }
-      if (win.closed) {
-        clearInterval(winClosed);
-      }}, 250);
+  initiateLogin() {
+    window.location = "/auth/github";
   }
 
   logout() {
@@ -151,7 +105,7 @@ class App extends React.Component {
               <MenuItem onTouchTap={this.logout} primaryText="Sign out" />
             </IconMenu>
             :
-             <span className="loginButton" style={{display: this.state.displayLogin}} onClick={this.popoutToggle}>
+             <span className="loginButton" style={{display: this.state.displayLogin}} onClick={this.initiateLogin}>
                 <FlatButton label="Login"
                 style={{margin: "5%", color: "white"}}/>
              </span>
