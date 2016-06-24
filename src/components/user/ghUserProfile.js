@@ -155,13 +155,11 @@ class GHUserProfile extends React.Component {
     return (
       <div className="ui relaxed stackable grid fluid container">
 
-
         {this.state.showOutput == 'hidden' &&
         <div className="centered row" style={{marginTop: "30vh"}}>
           <CircularProgress size={1.5} />
         </div>}
-
-
+        
         {this.state.user &&
         <div className="sixteen column stretched row" style={{visibility: this.state.showOutput}}>
 
