@@ -28,19 +28,20 @@ class TextImageInputShowcaseModifyDialog extends React.Component {
   makeTextFieldsFromParentLabels(allLabels) {
     let tempText = [];
     allLabels.map((label, index) => {
-      tempText.push(
+      let currentIndex = allLabels.findIndex(x => x == label);
+      tempText[currentIndex] =(
         <div>
           <TextField
             key={Math.random()}
             hintText="Label"
             defaultValue={label}
-            onChange={(e) => this.addLocalLabels(index, e.target.value)}
+            onChange={(e) => this.addLocalLabels(currentIndex, e.target.value)}
           />
           &nbsp;&nbsp;&nbsp;
           <RaisedButton
             label="Delete"
             primary
-            onMouseDown={() => this.deleteLocalLabels(index)}
+            onMouseDown={() => this.deleteLocalLabels(currentIndex)}
           />
         </div>
       );
@@ -57,8 +58,8 @@ class TextImageInputShowcaseModifyDialog extends React.Component {
   deleteLocalLabels(elementId) {
     let templabels = Object.assign([], this.state.labels);
     let temptextfield = Object.assign([], this.state.textFields);
-    templabels.splice(elementId, 1);
-    temptextfield.splice(elementId, 1);
+    delete templabels[elementId];
+    delete temptextfield[elementId];
     this.setState({labels: templabels});
     this.setState({textFields: temptextfield});
   }

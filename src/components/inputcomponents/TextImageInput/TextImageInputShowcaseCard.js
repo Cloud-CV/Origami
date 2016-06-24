@@ -22,6 +22,7 @@ class TextImageInputShowcaseCard extends React.Component {
     this.inputComponentModelActions = props.demoProps.inputComponentModelActions;
     this.forwardAddress = props.demoProps.forwardAddress;
     this.showModifyDialog = this.showModifyDialog.bind(this);
+    this.getLabelRealLength = this.getLabelRealLength.bind(this);
     this.showPreviewDialog = this.showPreviewDialog.bind(this);
     this.updateInputComponentModel = this.updateInputComponentModel.bind(this);
     this.updateLabels = this.updateLabels.bind(this);
@@ -51,10 +52,14 @@ class TextImageInputShowcaseCard extends React.Component {
       toastr.error('Registration info not found! Register again');
       browserHistory.push('/');
     } else {
+      let propsToStore = [];
+      this.state.labels.map(label => {
+        propsToStore.push(label);
+      });
       this.inputComponentModelActions.updateInputComponentModel({
         id: this.demoModel.id,
         baseComponentId: 2,
-        props: this.state.labels
+        props: propsToStore
       }).then(() => {
         browserHistory.push(this.forwardAddress);
       });
@@ -63,6 +68,14 @@ class TextImageInputShowcaseCard extends React.Component {
 
   updateLabels(data) {
     this.setState({labels: data});
+  }
+
+  getLabelRealLength() {
+    let counter = 0;
+    this.state.labels.map(() => {
+      counter += 1;
+    });
+    return counter;
   }
 
   getLabels() {
@@ -78,7 +91,7 @@ class TextImageInputShowcaseCard extends React.Component {
           centeredParent
           centeredSegment
           displayData = {[
-          'Number of inputs: ' + this.state.labels.length
+          'Number of inputs: ' + this.getLabelRealLength()
         ]}
           buttonData = {[
           {

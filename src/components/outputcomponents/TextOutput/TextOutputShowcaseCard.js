@@ -23,6 +23,7 @@ class TextOutputShowcaseCard extends React.Component {
     this.forwardAddress = props.demoProps.forwardAddress;
     this.forwardAddressAlternate = props.demoProps.forwardAddressAlternate;
     this.showModifyDialog = this.showModifyDialog.bind(this);
+    this.getHeaderRealLength = this.getHeaderRealLength.bind(this);
     this.showPreviewDialog = this.showPreviewDialog.bind(this);
     this.updateOutputComponentModel = this.updateOutputComponentModel.bind(this);
     this.updateHeaders = this.updateHeaders.bind(this);
@@ -52,10 +53,14 @@ class TextOutputShowcaseCard extends React.Component {
       toastr.error('Registration info not found! Register again');
       browserHistory.push('/');
     } else {
+      let propsToStore = [];
+      this.state.headers.map(header => {
+        propsToStore.push(header);
+      });
       this.outputComponentDemoModelActions.updateOutputComponentModel({
         id: this.demoModel.id,
         baseComponentId: 1,
-        props: this.state.headers
+        props: propsToStore
       }).then(() => {
         if (this.forwardAddressAlternate) {
           if (this.demoModel.status === 'input') {
@@ -74,6 +79,14 @@ class TextOutputShowcaseCard extends React.Component {
     this.setState({headers: data});
   }
 
+  getHeaderRealLength() {
+    let counter = 0;
+    this.state.headers.map(() => {
+      counter += 1;
+    });
+    return counter;
+  }
+
   getHeaders() {
     return this.state.headers;
   }
@@ -87,7 +100,7 @@ class TextOutputShowcaseCard extends React.Component {
           centeredParent
           centeredSegment
           displayData = {[
-          'Number of Outputs: ' + this.state.headers.length
+          'Number of Outputs: ' + this.getHeaderRealLength()
         ]}
           buttonData = {[
           {

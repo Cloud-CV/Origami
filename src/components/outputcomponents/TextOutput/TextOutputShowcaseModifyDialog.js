@@ -28,19 +28,20 @@ class TextOutputShowcaseModifyDialog extends React.Component {
   makeTextFieldsFromParentHeaders(allHeaders) {
     let tempText = [];
     allHeaders.map((header, index) => {
-      tempText.push(
+      let currentIndex = allHeaders.findIndex(x => x == header);
+      tempText[currentIndex] = (
         <div>
           <TextField
             key={Math.random()}
             hintText="Header"
             defaultValue={header}
-            onChange={(e) => this.addLocalHeaders(index, e.target.value)}
+            onChange={(e) => this.addLocalHeaders(currentIndex, e.target.value)}
           />
           &nbsp;&nbsp;&nbsp;
           <RaisedButton
             label="Delete"
             primary
-            onMouseDown={() => this.deleteLocalHeaders(index)}
+            onMouseDown={() => this.deleteLocalHeaders(currentIndex)}
           />
         </div>
       );
@@ -57,8 +58,8 @@ class TextOutputShowcaseModifyDialog extends React.Component {
   deleteLocalHeaders(elementId) {
     let temptext = Object.assign([], this.state.headers);
     let temptextfield = Object.assign([], this.state.textFields);
-    temptext.splice(elementId, 1);
-    temptextfield.splice(elementId, 1);
+    delete temptext[elementId];
+    delete temptextfield[elementId];
     this.setState({headers: temptext});
     this.setState({textFields: temptextfield});
   }
