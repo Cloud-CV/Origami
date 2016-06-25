@@ -14,6 +14,11 @@ const singleInput = (props) => {
 
   return (
     <div className="ui container grid">
+      <div className="centered center aligned stretched row">
+        <div className="ui blue segment">
+          {props.label}
+        </div>
+      </div>
       <div className="centered row">
         <div className="ui three wide column">
           <img className="ui fluid medium bordered image"
@@ -24,19 +29,13 @@ const singleInput = (props) => {
                         onClick={() => uploadButtonClicked(props.index)}/>
         </div>
       </div>
-      <div className="centered row">
+      <div>
         <input placeholder={props.label}
                name={"input-image-" + props.index}
                id={"input-image-" + props.index}
                type="file"
                onChange={(e) => updateImage(props.index, e.target.files[0])}
                style={{width: "25vw", display: "None"}}/>
-        <div className="centered center aligned stretched row">
-            <input placeholder={props.label}
-                   name={"input-text-" + props.index}
-                   type="text"
-                   style={{width: "25vw"}}/>
-        </div>
       </div>
     </div>
   );
