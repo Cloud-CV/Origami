@@ -33,8 +33,8 @@ const fs = require('fs');
 app.use(compression());
 app.use(express.static('dist'));
 
-app.use(bodyParser.urlencoded({extended:false}));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(bodyParser.json({limit: '50mb'}));
 
 let session = require("express-session")({
   secret: appConfig.APP_SECRET,

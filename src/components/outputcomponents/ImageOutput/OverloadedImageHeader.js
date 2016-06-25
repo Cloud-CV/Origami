@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
-class OverloadedTextHeader extends React.Component {
+class OverloadedImageHeader extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -39,9 +39,9 @@ class OverloadedTextHeader extends React.Component {
   }
 }
 
-OverloadedTextHeader.propTypes = {
+OverloadedImageHeader.propTypes = {
   data: PropTypes.object.isRequired
 };
 
-export default OverloadedTextHeader;
+export default OverloadedImageHeader;
 
