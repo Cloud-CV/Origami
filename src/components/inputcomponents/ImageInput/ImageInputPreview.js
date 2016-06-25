@@ -32,7 +32,7 @@ class ImageInputPreview extends React.Component {
     ];
     return(
       <Dialog
-        title="Preview Text Input Component"
+        title="Preview Image Input Component"
         actions={actions}
         modal
         autoScrollBodyContent

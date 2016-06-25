@@ -107,7 +107,7 @@ class ImageInputShowcaseModifyDialog extends React.Component {
       />
     ];
     return(<Dialog
-            title="Modify Text Input Component"
+            title="Modify Image Input Component"
             actions={actions}
             modal
             autoScrollBodyContent

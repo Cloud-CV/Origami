@@ -13,7 +13,7 @@ export function getInputComponentById(id, props, calling_context, socketId, send
     case 2:
       return <TextImageInput labels={props} calling_context={calling_context} socketId={socketId} sendAddr={sendAddr}/>;
     case 3:
-      return <ImageInput labels={props} calling_context={calling_context} socketId={socketId} sendAddr={sendAddr}/>
+      return <ImageInput labels={props} calling_context={calling_context} socketId={socketId} sendAddr={sendAddr}/>;
     default:
       return <div>Null</div>;
   }
