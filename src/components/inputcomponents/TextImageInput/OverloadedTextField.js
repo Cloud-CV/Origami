@@ -13,6 +13,10 @@ class OverloadedTextField extends React.Component {
     this.deleteLocalLabelsFromParent= props.data.deleteLocalLabels;
   }
 
+  componentWillMount() {
+    this.setState({elementId: this.labelLength});
+  }
+
   componentDidMount() {
     this.addLocalLabelsToParent(this.labelLength, "");
   }

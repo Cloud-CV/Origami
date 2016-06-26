@@ -106,18 +106,22 @@ class TextImageInputShowcaseModifyDialog extends React.Component {
         onTouchTap={this.handleCancel}
       />
     ];
-    return(<Dialog
-            title="Modify Text Input Component"
-            actions={actions}
-            modal
-            autoScrollBodyContent
-            open={this.state.open}>
-            {this.state.textFields.map(field =>
-              [field, <br key={Math.random()} />]
-            )}
-            <RaisedButton key={Math.random()} label="Add Field" primary onClick={() => this.addMoreTextFields()}
-              style={{marginTop: "2%"}}/>
-          </Dialog>);
+    return(
+      <Dialog
+        title="Modify Text Input Component"
+        actions={actions}
+        modal
+        autoScrollBodyContent
+        open={this.state.open}>
+        {this.state.textFields.map(field =>
+          [field, <br key={Math.random()} />]
+        )}
+        <RaisedButton key={Math.random()}
+                      label="Add Field"
+                      primary
+                      onClick={() => this.addMoreTextFields()}
+                      style={{marginTop: "2%"}}/>
+      </Dialog>);
   }
 }
 
