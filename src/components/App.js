@@ -111,6 +111,12 @@ class App extends React.Component {
              </span>
           }
         />
+        <div id="appbar-progress"
+             className="ui bottom attached indicating progress"
+             style={{visibility: "hidden"}}
+        >
+          <div className="bar"></div>
+        </div>
         <div className="ui fluid padded grid">
           {this.props.children}
         </div>

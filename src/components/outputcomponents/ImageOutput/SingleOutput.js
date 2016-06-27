@@ -65,7 +65,7 @@ class singleOutput extends React.Component {
 
 singleOutput.propTypes = {
   header: PropTypes.string.isRequired,
-  data: PropTypes.any.isRequired,
+  data: PropTypes.any,
   index: PropTypes.number.isRequired
 };
 
