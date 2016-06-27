@@ -57,6 +57,9 @@ class TextInput extends React.Component {
           clearTimeout(timeout3);
           setTimeout(() => {
             $("#appbar-progress").css('visibility', 'hidden');
+            $("#appbar-progress").progress({
+              percent: "0%"
+            });
           }, 1000);
         },
         error: (xhr, textStatus, errorThrown) => {
