@@ -76,7 +76,11 @@ class TextOutputShowcaseCard extends React.Component {
   }
 
   updateHeaders(data) {
-    this.setState({headers: data});
+    let dataToUpdate = [];
+    data.map(value => {
+      dataToUpdate.push(value);
+    });
+    this.setState({headers: dataToUpdate});
   }
 
   getHeaderRealLength() {

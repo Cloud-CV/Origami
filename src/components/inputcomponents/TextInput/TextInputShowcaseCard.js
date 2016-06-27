@@ -67,7 +67,11 @@ class TextInputShowcaseCard extends React.Component {
   }
 
   updateLabels(data) {
-    this.setState({labels: data});
+    let dataToUpdate = [];
+    data.map(value => {
+      dataToUpdate.push(value);
+    });
+    this.setState({labels: dataToUpdate});
   }
 
   getLabelRealLength() {
