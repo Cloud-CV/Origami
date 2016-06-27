@@ -40,6 +40,7 @@ class RegisterPage extends React.Component {
       webappUnreachableErrorText: '',
       webappLocalUnreachableErrorText: '',
       showLocalDeploymentCheckBox: false,
+      showTerminal: false,
       returning: false
     };
     this.socket = this.context.socket;
@@ -50,6 +51,7 @@ class RegisterPage extends React.Component {
     this.updateAddress = this.updateAddress.bind(this);
     this.updateName = this.updateName.bind(this);
     this.updatePort = this.updatePort.bind(this);
+    this.toggleTerminal = this.toggleTerminal.bind(this);
     this.validateTempwebaddress = this.validateTempwebaddress.bind(this);
     this.validateIP = this.validateIP.bind(this);
     this.validatePort= this.validatePort.bind(this);
@@ -71,10 +73,11 @@ class RegisterPage extends React.Component {
           this.setState({tempwebaddress: JSON.parse(singleRepo)[0].token.split(':')[5]});
           this.setState({port: JSON.parse(singleRepo)[0].token.split(':')[4]});
           this.setState({description: JSON.parse(singleRepo)[0].description});
+          this.setState({showTerminal: JSON.parse(singleRepo)[0].terminal});
           if (JSON.parse(singleRepo)[0].token.split(':')[5] === '0.0.0.0') {
             this.setState({deploymentBoxSelectedStatus: true});
           }
-      }
+        }
       }
     }).then(() => {
       this.socket.emit('fetchcurrentport');
@@ -142,6 +145,7 @@ class RegisterPage extends React.Component {
         id: this.state.id,
         address: this.state.address,
         description: this.state.description,
+        terminal: this.state.showTerminal,
         timestamp: Date.now(),
         token: `nongh:${this.state.address}:${this.state.id}:${this.state.currentPort}:${this.state.port}:${this.state.tempwebaddress}`,
         status: this.state.status || 'input'
@@ -168,6 +172,10 @@ class RegisterPage extends React.Component {
 
   updateName(e) {
     this.setState({name: e.target.value});
+  }
+
+  toggleTerminal() {
+    this.setState({showTerminal: !this.state.showTerminal});
   }
 
   validateTempwebaddress() {
@@ -259,6 +267,13 @@ class RegisterPage extends React.Component {
                     rows={2}
                     rowsMax={8}
                   /><br />
+                  <div className="" style={{marginLeft: '27%', maxWidth: '50%'}}>
+                    <Checkbox
+                      checked={this.state.showTerminal}
+                      onCheck={this.toggleTerminal}
+                      label="Show Terminal on demo page"
+                    /><br />
+                  </div>
                   {this.state.webappUnreachableErrorText.length > 0 &&
                   <div className="ui raised compact centered red segment" style={{color: 'red', marginLeft: '20%'}}>
                     {this.state.webappUnreachableErrorText}<br />

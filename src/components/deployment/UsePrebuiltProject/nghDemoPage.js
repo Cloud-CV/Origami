@@ -15,6 +15,7 @@ class NGHDemoPage extends React.Component {
     super(props, context);
     this.state = {
       outputData: [],
+      terminalData: [],
       inputModel: {},
       outputModel: {},
       demoModel: {}
@@ -25,9 +26,16 @@ class NGHDemoPage extends React.Component {
 
   componentWillMount() {
     this.socket.on('injectoutputdata', data => {
-      this.setState({
-        outputData: Object.assign(Object.assign([], this.state.outputData), data.data)
-      });
+      if (data.data) {
+        this.setState({
+          outputData: Object.assign(Object.assign([], this.state.outputData), data.data)
+        });
+      }
+      if (data.terminalData) {
+        this.setState({
+          terminalData: [...data.terminalData, ...this.state.terminalData]
+        });
+      }
     });
     this.socket.on('malformedoutputdata', () => {
       toastr.error('Malformed output data received');
@@ -88,6 +96,26 @@ class NGHDemoPage extends React.Component {
                   )}
                 </div>
 
+              </div>
+            </div>
+          </div>
+        </div>
+        }
+        {this.state.demoModel.terminal &&
+        <div className="one column row">
+          <div className="column">
+            <div className="ui card" style={{width: "100%"}}>
+              <div className="content">
+                <div className="header">Terminal</div>
+              </div>
+              <div className="content">
+                <div className="ui padded raised segment container"
+                     style={{height: "52vh", backgroundColor: "black",
+                           color: "white", overflowY: "scroll"}}>
+                  {this.state.terminalData.map((data) =>
+                    <p key={Math.random()}>{data}</p>
+                  )}
+                </div>
               </div>
             </div>
           </div>

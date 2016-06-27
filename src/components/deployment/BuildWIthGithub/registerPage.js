@@ -41,6 +41,7 @@ class RegisterPage extends React.Component {
       showLocalDeploymentCheckBox: false,
       dockercomposeFile: '',
       temptoken: '',
+      showTerminal: false,
       returning: false,
       saveButton: false
     };
@@ -48,6 +49,7 @@ class RegisterPage extends React.Component {
     this.toggleShow = this.toggleShow.bind(this);
     this.toggleDockerModalShow = this.toggleDockerModalShow.bind(this);
     this.goBack = this.goBack.bind(this);
+    this.toggleTerminal = this.toggleTerminal.bind(this);
     this.onLocalDeploymentCheckBoxCheck = this.onLocalDeploymentCheckBoxCheck.bind(this);
     this.validateTempwebaddress = this.validateTempwebaddress.bind(this);
     this.saveGithubDemoModelData = this.saveGithubDemoModelData.bind(this);
@@ -69,6 +71,7 @@ class RegisterPage extends React.Component {
             }
             this.setState({temptoken: JSON.parse(singleRepo)[0].token});
             this.setState({description: JSON.parse(singleRepo)[0].description});
+            this.setState({showTerminal: JSON.parse(singleRepo)[0].terminal});
           }
         });
       })
@@ -153,6 +156,7 @@ class RegisterPage extends React.Component {
         name: this.state.currentRepo.name,
         id: this.state.currentRepo.id,
         description: this.state.description,
+        terminal: this.state.showTerminal,
         timestamp: Date.now(),
         token: `gh:${this.state.tempwebaddress}:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`,
         dockercomposeFile: this.state.dockercomposeFile,
@@ -178,6 +182,10 @@ class RegisterPage extends React.Component {
 
   updateDescription(e) {
     this.setState({description: e.target.value});
+  }
+
+  toggleTerminal() {
+    this.setState({showTerminal: !this.state.showTerminal});
   }
 
   toggleShow() {
@@ -241,6 +249,13 @@ class RegisterPage extends React.Component {
                     rows={2}
                     rowsMax={8}
                   /><br />
+                  <div className="" style={{marginLeft: '27%', maxWidth: '50%'}}>
+                    <Checkbox
+                      checked={this.state.showTerminal}
+                      onCheck={this.toggleTerminal}
+                      label="Show Terminal on demo page"
+                    /><br />
+                  </div>
                   {this.state.webappUnreachableErrorText.length > 0 &&
                   <div className="ui raised compact centered red segment" style={{color: 'red', marginLeft: '20%'}}>
                     {this.state.webappUnreachableErrorText}<br />

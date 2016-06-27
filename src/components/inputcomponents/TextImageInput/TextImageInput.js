@@ -64,6 +64,9 @@ class TextImageInput extends React.Component {
         },
         error: (xhr, textStatus, errorThrown) => {
           $("#appbar-progress").css('visibility', 'hidden');
+          $("#appbar-progress").progress({
+            percent: "0%"
+          });
           toastr.error("Error occurred!");
         }
       });

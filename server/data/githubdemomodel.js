@@ -7,6 +7,7 @@ const githubDemoSchema = mongoose.Schema({
     unique: true
   },
   description: String,
+  terminal: Boolean,
   timestamp: Number,
   token: String,
   dockercomposeFile: String,

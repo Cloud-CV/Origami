@@ -8,6 +8,7 @@ const nonghDemoSchema = mongoose.Schema({
   },
   address: String,
   description: String,
+  terminal: Boolean,
   timestamp: Number,
   token: String,
   status: String
