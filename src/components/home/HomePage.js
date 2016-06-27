@@ -30,7 +30,7 @@ class HomePage extends React.Component {
 
   render() {
     return (
-      <div className="ui relaxed stackable grid container">
+      <div className="ui relaxed stackable centered grid container">
         <br />
         <div className="ui raised fluid segment text sixteen wide padded grid">
           <div className="four wide column">
@@ -38,29 +38,28 @@ class HomePage extends React.Component {
               <img className="ui centered fluid medium bordered rounded image" src={require("./cloudcv_logo.png")}/>
             </a>
           </div>
-          <div className="twelve wide padded text container column grid">
+          <div className="twelve wide padded text left aligned container column grid">
             <div className="row">
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+              CVFY helps you build a web based demo out of your ML evaluation code. You can plug and modify predefined I/O components as per the need of your evalution code and connect it using the CVFY python lib. CVFY gives you two choices for deploying your demo:
               <br />
-              <div className="ui bulleted list">
-                <div className="item">Gaining Access</div>
-                <div className="item">Inviting Friends</div>
-                <div className="item">Warranty</div>
+              <div className="ui ordered list">
+                <div className="item">Import your project from Github and build it in a Docker container</div>
+                <div className="item">Connect your own deployment with I/O pipeline on CVFY webapp</div>
               </div></div>
             <br />
             <div className="row">
               <div className="ui raised fluid text sixteen wide padded grid">
                 <div className="eight wide center aligned column">
                   <div className="ui raised secondary segment">
-                    <Link to="/documentation">
-                      Do Something
+                    <Link to="/gettingstarted">
+                      Get Started
                     </Link>
                   </div>
                 </div>
                 <div className="eight wide center aligned column">
                   <div className="ui raised secondary segment">
                     <Link to="/documentation">
-                      Here Also
+                      Documentation
                     </Link>
                   </div>
                 </div>

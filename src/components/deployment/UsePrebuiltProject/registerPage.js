@@ -207,6 +207,7 @@ class RegisterPage extends React.Component {
   }
 
   render() {
+    let tokenClassName = this.validateTempwebaddress() && this.validateIP() && this.validatePort(this.state.port) ? "ui positive message" : "ui negative message";
     return (
       <div className="ui relaxed stackable grid fluid container">
 
@@ -293,8 +294,14 @@ class RegisterPage extends React.Component {
                     <div className="ui relaxed grid container segment">
                       <div className="two column row">
                         <div className="thirteen wide column">
-                          <u>Token:</u>
-                          <h4>{`nongh:${this.state.address}:${this.state.id}:${this.state.currentPort}:${this.state.port}:${this.state.tempwebaddress}`}</h4>
+                          <div className={tokenClassName}>
+                            <u>Token:</u>
+                            <b>
+                              <p
+                                style={{fontSize: "80%"}}
+                              >{`nongh:${this.state.address}:${this.state.id}:${this.state.currentPort}:${this.state.port}:${this.state.tempwebaddress}`}</p>
+                            </b>
+                          </div>
                         </div>
                         <div className="three wide column">
                           {this.validateTempwebaddress() && this.validateIP() && this.validatePort(this.state.port) ? <GoAhead style={{height: '', width: ''}} color={green500} /> : <StopNow style={{height: '', width: ''}} color={red500} />}
@@ -302,7 +309,22 @@ class RegisterPage extends React.Component {
                       </div>
                       <div className="one column row">
                         <div className="sixteen wide column">
-                          Insert info about how to proceed with deployment
+                          <div className="ui info message">
+                            <div className="header">
+                              Steps
+                            </div>
+                            <ul className="list">
+                              <li>"IP of service" is the public IP address of the machine where the ML evaluation code is running (or the be run) with the help of cvfy lib.</li>
+                              <li>"Port of service" is the port of the above mentioned service.</li>
+                              <li>Enter the application details and copy the Token.</li>
+                              <li>Use this Token to do registration with the cvfy lib. See <Link to="documentation">documentation</Link>.</li>
+                            </ul>
+                          </div>
+                          {(this.state.webappUnreachableErrorText.length > 0 || this.state.webappLocalUnreachableErrorText.length > 0) &&
+                          <div className="ui orange message">
+                            <p>If this is a local deployment (your machine is not reachable on it's public IP), you must select the "Webapp is running locally" option.</p>
+                          </div>
+                          }
                         </div>
                       </div>
                     </div>

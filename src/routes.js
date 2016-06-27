@@ -3,7 +3,8 @@ import { Route, IndexRoute } from 'react-router';
 import App from './components/App';
 import PageNotfoundHandler from './components/PageNotfoundHandler';
 import HomePageComponent from './components/home/HomePage';
-import AboutPageComponent from './components/about/AboutPage';
+import DocumentationFrontPageComponent from './components/docs/documentation/DocumentationFrontpage';
+import GettingStartedFrontPageComponent from './components/docs/gettingstarted/GettingStartedFrontpage';
 import GHUserProfileComponent from './components/user/ghUserProfile';
 import NonGHUserProfileComponent from './components/user/nonghUserProfile';
 import LoginComponent from './components/stateless/login';
@@ -20,7 +21,8 @@ import NGHDemoPageComponent from './components/deployment/UsePrebuiltProject/ngh
 export default(
   <Route path="/" component={App}>
     <IndexRoute component={HomePageComponent} />
-    <Route path="documentation" component={AboutPageComponent} />
+    <Route path="documentation" component={DocumentationFrontPageComponent} />
+    <Route path="gettingstarted" component={GettingStartedFrontPageComponent} />
 
     <Route path="user" component={GHUserProfileComponent} />
     <Route path="user/repo/:repoName/:repoId" component={RegisterGithubPageComponent} />

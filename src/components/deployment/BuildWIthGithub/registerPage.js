@@ -42,7 +42,7 @@ class RegisterPage extends React.Component {
       dockercomposeFile: '',
       temptoken: '',
       returning: false,
-      saveButton: true
+      saveButton: false
     };
     this.socket = this.context.socket;
     this.toggleShow = this.toggleShow.bind(this);
@@ -104,7 +104,7 @@ class RegisterPage extends React.Component {
             if (!this.state.returning) {
               toastr.success('docker-compose.yml found');
             }
-            this.setState({saveButton: false});
+            this.setState({saveButton: true});
             this.setState({dockercomposeFile: status[3]});
             this.setState({showSideHelp: false});
           })
@@ -202,6 +202,7 @@ class RegisterPage extends React.Component {
         onTouchTap={this.goBack}
       />
     ];
+    let tokenClassName = this.validateTempwebaddress() ? "ui positive message" : "ui negative message";
     return (
       <div className="ui relaxed stackable grid fluid container">
 
@@ -262,7 +263,7 @@ class RegisterPage extends React.Component {
                   }
                   <br />
                   <RaisedButton label="Save"
-                                disabled={this.state.saveButton}
+                                disabled={!this.state.saveButton}
                                 primary style={{marginLeft: "30%"}}
                                 onClick={this.saveGithubDemoModelData}/>
                 </div>
@@ -277,8 +278,14 @@ class RegisterPage extends React.Component {
                     <div className="ui relaxed grid container segment">
                       <div className="two column row">
                         <div className="thirteen wide column">
-                          <u>Token:</u>
-                          <h4>{`gh:${this.state.tempwebaddress}:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`}</h4>
+                          <div className={tokenClassName}>
+                            <u>Token:</u>
+                            <b>
+                              <p
+                                style={{fontSize: "80%"}}
+                              >{`gh:${this.state.tempwebaddress}:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`}</p>
+                            </b>
+                          </div>
                         </div>
                         <div className="three wide column">
                           {this.validateTempwebaddress() ? <GoAhead style={{height: '', width: ''}} color={green500} /> : <StopNow style={{height: '', width: ''}} color={red500} />}
@@ -286,7 +293,17 @@ class RegisterPage extends React.Component {
                       </div>
                       <div className="one column row">
                         <div className="sixteen wide column">
-                          Insert info about how to proceed with deployment
+                          <div className="ui orange message">
+                            <p>docker-compose.yml file was not found in the github repository. Please see <Link to="documentation">documentation</Link> to see samples and one to your repository.</p>
+                          </div>
+                          <div className="ui yellow message">
+                            <p>Your deployment will run on the same machine that runs this webapp.</p>
+                          </div>
+                          {(this.state.webappUnreachableErrorText.length > 0 || this.state.webappLocalUnreachableErrorText.length > 0) &&
+                          <div className="ui orange message">
+                            <p>If this is a local deployment (your machine is not reachable on it's public IP), you must select the "Webapp is running locally" option.</p>
+                          </div>
+                          }
                         </div>
                       </div>
                     </div>
@@ -298,8 +315,14 @@ class RegisterPage extends React.Component {
                     <div className="ui relaxed grid container segment">
                       <div className="two column row">
                         <div className="thirteen wide column">
-                          <u>Token:</u>
-                          <h4>{`gh:${this.state.tempwebaddress}:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`}</h4>
+                          <div className={tokenClassName}>
+                            <u>Token:</u>
+                            <b>
+                              <p
+                                style={{fontSize: "80%"}}
+                              >{`gh:${this.state.tempwebaddress}:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`}</p>
+                            </b>
+                          </div>
                         </div>
                         <div className="three wide column">
                           {this.validateTempwebaddress() ? <GoAhead style={{height: '', width: ''}} color={green500} /> : <StopNow style={{height: '', width: ''}} color={red500} />}
@@ -307,7 +330,23 @@ class RegisterPage extends React.Component {
                       </div>
                       <div className="one column row">
                         <div className="sixteen wide column">
-                          Insert info about how to proceed with deployment
+                          <div className="ui info message">
+                            <div className="header">
+                              Steps
+                            </div>
+                            <ul className="list">
+                              <li>Enter the application details and copy the Token.</li>
+                              <li>Use this Token to do registration with the cvfy lib. See <Link to="documentation">documentation</Link>.</li>
+                            </ul>
+                          </div>
+                          <div className="ui yellow message">
+                            <p>Your deployment will run on the same machine that runs this webapp.</p>
+                          </div>
+                          {(this.state.webappUnreachableErrorText.length > 0 || this.state.webappLocalUnreachableErrorText.length > 0) &&
+                          <div className="ui orange message">
+                            <p>If this is a local deployment (your machine is not reachable on it's public IP), you must select the "Webapp is running locally" option.</p>
+                          </div>
+                          }
                         </div>
                       </div>
                     </div>
@@ -327,7 +366,7 @@ class RegisterPage extends React.Component {
           open={this.state.showDockerModalState}
           onRequestClose={this.goBack}>
           We require docker-compose.yml to proceed with the deployment.
-          Please see <Link to="/about">documentation</Link>.
+          Please see <Link to="/documentation">documentation</Link>.
         </Dialog>
       </div>
     );
