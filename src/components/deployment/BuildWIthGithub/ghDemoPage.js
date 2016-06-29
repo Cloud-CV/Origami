@@ -29,6 +29,15 @@ class GHDemoPage extends React.Component {
         this.setState({
           outputData: Object.assign(Object.assign([], this.state.outputData), data.data)
         });
+        $("#appbar-progress").progress({
+          percent: "100%"
+        });
+        setTimeout(() => {
+          $("#appbar-progress").css('visibility', 'hidden');
+          $("#appbar-progress").progress({
+            percent: "0%"
+          });
+        }, 1000);
       }
       if (data.terminalData) {
         this.setState({
@@ -38,6 +47,15 @@ class GHDemoPage extends React.Component {
     });
     this.socket.on('malformedoutputdata', () => {
       toastr.error('Malformed output data received');
+      $("#appbar-progress").progress({
+        percent: "100%"
+      });
+      setTimeout(() => {
+        $("#appbar-progress").css('visibility', 'hidden');
+        $("#appbar-progress").progress({
+          percent: "0%"
+        });
+      }, 1000);
     });
     getDeployed(this.props.params.repoId).then(data => {
       this.setState({demoModel: JSON.parse(data)[0]});

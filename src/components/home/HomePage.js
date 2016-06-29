@@ -79,8 +79,17 @@ class HomePage extends React.Component {
               </Link>
               <br /><br />
 
-              <div className="ui padded">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type book.
+              <div className="ui centered grid">
+                <div className="ui left aligned centered ten wide column">
+                  <div className="ui padded">
+                    <div className="ui ordered list">
+                      <div className="item">Pull your code from Github</div>
+                      <div className="item">Register your app</div>
+                      <div className="item">Select I/O components</div>
+                      <div className="item">Use your demo</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -95,9 +104,18 @@ class HomePage extends React.Component {
               </Link>
               <br /><br />
 
-              <div className="ui padded">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type book.
-              </div>
+              <div className="ui centered grid">
+                <div className="ui left aligned centered ten wide column">
+                  <div className="ui padded">
+                    <div className="ui ordered list">
+                      <div className="item">Run your code</div>
+                      <div className="item">Register your app</div>
+                      <div className="item">Select I/O components</div>
+                      <div className="item">Use your demo</div>
+                    </div>
+                  </div>
+                </div>
+                </div>
             </div>
           </div>
 

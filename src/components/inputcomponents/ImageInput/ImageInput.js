@@ -54,18 +54,9 @@ class ImageInput extends React.Component {
         processData: false,
         async: true,
         success: data => {
-          $("#appbar-progress").progress({
-            percent: "100%"
-          });
           clearTimeout(timeout1);
           clearTimeout(timeout2);
           clearTimeout(timeout3);
-          setTimeout(() => {
-            $("#appbar-progress").css('visibility', 'hidden');
-            $("#appbar-progress").progress({
-              percent: "0%"
-            });
-          }, 1000);
         },
         error: (xhr, textStatus, errorThrown) => {
           $("#appbar-progress").css('visibility', 'hidden');
