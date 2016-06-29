@@ -7,6 +7,11 @@ class TextImageInput extends React.Component {
   constructor(props) {
     super(props);
     this.sendRequest = this.sendRequest.bind(this);
+    this.updateFormData = this.updateFormData.bind(this);
+  }
+
+  componentDidMount() {
+    this.formData = new FormData($('#send-text')[0]);
   }
 
   shouldComponentUpdate() {
@@ -14,7 +19,6 @@ class TextImageInput extends React.Component {
   }
 
   sendRequest(sendAddr, calling_context) {
-    const form_data = new FormData($('#send-text')[0]);
     if (calling_context === "demo") {
       let timeout1 = '';
       let timeout2 = '';
@@ -43,7 +47,7 @@ class TextImageInput extends React.Component {
       $.ajax({
         type: 'POST',
         url: sendAddr,
-        data: form_data,
+        data: this.formData,
         contentType: false,
         cache: false,
         processData: false,
@@ -73,6 +77,10 @@ class TextImageInput extends React.Component {
     }
   }
 
+  updateFormData(newfile, newfilename) {
+    this.formData.set(newfilename, newfile, newfilename);
+  }
+
   render() {
     return (
       <div className="ui centered center aligned grid">
@@ -80,13 +88,17 @@ class TextImageInput extends React.Component {
           <div key={Math.random()}>
             <br /><br />
             {this.props.labels.map((label, index) =>
-              [<SingleInput key={Math.random()} index={index} calling_context={this.props.calling_context} label={label} />,
+              [<SingleInput key={Math.random()}
+                            index={index}
+                            updateFormData={this.updateFormData}
+                            calling_context={this.props.calling_context}
+                            label={label} />,
                 <br key={Math.random()} />,
                 <br key={Math.random()} />]
             )}
             <input type="hidden" name="socket-id" value={this.props.socketId} />
           </div>
-        </form><br />
+        </form>
         <pre className="ui centered center aligned">
           <br />
           <RaisedButton label="Send" primary

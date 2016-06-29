@@ -297,7 +297,7 @@ class RegisterPage extends React.Component {
                             <u>Token:</u>
                             <b>
                               <p
-                                style={{fontSize: "80%"}}
+                                style={{fontSize: "90%"}}
                               >{`gh:${this.state.tempwebaddress}:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`}</p>
                             </b>
                           </div>
@@ -334,7 +334,7 @@ class RegisterPage extends React.Component {
                             <u>Token:</u>
                             <b>
                               <p
-                                style={{fontSize: "80%"}}
+                                style={{fontSize: "90%"}}
                               >{`gh:${this.state.tempwebaddress}:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`}</p>
                             </b>
                           </div>

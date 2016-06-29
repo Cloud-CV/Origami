@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
+import Dropzone from 'react-dropzone';
 
 const singleInput = (props) => {
 
@@ -8,8 +8,9 @@ const singleInput = (props) => {
       window.URL.createObjectURL(file);
   }
 
-  function uploadButtonClicked(index) {
-    document.getElementById('input-image-' + index).click();
+  function onDrop(files){
+    props.updateFormData(files[0], 'input-image-' + props.index);
+    updateImage(props.index, files[0]);
   }
 
   return (
@@ -20,22 +21,20 @@ const singleInput = (props) => {
         </div>
       </div>
       <div className="centered row">
-        <div className="ui three wide column">
-          <img className="ui fluid medium bordered image"
-               id={"input-image-preview-" + props.index} />
+        <div className="" style={{height: "100%", cursor: "pointer"}}>
+          <Dropzone onDrop={onDrop} multiple={false} style={{height: "inherit"}}>
+            <div className="ui card">
+              <div className="ui fluid image">
+                <img className="ui fluid medium bordered image"
+                     src={require('../../assets/wireframe.png')}
+                     id={"input-image-preview-" + props.index} />
+              </div>
+              <div className="content">
+                Drag and Drop or Click to upload
+              </div>
+            </div>
+          </Dropzone>
         </div>
-        <div>
-          <RaisedButton label="Choose file" primary
-                        onClick={() => uploadButtonClicked(props.index)}/>
-        </div>
-      </div>
-      <div>
-        <input placeholder={props.label}
-               name={"input-image-" + props.index}
-               id={"input-image-" + props.index}
-               type="file"
-               onChange={(e) => updateImage(props.index, e.target.files[0])}
-               style={{width: "25vw", display: "None"}}/>
       </div>
     </div>
   );
@@ -43,7 +42,8 @@ const singleInput = (props) => {
 
 singleInput.propTypes = {
   label: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired
+  index: PropTypes.number.isRequired,
+  updateFormData: PropTypes.func.isRequired
 };
 
 export default singleInput;

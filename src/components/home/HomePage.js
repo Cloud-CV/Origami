@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { cyan50, pink50 } from 'material-ui/styles/colors';
 import * as loginActions from '../../actions/loginActions';
 
 class HomePage extends React.Component {
@@ -35,7 +34,7 @@ class HomePage extends React.Component {
         <div className="ui raised fluid segment text sixteen wide padded grid">
           <div className="four wide column">
             <a href="http://www.cloudcv.org/">
-              <img className="ui centered fluid medium bordered rounded image" src={require("./cloudcv_logo.png")}/>
+              <img className="ui centered fluid medium bordered rounded image" src={require("./../assets/cloudcv_logo.png")}/>
             </a>
           </div>
           <div className="twelve wide padded text left aligned container column grid">

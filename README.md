@@ -25,3 +25,8 @@ Follow issues template to file an issue unless it is a feature request.
 6. `npm run build -s`
 
 (building for production will take some time and require > 1GB ram - use swap if your machine doesn't have meet the requirements)
+
+
+## License
+
+This software is licensed under GNU AGPLv3. Please see the included `License` file. All external libraries, if modified, will be mentioned below explicitly.

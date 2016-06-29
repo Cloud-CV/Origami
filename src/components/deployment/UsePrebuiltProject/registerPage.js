@@ -313,7 +313,7 @@ class RegisterPage extends React.Component {
                             <u>Token:</u>
                             <b>
                               <p
-                                style={{fontSize: "80%"}}
+                                style={{fontSize: "90%"}}
                               >{`nongh:${this.state.address}:${this.state.id}:${this.state.currentPort}:${this.state.port}:${this.state.tempwebaddress}`}</p>
                             </b>
                           </div>
