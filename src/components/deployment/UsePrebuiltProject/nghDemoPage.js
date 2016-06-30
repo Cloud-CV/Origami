@@ -56,7 +56,7 @@ class NGHDemoPage extends React.Component {
         $("#appbar-progress").progress({
           percent: "0%"
         });
-      }, 1000);
+      }, 1000); 
     });
     getDeployed(this.props.params.repoId).then(data => {
       this.setState({demoModel: JSON.parse(data)[0]});

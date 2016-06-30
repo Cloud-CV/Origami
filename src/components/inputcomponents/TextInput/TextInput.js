@@ -14,7 +14,9 @@ class TextInput extends React.Component {
   }
 
   sendRequest(sendAddr, calling_context) {
+    
     const form_data = new FormData($('#send-text')[0]);
+
     if (calling_context === "demo") {
       let timeout1 = '';
       let timeout2 = '';

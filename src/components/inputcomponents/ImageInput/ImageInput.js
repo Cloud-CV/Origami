@@ -6,13 +6,11 @@ import toastr from 'toastr';
 class ImageInput extends React.Component {
   constructor(props) {
     super(props);
-    this.formData = '';
+    this.state = {
+      files: []
+    };
     this.sendRequest = this.sendRequest.bind(this);
     this.updateFormData = this.updateFormData.bind(this);
-  }
-
-  componentDidMount() {
-    this.formData = new FormData($('#send-text')[0]);
   }
 
   shouldComponentUpdate() {
@@ -20,6 +18,12 @@ class ImageInput extends React.Component {
   }
 
   sendRequest(sendAddr, calling_context) {
+
+    let formData = new FormData($('#send-text')[0]);
+    this.state.files.map(file => {
+      formData.set(file.newfilename, file.newfile, file.newfilename);
+    });
+
     if (calling_context === "demo") {
       let timeout1 = '';
       let timeout2 = '';
@@ -48,7 +52,7 @@ class ImageInput extends React.Component {
       $.ajax({
         type: 'POST',
         url: sendAddr,
-        data: this.formData,
+        data: formData,
         contentType: false,
         cache: false,
         processData: false,
@@ -70,7 +74,9 @@ class ImageInput extends React.Component {
   }
 
   updateFormData(newfile, newfilename) {
-    this.formData.set(newfilename, newfile, newfilename);
+    this.setState({
+      files: [...this.state.files, {newfilename, newfile}]
+    });
   }
 
   render() {
