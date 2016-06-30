@@ -23,7 +23,7 @@ const app = express();
 let http = require('http').Server(app);
 let io = require('socket.io')(http);
 
-const externalip = require('externalip');
+const externalip = require('external-ip');
 const rimraf = require('rimraf');
 const mkdirp = require('mkdirp');
 const process = require('process');
@@ -114,7 +114,8 @@ io.on('connection', function(socket){
     });
 
     socket.on('getpublicipaddress', () => {
-      externalip(function (err, ip) {
+      const getIP = externalip();
+      getIP(function (err, ip) {
         if (!err) {
           socket.emit('gotpublicip', ip);
         } else {
