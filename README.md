@@ -1,5 +1,8 @@
 # CloudCVfy Webapp
 
+[![Dependency Status](https://david-dm.org/batra-mlp-lab/CloudCVfy-Frontend.svg)](https://david-dm.org/batra-mlp-lab/CloudCVfy-Frontend)
+[![devDependency Status](https://david-dm.org/batra-mlp-lab/CloudCVfy-Frontend/dev-status.svg)](https://david-dm.org/batra-mlp-lab/CloudCVfy-Frontend#info=devDependencies)
+
 Current Status: An app that works.
 
 Follow issues template to file an issue unless it is a feature request.
