@@ -14,7 +14,7 @@
     "clean-dist": "npm run remove-dist && mkdir dist",
     "remove-dist": "node_modules/.bin/rimraf ./dist",
     "build:html": "babel-node server/buildHTML.js",
-    "prebuild": "npm-run-all clean-dist test lint build:html",
+    "prebuild": "npm-run-all clean-dist test lint:build build:html",
     "build": "babel-node server/build.js",
     "postbuild": "babel-node server/distServer.js"
   },

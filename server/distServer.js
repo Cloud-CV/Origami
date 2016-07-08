@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 
 import express from 'express';
-import expresssession from 'express-session';
 import path from 'path';
 import colors from 'colors';
 import compression from 'compression';
@@ -23,7 +22,7 @@ const app = express();
 let http = require('http').Server(app);
 let io = require('socket.io')(http);
 
-const externalip = require('externalip');
+const externalip = require('external-ip');
 const rimraf = require('rimraf');
 const mkdirp = require('mkdirp');
 const process = require('process');
