@@ -12,8 +12,8 @@ router.route('/:id?')
 function getOutputComponentModel(req, res) {
   const id = req.params.id;
   if (id) {
-    Outputcomponentmodel.find({id}, (err, singlemodel) => {
-      if(err) {
+    Outputcomponentmodel.find({ id }, (err, singlemodel) => {
+      if (err) {
         res.send(err);
       } else {
         res.json(singlemodel);
@@ -21,7 +21,7 @@ function getOutputComponentModel(req, res) {
     });
   } else {
     Outputcomponentmodel.find((err, model) => {
-      if(err) {
+      if (err) {
         res.send(err);
       } else {
         res.json(model);
@@ -43,12 +43,12 @@ function addOutputComponentModel(req, res) {
 
 function updateOutputComponentModel(req, res) {
   const id = req.params.id;
-  Outputcomponentmodel.find({id}, (err, singlemodel) => {
-    if(err) {
+  Outputcomponentmodel.find({ id }, (err, singlemodel) => {
+    if (err) {
       res.send(err);
     } else {
-      Outputcomponentmodel.update({id}, req.body, {multi: false}, (err, updatedmodel) => {
-        if(err) {
+      Outputcomponentmodel.update({ id }, req.body, { multi: false }, (err, updatedmodel) => {
+        if (err) {
           res.send(err);
         } else {
           res.json(updatedmodel);
@@ -60,7 +60,7 @@ function updateOutputComponentModel(req, res) {
 
 function deleteOutputComponentModel(req, res) {
   const id = req.params.id;
-  Outputcomponentmodel.remove({id}, (err, removed) => {
+  Outputcomponentmodel.remove({ id }, (err, removed) => {
     if (err) {
       res.send(err);
     } else {

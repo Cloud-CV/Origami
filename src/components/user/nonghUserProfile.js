@@ -38,19 +38,20 @@ class NonGHUserProfile extends React.Component {
     this.props.useractions.LoadUser()
       .then(() => {
         getDeployed().then((alldeployedRepos) => {
-          this.setState({allDeployed: JSON.parse((alldeployedRepos))});
-        }).catch(err => {
-          toastr.error(err);
-        });
+          this.setState({ allDeployed: JSON.parse((alldeployedRepos)) });
+        })
+          .catch((err) => {
+            toastr.error(err);
+          });
       })
-      .catch(err => {
-        toastr.error("Error: " + err);
+      .catch((err) => {
+        toastr.error(`Error: ${err}`);
       });
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.state.user != nextProps.user) {
-      this.setState({user: nextProps.user});
+    if (this.state.user !== nextProps.user) {
+      this.setState({ user: nextProps.user });
     }
   }
 
@@ -59,10 +60,11 @@ class NonGHUserProfile extends React.Component {
       this.props.inputComponentModelActions.killInputComponentModel(projectId);
       this.props.outputComponentDemoModelActions.killOutputComponentModel(projectId);
       getDeployed().then((alldeployedRepos) => {
-        this.setState({allDeployed: JSON.parse((alldeployedRepos))});
-      }).catch(err => {
-        toastr.error(err);
-      });
+        this.setState({ allDeployed: JSON.parse((alldeployedRepos)) });
+      })
+        .catch((err) => {
+          toastr.error(err);
+        });
     });
   }
 
@@ -82,9 +84,9 @@ class NonGHUserProfile extends React.Component {
 
   getDisplayForDemoButton(project) {
     if (project) {
-      return project.status === 'input' ? "None" : "";
+      return project.status === 'input' ? 'None' : '';
     }
-    return "";
+    return '';
   }
 
   goToDemoPage(project) {
@@ -97,26 +99,27 @@ class NonGHUserProfile extends React.Component {
 
 
   toggleShow() {
-    this.setState({showOutput: this.state.showOutput == 'visible' ? 'hidden' : 'visible'});
+    this.setState({ showOutput: this.state.showOutput === 'visible' ? 'hidden' : 'visible' });
   }
 
   render() {
     return (
       <div className="ui relaxed stackable grid fluid container">
 
-        {this.state.showOutput == 'hidden' &&
-        <div className="centered row" style={{marginTop: "30vh"}}>
+        {this.state.showOutput === 'hidden' &&
+        <div className="centered row" style={{ marginTop: '30vh' }}>
           <CircularProgress size={1.5} />
         </div>}
 
         {this.state.user &&
-        <div className="sixteen column stretched row" style={{visibility: this.state.showOutput}}>
+        <div className="sixteen column stretched row" style={{ visibility: this.state.showOutput }}>
 
           <div className="four wide column ui raised rounded segment" >
             <div className="ui fluid bottom aligned medium rounded image">
               <div className="ui medium ribbon black label">@{this.state.user.login}</div>
               <img className="" onLoad={this.toggleShow}
-                   src={this.state.user.avatar_url} />
+                   src={this.state.user.avatar_url}
+              />
             </div>
           </div>
 
@@ -133,8 +136,9 @@ class NonGHUserProfile extends React.Component {
               <div className="row" ><br /><br /><br /><br /><br /></div>
               <div className="row" ><br /><br /><br /><br /></div>
               <div className="row" ><br /><br /><br /><br /></div>
-              <FloatingActionButton style={{float: "right"}}
-                                    onMouseDown={this.goToRegisterPage}>
+              <FloatingActionButton style={{ float: 'right' }}
+                                    onMouseDown={this.goToRegisterPage}
+              >
                 <ContentAdd />
               </FloatingActionButton>
             </div>
@@ -145,31 +149,31 @@ class NonGHUserProfile extends React.Component {
           {this.state.allDeployed &&
           <div className="fifteen wide column stretched stackable centered row">
             <div className="ui three padded column stackable grid">
-              {this.state.allDeployed.map(project =>
+              {this.state.allDeployed.map((project) =>
                 <CustomCard
                   header={project.name}
                   width="five"
                   centeredParent
                   key={project.id}
                   displayData={[
-                      "IP: " + project.token.split(':')[1],
-                      "Port: " + project.token.split(':')[4]
-                    ]}
+                    `IP: ${project.token.split(':')[1]}`,
+                    `Port: ${project.token.split(':')[4]}`
+                  ]}
                   buttonData={[
-                      {
-                        label: "Delete",
-                        onDeployClick: () => this.deleteDemo(project.id)
-                      },
-                      {
-                        label: "Modify",
-                        onDeployClick: () => this.modifyProject(project)
-                      },
-                      {
-                        label: "Demo",
-                        onDeployClick: () => this.goToDemoPage(project),
-                        display: this.getDisplayForDemoButton(project)
-                      }
-                    ]}
+                    {
+                      label: 'Delete',
+                      onDeployClick: () => this.deleteDemo(project.id)
+                    },
+                    {
+                      label: 'Modify',
+                      onDeployClick: () => this.modifyProject(project)
+                    },
+                    {
+                      label: 'Demo',
+                      onDeployClick: () => this.goToDemoPage(project),
+                      display: this.getDisplayForDemoButton(project)
+                    }
+                  ]}
                 />
               )}
             </div>

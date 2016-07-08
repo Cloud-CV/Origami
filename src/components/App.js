@@ -45,13 +45,13 @@ class App extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.props.login != nextProps.login) {
-      this.setState({login: nextProps.login});
+    if (this.props.login !== nextProps.login) {
+      this.setState({ login: nextProps.login });
     }
     if (window.location.pathname.split('/').slice(-1)[0] === 'demo') {
-      this.setState({displayLogin: 'none'});
+      this.setState({ displayLogin: 'none' });
     } else {
-      this.setState({displayLogin: ''});
+      this.setState({ displayLogin: '' });
     }
   }
 
@@ -70,7 +70,7 @@ class App extends React.Component {
   }
 
   initiateLogin() {
-    window.location = "/auth/github";
+    window.location = '/auth/github';
   }
 
   logout() {
@@ -88,7 +88,8 @@ class App extends React.Component {
         <AppBar
           title={
             <Link to="/"
-              style={{textDecoration: 'none', color: "inherit"}}>
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
               CVFY
             </Link>
           }
@@ -96,24 +97,26 @@ class App extends React.Component {
           iconElementRight={
           this.state.login ?
             <IconMenu
-              style={{display: this.state.displayLogin}}
+              style={{ display: this.state.displayLogin }}
               iconButtonElement={
                 <IconButton><MoreVertIcon /></IconButton>
               }
-              targetOrigin={{horizontal: 'right', vertical: 'top'}}
-              anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
+              targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+              anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+            >
               <MenuItem onTouchTap={this.logout} primaryText="Sign out" />
             </IconMenu>
             :
-             <span className="loginButton" style={{display: this.state.displayLogin}} onClick={this.initiateLogin}>
+             <span className="loginButton" style={{ display: this.state.displayLogin }} onClick={this.initiateLogin}>
                 <FlatButton label="Login"
-                style={{margin: "5%", color: "white"}}/>
+                style={{ margin: '5%', color: 'white' }}
+                />
              </span>
           }
         />
         <div id="appbar-progress"
              className="ui bottom attached indicating progress"
-             style={{visibility: "hidden"}}
+             style={{ visibility: 'hidden' }}
         >
           <div className="bar"></div>
         </div>

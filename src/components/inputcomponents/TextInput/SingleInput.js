@@ -3,9 +3,10 @@ import React, { PropTypes } from 'react';
 const singleInput = (props) => {
   return (
     <input placeholder={props.label}
-           name={"input-text-" + props.index}
+           name={`input-text-${props.index}`}
            type="text"
-           style={{width: "25vw"}}/>
+           style={{ width: '25vw' }}
+    />
   );
 };
 

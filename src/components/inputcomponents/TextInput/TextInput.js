@@ -14,34 +14,35 @@ class TextInput extends React.Component {
   }
 
   sendRequest(sendAddr, calling_context) {
-    
+
     const form_data = new FormData($('#send-text')[0]);
 
-    if (calling_context === "demo") {
+    if (calling_context === 'demo') {
       let timeout1 = '';
       let timeout2 = '';
       let timeout3 = '';
-      $("#appbar-progress").css('visibility', 'visible')
-        .promise().done(() => {
-        $("#appbar-progress").progress({
-          percent: "33%"
+      $('#appbar-progress').css('visibility', 'visible')
+        .promise()
+        .done(() => {
+          $('#appbar-progress').progress({
+            percent: '33%'
+          });
+          timeout1 = setTimeout(() => {
+            $('#appbar-progress').progress({
+              percent: '50%'
+            });
+          }, 300);
+          timeout2 = setTimeout(() => {
+            $('#appbar-progress').progress({
+              percent: '65%'
+            });
+          }, 600);
+          timeout3 = setTimeout(() => {
+            $('#appbar-progress').progress({
+              percent: '85%'
+            });
+          }, 1000);
         });
-        timeout1 = setTimeout(() => {
-          $("#appbar-progress").progress({
-            percent: "50%"
-          });
-        }, 300);
-        timeout2 = setTimeout(() => {
-          $("#appbar-progress").progress({
-            percent: "65%"
-          });
-        }, 600);
-        timeout3 = setTimeout(() => {
-          $("#appbar-progress").progress({
-            percent: "85%"
-          });
-        }, 1000);
-      });
       $.ajax({
         type: 'POST',
         url: sendAddr,
@@ -50,26 +51,26 @@ class TextInput extends React.Component {
         cache: false,
         processData: false,
         async: true,
-        success: data => {
-          $("#appbar-progress").progress({
-            percent: "100%"
+        success: (data) => {
+          $('#appbar-progress').progress({
+            percent: '100%'
           });
           clearTimeout(timeout1);
           clearTimeout(timeout2);
           clearTimeout(timeout3);
           setTimeout(() => {
-            $("#appbar-progress").css('visibility', 'hidden');
-            $("#appbar-progress").progress({
-              percent: "0%"
+            $('#appbar-progress').css('visibility', 'hidden');
+            $('#appbar-progress').progress({
+              percent: '0%'
             });
           }, 1000);
         },
         error: (xhr, textStatus, errorThrown) => {
-          $("#appbar-progress").css('visibility', 'hidden');
-          $("#appbar-progress").progress({
-            percent: "0%"
+          $('#appbar-progress').css('visibility', 'hidden');
+          $('#appbar-progress').progress({
+            percent: '0%'
           });
-          toastr.error("Error occurred!");
+          toastr.error('Error occurred!');
         }
       });
     }
@@ -93,7 +94,10 @@ class TextInput extends React.Component {
           <br />
           <RaisedButton label="Send" primary
                         key={Math.random()}
-                        onClick={() => {this.sendRequest(this.props.sendAddr, this.props.calling_context);}}/>
+                        onClick={() => {
+                          this.sendRequest(this.props.sendAddr, this.props.calling_context);
+                        }}
+          />
         </pre>
       </div>
     );

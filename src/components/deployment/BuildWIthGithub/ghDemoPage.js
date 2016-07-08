@@ -24,18 +24,18 @@ class GHDemoPage extends React.Component {
   }
 
   componentWillMount() {
-    this.socket.on('injectoutputdata', data => {
+    this.socket.on('injectoutputdata', (data) => {
       if (data.data) {
         this.setState({
           outputData: Object.assign(Object.assign([], this.state.outputData), data.data)
         });
-        $("#appbar-progress").progress({
-          percent: "100%"
+        $('#appbar-progress').progress({
+          percent: '100%'
         });
         setTimeout(() => {
-          $("#appbar-progress").css('visibility', 'hidden');
-          $("#appbar-progress").progress({
-            percent: "0%"
+          $('#appbar-progress').css('visibility', 'hidden');
+          $('#appbar-progress').progress({
+            percent: '0%'
           });
         }, 1000);
       }
@@ -47,24 +47,24 @@ class GHDemoPage extends React.Component {
     });
     this.socket.on('malformedoutputdata', () => {
       toastr.error('Malformed output data received');
-      $("#appbar-progress").progress({
-        percent: "100%"
+      $('#appbar-progress').progress({
+        percent: '100%'
       });
       setTimeout(() => {
-        $("#appbar-progress").css('visibility', 'hidden');
-        $("#appbar-progress").progress({
-          percent: "0%"
+        $('#appbar-progress').css('visibility', 'hidden');
+        $('#appbar-progress').progress({
+          percent: '0%'
         });
       }, 1000);
     });
-    getDeployed(this.props.params.repoId).then(data => {
-      this.setState({demoModel: JSON.parse(data)[0]});
+    getDeployed(this.props.params.repoId).then((data) => {
+      this.setState({ demoModel: JSON.parse(data)[0] });
     });
-    getComponentDeployed(this.props.params.repoId, 'input').then(data => {
-      this.setState({inputModel: JSON.parse(data)[0]});
+    getComponentDeployed(this.props.params.repoId, 'input').then((data) => {
+      this.setState({ inputModel: JSON.parse(data)[0] });
     });
-    getComponentDeployed(this.props.params.repoId, 'output').then(data => {
-      this.setState({outputModel: JSON.parse(data)[0]});
+    getComponentDeployed(this.props.params.repoId, 'output').then((data) => {
+      this.setState({ outputModel: JSON.parse(data)[0] });
     });
   }
 
@@ -72,7 +72,7 @@ class GHDemoPage extends React.Component {
     return (
       <div className="ui relaxed stackable grid fluid container">
         {this.state.demoModel &&
-        <div className="sixteen wide column stretched row" style={{visibility: this.state.showOutput}}>
+        <div className="sixteen wide column stretched row" style={{ visibility: this.state.showOutput }}>
           <div className="row" >
             <h1>{this.state.demoModel.name}</h1>
             {this.state.demoModel.description}
@@ -92,7 +92,7 @@ class GHDemoPage extends React.Component {
                   </h2>
                   {Object.keys(this.state.demoModel).length && Object.keys(this.state.inputModel).length &&
                   getInputComponentById(this.state.inputModel.baseComponentId,
-                    this.state.inputModel.props, "demo", this.socketId,
+                    this.state.inputModel.props, 'demo', this.socketId,
                     `http://${this.state.demoModel.token.split(':')[1]}:${this.state.demoModel.token.split(':')[4]}/event`
                   )}
                 </div>
@@ -106,7 +106,7 @@ class GHDemoPage extends React.Component {
                   </h2>
                   {Object.keys(this.state.demoModel).length && Object.keys(this.state.outputModel).length &&
                   getOutputComponentById(this.state.outputModel.baseComponentId,
-                    this.state.outputModel.props, "demo", this.state.outputData
+                    this.state.outputModel.props, 'demo', this.state.outputData
                   )}
                 </div>
 
@@ -118,14 +118,15 @@ class GHDemoPage extends React.Component {
         {this.state.demoModel.terminal &&
         <div className="one column row">
           <div className="column">
-            <div className="ui card" style={{width: "100%"}}>
+            <div className="ui card" style={{ width: '100%' }}>
               <div className="content">
                 <div className="header">Terminal</div>
               </div>
               <div className="content">
                 <div className="ui padded raised segment container"
-                     style={{height: "52vh", backgroundColor: "black",
-                           color: "white", overflowY: "scroll"}}>
+                     style={{ height: '52vh', backgroundColor: 'black',
+                           color: 'white', overflowY: 'scroll' }}
+                >
                   {this.state.terminalData.map((data) =>
                     <p key={Math.random()}>{data}</p>
                   )}

@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import SingleOutput from './SingleOutput';
 import LinearProgress from 'material-ui/LinearProgress';
 
-const TextOutput = ({headers, calling_context, data}) => {
+const TextOutput = ({ headers, calling_context, data }) => {
   return (
     <div>
       <div key={Math.random()} className="six wide stackable stretched grid container">
@@ -13,7 +13,8 @@ const TextOutput = ({headers, calling_context, data}) => {
               calling_context={calling_context}
               index={index}
               header={header}
-              data={data[index] || <LinearProgress mode="indeterminate" />} />,
+              data={data[index] || <LinearProgress mode="indeterminate" />}
+           />,
             <br key={Math.random()} />,
             <br key={Math.random()} />]
         )}

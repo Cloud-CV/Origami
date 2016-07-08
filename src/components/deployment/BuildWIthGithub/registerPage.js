@@ -58,20 +58,20 @@ class RegisterPage extends React.Component {
 
   componentWillMount() {
     getRepo(this.props.params.repoName)
-      .then(currentRepo => {
-        this.setState({currentRepo: JSON.parse(currentRepo)});
+      .then((currentRepo) => {
+        this.setState({ currentRepo: JSON.parse(currentRepo) });
       })
       .then(() => {
-        getDeployed(this.state.currentRepo.id).then(singleRepo => {
+        getDeployed(this.state.currentRepo.id).then((singleRepo) => {
           if (JSON.parse(singleRepo).length > 0) {
-            this.setState({returning: true});
-            this.setState({tempwebaddress: JSON.parse(singleRepo)[0].token.split(':')[1]});
+            this.setState({ returning: true });
+            this.setState({ tempwebaddress: JSON.parse(singleRepo)[0].token.split(':')[1] });
             if (JSON.parse(singleRepo)[0].token.split(':')[1] === '0.0.0.0') {
-              this.setState({showLocalDeploymentCheckBox: true});
+              this.setState({ showLocalDeploymentCheckBox: true });
             }
-            this.setState({temptoken: JSON.parse(singleRepo)[0].token});
-            this.setState({description: JSON.parse(singleRepo)[0].description});
-            this.setState({showTerminal: JSON.parse(singleRepo)[0].terminal});
+            this.setState({ temptoken: JSON.parse(singleRepo)[0].token });
+            this.setState({ description: JSON.parse(singleRepo)[0].description });
+            this.setState({ showTerminal: JSON.parse(singleRepo)[0].terminal });
           }
         });
       })
@@ -80,76 +80,77 @@ class RegisterPage extends React.Component {
         this.socket.emit('fetchcurrentport');
         this.socket.emit('getpublicipaddress');
         this.socket.on('fetchedport', (port) => {
-          this.setState({freePortForCode: port});
+          this.setState({ freePortForCode: port });
         });
         this.socket.on('fetchedcurrentport', (port) => {
-          this.setState({currentPort: port});
+          this.setState({ currentPort: port });
         });
         this.socket.on('gotpublicip', (ip) => {
-          this.setState({webappaddress: ip}, () => {
-            if (this.state.tempwebaddress.length == 0) {
-              this.setState({tempwebaddress: this.state.webappaddress});
+          this.setState({ webappaddress: ip }, () => {
+            if (this.state.tempwebaddress.length === 0) {
+              this.setState({ tempwebaddress: this.state.webappaddress });
             }
           });
           getWebAppStatus(ip).then(() => {
-          }).catch(err => {
-            this.setState({webappUnreachableErrorText: 'This WebApp cannot be reached on its public IP'});
-            this.setState({showLocalDeploymentCheckBox: true});
-          });
+          })
+            .catch((err) => {
+              this.setState({ webappUnreachableErrorText: 'This WebApp cannot be reached on its public IP' });
+              this.setState({ showLocalDeploymentCheckBox: true });
+            });
           this.toggleShow();
         });
-        this.socket.on('erroringettingpublicip', err => {
+        this.socket.on('erroringettingpublicip', (err) => {
           toastr.error('Error in getting public IP :(');
         });
       })
       .then(() => {
-        checkDockerfile(this.props.params.repoName).then(status => {
-            if (!this.state.returning) {
-              toastr.success('docker-compose.yml found');
-            }
-            this.setState({saveButton: true});
-            this.setState({dockercomposeFile: status[3]});
-            this.setState({showSideHelp: false});
-          })
-          .catch(err => {
-            if (err == 'Error: Not Found') {
-              toastr.error("Coudn't fetch repository contents");
+        checkDockerfile(this.props.params.repoName).then((status) => {
+          if (!this.state.returning) {
+            toastr.success('docker-compose.yml found');
+          }
+          this.setState({ saveButton: true });
+          this.setState({ dockercomposeFile: status[3] });
+          this.setState({ showSideHelp: false });
+        })
+          .catch((err) => {
+            if (err === 'Error: Not Found') {
+              toastr.error('Coudn\'t fetch repository contents');
               browserHistory.push('/user');
             } else {
-              this.setState({saveButton: false});
-              this.setState({dockerModalError: err});
+              this.setState({ saveButton: false });
+              this.setState({ dockerModalError: err });
             }
           });
       })
-      .catch(err => {
+      .catch((err) => {
         toastr.error(err);
       });
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.state.currentRepo != nextProps.currentRepo) {
-      this.setState({currentRepo: nextProps.currentRepo});
+    if (this.state.currentRepo !== nextProps.currentRepo) {
+      this.setState({ currentRepo: nextProps.currentRepo });
     }
-    if (this.state.githubDemoModel != nextProps.githubDemoModel) {
-      this.setState({githubDemoModel: nextProps.githubDemoModel});
+    if (this.state.githubDemoModel !== nextProps.githubDemoModel) {
+      this.setState({ githubDemoModel: nextProps.githubDemoModel });
     }
   }
 
   onLocalDeploymentCheckBoxCheck(e) {
     if (!this.state.deploymentBoxSelectedStatus) {
       getWebAppStatus('0.0.0.0').then(() => {
-        })
-        .catch(err => {
-          this.setState({webappLocalUnreachableErrorText: "This WebApp cannot be reached locally on 0.0.0.0"});
+      })
+        .catch((err) => {
+          this.setState({ webappLocalUnreachableErrorText: 'This WebApp cannot be reached locally on 0.0.0.0' });
         });
     }
     let selectionPool = ['0.0.0.0', this.state.webappaddress];
-    this.setState({tempwebaddress: selectionPool[this.state.deploymentBoxSelectedStatus ? 1 : 0]});
-    this.setState({deploymentBoxSelectedStatus: !this.state.deploymentBoxSelectedStatus});
+    this.setState({ tempwebaddress: selectionPool[this.state.deploymentBoxSelectedStatus ? 1 : 0] });
+    this.setState({ deploymentBoxSelectedStatus: !this.state.deploymentBoxSelectedStatus });
   }
 
   saveGithubDemoModelData() {
-    if(this.state.dockerModalError) {
+    if (this.state.dockerModalError) {
       this.toggleDockerModalShow();
     } else {
       let dataToUpdate = {
@@ -181,19 +182,19 @@ class RegisterPage extends React.Component {
   }
 
   updateDescription(e) {
-    this.setState({description: e.target.value});
+    this.setState({ description: e.target.value });
   }
 
   toggleTerminal() {
-    this.setState({showTerminal: !this.state.showTerminal});
+    this.setState({ showTerminal: !this.state.showTerminal });
   }
 
   toggleShow() {
-    this.setState({showOutput: this.state.showOutput == 'visible' ? 'hidden' : 'visible'});
+    this.setState({ showOutput: this.state.showOutput === 'visible' ? 'hidden' : 'visible' });
   }
 
   toggleDockerModalShow() {
-    this.setState({showDockerModalState: !this.state.showDockerModalState});
+    this.setState({ showDockerModalState: !this.state.showDockerModalState });
   }
 
   goBack() {
@@ -210,17 +211,17 @@ class RegisterPage extends React.Component {
         onTouchTap={this.goBack}
       />
     ];
-    let tokenClassName = this.validateTempwebaddress() ? "ui positive message" : "ui negative message";
+    let tokenClassName = this.validateTempwebaddress() ? 'ui positive message' : 'ui negative message';
     return (
       <div className="ui relaxed stackable grid fluid container">
 
-        {this.state.showOutput == 'hidden' &&
-        <div className="centered row" style={{marginTop: "30vh"}}>
+        {this.state.showOutput === 'hidden' &&
+        <div className="centered row" style={{ marginTop: '30vh' }}>
           <CircularProgress size={1.5} />
         </div>}
 
         {this.state.currentRepo &&
-        <div className="sixteen wide column stretched row" style={{visibility: this.state.showOutput}}>
+        <div className="sixteen wide column stretched row" style={{ visibility: this.state.showOutput }}>
           <div className="row" >
             <h1>{this.state.currentRepo.name}</h1>
             <h5>{this.state.currentRepo.description}</h5>
@@ -249,7 +250,7 @@ class RegisterPage extends React.Component {
                     rows={2}
                     rowsMax={8}
                   /><br />
-                  <div className="" style={{marginLeft: '27%', maxWidth: '50%'}}>
+                  <div className="" style={{ marginLeft: '27%', maxWidth: '50%' }}>
                     <Checkbox
                       checked={this.state.showTerminal}
                       onCheck={this.toggleTerminal}
@@ -257,17 +258,17 @@ class RegisterPage extends React.Component {
                     /><br />
                   </div>
                   {this.state.webappUnreachableErrorText.length > 0 &&
-                  <div className="ui raised compact centered red segment" style={{color: 'red', marginLeft: '20%'}}>
+                  <div className="ui raised compact centered red segment" style={{ color: 'red', marginLeft: '20%' }}>
                     {this.state.webappUnreachableErrorText}<br />
                   </div>
                   }
                   {this.state.webappLocalUnreachableErrorText.length > 0 &&
-                  <div className="ui raised compact centered red segment" style={{color: 'red', marginLeft: '20%'}}>
+                  <div className="ui raised compact centered red segment" style={{ color: 'red', marginLeft: '20%' }}>
                     {this.state.webappLocalUnreachableErrorText}<br />
                   </div>
                   }
                   {this.state.showLocalDeploymentCheckBox &&
-                  <div className="" style={{marginLeft: '27%', maxWidth: '45%'}}>
+                  <div className="" style={{ marginLeft: '27%', maxWidth: '45%' }}>
                     <Checkbox
                       checked={this.state.deploymentBoxSelectedStatus}
                       disabled={this.state.returning}
@@ -279,8 +280,9 @@ class RegisterPage extends React.Component {
                   <br />
                   <RaisedButton label="Save"
                                 disabled={!this.state.saveButton}
-                                primary style={{marginLeft: "30%"}}
-                                onClick={this.saveGithubDemoModelData}/>
+                                primary style={{ marginLeft: '30%' }}
+                                onClick={this.saveGithubDemoModelData}
+                  />
                 </div>
 
                 <div className="ui vertical internal divider">
@@ -296,27 +298,35 @@ class RegisterPage extends React.Component {
                           <div className={tokenClassName}>
                             <u>Token:</u>
                             <b>
-                              <p
-                                style={{fontSize: "90%"}}
-                              >{`gh:${this.state.tempwebaddress}:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`}</p>
+                              <p style={{ fontSize: '90%' }}>
+                                {`gh:${this.state.tempwebaddress}:${this.state.currentRepo.id}:` +
+                                `${this.state.currentPort}:${this.state.freePortForCode}`}</p>
                             </b>
                           </div>
                         </div>
                         <div className="three wide column">
-                          {this.validateTempwebaddress() ? <GoAhead style={{height: '', width: ''}} color={green500} /> : <StopNow style={{height: '', width: ''}} color={red500} />}
+                          {this.validateTempwebaddress() ?
+                            <GoAhead style={{ height: '', width: '' }} color={green500} />
+                            :
+                            <StopNow style={{ height: '', width: '' }} color={red500} />}
                         </div>
                       </div>
                       <div className="one column row">
                         <div className="sixteen wide column">
                           <div className="ui orange message">
-                            <p>docker-compose.yml file was not found in the github repository. Please see <Link to="documentation">documentation</Link> to see samples and one to your repository.</p>
+                            <p>docker-compose.yml file was not found in the github repository.
+                              Please see <Link to="documentation">documentation</Link>
+                              to see samples and one to your repository.</p>
                           </div>
                           <div className="ui yellow message">
                             <p>Your deployment will run on the same machine that runs this webapp.</p>
                           </div>
-                          {(this.state.webappUnreachableErrorText.length > 0 || this.state.webappLocalUnreachableErrorText.length > 0) &&
+                          {(this.state.webappUnreachableErrorText.length > 0
+                          ||
+                          this.state.webappLocalUnreachableErrorText.length > 0) &&
                           <div className="ui orange message">
-                            <p>If this is a local deployment (your machine is not reachable on it's public IP), you must select the "Webapp is running locally" option.</p>
+                            <p>If this is a local deployment (your machine is not reachable on it's public IP),
+                              you must select the "Webapp is running locally" option.</p>
                           </div>
                           }
                         </div>
@@ -333,14 +343,17 @@ class RegisterPage extends React.Component {
                           <div className={tokenClassName}>
                             <u>Token:</u>
                             <b>
-                              <p
-                                style={{fontSize: "90%"}}
-                              >{`gh:${this.state.tempwebaddress}:${this.state.currentRepo.id}:${this.state.currentPort}:${this.state.freePortForCode}`}</p>
+                              <p style={{ fontSize: '90%' }}>
+                                {`gh:${this.state.tempwebaddress}:${this.state.currentRepo.id}:` +
+                                `${this.state.currentPort}:${this.state.freePortForCode}`}</p>
                             </b>
                           </div>
                         </div>
                         <div className="three wide column">
-                          {this.validateTempwebaddress() ? <GoAhead style={{height: '', width: ''}} color={green500} /> : <StopNow style={{height: '', width: ''}} color={red500} />}
+                          {this.validateTempwebaddress() ?
+                            <GoAhead style={{ height: '', width: '' }} color={green500} />
+                            :
+                            <StopNow style={{ height: '', width: '' }} color={red500} />}
                         </div>
                       </div>
                       <div className="one column row">
@@ -359,7 +372,8 @@ class RegisterPage extends React.Component {
                           </div>
                           {(this.state.webappUnreachableErrorText.length > 0 || this.state.webappLocalUnreachableErrorText.length > 0) &&
                           <div className="ui orange message">
-                            <p>If this is a local deployment (your machine is not reachable on it's public IP), you must select the "Webapp is running locally" option.</p>
+                            <p>If this is a local deployment (your machine is not reachable on it's public IP),
+                              you must select the "Webapp is running locally" option.</p>
                           </div>
                           }
                         </div>
@@ -379,7 +393,8 @@ class RegisterPage extends React.Component {
           actions={action}
           modal
           open={this.state.showDockerModalState}
-          onRequestClose={this.goBack}>
+          onRequestClose={this.goBack}
+        >
           We require docker-compose.yml to proceed with the deployment.
           Please see <Link to="/documentation">documentation</Link>.
         </Dialog>

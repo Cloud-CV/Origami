@@ -9,7 +9,7 @@ class TextOutputShowcaseCard extends React.Component {
   constructor(props) {
     super(props);
     let initHeaders = [];
-    if (props.demoProps.outputComponentDemoModel.baseComponentId == '1') {
+    if (props.demoProps.outputComponentDemoModel.baseComponentId === '1') {
       initHeaders = props.demoProps.outputComponentDemoModel.props;
     }
     this.state = {
@@ -33,28 +33,28 @@ class TextOutputShowcaseCard extends React.Component {
   }
 
   showModifyDialog() {
-    this.setState({modifyDialogDisplay: true});
+    this.setState({ modifyDialogDisplay: true });
   }
 
   hideModifyDialog() {
-    this.setState({modifyDialogDisplay: false});
+    this.setState({ modifyDialogDisplay: false });
   }
 
   showPreviewDialog() {
-    this.setState({previewDialogDisplay: true});
+    this.setState({ previewDialogDisplay: true });
   }
 
   hidePreviewDialog() {
-    this.setState({previewDialogDisplay: false});
+    this.setState({ previewDialogDisplay: false });
   }
 
   updateOutputComponentModel() {
-    if(Object.keys(this.demoModel).length == 0) {
+    if (Object.keys(this.demoModel).length === 0) {
       toastr.error('Registration info not found! Register again');
       browserHistory.push('/');
     } else {
       let propsToStore = [];
-      this.state.headers.map(header => {
+      this.state.headers.map((header) => {
         propsToStore.push(header);
       });
       this.outputComponentDemoModelActions.updateOutputComponentModel({
@@ -77,10 +77,10 @@ class TextOutputShowcaseCard extends React.Component {
 
   updateHeaders(data) {
     let dataToUpdate = [];
-    data.map(value => {
+    data.map((value) => {
       dataToUpdate.push(value);
     });
-    this.setState({headers: dataToUpdate});
+    this.setState({ headers: dataToUpdate });
   }
 
   getHeaderRealLength() {
@@ -104,22 +104,22 @@ class TextOutputShowcaseCard extends React.Component {
           centeredParent
           centeredSegment
           displayData = {[
-          'Number of Outputs: ' + this.getHeaderRealLength()
-        ]}
+            `Number of Outputs: ${this.getHeaderRealLength()}`
+          ]}
           buttonData = {[
-          {
-            label: "Modify",
-            onDeployClick: () => this.showModifyDialog()
-          },
-          {
-            label: "Preview",
-            onDeployClick: () => this.showPreviewDialog()
-          },
-          {
-            label: "Use",
-            onDeployClick: () => this.updateOutputComponentModel()
-          }
-        ]}
+            {
+              label: 'Modify',
+              onDeployClick: () => this.showModifyDialog()
+            },
+            {
+              label: 'Preview',
+              onDeployClick: () => this.showPreviewDialog()
+            },
+            {
+              label: 'Use',
+              onDeployClick: () => this.updateOutputComponentModel()
+            }
+          ]}
         />
         {this.state.modifyDialogDisplay && <TextOutputShowcaseModifyDialog
           functions={{
@@ -127,14 +127,14 @@ class TextOutputShowcaseCard extends React.Component {
             hideModifyDialog: this.hideModifyDialog,
             getHeaders: this.getHeaders
           }}
-        />}
+                                           />}
 
         {this.state.previewDialogDisplay && <TextOutputPreview
           functions={{
             getHeaders: this.getHeaders,
             hidePreviewDialog: this.hidePreviewDialog
           }}
-        />}
+                                            />}
       </div>
 
     );

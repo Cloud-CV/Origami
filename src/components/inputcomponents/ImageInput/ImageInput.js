@@ -20,35 +20,36 @@ class ImageInput extends React.Component {
   sendRequest(sendAddr, calling_context) {
 
     let formData = new FormData($('#send-text')[0]);
-    this.state.files.map(file => {
+    this.state.files.map((file) => {
       formData.set(file.newfilename, file.newfile, file.newfilename);
     });
 
-    if (calling_context === "demo") {
+    if (calling_context === 'demo') {
       let timeout1 = '';
       let timeout2 = '';
       let timeout3 = '';
-      $("#appbar-progress").css('visibility', 'visible')
-        .promise().done(() => {
-        $("#appbar-progress").progress({
-          percent: "33%"
+      $('#appbar-progress').css('visibility', 'visible')
+        .promise()
+        .done(() => {
+          $('#appbar-progress').progress({
+            percent: '33%'
+          });
+          timeout1 = setTimeout(() => {
+            $('#appbar-progress').progress({
+              percent: '50%'
+            });
+          }, 300);
+          timeout2 = setTimeout(() => {
+            $('#appbar-progress').progress({
+              percent: '65%'
+            });
+          }, 600);
+          timeout3 = setTimeout(() => {
+            $('#appbar-progress').progress({
+              percent: '85%'
+            });
+          }, 1000);
         });
-        timeout1 = setTimeout(() => {
-          $("#appbar-progress").progress({
-            percent: "50%"
-          });
-        }, 300);
-        timeout2 = setTimeout(() => {
-          $("#appbar-progress").progress({
-            percent: "65%"
-          });
-        }, 600);
-        timeout3 = setTimeout(() => {
-          $("#appbar-progress").progress({
-            percent: "85%"
-          });
-        }, 1000);
-      });
       $.ajax({
         type: 'POST',
         url: sendAddr,
@@ -57,17 +58,17 @@ class ImageInput extends React.Component {
         cache: false,
         processData: false,
         async: true,
-        success: data => {
+        success: (data) => {
           clearTimeout(timeout1);
           clearTimeout(timeout2);
           clearTimeout(timeout3);
         },
         error: (xhr, textStatus, errorThrown) => {
-          $("#appbar-progress").css('visibility', 'hidden');
-          $("#appbar-progress").progress({
-            percent: "0%"
+          $('#appbar-progress').css('visibility', 'hidden');
+          $('#appbar-progress').progress({
+            percent: '0%'
           });
-          toastr.error("Error occurred!");
+          toastr.error('Error occurred!');
         }
       });
     }
@@ -75,7 +76,7 @@ class ImageInput extends React.Component {
 
   updateFormData(newfile, newfilename) {
     this.setState({
-      files: [...this.state.files, {newfilename, newfile}]
+      files: [...this.state.files, { newfilename, newfile }]
     });
   }
 
@@ -90,7 +91,8 @@ class ImageInput extends React.Component {
                             index={index}
                             updateFormData={this.updateFormData}
                             calling_context={this.props.calling_context}
-                            label={label} />,
+                            label={label}
+               />,
                 <br key={Math.random()} />,
                 <br key={Math.random()} />]
             )}
@@ -101,7 +103,10 @@ class ImageInput extends React.Component {
           <br />
           <RaisedButton label="Send" primary
                         key={Math.random()}
-                        onClick={() => {this.sendRequest(this.props.sendAddr, this.props.calling_context);}}/>
+                        onClick={() => {
+                          this.sendRequest(this.props.sendAddr, this.props.calling_context);
+                        }}
+          />
         </pre>
       </div>
     );

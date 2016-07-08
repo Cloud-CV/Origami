@@ -14,18 +14,19 @@ class singleOutput extends React.Component {
   }
 
   showImageFull() {
-    this.setState({open: true});
+    this.setState({ open: true });
   }
 
   handleClose() {
-    this.setState({open: false});
+    this.setState({ open: false });
   }
 
   render() {
     return (
       <div className="ui card centered"
-           style={{height: "100%", width: "75%"}}
-           id={"output-text-" + this.props.index}>
+           style={{ height: '100%', width: '75%' }}
+           id={`output-text-${this.props.index}`}
+      >
         <div className="content">
           <div className="header">{this.props.header}</div>
         </div>
@@ -36,7 +37,7 @@ class singleOutput extends React.Component {
                 <div className="center aligned summary">
                   {this.props.data ?
                     <img className="ui centered center aligned fluid large image"
-                         style={{cursor: "pointer"}}
+                         style={{ cursor: 'pointer' }}
                          src={this.props.data}
                          onClick={this.showImageFull}
                     />
@@ -52,10 +53,12 @@ class singleOutput extends React.Component {
           modal={false}
           open={this.state.open}
           autoScrollBodyContent
-          onRequestClose={this.handleClose} >
+          onRequestClose={this.handleClose}
+        >
           <div className="ui blue segment row">
             <img className="ui centered center aligned fluid large image"
-                 src={this.props.data} />
+                 src={this.props.data}
+            />
           </div>
         </Dialog>
       </div>

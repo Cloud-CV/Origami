@@ -44,42 +44,43 @@ class GHUserProfile extends React.Component {
     this.props.useractions.LoadUser()
       .then(() => {
         getDeployed().then((alldeployedRepos) => {
-          this.setState({allDeployed: JSON.parse((alldeployedRepos))});
-        }).catch(err => {
-          toastr.error(err);
-        });
+          this.setState({ allDeployed: JSON.parse((alldeployedRepos)) });
+        })
+          .catch((err) => {
+            toastr.error(err);
+          });
       })
-      .catch(err => {
-        toastr.error("Error: " + err);
+      .catch((err) => {
+        toastr.error(`Error: ${err}`);
       });
     this.makeCardRepo(this.state.allRepoShow);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.state.user != nextProps.user) {
-      this.setState({user: nextProps.user});
+    if (this.state.user !== nextProps.user) {
+      this.setState({ user: nextProps.user });
     }
   }
 
   makeCardRepo(allRepoShow) {
     let repoType = allRepoShow ? 'all' : 'owner';
     userRepos(repoType)
-      .then(repos => {
-        this.setState({userRepos: repos});
+      .then((repos) => {
+        this.setState({ userRepos: repos });
       })
-      .catch(err => {
-        toastr.error("Error: " + err);
+      .catch((err) => {
+        toastr.error(`Error: ${err}`);
       });
   }
 
   toggleAllRepoButton() {
-    this.setState({allRepoShow: !this.state.allRepoShow}, function() {
+    this.setState({ allRepoShow: !this.state.allRepoShow }, function() {
       this.makeCardRepo(this.state.allRepoShow);
     });
   }
 
   findDeployedRepoById(repoId) {
-    return this.state.allDeployed.find(x => x.id === repoId.toString());
+    return this.state.allDeployed.find((x) => x.id === repoId.toString());
   }
 
   modifyGithubDemo(repoId) {
@@ -100,8 +101,8 @@ class GHUserProfile extends React.Component {
 
   removefromallDeployed(repoId) {
     let tempallDeployed = Object.assign([], this.state.allDeployed);
-    tempallDeployed.splice(tempallDeployed.findIndex(x => x.id === repoId.toString()), 1);
-    this.setState({allDeployed: tempallDeployed});
+    tempallDeployed.splice(tempallDeployed.findIndex((x) => x.id === repoId.toString()), 1);
+    this.setState({ allDeployed: tempallDeployed });
   }
 
   killDemo(repoId) {
@@ -112,17 +113,16 @@ class GHUserProfile extends React.Component {
         currentSelectedRepo.id,
         currentSelectedRepo.dockercomposeFile);
       this.socket.on('killstatus', (status) => {
-        if (status == '0') {
-          this.removefromallDeployed(repoId);
-          this.props.inputComponentModelActions.killInputComponentModel(repoId);
-          this.props.outputComponentDemoModelActions.killOutputComponentModel(repoId);
-        } else {
-          toastr.error(`Failed killing: <h1>${currentSelectedRepo.name}</h1>`);
-        }
+
+        // TODO: Check for killing application when it is not deployed
+        this.removefromallDeployed(repoId);
+        this.props.inputComponentModelActions.killInputComponentModel(repoId);
+        this.props.outputComponentDemoModelActions.killOutputComponentModel(repoId);
       });
-    }).catch(err => {
-      toastr.error(err);
-    });
+    })
+      .catch((err) => {
+        toastr.error(err);
+      });
   }
 
   goToDeployPage(repo) {
@@ -134,40 +134,41 @@ class GHUserProfile extends React.Component {
   }
 
   getLanguage(repo) {
-    return "Language: " + repo.language;
+    return `Language: ${repo.language}`;
   }
 
   getDisplayForDemoButton(repoId) {
     let currentSelectedRepo = this.findDeployedRepoById(repoId);
     if (currentSelectedRepo) {
-      return currentSelectedRepo.status === 'input' ? "None" : "";
+      return currentSelectedRepo.status === 'input' ? 'None' : '';
     }
-    return "";
+    return '';
   }
 
 
 
   toggleShow() {
-    this.setState({showOutput: this.state.showOutput == 'visible' ? 'hidden' : 'visible'});
+    this.setState({ showOutput: this.state.showOutput === 'visible' ? 'hidden' : 'visible' });
   }
 
   render() {
     return (
       <div className="ui relaxed stackable grid fluid container">
 
-        {this.state.showOutput == 'hidden' &&
-        <div className="centered row" style={{marginTop: "30vh"}}>
+        {this.state.showOutput === 'hidden' &&
+        <div className="centered row" style={{ marginTop: '30vh' }}>
           <CircularProgress size={1.5} />
         </div>}
-        
+
         {this.state.user &&
-        <div className="sixteen column stretched row" style={{visibility: this.state.showOutput}}>
+        <div className="sixteen column stretched row" style={{ visibility: this.state.showOutput }}>
 
           <div className="four wide column ui raised rounded segment" >
             <div className="ui fluid bottom aligned medium rounded image">
               <div className="ui medium ribbon black label">@{this.state.user.login}</div>
               <img className="" onLoad={this.toggleShow}
-                   src={this.state.user.avatar_url} />
+                   src={this.state.user.avatar_url}
+              />
             </div>
           </div>
 
@@ -185,43 +186,44 @@ class GHUserProfile extends React.Component {
             label="All"
             defaultToggled={this.state.allRepoShow}
             labelPosition="right"
-            onToggle={this.toggleAllRepoButton}/>
+            onToggle={this.toggleAllRepoButton}
+          />
           <br /><br />
 
           {this.state.userRepos &&
           <div className="fifteen wide column stretched stackable centered row">
             <div className="ui three padded column stackable grid">
-              {this.state.userRepos.map(repo =>
+              {this.state.userRepos.map((repo) =>
                 <CustomCard
                   header={repo.name}
                   width="five"
                   centeredParent
                   key={repo.id}
                   displayData={[
-                      repo.private ? 'Private' : 'Public',
-                      this.getLanguage(repo)
-                    ]}
+                    repo.private ? 'Private' : 'Public',
+                    this.getLanguage(repo)
+                  ]}
                   buttonData={[
-                      {
-                        label: "Kill",
-                        onDeployClick: () => this.killDemo(repo.id),
-                        display: this.findDeployedRepoById(repo.id) ?
-                          "" : "None"
-                      },
-                      {
-                        label: "Modify",
-                        onDeployClick: () => this.modifyGithubDemo(repo.id),
-                        display: this.findDeployedRepoById(repo.id) ?
-                          "" : "None"
-                      },
-                      {
-                        label: this.findDeployedRepoById(repo.id) ?
-                         "Demo" : "Deploy",
-                        onDeployClick: () => this.findDeployedRepoById(repo.id) ?
+                    {
+                      label: 'Kill',
+                      onDeployClick: () => this.killDemo(repo.id),
+                      display: this.findDeployedRepoById(repo.id) ?
+                          '' : 'None'
+                    },
+                    {
+                      label: 'Modify',
+                      onDeployClick: () => this.modifyGithubDemo(repo.id),
+                      display: this.findDeployedRepoById(repo.id) ?
+                          '' : 'None'
+                    },
+                    {
+                      label: this.findDeployedRepoById(repo.id) ?
+                         'Demo' : 'Deploy',
+                      onDeployClick: () => this.findDeployedRepoById(repo.id) ?
                          this.goToDemoPage(repo) : this.goToDeployPage(repo),
-                         display: this.getDisplayForDemoButton(repo.id)
-                      }
-                    ]}
+                      display: this.getDisplayForDemoButton(repo.id)
+                    }
+                  ]}
                 />
               )}
             </div>

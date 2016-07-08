@@ -12,8 +12,8 @@ router.route('/:id?')
 function getNonGHDemoModel(req, res) {
   const id = req.params.id;
   if (id) {
-    Nonghdemomodel.find({id}, (err, singlemodel) => {
-      if(err) {
+    Nonghdemomodel.find({ id }, (err, singlemodel) => {
+      if (err) {
         res.send(err);
       } else {
         res.json(singlemodel);
@@ -21,7 +21,7 @@ function getNonGHDemoModel(req, res) {
     });
   } else {
     Nonghdemomodel.find((err, model) => {
-      if(err) {
+      if (err) {
         res.send(err);
       } else {
         res.json(model);
@@ -43,12 +43,12 @@ function addNonGHDemoModel(req, res) {
 
 function updateNonGHDemoModel(req, res) {
   const id = req.params.id;
-  Nonghdemomodel.find({id}, (err, singlemodel) => {
-    if(err) {
+  Nonghdemomodel.find({ id }, (err, singlemodel) => {
+    if (err) {
       res.send(err);
     } else {
-      Nonghdemomodel.update({id}, req.body, {multi: false}, (err, updatedmodel) => {
-        if(err) {
+      Nonghdemomodel.update({ id }, req.body, { multi: false }, (err, updatedmodel) => {
+        if (err) {
           res.send(err);
         } else {
           res.json(updatedmodel);
@@ -60,7 +60,7 @@ function updateNonGHDemoModel(req, res) {
 
 function deleteNonGHDemoModel(req, res) {
   const id = req.params.id;
-  Nonghdemomodel.remove({id}, (err, removed) => {
+  Nonghdemomodel.remove({ id }, (err, removed) => {
     if (err) {
       res.send(err);
     } else {

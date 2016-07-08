@@ -11,8 +11,8 @@ describe('Store Test', () => {
 
     store.dispatch(enableLoginSuccess());
 
-    const login_later = store.getState().login;
-    expect(login).toEqual(!login_later);
+    const loginLater = store.getState().login;
+    expect(login).toEqual(!loginLater);
   });
 
   it('doing Logout should set the state: login to false', () => {
@@ -21,7 +21,7 @@ describe('Store Test', () => {
 
     store.dispatch(disableLoginSuccess());
 
-    const login_later = store.getState().login;
-    expect(login).toEqual(!login_later);
+    const loginLater = store.getState().login;
+    expect(login).toEqual(!loginLater);
   });
 });

@@ -5,11 +5,11 @@ import { modifyDeployed } from '../api/Nongh/modifyDeployed';
 import { deleteDeployed } from '../api/Nongh/deleteDeployed';
 
 export function updateNonGHDemoModelSuccess(model) {
-  return {type: types.BUILD_NEW_NONGH_DEMO_MODEL_SUCCESS, model};
+  return { type: types.BUILD_NEW_NONGH_DEMO_MODEL_SUCCESS, model };
 }
 
 export function killNonGHDemoModelSuccess() {
-  return {type: types.KILL_NONGH_DEMO_MODEL_SUCCESS};
+  return { type: types.KILL_NONGH_DEMO_MODEL_SUCCESS };
 }
 
 export function addToDBNonGHDemoModel(newModelData) {
@@ -19,16 +19,18 @@ export function addToDBNonGHDemoModel(newModelData) {
         if (JSON.parse(data).length > 0) {
           modifyDeployed(newModelData).then((data) => {
             resolve('dispatched nongh model update call');
-          }).catch(err => {
-            reject('cannot dispatch nongh model update call, DB failed');
-          });
+          })
+            .catch((err) => {
+              reject('cannot dispatch nongh model update call, DB failed');
+            });
 
         } else {
           addDeployed(newModelData).then((data) => {
             resolve('dispatched nongh model update call');
-          }).catch(err => {
-            reject('cannot dispatch nongh model update call, DB failed');
-          });
+          })
+            .catch((err) => {
+              reject('cannot dispatch nongh model update call, DB failed');
+            });
         }
       });
     });
@@ -50,9 +52,10 @@ export function killNonGHDemoModel(repoId) {
       deleteDeployed(repoId).then(() => {
         dispatch(killNonGHDemoModelSuccess());
         resolve('dispatched nongh demo kill call');
-      }).catch(err => {
-        reject('cannot dispatch nongh demo kill call, DB failed');
-      });
+      })
+        .catch((err) => {
+          reject('cannot dispatch nongh demo kill call, DB failed');
+        });
     });
   };
 }

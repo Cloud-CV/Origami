@@ -6,12 +6,12 @@ export function getDeployed(repoId) {
   if (repoId) {
     URL += `/${repoId}`;
   }
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
     request
       .get(URL)
       .set('Accept', 'application/json')
-      .end(function(err, res){
-        if(err) {
+      .end((err, res) => {
+        if (err) {
           reject(err);
         } else {
           resolve(res.text);

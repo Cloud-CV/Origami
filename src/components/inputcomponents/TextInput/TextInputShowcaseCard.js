@@ -9,7 +9,7 @@ class TextInputShowcaseCard extends React.Component {
   constructor(props) {
     super(props);
     let initLabels = [];
-    if (props.demoProps.inputComponentDemoModel.baseComponentId == '1') {
+    if (props.demoProps.inputComponentDemoModel.baseComponentId === '1') {
       initLabels = props.demoProps.inputComponentDemoModel.props;
     }
     this.state = {
@@ -32,28 +32,28 @@ class TextInputShowcaseCard extends React.Component {
   }
 
   showModifyDialog() {
-    this.setState({modifyDialogDisplay: true});
+    this.setState({ modifyDialogDisplay: true });
   }
 
   hideModifyDialog() {
-    this.setState({modifyDialogDisplay: false});
+    this.setState({ modifyDialogDisplay: false });
   }
 
   showPreviewDialog() {
-    this.setState({previewDialogDisplay: true});
+    this.setState({ previewDialogDisplay: true });
   }
 
   hidePreviewDialog() {
-    this.setState({previewDialogDisplay: false});
+    this.setState({ previewDialogDisplay: false });
   }
 
   updateInputComponentModel() {
-    if(Object.keys(this.demoModel).length == 0) {
+    if (Object.keys(this.demoModel).length === 0) {
       toastr.error('Registration info not found! Register again');
       browserHistory.push('/');
     } else {
       let propsToStore = [];
-      this.state.labels.map(label => {
+      this.state.labels.map((label) => {
         propsToStore.push(label);
       });
       this.inputComponentModelActions.updateInputComponentModel({
@@ -68,10 +68,10 @@ class TextInputShowcaseCard extends React.Component {
 
   updateLabels(data) {
     let dataToUpdate = [];
-    data.map(value => {
+    data.map((value) => {
       dataToUpdate.push(value);
     });
-    this.setState({labels: dataToUpdate});
+    this.setState({ labels: dataToUpdate });
   }
 
   getLabelRealLength() {
@@ -95,22 +95,22 @@ class TextInputShowcaseCard extends React.Component {
           centeredParent
           centeredSegment
           displayData = {[
-          'Number of inputs: ' + this.getLabelRealLength()
-        ]}
+            `Number of inputs: ${this.getLabelRealLength()}`
+          ]}
           buttonData = {[
-          {
-            label: "Modify",
-            onDeployClick: () => this.showModifyDialog()
-          },
-          {
-            label: "Preview",
-            onDeployClick: () => this.showPreviewDialog()
-          },
-          {
-            label: "Use",
-            onDeployClick: () => this.updateInputComponentModel()
-          }
-        ]}
+            {
+              label: 'Modify',
+              onDeployClick: () => this.showModifyDialog()
+            },
+            {
+              label: 'Preview',
+              onDeployClick: () => this.showPreviewDialog()
+            },
+            {
+              label: 'Use',
+              onDeployClick: () => this.updateInputComponentModel()
+            }
+          ]}
         />
         {this.state.modifyDialogDisplay && <TextInputShowcaseModifyDialog
           functions={{
@@ -118,14 +118,14 @@ class TextInputShowcaseCard extends React.Component {
             hideModifyDialog: this.hideModifyDialog,
             getLabels: this.getLabels
           }}
-        />}
+                                           />}
 
         {this.state.previewDialogDisplay && <TextInputPreview
           functions={{
             getLabels: this.getLabels,
             hidePreviewDialog: this.hidePreviewDialog
           }}
-        />}
+                                            />}
       </div>
 
     );

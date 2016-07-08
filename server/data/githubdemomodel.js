@@ -14,5 +14,5 @@ const githubDemoSchema = mongoose.Schema({
   status: String
 });
 
-export default mongoose.model("githubDemo", githubDemoSchema);
+export default mongoose.model('githubDemo', githubDemoSchema);
 

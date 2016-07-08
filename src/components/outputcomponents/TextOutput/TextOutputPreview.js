@@ -30,20 +30,22 @@ class TextOutputPreview extends React.Component {
         onTouchTap={this.handleOk}
       />
     ];
-    return(<Dialog
+    return (<Dialog
       title="Preview Text Output Component"
       actions={actions}
       modal
       autoScrollBodyContent
-      open={this.state.open}>
+      open={this.state.open}
+            >
       <TextOutput
         headers={this.state.headers}
         calling_context="demo"
         data={
           Array(this.state.headers.length).fill(
-            "Text Output sent from your code!"
+            'Text Output sent from your code!'
           )
-        }/>
+        }
+      />
     </Dialog>);
   }
 }

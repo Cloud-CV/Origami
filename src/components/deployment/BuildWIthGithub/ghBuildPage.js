@@ -21,29 +21,29 @@ class GHBuildPage extends React.Component {
   }
 
   componentWillMount() {
-    checkDockerfile(this.props.githubDemoModel.name, this.props.githubDemoModel.id).then(clone_data => {
-        return clone_data;
-      })
-      .then(clone_data => {
+    checkDockerfile(this.props.githubDemoModel.name, this.props.githubDemoModel.id).then((clone_data) => {
+      return clone_data;
+    })
+      .then((clone_data) => {
         this.socket.emit('startdeployment', clone_data.toString());
 
         this.socket.on('datafromterminal', (data) => {
-          this.setState({data: [...this.state.data, data]});
+          this.setState({ data: [...this.state.data, data] });
         });
 
         this.socket.on('errorfromterminal', (err) => {
-          this.setState({data: [...this.state.data, err]});
+          this.setState({ data: [...this.state.data, err] });
         });
 
         this.socket.on('cloningcomplete', (statusCode) => {
-          if (statusCode != '0') {
+          if (statusCode !== 0) {
             toastr.error('Git clone failed');
           }
         });
 
         this.socket.on('deploymentcomplete', (status) => {
-          if (status == '0') {
-            this.setState({demoPageButtonEnable: false});
+          if (status === 0) {
+            this.setState({ demoPageButtonEnable: false });
           } else {
             toastr.error('Deployment failed');
           }
@@ -53,10 +53,10 @@ class GHBuildPage extends React.Component {
 
   goToDemoPage() {
     this.props.githubModelActions.addToDBGithubDemoModel(Object.assign({},
-      this.props.githubDemoModel, {status: 'demo'})
+      this.props.githubDemoModel, { status: 'demo' })
     ).then(() => {
       this.props.githubModelActions.updateGithubDemoModel(Object.assign({},
-        this.props.githubDemoModel, {status: 'demo'})
+        this.props.githubDemoModel, { status: 'demo' })
       ).then(() => {
         browserHistory.push(`/user/repo/${this.props.params.repoName}/${this.props.params.repoId}/demo`);
       });
@@ -67,7 +67,7 @@ class GHBuildPage extends React.Component {
     return (
       <div className="ui relaxed stackable grid fluid container">
 
-        <div className="sixteen wide column stretched row" style={{visibility: this.state.showOutput}}>
+        <div className="sixteen wide column stretched row" style={{ visibility: this.state.showOutput }}>
           <div className="row" >
             <h1>Build</h1>
           </div>
@@ -79,33 +79,33 @@ class GHBuildPage extends React.Component {
           <div className="row">
             <div className="ui relaxed stackable grid container">
               <div className="two column row">
+
                 <div className="column">
-                  <div className="ui card" style={{width: "100%"}}>
+                  <div className="ui card" style={{ width: '100%' }}>
                     <div className="content">
                       <div className="ui padded raised segment container"
-                           style={{height: "52vh", backgroundColor: "black",
-                           color: "white", overflowY: "scroll"}}>
+                           style={{ height: '52vh', backgroundColor: 'black',
+                           color: 'white', overflowY: 'scroll' }}
+                      >
                         {this.state.data.map((data) =>
                           <p key={Math.random()}>{data}</p>
                         )}
                       </div>
                     </div>
                     <div className="extra content">
-                      <b>{"Running on port: " +
-                      this.props.githubDemoModel.token.split(':')[4]
-                      }</b>
+                      <b>{`Running on port: ${this.props.githubDemoModel.token.split(':')[4]}`}</b>
                       <RaisedButton
                         label="Go To Demo"
                         primary
                         disabled={this.state.demoPageButtonEnable}
                         onClick={this.goToDemoPage}
-                        style={{float: "right"}} />
+                        style={{ float: 'right' }}
+                      />
                     </div>
                   </div>
                 </div>
 
-                <div className="ui vertical internal divider"
-                     style={{height: "75%", marginTop: "10%"}}>
+                <div className="ui vertical internal divider">
                   <hr /></div>
 
                 <div className="column">
@@ -116,6 +116,7 @@ class GHBuildPage extends React.Component {
                     </div>
                   </div>
                 </div>
+
               </div>
             </div>
           </div>

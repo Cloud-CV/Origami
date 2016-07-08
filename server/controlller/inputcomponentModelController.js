@@ -12,8 +12,8 @@ router.route('/:id?')
 function getInputComponentModel(req, res) {
   const id = req.params.id;
   if (id) {
-    Inputcomponentmodel.find({id}, (err, singlemodel) => {
-      if(err) {
+    Inputcomponentmodel.find({ id }, (err, singlemodel) => {
+      if (err) {
         res.send(err);
       } else {
         res.json(singlemodel);
@@ -21,7 +21,7 @@ function getInputComponentModel(req, res) {
     });
   } else {
     Inputcomponentmodel.find((err, model) => {
-      if(err) {
+      if (err) {
         res.send(err);
       } else {
         res.json(model);
@@ -43,12 +43,12 @@ function addInputComponentModel(req, res) {
 
 function updateInputComponentModel(req, res) {
   const id = req.params.id;
-  Inputcomponentmodel.find({id}, (err, singlemodel) => {
-    if(err) {
+  Inputcomponentmodel.find({ id }, (err, singlemodel) => {
+    if (err) {
       res.send(err);
     } else {
-      Inputcomponentmodel.update({id}, req.body, {multi: false}, (err, updatedmodel) => {
-        if(err) {
+      Inputcomponentmodel.update({ id }, req.body, { multi: false }, (err, updatedmodel) => {
+        if (err) {
           res.send(err);
         } else {
           res.json(updatedmodel);
@@ -60,7 +60,7 @@ function updateInputComponentModel(req, res) {
 
 function deleteInputComponentModel(req, res) {
   const id = req.params.id;
-  Inputcomponentmodel.remove({id}, (err, removed) => {
+  Inputcomponentmodel.remove({ id }, (err, removed) => {
     if (err) {
       res.send(err);
     } else {

@@ -22,7 +22,7 @@ class RegisterPage extends React.Component {
     super(props, context);
     this.state = {
       showOutput: 'hidden',
-      id: Math.floor(Math.random()*10000000).toString(),
+      id: Math.floor(Math.random() * 10000000).toString(),
       currentProject: {},
       nonghDemoModel: {},
       name: '',
@@ -54,90 +54,92 @@ class RegisterPage extends React.Component {
     this.toggleTerminal = this.toggleTerminal.bind(this);
     this.validateTempwebaddress = this.validateTempwebaddress.bind(this);
     this.validateIP = this.validateIP.bind(this);
-    this.validatePort= this.validatePort.bind(this);
+    this.validatePort = this.validatePort.bind(this);
   }
 
   componentWillMount() {
-    getDeployed(this.props.params.repoId).then(singleRepo => {
+    getDeployed(this.props.params.repoId).then((singleRepo) => {
       if (this.props.params.repoId) {
-        if (JSON.parse(singleRepo).length != 0) {
-          this.setState({returning: true});
-          this.setState({tempwebaddress: JSON.parse(singleRepo)[0].token.split(':')[1]});
+        if (JSON.parse(singleRepo).length !== 0) {
+          this.setState({ returning: true });
+          this.setState({ tempwebaddress: JSON.parse(singleRepo)[0].token.split(':')[1] });
           if (JSON.parse(singleRepo)[0].token.split(':')[1] === '0.0.0.0') {
-            this.setState({showLocalDeploymentCheckBox: true});
+            this.setState({ showLocalDeploymentCheckBox: true });
           }
-          this.setState({id: JSON.parse(singleRepo)[0].id});
-          this.setState({name: JSON.parse(singleRepo)[0].name});
-          this.setState({status: JSON.parse(singleRepo)[0].status});
-          this.setState({address: JSON.parse(singleRepo)[0].token.split(':')[1]});
-          this.setState({tempwebaddress: JSON.parse(singleRepo)[0].token.split(':')[5]});
-          this.setState({port: JSON.parse(singleRepo)[0].token.split(':')[4]});
-          this.setState({description: JSON.parse(singleRepo)[0].description});
-          this.setState({showTerminal: JSON.parse(singleRepo)[0].terminal});
+          this.setState({ id: JSON.parse(singleRepo)[0].id });
+          this.setState({ name: JSON.parse(singleRepo)[0].name });
+          this.setState({ status: JSON.parse(singleRepo)[0].status });
+          this.setState({ address: JSON.parse(singleRepo)[0].token.split(':')[1] });
+          this.setState({ tempwebaddress: JSON.parse(singleRepo)[0].token.split(':')[5] });
+          this.setState({ port: JSON.parse(singleRepo)[0].token.split(':')[4] });
+          this.setState({ description: JSON.parse(singleRepo)[0].description });
+          this.setState({ showTerminal: JSON.parse(singleRepo)[0].terminal });
           if (JSON.parse(singleRepo)[0].token.split(':')[5] === '0.0.0.0') {
-            this.setState({deploymentBoxSelectedStatus: true});
+            this.setState({ deploymentBoxSelectedStatus: true });
           }
         }
       }
-    }).then(() => {
-      this.socket.emit('fetchcurrentport');
-      this.socket.emit('getpublicipaddress');
-      this.socket.on('fetchedcurrentport', (port) => {
-        this.setState({currentPort: port});
-      });
-      this.socket.on('gotpublicip', (ip) => {
-        this.setState({webappaddress: ip}, () => {
-          if (this.state.tempwebaddress.length == 0) {
-            this.setState({tempwebaddress: this.state.webappaddress});
-          }
+    })
+      .then(() => {
+        this.socket.emit('fetchcurrentport');
+        this.socket.emit('getpublicipaddress');
+        this.socket.on('fetchedcurrentport', (port) => {
+          this.setState({ currentPort: port });
         });
-        getWebAppStatus(ip).then(() => {
-        }).catch(err => {
-          this.setState({webappUnreachableErrorText: 'This WebApp cannot be reached on its public IP'});
-          this.setState({showLocalDeploymentCheckBox: true});
+        this.socket.on('gotpublicip', (ip) => {
+          this.setState({ webappaddress: ip }, () => {
+            if (this.state.tempwebaddress.length === 0) {
+              this.setState({ tempwebaddress: this.state.webappaddress });
+            }
+          });
+          getWebAppStatus(ip).then(() => {
+          })
+          .catch((err) => {
+            this.setState({ webappUnreachableErrorText: 'This WebApp cannot be reached on its public IP' });
+            this.setState({ showLocalDeploymentCheckBox: true });
+          });
+          this.toggleShow();
         });
-        this.toggleShow();
+        this.socket.on('erroringettingpublicip', (err) => {
+          toastr.error('Error in getting public IP :(');
+        });
       });
-      this.socket.on('erroringettingpublicip', err => {
-        toastr.error('Error in getting public IP :(');
-      });
-    });
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.state.nonghDemoModel != nextProps.nonghDemoModel) {
-      this.setState({nonghDemoModel: nextProps.nonghDemoModel});
+    if (this.state.nonghDemoModel !== nextProps.nonghDemoModel) {
+      this.setState({ nonghDemoModel: nextProps.nonghDemoModel });
     }
   }
 
   onLocalDeploymentCheckBoxCheck(e) {
     if (!this.state.deploymentBoxSelectedStatus) {
       getWebAppStatus('0.0.0.0').then(() => {
-        })
-        .catch(err => {
-          this.setState({webappLocalUnreachableErrorText: "This WebApp cannot be reached locally on 0.0.0.0"});
+      })
+        .catch((err) => {
+          this.setState({ webappLocalUnreachableErrorText: 'This WebApp cannot be reached locally on 0.0.0.0' });
         });
     }
     let selectionPool = ['0.0.0.0', this.state.webappaddress];
-    this.setState({tempwebaddress: selectionPool[this.state.deploymentBoxSelectedStatus ? 1 : 0]});
-    this.setState({deploymentBoxSelectedStatus: !this.state.deploymentBoxSelectedStatus});
+    this.setState({ tempwebaddress: selectionPool[this.state.deploymentBoxSelectedStatus ? 1 : 0] });
+    this.setState({ deploymentBoxSelectedStatus: !this.state.deploymentBoxSelectedStatus });
   }
 
   updateDemoModelData() {
     if (!this.validateIP()) {
-      this.setState({addressErrorText: "Invalid IP address"});
+      this.setState({ addressErrorText: 'Invalid IP address' });
     } else {
-      this.setState({addressErrorText: ""});
+      this.setState({ addressErrorText: '' });
     }
     if (!this.validatePort(this.state.port)) {
-      this.setState({portErrorText: "Invalid port number"});
+      this.setState({ portErrorText: 'Invalid port number' });
     } else {
-      this.setState({portErrorText: ""});
+      this.setState({ portErrorText: '' });
     }
-    if (this.state.name.length == 0) {
-      this.setState({nameErrorText: "Invalid Project Name"});
+    if (this.state.name.length === 0) {
+      this.setState({ nameErrorText: 'Invalid Project Name' });
     } else {
-      this.setState({nameErrorText: ""});
+      this.setState({ nameErrorText: '' });
     }
     if (this.state.name.length > 0 && this.validateIP() && this.validatePort(this.state.port)) {
       let dataToPut = {
@@ -159,23 +161,23 @@ class RegisterPage extends React.Component {
   }
 
   updateDescription(e) {
-    this.setState({description: e.target.value});
+    this.setState({ description: e.target.value });
   }
 
   updateAddress(e) {
-    this.setState({address: e.target.value});
+    this.setState({ address: e.target.value });
   }
 
   updatePort(e) {
-    this.setState({port: e.target.value});
+    this.setState({ port: e.target.value });
   }
 
   updateName(e) {
-    this.setState({name: e.target.value});
+    this.setState({ name: e.target.value });
   }
 
   toggleTerminal() {
-    this.setState({showTerminal: !this.state.showTerminal});
+    this.setState({ showTerminal: !this.state.showTerminal });
   }
 
   validateTempwebaddress() {
@@ -211,20 +213,21 @@ class RegisterPage extends React.Component {
   }
 
   toggleShow() {
-    this.setState({showOutput: this.state.showOutput == 'visible' ? 'hidden' : 'visible'});
+    this.setState({ showOutput: this.state.showOutput === 'visible' ? 'hidden' : 'visible' });
   }
 
   render() {
-    let tokenClassName = this.validateTempwebaddress() && this.validateIP() && this.validatePort(this.state.port) ? "ui positive message" : "ui negative message";
+    let tokenClassName = this.validateTempwebaddress() &&
+        this.validateIP() && this.validatePort(this.state.port) ? 'ui positive message' : 'ui negative message';
     return (
       <div className="ui relaxed stackable grid fluid container">
 
-        {this.state.showOutput == 'hidden' &&
-        <div className="centered row" style={{marginTop: "30vh"}}>
+        {this.state.showOutput === 'hidden' &&
+        <div className="centered row" style={{ marginTop: '30vh' }}>
           <CircularProgress size={1.5} />
         </div>}
 
-        <div className="sixteen wide column stretched row" style={{visibility: this.state.showOutput}}>
+        <div className="sixteen wide column stretched row" style={{ visibility: this.state.showOutput }}>
           <div className="row" >
             <h1>Register Application</h1>
           </div>
@@ -267,7 +270,7 @@ class RegisterPage extends React.Component {
                     rows={2}
                     rowsMax={8}
                   /><br />
-                  <div className="" style={{marginLeft: '27%', maxWidth: '50%'}}>
+                  <div className="" style={{ marginLeft: '27%', maxWidth: '50%' }}>
                     <Checkbox
                       checked={this.state.showTerminal}
                       onCheck={this.toggleTerminal}
@@ -275,17 +278,17 @@ class RegisterPage extends React.Component {
                     /><br />
                   </div>
                   {this.state.webappUnreachableErrorText.length > 0 &&
-                  <div className="ui raised compact centered red segment" style={{color: 'red', marginLeft: '20%'}}>
+                  <div className="ui raised compact centered red segment" style={{ color: 'red', marginLeft: '20%' }}>
                     {this.state.webappUnreachableErrorText}<br />
                   </div>
                   }
                   {this.state.webappLocalUnreachableErrorText.length > 0 &&
-                  <div className="ui raised compact centered red segment" style={{color: 'red', marginLeft: '20%'}}>
+                  <div className="ui raised compact centered red segment" style={{ color: 'red', marginLeft: '20%' }}>
                     {this.state.webappLocalUnreachableErrorText}<br />
                   </div>
                   }
                   {this.state.showLocalDeploymentCheckBox &&
-                  <div className="" style={{marginLeft: '27%', maxWidth: '45%'}}>
+                  <div className="" style={{ marginLeft: '27%', maxWidth: '45%' }}>
                     <Checkbox
                       checked={this.state.deploymentBoxSelectedStatus}
                       disabled={this.state.returning}
@@ -296,8 +299,9 @@ class RegisterPage extends React.Component {
                   }
                   <br />
                   <RaisedButton label="Save"
-                                primary style={{marginLeft: "30%"}}
-                                onClick={this.updateDemoModelData}/>
+                                primary style={{ marginLeft: '30%' }}
+                                onClick={this.updateDemoModelData}
+                  />
                 </div>
 
                 <div className="ui vertical internal divider">
@@ -312,14 +316,19 @@ class RegisterPage extends React.Component {
                           <div className={tokenClassName}>
                             <u>Token:</u>
                             <b>
-                              <p
-                                style={{fontSize: "90%"}}
-                              >{`nongh:${this.state.address}:${this.state.id}:${this.state.currentPort}:${this.state.port}:${this.state.tempwebaddress}`}</p>
+                              <p style={{ fontSize: '90%' }}>
+                                {`nongh:${this.state.address}:${this.state.id}:${this.state.currentPort}:` +
+                                `${this.state.port}:${this.state.tempwebaddress}`}</p>
                             </b>
                           </div>
                         </div>
                         <div className="three wide column">
-                          {this.validateTempwebaddress() && this.validateIP() && this.validatePort(this.state.port) ? <GoAhead style={{height: '', width: ''}} color={green500} /> : <StopNow style={{height: '', width: ''}} color={red500} />}
+                          {this.validateTempwebaddress() && this.validateIP() &&
+                            this.validatePort(this.state.port) ?
+                              <GoAhead style={{ height: '', width: '' }} color={green500} />
+                              :
+                              <StopNow style={{ height: '', width: '' }} color={red500} />
+                          }
                         </div>
                       </div>
                       <div className="one column row">
@@ -329,7 +338,8 @@ class RegisterPage extends React.Component {
                               Steps
                             </div>
                             <ul className="list">
-                              <li>"IP of service" is the public IP address of the machine where the ML evaluation code is running (or the be run) with the help of cvfy lib.</li>
+                              <li>"IP of service" is the public IP address of the machine where the
+                                ML evaluation code is running (or the be run) with the help of cvfy lib.</li>
                               <li>"Port of service" is the port of the above mentioned service.</li>
                               <li>Enter the application details and copy the Token.</li>
                               <li>Use this Token to do registration with the cvfy lib. See <Link to="documentation">documentation</Link>.</li>
@@ -337,7 +347,8 @@ class RegisterPage extends React.Component {
                           </div>
                           {(this.state.webappUnreachableErrorText.length > 0 || this.state.webappLocalUnreachableErrorText.length > 0) &&
                           <div className="ui orange message">
-                            <p>If this is a local deployment (your machine is not reachable on it's public IP), you must select the "Webapp is running locally" option.</p>
+                            <p>If this is a local deployment (your machine is not reachable on it's public IP),
+                              you must select the "Webapp is running locally" option.</p>
                           </div>
                           }
                         </div>

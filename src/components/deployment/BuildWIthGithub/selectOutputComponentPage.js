@@ -19,21 +19,21 @@ class SelectOutputComponentPage extends React.Component {
   }
 
   componentWillMount() {
-    getComponentDeployed(this.props.githubDemoModel.id, 'output').then(outputComponentSeedData => {
-      if (JSON.parse(outputComponentSeedData).length != 0) {
+    getComponentDeployed(this.props.githubDemoModel.id, 'output').then((outputComponentSeedData) => {
+      if (JSON.parse(outputComponentSeedData).length !== 0) {
         let dataToSeed = {
           id: JSON.parse(outputComponentSeedData)[0].id,
           baseComponentId: JSON.parse(outputComponentSeedData)[0].baseComponentId,
           props: JSON.parse(outputComponentSeedData)[0].props
         };
-        this.setState({outputComponentDemoModel: dataToSeed});
+        this.setState({ outputComponentDemoModel: dataToSeed });
       }
     });
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.state.outputComponentDemoModel != nextProps.outputComponentDemoModel) {
-      this.setState({outputComponentDemoModel: nextProps.outputComponentDemoModel});
+    if (this.state.outputComponentDemoModel !== nextProps.outputComponentDemoModel) {
+      this.setState({ outputComponentDemoModel: nextProps.outputComponentDemoModel });
     }
   }
 
@@ -51,7 +51,7 @@ class SelectOutputComponentPage extends React.Component {
           </div>
 
           <div className="fifteen wide column stretched stackable centered row">
-            <div className="ui three padded column stackable grid" style={{marginLeft: "3%"}}>
+            <div className="ui three padded column stackable grid" style={{ marginLeft: '3%' }}>
               {getAllOutputComponentsForShowcase({
                 demoModel: this.props.githubDemoModel,
                 outputComponentDemoModel: this.state.outputComponentDemoModel,

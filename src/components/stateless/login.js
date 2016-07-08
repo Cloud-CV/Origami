@@ -15,14 +15,14 @@ class LoginHandler extends React.Component {
   }
 
   componentWillMount() {
-    if (window.location.search.indexOf('?status=passed&token=') == 0) {
+    if (window.location.search.indexOf('?status=passed&token=') === 0) {
       this.props.loginactions.Login();
       const temp = window.location.search.substr(21).split('&');
       const access_token = temp[0];
       const username = temp[1].split('=')[1];
       this.setSessionFlag(access_token, username);
       browserHistory.push('/');
-    } else if (window.location.search.indexOf('?status=failed') == 0) {
+    } else if (window.location.search.indexOf('?status=failed') === 0) {
       toastr.error('Unable to login');
     }
   }

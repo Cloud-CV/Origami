@@ -5,11 +5,11 @@ import { modifyDeployed } from '../api/GithubLocal/modifyDeployed';
 import { deleteDeployed } from '../api/GithubLocal/deleteDeployed';
 
 export function updateGithubDemoModelSuccess(model) {
-  return {type: types.BUILD_NEW_GITHUB_DEMO_MODEL_SUCCESS, model};
+  return { type: types.BUILD_NEW_GITHUB_DEMO_MODEL_SUCCESS, model };
 }
 
 export function killGithubDemoModelSuccess() {
-  return {type: types.KILL_GITHUB_DEMO_MODEL_SUCCESS};
+  return { type: types.KILL_GITHUB_DEMO_MODEL_SUCCESS };
 }
 
 export function addToDBGithubDemoModel(newModelData) {
@@ -19,16 +19,18 @@ export function addToDBGithubDemoModel(newModelData) {
         if (JSON.parse(data).length > 0) {
           modifyDeployed(newModelData).then((data) => {
             resolve('dispatched github model update call');
-          }).catch(err => {
-            reject('cannot dispatch github model update call, DB failed');
-          });
-          
+          })
+            .catch((err) => {
+              reject('cannot dispatch github model update call, DB failed');
+            });
+
         } else {
           addDeployed(newModelData).then((data) => {
             resolve('dispatched github model update call');
-          }).catch(err => {
-            reject('cannot dispatch github model update call, DB failed');
-          });
+          })
+            .catch((err) => {
+              reject('cannot dispatch github model update call, DB failed');
+            });
         }
       });
     });
@@ -50,9 +52,10 @@ export function killGithubDemoModel(repoId) {
       deleteDeployed(repoId).then(() => {
         dispatch(killGithubDemoModelSuccess());
         resolve('dispatched github demo kill call');
-      }).catch(err => {
-        reject('cannot dispatch github demo kill call, DB failed');
-      });
+      })
+        .catch((err) => {
+          reject('cannot dispatch github demo kill call, DB failed');
+        });
     });
   };
 }

@@ -14,5 +14,5 @@ const nonghDemoSchema = mongoose.Schema({
   status: String
 });
 
-export default mongoose.model("nonghDemo", nonghDemoSchema);
+export default mongoose.model('nonghDemo', nonghDemoSchema);
 

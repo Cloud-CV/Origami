@@ -19,21 +19,21 @@ class SelectInputComponentPage extends React.Component {
   }
 
   componentWillMount() {
-    getComponentDeployed(this.props.githubDemoModel.id, 'input').then(inputComponentSeedData => {
-      if (JSON.parse(inputComponentSeedData).length != 0) {
+    getComponentDeployed(this.props.githubDemoModel.id, 'input').then((inputComponentSeedData) => {
+      if (JSON.parse(inputComponentSeedData).length !== 0) {
         let dataToSeed = {
           id: JSON.parse(inputComponentSeedData)[0].id,
           baseComponentId: JSON.parse(inputComponentSeedData)[0].baseComponentId,
           props: JSON.parse(inputComponentSeedData)[0].props
         };
-        this.setState({inputComponentDemoModel: dataToSeed});
+        this.setState({ inputComponentDemoModel: dataToSeed });
       }
     });
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.state.inputComponentDemoModel != nextProps.inputComponentDemoModel) {
-      this.setState({inputComponentDemoModel: nextProps.inputComponentDemoModel});
+    if (this.state.inputComponentDemoModel !== nextProps.inputComponentDemoModel) {
+      this.setState({ inputComponentDemoModel: nextProps.inputComponentDemoModel });
     }
   }
 
@@ -51,7 +51,7 @@ class SelectInputComponentPage extends React.Component {
           </div>
 
           <div className="fifteen wide column stretched stackable centered row">
-            <div className="ui three padded column stackable grid" style={{marginLeft: "3%"}}>
+            <div className="ui three padded column stackable grid" style={{ marginLeft: '3%' }}>
               {getAllInputComponentsForShowcase({
                 demoModel: this.props.githubDemoModel,
                 inputComponentDemoModel: this.state.inputComponentDemoModel,

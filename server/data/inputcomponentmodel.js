@@ -9,4 +9,4 @@ const inputComponentSchema = mongoose.Schema({
   props: Array
 });
 
-export default mongoose.model("inputComponent", inputComponentSchema);
+export default mongoose.model('inputComponent', inputComponentSchema);

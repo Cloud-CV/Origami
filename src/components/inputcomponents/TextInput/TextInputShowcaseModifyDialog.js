@@ -28,7 +28,7 @@ class TextInputShowcaseModifyDialog extends React.Component {
   makeTextFieldsFromParentLabels(allLabels) {
     let tempText = [];
     allLabels.map((label, index) => {
-      let currentIndex = allLabels.findIndex(x => x == label);
+      let currentIndex = allLabels.findIndex((x) => x === label);
       tempText[currentIndex] = (
         <div>
           <TextField
@@ -52,7 +52,7 @@ class TextInputShowcaseModifyDialog extends React.Component {
   addLocalLabels(index, data) {
     let templabels = Object.assign([], this.state.labels);
     templabels[index] = data;
-    this.setState({labels: templabels});
+    this.setState({ labels: templabels });
   }
 
   deleteLocalLabels(elementId) {
@@ -60,25 +60,26 @@ class TextInputShowcaseModifyDialog extends React.Component {
     let temptextfield = Object.assign([], this.state.textFields);
     delete templabels[elementId];
     delete temptextfield[elementId];
-    this.setState({labels: templabels});
-    this.setState({textFields: temptextfield});
+    this.setState({ labels: templabels });
+    this.setState({ textFields: temptextfield });
   }
 
   getNewField() {
     return (
       <OverloadedTextField
         data={{
-        labelLength: this.state.labels.length,
-        addLocalLabels: this.addLocalLabels,
-        deleteLocalLabels: this.deleteLocalLabels
-        }} />
+          labelLength: this.state.labels.length,
+          addLocalLabels: this.addLocalLabels,
+          deleteLocalLabels: this.deleteLocalLabels
+        }}
+      />
     );
   }
 
   addMoreTextFields() {
     let tempstate = Object.assign([], this.state.textFields);
     tempstate.push(this.getNewField());
-    this.setState({textFields: tempstate});
+    this.setState({ textFields: tempstate });
   }
 
   handleOk() {
@@ -106,21 +107,23 @@ class TextInputShowcaseModifyDialog extends React.Component {
         onTouchTap={this.handleCancel}
       />
     ];
-    return(
+    return (
       <Dialog
         title="Modify Text Input Component"
         actions={actions}
         modal
         autoScrollBodyContent
-        open={this.state.open}>
-        {this.state.textFields.map(field =>
+        open={this.state.open}
+      >
+        {this.state.textFields.map((field) =>
           [field, <br key={Math.random()} />]
         )}
         <RaisedButton key={Math.random()}
                       label="Add Field"
                       primary
                       onClick={() => this.addMoreTextFields()}
-                      style={{marginTop: "2%"}}/>
+                      style={{ marginTop: '2%' }}
+        />
       </Dialog>);
   }
 }

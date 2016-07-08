@@ -8,6 +8,7 @@
     "open:src": "babel-node server/srcServer.js",
     "lint": "node_modules/.bin/esw webpack.config.* src server",
     "lint:watch": "npm run lint -- --watch",
+    "lint:build": "node_modules/.bin/esw webpack.config.* src server -c ./.eslintrc-build",
     "test": "mocha --reporter spec server/testSetup.js \"src/**/*.test.js\"",
     "test:watch": "npm run test -- --watch",
     "clean-dist": "npm run remove-dist && mkdir dist",

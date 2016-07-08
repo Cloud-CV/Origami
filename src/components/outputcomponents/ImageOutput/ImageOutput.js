@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import SingleOutput from './SingleOutput';
 
-const ImageOutput = ({headers, calling_context, data}) => {
+const ImageOutput = ({ headers, calling_context, data }) => {
   return (
     <div>
       <div key={Math.random()} className="six wide stackable stretched grid container">
@@ -12,7 +12,8 @@ const ImageOutput = ({headers, calling_context, data}) => {
               calling_context={calling_context}
               index={index}
               header={header}
-              data={data[index]} />,
+              data={data[index]}
+           />,
             <br key={Math.random()} />,
             <br key={Math.random()} />]
         )}

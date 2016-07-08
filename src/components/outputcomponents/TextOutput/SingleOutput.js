@@ -4,7 +4,8 @@ import React, { PropTypes } from 'react';
 const singleOutput = (props) => {
   return (
     <div className="ui card centered"
-         id={"output-text-" + props.index}>
+         id={`output-text-${props.index}`}
+    >
       <div className="content">
         <div className="header">{props.header}</div>
       </div>

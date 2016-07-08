@@ -10,15 +10,15 @@ class OverloadedTextHeader extends React.Component {
     };
     this.headerLength = props.data.headerLength;
     this.addLocalHeadersToParent = props.data.addLocalHeaders;
-    this.deleteLocalHeadersFromParent= props.data.deleteLocalHeaders;
+    this.deleteLocalHeadersFromParent = props.data.deleteLocalHeaders;
   }
 
   componentWillMount() {
-    this.setState({elementId: this.headerLength});
+    this.setState({ elementId: this.headerLength });
   }
 
   componentDidMount() {
-    this.addLocalHeadersToParent(this.headerLength, "");
+    this.addLocalHeadersToParent(this.headerLength, '');
   }
 
   render() {

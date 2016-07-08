@@ -38,12 +38,12 @@ app.use(require('webpack-dev-middleware')(compiler, {
 }));
 app.use(require('webpack-hot-middleware')(compiler));
 
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
-app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+app.use(bodyParser.json({ limit: '50mb' }));
 
 //authentication
 
-let session = require("express-session")({
+let session = require('express-session')({
   secret: appConfig.APP_SECRET,
   resave: true,
   saveUninitialized: true
@@ -54,26 +54,26 @@ app.use(passport.session());
 
 // routes
 
-app.get('/alive', function(req, res) {
+app.get('/alive', (req, res) => {
   res.sendStatus(200);
 });
 
 app.get('/auth/github', passport.authenticate('github',
-  {scope: ['user', 'repo']}
+  { scope: ['user', 'repo'] }
 ));
 
 app.get('/auth/github/callback', passport.authenticate('github',
-  {failureRedirect: '/login?status=failed' }), function(req, res) {
-  res.redirect('/login?status=passed&token='+req.user.accessToken+'&username='+req.user.username);
-});
+  { failureRedirect: '/login?status=failed' }), (req, res) => {
+    res.redirect(`/login?status=passed&token=${req.user.accessToken}&username=${req.user.username}`);
+  });
 
-app.get('/logout', function(req, res){
-  req.session.destroy(function (err) {
+app.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
     res.redirect('/');
   });
 });
 
-app.get('/user', function(req, res) {
+app.get('/user', (req, res) => {
   res.redirect('/');
 });
 
@@ -87,20 +87,20 @@ app.use('/api/outputmodel', outputComponentModelController);
 
 // Catch all route
 
-app.get('*', function(req, res) {
-  res.sendFile(path.resolve( __dirname, '../src/index.html'));
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../src/index.html'));
 });
 
-app.post('/inject', function(req, res) {
+app.post('/inject', (req, res) => {
   io.sockets.in(req.body.socketId).emit('injectoutputdata', req.body);
   res.sendStatus(200);
 });
 
 //Socket
 
-io.on('connection', function(socket){
+io.on('connection', (socket) => {
 
-  socket.on('savesessiontoken', sessiontoken => {
+  socket.on('savesessiontoken', (sessiontoken) => {
     socket.join(sessiontoken);
 
     socket.on('fetchfreeport', () => {
@@ -115,7 +115,7 @@ io.on('connection', function(socket){
 
     socket.on('getpublicipaddress', () => {
       const getIP = externalip();
-      getIP(function (err, ip) {
+      getIP((err, ip) => {
         if (!err) {
           socket.emit('gotpublicip', ip);
         } else {
@@ -127,13 +127,13 @@ io.on('connection', function(socket){
 
     // Deployment procedure
 
-    socket.on('startdeployment', clone_data => {
+    socket.on('startdeployment', (clone_data) => {
 
       const clone_url = clone_data.split(',')[0];
       const username = clone_data.split(',')[1];
       const reponame = clone_data.split(',')[2];
       const repoid = clone_data.split(',')[4];
-      const clone_dir = '/tmp/'+username+'/'+repoid+'/';
+      const clone_dir = `/tmp/${username}/${repoid}/`;
 
       rimraf(clone_dir, (err) => {
         if (err) {
@@ -153,8 +153,8 @@ io.on('connection', function(socket){
         clone.on('close', (code) => {
           socket.emit('cloningcomplete', code);
 
-          if (code == '0') {
-            const docker = spawn('docker-compose', ['-f', clone_dir + '/docker-compose.yml','up', '-d']);
+          if (code === 0) {
+            const docker = spawn('docker-compose', ['-f', `${clone_dir}/docker-compose.yml`, 'up', '-d']);
 
             docker.stdout.on('data', (data) => {
               socket.emit('datafromterminal', filterColors(data));
@@ -177,17 +177,17 @@ io.on('connection', function(socket){
     // Kill procedure
 
     socket.on('startkillprocedure', (username, repoId, dockercomposefile) => {
-      mkdirp(`/tmp/${username}/${repoId}/`, function (err) {
+      mkdirp(`/tmp/${username}/${repoId}/`, (err) => {
         if (err) {
           console.error(err);
         } else {
-          fs.writeFile(`/tmp/${username}/${repoId}/docker-compose.yml`, dockercomposefile, err => {
+          fs.writeFile(`/tmp/${username}/${repoId}/docker-compose.yml`, dockercomposefile, (err) => {
             if (err) {
               console.log(err);
             } else {
               const shutdown = spawn('docker-compose', ['-f', `/tmp/${username}/${repoId}/docker-compose.yml`,
-              'down', '--rmi', 'all', '-v', '--remove-orphan']);
-              shutdown.on('close', code => {
+                'down', '--rmi', 'all', '-v', '--remove-orphan']);
+              shutdown.on('close', (code) => {
                 socket.emit('killstatus', code);
               });
             }
@@ -207,7 +207,7 @@ function filterColors(data) {
     /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
 }
 
-http.listen(port, function(err) {
+http.listen(port, (err) => {
   if (err) {
     console.log(err);
   } else {
@@ -215,6 +215,6 @@ http.listen(port, function(err) {
   }
 });
 
-mongoose.connect("mongodb://0.0.0.0/demo");
+mongoose.connect('mongodb://0.0.0.0/demo');
 
 

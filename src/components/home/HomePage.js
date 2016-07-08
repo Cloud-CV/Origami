@@ -34,12 +34,14 @@ class HomePage extends React.Component {
         <div className="ui raised fluid segment text sixteen wide padded grid">
           <div className="four wide column">
             <a href="http://www.cloudcv.org/">
-              <img className="ui centered fluid medium bordered rounded image" src={require("./../assets/cloudcv_logo.png")}/>
+              <img className="ui centered fluid medium bordered rounded image" src={require('./../assets/cloudcv_logo.png')}/>
             </a>
           </div>
           <div className="twelve wide padded text left aligned container column grid">
             <div className="row">
-              CVFY helps you build a web based demo out of your ML evaluation code. You can plug and modify predefined I/O components as per the need of your evalution code and connect it using the CVFY python lib. CVFY gives you two choices for deploying your demo:
+              CVFY helps you build a web based demo out of your ML evaluation code.
+              You can plug and modify predefined I/O components as per the need of your evalution code and connect it using the CVFY python lib.
+              CVFY gives you two choices for deploying your demo:
               <br />
               <div className="ui ordered list">
                 <div className="item">Import your project from Github and build it in a Docker container</div>
@@ -74,7 +76,8 @@ class HomePage extends React.Component {
 
               <Link className="ui ribbon label raised fluid padded text container segment" to={this.props.login ? '/user' : '/'}
                     onClick={this.buildFromGithubLogin}
-                    style={{textDecoration: 'none', color: "inherit"}}>
+                    style={{ textDecoration: 'none', color: 'inherit' }}
+              >
                 <i className="large github middle aligned icon" /> Build From Github
               </Link>
               <br /><br />
@@ -99,7 +102,8 @@ class HomePage extends React.Component {
 
               <Link className="ui ribbon label raised fluid padded text container segment" to={this.props.login ? '/ngh/user' : '/'}
                     onClick={this.useLocalDeploymentLogin}
-                    style={{textDecoration: 'none', color: "inherit"}}>
+                    style={{ textDecoration: 'none', color: 'inherit' }}
+              >
                 <i className="large rocket middle aligned icon" /> Use Own Deployment
               </Link>
               <br /><br />

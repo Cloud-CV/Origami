@@ -9,4 +9,4 @@ const outputComponentSchema = mongoose.Schema({
   props: Array
 });
 
-export default mongoose.model("outputComponent", outputComponentSchema);
+export default mongoose.model('outputComponent', outputComponentSchema);

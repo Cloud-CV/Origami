@@ -30,20 +30,22 @@ class ImageOutputPreview extends React.Component {
         onTouchTap={this.handleOk}
       />
     ];
-    return(<Dialog
+    return (<Dialog
       title="Preview Image Output Component"
       actions={actions}
       modal
       autoScrollBodyContent
-      open={this.state.open}>
+      open={this.state.open}
+            >
       <ImageOutput
         headers={this.state.headers}
         calling_context="demo"
         data={
           Array(this.state.headers.length).fill(
-            require("../../assets/wireframe.png")
+            require('../../assets/wireframe.png')
           )
-        }/>
+        }
+      />
     </Dialog>);
   }
 }
