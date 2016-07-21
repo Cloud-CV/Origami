@@ -22,6 +22,7 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "babel-polyfill": "^6.8.0",
+    "bcrypt-nodejs": "0.0.3",
     "external-ip": "^0.2.4",
     "jquery": "^3.0.0",
     "material-ui": "^0.15.0",

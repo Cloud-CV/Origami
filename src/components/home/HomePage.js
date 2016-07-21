@@ -7,17 +7,17 @@ import * as loginActions from '../../actions/loginActions';
 class HomePage extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.buildFromGithubLogin = this.buildFromGithubLogin.bind(this);
+    // this.buildFromGithubLogin = this.buildFromGithubLogin.bind(this);
     this.useLocalDeploymentLogin = this.useLocalDeploymentLogin.bind(this);
   }
 
-  buildFromGithubLogin() {
-    if (!this.props.login) {
-      $('.loginButton').trigger('click');
-    } else {
-      browserHistory.push('/user');
-    }
-  }
+  // buildFromGithubLogin() {
+  //   if (!this.props.login) {
+  //     $('.loginButton').trigger('click');
+  //   } else {
+  //     browserHistory.push('/user');
+  //   }
+  // }
 
   useLocalDeploymentLogin() {
     if (!this.props.login) {
@@ -71,31 +71,33 @@ class HomePage extends React.Component {
 
         <div className="three column centered stretched row">
 
-          <div className="column center aligned">
-            <div className="ui blue fluid segment">
+          {/*
+           <div className="column center aligned">
+           <div className="ui blue fluid segment">
 
-              <Link className="ui ribbon label raised fluid padded text container segment" to={this.props.login ? '/user' : '/'}
-                    onClick={this.buildFromGithubLogin}
-                    style={{ textDecoration: 'none', color: 'inherit' }}
-              >
-                <i className="large github middle aligned icon" /> Build From Github
-              </Link>
-              <br /><br />
+           <Link className="ui ribbon label raised fluid padded text container segment" to={this.props.login ? '/user' : '/'}
+           onClick={this.buildFromGithubLogin}
+           style={{ textDecoration: 'none', color: 'inherit' }}
+           >
+           <i className="large github middle aligned icon" /> Build From Github
+           </Link>
+           <br /><br />
 
-              <div className="ui centered grid">
-                <div className="ui left aligned centered ten wide column">
-                  <div className="ui padded">
-                    <div className="ui ordered list">
-                      <div className="item">Pull your code from Github</div>
-                      <div className="item">Register your app</div>
-                      <div className="item">Select I/O components</div>
-                      <div className="item">Use your demo</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+           <div className="ui centered grid">
+           <div className="ui left aligned centered ten wide column">
+           <div className="ui padded">
+           <div className="ui ordered list">
+           <div className="item">Pull your code from Github</div>
+           <div className="item">Register your app</div>
+           <div className="item">Select I/O components</div>
+           <div className="item">Use your demo</div>
+           </div>
+           </div>
+           </div>
+           </div>
+           </div>
+           </div>
+           */}
 
           <div className="column center aligned">
             <div className="ui blue fluid segment">
