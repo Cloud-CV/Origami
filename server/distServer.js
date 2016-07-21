@@ -16,7 +16,7 @@ import nonghDemoModelController from './controlller/nonghdemomodelController';
 import inputComponentModelController from './controlller/inputcomponentModelController';
 import outputComponentModelController  from './controlller/outputcomponentController';
 
-const port = 3000;
+const port = appConfig.CLIENT_PORT;
 const app = express();
 
 let http = require('http').Server(app);

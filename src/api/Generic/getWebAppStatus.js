@@ -1,7 +1,8 @@
 import request from 'superagent';
+const appConfig = require('../../../outCalls/config');
 
 export function getWebAppStatus(webappaddress) {
-  let URL = `http://${webappaddress}:3000/alive`;
+  let URL = `http://${webappaddress}:${appConfig.CLIENT_PORT}/alive`;
   return new Promise((resolve, reject) => {
     request
       .get(URL)

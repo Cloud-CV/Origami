@@ -2,7 +2,7 @@ import request from 'superagent';
 const appConfig  = require('../../../outCalls/config');
 
 export function modifyComponentDeployed(componentData, type) {
-  let URL = `http://${appConfig.CLIENT_IP}:3000/api/${type}model/${componentData.id}`;
+  let URL = `http://${appConfig.CLIENT_IP}:${appConfig.CLIENT_PORT}/api/${type}model/${componentData.id}`;
   return new Promise((resolve, reject) => {
     request
       .put(URL)
