@@ -154,7 +154,12 @@ class RegisterPage extends React.Component {
       };
       this.props.nonghModelActions.addToDBNonGHDemoModel(dataToPut).then(() => {
         this.props.nonghModelActions.updateNonGHDemoModel(dataToPut).then(() => {
-          browserHistory.push(`/ngh/user/${this.state.name}/${this.state.id}/inputcomponent`);
+          console.log(this.props.params.type);
+          if (this.props.params.type === 'modify') {
+            browserHistory.push('/ngh/user');
+          } else {
+            browserHistory.push(`/ngh/user/${this.state.name}/${this.state.id}/inputcomponent`);
+          }
         });
       });
     }

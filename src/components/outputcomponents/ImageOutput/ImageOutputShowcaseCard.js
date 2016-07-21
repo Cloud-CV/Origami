@@ -9,7 +9,7 @@ class ImageOutputShowcaseCard extends React.Component {
   constructor(props) {
     super(props);
     let initHeaders = [];
-    if (props.demoProps.outputComponentDemoModel.baseComponentId === '2') {
+    if (props.demoProps.outputComponentDemoModel.baseComponentId === 2) {
       initHeaders = props.demoProps.outputComponentDemoModel.props;
     }
     this.state = {
@@ -62,14 +62,18 @@ class ImageOutputShowcaseCard extends React.Component {
         baseComponentId: 2,
         props: propsToStore
       }).then(() => {
-        if (this.forwardAddressAlternate) {
-          if (this.demoModel.status === 'input') {
-            browserHistory.push(this.forwardAddress);
-          } else if (this.demoModel.status === 'demo') {
-            browserHistory.push(this.forwardAddressAlternate);
-          }
+        if (this.props.demoProps.params.type === 'modify') {
+          browserHistory.push('/ngh/user');
         } else {
-          browserHistory.push(this.forwardAddress);
+          if (this.forwardAddressAlternate) {
+            if (this.demoModel.status === 'input') {
+              browserHistory.push(this.forwardAddress);
+            } else if (this.demoModel.status === 'demo') {
+              browserHistory.push(this.forwardAddressAlternate);
+            }
+          } else {
+            browserHistory.push(this.forwardAddress);
+          }
         }
       });
     }

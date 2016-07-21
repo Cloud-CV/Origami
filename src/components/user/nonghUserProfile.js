@@ -11,7 +11,8 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import CircularProgress from 'material-ui/CircularProgress';
 import CustomCard from '../stateless/cards';
-import userRepos from '../../api/Github/userRepos';
+import Dialog from 'material-ui/Dialog';
+import RaisedButton from 'material-ui/RaisedButton';
 import toastr from 'toastr';
 
 toastr.options.closeButton = true;
@@ -22,7 +23,9 @@ class NonGHUserProfile extends React.Component {
     this.state = {
       user: {},
       showOutput: 'hidden',
-      allDeployed: []
+      allDeployed: [],
+      projectBeingEdited: {},
+      showModifyModal: false
     };
     this.socket = this.context.socket;
     this.toggleShow = this.toggleShow.bind(this);
@@ -31,6 +34,7 @@ class NonGHUserProfile extends React.Component {
     this.getDisplayForDemoButton = this.getDisplayForDemoButton.bind(this);
     this.goToDemoPage = this.goToDemoPage.bind(this);
     this.goToRegisterPage = this.goToRegisterPage.bind(this);
+    this.toggleModifyDialog = this.toggleModifyDialog.bind(this);
   }
 
   componentWillMount() {
@@ -78,8 +82,14 @@ class NonGHUserProfile extends React.Component {
       status: project.status
     };
     this.props.nonghModelActions.updateNonGHDemoModel(dataToUpdate).then(() => {
-      browserHistory.push(`/ngh/user/${project.name}/${project.id}/register`);
+      this.setState({ projectBeingEdited: project }, () => {
+        this.toggleModifyDialog();
+      });
     });
+  }
+
+  toggleModifyDialog() {
+    this.setState({ showModifyModal: !this.state.showModifyModal });
   }
 
   getDisplayForDemoButton(project) {
@@ -181,6 +191,45 @@ class NonGHUserProfile extends React.Component {
           }
 
         </div>}
+
+        <Dialog
+          title="Modify Application"
+          open={this.state.showModifyModal}
+          onRequestClose={this.toggleModifyDialog}
+          contentStyle={{ width: '30%' }}
+        >
+          <div className="ui stackable grid">
+            <div className="ui stackable row">
+              <div className="center aligned six wide column">
+                <RaisedButton
+                  label="Metadata"
+                  primary
+                  onTouchTap={() => browserHistory.push(
+                  `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/register/modify`
+                  )}
+                />
+              </div>
+              <div className="center aligned five wide column">
+                <RaisedButton
+                  label="Input"
+                  primary
+                  onTouchTap={() => browserHistory.push(
+                  `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/inputcomponent/modify`
+                  )}
+                />
+              </div>
+              <div className="center aligned five wide column">
+                <RaisedButton
+                  label="Output"
+                  primary
+                  onTouchTap={() => browserHistory.push(
+                  `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/outputcomponent/modify`
+                  )}
+                />
+              </div>
+            </div>
+          </div>
+        </Dialog>
 
 
       </div>

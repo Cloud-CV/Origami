@@ -19,7 +19,7 @@ class SelectInputComponentPage extends React.Component {
   }
 
   componentWillMount() {
-    getComponentDeployed(this.props.nonghDemoModel.id, 'input').then((inputComponentSeedData) => {
+    getComponentDeployed(this.props.params.repoId, 'input').then((inputComponentSeedData) => {
       if (JSON.parse(inputComponentSeedData).length !== 0) {
         let dataToSeed = {
           id: JSON.parse(inputComponentSeedData)[0].id,

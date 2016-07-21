@@ -9,7 +9,7 @@ class TextOutputShowcaseCard extends React.Component {
   constructor(props) {
     super(props);
     let initHeaders = [];
-    if (props.demoProps.outputComponentDemoModel.baseComponentId === '1') {
+    if (props.demoProps.outputComponentDemoModel.baseComponentId === 1) {
       initHeaders = props.demoProps.outputComponentDemoModel.props;
     }
     this.state = {
@@ -62,14 +62,18 @@ class TextOutputShowcaseCard extends React.Component {
         baseComponentId: 1,
         props: propsToStore
       }).then(() => {
-        if (this.forwardAddressAlternate) {
-          if (this.demoModel.status === 'input') {
-            browserHistory.push(this.forwardAddress);
-          } else if (this.demoModel.status === 'demo') {
-            browserHistory.push(this.forwardAddressAlternate);
-          }
+        if (this.props.demoProps.params.type === 'modify') {
+          browserHistory.push('/ngh/user');
         } else {
-          browserHistory.push(this.forwardAddress);
+          if (this.forwardAddressAlternate) {
+            if (this.demoModel.status === 'input') {
+              browserHistory.push(this.forwardAddress);
+            } else if (this.demoModel.status === 'demo') {
+              browserHistory.push(this.forwardAddressAlternate);
+            }
+          } else {
+            browserHistory.push(this.forwardAddress);
+          }
         }
       });
     }

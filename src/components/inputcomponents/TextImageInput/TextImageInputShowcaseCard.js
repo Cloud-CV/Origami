@@ -9,7 +9,7 @@ class TextImageInputShowcaseCard extends React.Component {
   constructor(props) {
     super(props);
     let initLabels = [];
-    if (props.demoProps.inputComponentDemoModel.baseComponentId === '2') {
+    if (props.demoProps.inputComponentDemoModel.baseComponentId === 2) {
       initLabels = props.demoProps.inputComponentDemoModel.props;
     }
     this.state = {
@@ -61,7 +61,11 @@ class TextImageInputShowcaseCard extends React.Component {
         baseComponentId: 2,
         props: propsToStore
       }).then(() => {
-        browserHistory.push(this.forwardAddress);
+        if (this.props.demoProps.params.type === 'modify') {
+          browserHistory.push('/ngh/user');
+        } else {
+          browserHistory.push(this.forwardAddress);
+        }
       });
     }
   }
