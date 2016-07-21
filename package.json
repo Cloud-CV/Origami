@@ -16,6 +16,7 @@
     "build:html": "babel-node server/buildHTML.js",
     "prebuild": "npm-run-all clean-dist test lint:build build:html",
     "build": "babel-node server/build.js",
+    "build:alias": "babel-node server/build.js",
     "postbuild": "babel-node server/distServer.js"
   },
   "author": "Ashish Chaudhary",

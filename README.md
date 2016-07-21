@@ -1,5 +1,6 @@
 # CloudCVfy Webapp
 
+[![Build Status](https://travis-ci.org/batra-mlp-lab/CloudCVfy-Frontend.svg?branch=master)](https://travis-ci.org/batra-mlp-lab/CloudCVfy-Frontend)
 [![Dependency Status](https://david-dm.org/batra-mlp-lab/CloudCVfy-Frontend.svg)](https://david-dm.org/batra-mlp-lab/CloudCVfy-Frontend)
 [![devDependency Status](https://david-dm.org/batra-mlp-lab/CloudCVfy-Frontend/dev-status.svg)](https://david-dm.org/batra-mlp-lab/CloudCVfy-Frontend#info=devDependencies)
 

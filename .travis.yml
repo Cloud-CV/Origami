@@ -5,3 +5,4 @@ node_js:
 script:
   - npm run lint:build
   - npm run test
+  - npm run build:alias

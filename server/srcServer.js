@@ -12,6 +12,7 @@ const appConfig  = require('../outCalls/config');
 const passport = require('../outCalls/auth');
 import colors from 'colors';
 
+import rootSettingsModelController from './controlller/rootSettingsModelController';
 import githubDemoModelController from './controlller/githubdemomodelController';
 import nonghDemoModelController from './controlller/nonghdemomodelController';
 import inputComponentModelController from './controlller/inputcomponentModelController';
@@ -46,6 +47,7 @@ app.use(bodyParser.json({ limit: '50mb' }));
 let session = require('express-session')({
   secret: appConfig.APP_SECRET,
   resave: true,
+  cookie: { path: '/', httpOnly: true, maxAge: 36000000 },
   saveUninitialized: true
 });
 app.use(session);
@@ -79,6 +81,7 @@ app.get('/user', (req, res) => {
 
 // API routes
 
+app.use('/api/rootsettings', rootSettingsModelController);
 app.use('/api/githubdemomodel', githubDemoModelController);
 app.use('/api/nonghdemomodel', nonghDemoModelController);
 app.use('/api/inputmodel', inputComponentModelController);
