@@ -8,6 +8,7 @@ import GettingStartedFrontPageComponent from './components/docs/gettingstarted/G
 import GHUserProfileComponent from './components/user/ghUserProfile';
 import NonGHUserProfileComponent from './components/user/nonghUserProfile';
 import LoginComponent from './components/stateless/login';
+import InitialSetupComponent from './components/initialSetupPage';
 import RegisterGithubPageComponent from './components/deployment/BuildWIthGithub/registerPage';
 import RegisterNonGHPageComponent from './components/deployment/UsePrebuiltProject/registerPage';
 import SelectInputComponentsGithubPageComponent from './components/deployment/BuildWIthGithub/selectInputComponentPage';
@@ -38,6 +39,7 @@ export default(
     <Route path="ngh/user/:repoName/:repoId/outputcomponent(/:type)" component={SelectOutputComponentsNonGHPageComponent} />
     <Route path="ngh/user/:repoName/:repoId/demo" component={NGHDemoPageComponent} />
 
+    <Route path="initialsetup" component={InitialSetupComponent} />
     <Route path="login*" component={LoginComponent} />
     <Route path="*" component={PageNotfoundHandler} />
   </Route>

@@ -37,14 +37,18 @@ class App extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.login !== nextProps.login) {
-      this.setState({ login: nextProps.login });
-    }
-    if (window.location.pathname.split('/').slice(-1)[0] === 'demo') {
+  componentWillMount() {
+    if (window.location.pathname.split('/').slice(-1)[0] === 'demo'
+      || window.location.pathname.split('/')[1] === 'initialsetup') {
       this.setState({ displayLogin: 'none' });
     } else {
       this.setState({ displayLogin: '' });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.login !== nextProps.login) {
+      this.setState({ login: nextProps.login });
     }
   }
 
