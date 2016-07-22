@@ -37,13 +37,6 @@ class App extends React.Component {
     };
   }
 
-  componentWillMount() {
-    const dataInit = localStorage.getItem('gh_access_token_time');
-    if (!dataInit || parseInt(Date.now()) - parseInt(dataInit) >= 86400000) {
-      this.clearSessionFlag();
-    }
-  }
-
   componentWillReceiveProps(nextProps) {
     if (this.props.login !== nextProps.login) {
       this.setState({ login: nextProps.login });
