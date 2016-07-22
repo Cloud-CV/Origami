@@ -3,7 +3,7 @@ import Nonghdemomodel from '../data/nonghdemomodel';
 import express from 'express';
 
 let router = express.Router();
-router.route('/:id?')
+router.route('/:userid/:id?')
   .get(getNonGHDemoModel)
   .post(addNonGHDemoModel)
   .put(updateNonGHDemoModel)
@@ -11,8 +11,9 @@ router.route('/:id?')
 
 function getNonGHDemoModel(req, res) {
   const id = req.params.id;
+  const userid = req.params.userid;
   if (id) {
-    Nonghdemomodel.find({ id }, (err, singlemodel) => {
+    Nonghdemomodel.find({ id, userid }, (err, singlemodel) => {
       if (err) {
         res.send(err);
       } else {
@@ -20,7 +21,7 @@ function getNonGHDemoModel(req, res) {
       }
     });
   } else {
-    Nonghdemomodel.find((err, model) => {
+    Nonghdemomodel.find({ userid }, (err, model) => {
       if (err) {
         res.send(err);
       } else {
@@ -43,11 +44,12 @@ function addNonGHDemoModel(req, res) {
 
 function updateNonGHDemoModel(req, res) {
   const id = req.params.id;
-  Nonghdemomodel.find({ id }, (err, singlemodel) => {
+  const userid = req.params.userid;
+  Nonghdemomodel.find({ id, userid }, (err, singlemodel) => {
     if (err) {
       res.send(err);
     } else {
-      Nonghdemomodel.update({ id }, req.body, { multi: false }, (err, updatedmodel) => {
+      Nonghdemomodel.update({ id, userid }, req.body, { multi: false }, (err, updatedmodel) => {
         if (err) {
           res.send(err);
         } else {
@@ -60,7 +62,8 @@ function updateNonGHDemoModel(req, res) {
 
 function deleteNonGHDemoModel(req, res) {
   const id = req.params.id;
-  Nonghdemomodel.remove({ id }, (err, removed) => {
+  const userid = req.params.userid;
+  Nonghdemomodel.remove({ id, userid }, (err, removed) => {
     if (err) {
       res.send(err);
     } else {

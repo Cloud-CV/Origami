@@ -16,9 +16,9 @@ export function killOutputComponentModelSuccess() {
 export function updateOutputComponentModel(newModelData) {
   return function(dispatch) {
     return new Promise((resolve, reject) => {
-      getComponentDeployed(newModelData.id, 'output').then((data) => {
+      getComponentDeployed(newModelData.userid, newModelData.id, 'output').then((data) => {
         if (JSON.parse(data).length > 0) {
-          modifyComponentDeployed(newModelData, 'output').then(() => {
+          modifyComponentDeployed(newModelData.userid, newModelData, 'output').then(() => {
             dispatch(updateOutputComponentModelSuccess(newModelData));
             resolve('dispatched output component model update call');
           })
@@ -26,7 +26,7 @@ export function updateOutputComponentModel(newModelData) {
               reject('cannot dispatch output component model update call');
             });
         } else {
-          addComponentDeployed(newModelData, 'output').then(() => {
+          addComponentDeployed(newModelData.userid, newModelData, 'output').then(() => {
             dispatch(updateOutputComponentModelSuccess(newModelData));
             resolve('dispatched output component model update call');
           })
@@ -39,10 +39,10 @@ export function updateOutputComponentModel(newModelData) {
   };
 }
 
-export function killOutputComponentModel(repoId) {
+export function killOutputComponentModel(userid, repoId) {
   return function(dispatch) {
     return new Promise((reject, resolve) => {
-      deleteComponentDeployed(repoId, 'output').then(() => {
+      deleteComponentDeployed(userid, repoId, 'output').then(() => {
         dispatch(killOutputComponentModelSuccess());
       });
     });

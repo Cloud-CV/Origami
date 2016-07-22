@@ -23,6 +23,7 @@ class RegisterPage extends React.Component {
     this.state = {
       showOutput: 'hidden',
       id: Math.floor(Math.random() * 10000000).toString(),
+      userid: parseInt(localStorage.getItem('userid'), 10),
       currentProject: {},
       nonghDemoModel: {},
       name: '',
@@ -58,7 +59,7 @@ class RegisterPage extends React.Component {
   }
 
   componentWillMount() {
-    getDeployed(this.props.params.repoId).then((singleRepo) => {
+    getDeployed(this.state.userid, this.props.params.repoId).then((singleRepo) => {
       if (this.props.params.repoId) {
         if (JSON.parse(singleRepo).length !== 0) {
           this.setState({ returning: true });
@@ -145,6 +146,7 @@ class RegisterPage extends React.Component {
       let dataToPut = {
         name: this.state.name,
         id: this.state.id,
+        userid: this.state.userid,
         address: this.state.address,
         description: this.state.description,
         terminal: this.state.showTerminal,

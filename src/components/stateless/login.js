@@ -20,16 +20,18 @@ class LoginHandler extends React.Component {
       const temp = window.location.search.substr(21).split('&');
       const access_token = temp[0];
       const username = temp[1].split('=')[1];
-      this.setSessionFlag(access_token, username);
+      const userid = temp[2].split('=')[1];
+      this.setSessionFlag(access_token, username, userid);
       browserHistory.push('/');
     } else if (window.location.search.indexOf('?status=failed') === 0) {
       toastr.error('Unable to login');
     }
   }
 
-  setSessionFlag(access_token, username) {
+  setSessionFlag(access_token, username, userid) {
     localStorage.setItem('access_token', access_token);
     localStorage.setItem('username', username);
+    localStorage.setItem('userid', userid);
     localStorage.setItem('gh_access_token_time', Date.now());
   }
 

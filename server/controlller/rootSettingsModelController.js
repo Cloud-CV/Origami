@@ -22,7 +22,7 @@ function addRootSettings(req, res) {
     if (err) {
       res.send(err);
     } else if (Object.keys(model).length > 0) {
-      res.status(401).send('Root user already exists');
+      res.status(400).send('Root user already exists');
     } else {
       const newModel = new Rootsettingsmodel(Object.assign({}, req.body));
       newModel.save((err) => {

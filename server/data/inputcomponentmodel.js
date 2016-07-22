@@ -5,6 +5,7 @@ const inputComponentSchema = mongoose.Schema({
     type: String,
     unique: true
   },
+  userid: Number,
   baseComponentId: Number,
   props: Array
 });

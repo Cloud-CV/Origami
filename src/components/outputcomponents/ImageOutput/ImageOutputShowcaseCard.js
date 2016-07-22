@@ -18,6 +18,7 @@ class ImageOutputShowcaseCard extends React.Component {
       previewDialogDisplay: false
     };
     this.demoModel = props.demoProps.demoModel;
+    this.user = props.demoProps.user;
     this.outputComponentDemoModel = props.demoProps.outputComponentDemoModel;
     this.outputComponentDemoModelActions = props.demoProps.outputComponentDemoModelActions;
     this.forwardAddress = props.demoProps.forwardAddress;
@@ -59,6 +60,7 @@ class ImageOutputShowcaseCard extends React.Component {
       });
       this.outputComponentDemoModelActions.updateOutputComponentModel({
         id: this.demoModel.id,
+        userid: this.user.id,
         baseComponentId: 2,
         props: propsToStore
       }).then(() => {

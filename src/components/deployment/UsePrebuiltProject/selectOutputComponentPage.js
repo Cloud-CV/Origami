@@ -14,15 +14,17 @@ class SelectOutputComponentPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      userid: parseInt(localStorage.getItem('userid'), 10),
       outputComponentDemoModel: {}
     };
   }
 
   componentWillMount() {
-    getComponentDeployed(this.props.nonghDemoModel.id, 'output').then((outputComponentSeedData) => {
+    getComponentDeployed(this.state.userid, this.props.nonghDemoModel.id, 'output').then((outputComponentSeedData) => {
       if (JSON.parse(outputComponentSeedData).length !== 0) {
         let dataToSeed = {
           id: JSON.parse(outputComponentSeedData)[0].id,
+          userid: JSON.parse(outputComponentSeedData)[0].userid,
           baseComponentId: JSON.parse(outputComponentSeedData)[0].baseComponentId,
           props: JSON.parse(outputComponentSeedData)[0].props
         };
@@ -54,6 +56,7 @@ class SelectOutputComponentPage extends React.Component {
             <div className="ui three padded column stackable grid" style={{ marginLeft: '3%' }}>
               {getAllOutputComponentsForShowcase({
                 demoModel: this.props.nonghDemoModel,
+                user: this.props.user,
                 outputComponentDemoModel: this.state.outputComponentDemoModel,
                 outputComponentDemoModelActions: this.props.outputComponentDemoModelActions,
                 forwardAddress: `/ngh/user/${this.props.nonghDemoModel.name}/${this.props.nonghDemoModel.id}/demo`,

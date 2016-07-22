@@ -6,6 +6,7 @@ const githubDemoSchema = mongoose.Schema({
     type: String,
     unique: true
   },
+  userid: Number,
   description: String,
   terminal: Boolean,
   timestamp: Number,

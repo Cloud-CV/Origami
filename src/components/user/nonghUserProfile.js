@@ -41,7 +41,7 @@ class NonGHUserProfile extends React.Component {
     !this.props.login && browserHistory.push('/');
     this.props.useractions.LoadUser()
       .then(() => {
-        getDeployed().then((alldeployedRepos) => {
+        getDeployed(this.props.user.id).then((alldeployedRepos) => {
           this.setState({ allDeployed: JSON.parse((alldeployedRepos)) });
         })
           .catch((err) => {
@@ -60,10 +60,10 @@ class NonGHUserProfile extends React.Component {
   }
 
   deleteDemo(projectId) {
-    this.props.nonghModelActions.killNonGHDemoModel(projectId).then(() => {
-      this.props.inputComponentModelActions.killInputComponentModel(projectId);
-      this.props.outputComponentDemoModelActions.killOutputComponentModel(projectId);
-      getDeployed().then((alldeployedRepos) => {
+    this.props.nonghModelActions.killNonGHDemoModel(this.props.user.id, projectId).then(() => {
+      this.props.inputComponentModelActions.killInputComponentModel(this.props.user.id, projectId);
+      this.props.outputComponentDemoModelActions.killOutputComponentModel(this.props.user.id, projectId);
+      getDeployed(this.props.user.id).then((alldeployedRepos) => {
         this.setState({ allDeployed: JSON.parse((alldeployedRepos)) });
       })
         .catch((err) => {
@@ -76,6 +76,7 @@ class NonGHUserProfile extends React.Component {
     let dataToUpdate = {
       name: project.name,
       id: project.id,
+      userid: project.userid,
       description: project.description,
       timestamp: project.timestamp,
       token: project.token,

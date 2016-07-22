@@ -1,8 +1,8 @@
 import request from 'superagent';
 const appConfig  = require('../../../outCalls/config');
 
-export function addDeployed(data) {
-  let URL = `http://${appConfig.CLIENT_IP}:${appConfig.CLIENT_PORT}/api/nonghdemomodel`;
+export function addDeployed(userid, data) {
+  let URL = `http://${appConfig.CLIENT_IP}:${appConfig.CLIENT_PORT}/api/nonghdemomodel/${userid}`;
   return new Promise((resolve, reject) => {
     request
       .post(URL)

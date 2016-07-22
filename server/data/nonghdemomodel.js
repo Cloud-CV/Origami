@@ -6,6 +6,7 @@ const nonghDemoSchema = mongoose.Schema({
     type: String,
     unique: true
   },
+  userid: Number,
   address: String,
   description: String,
   terminal: Boolean,

@@ -1,10 +1,7 @@
 import mongoose from 'mongoose';
 
 const rootSettingsSchema = mongoose.Schema({
-  id: {
-    type: String,
-    unique: true
-  },
+  rootUserGithubLoginId: Number,
   rootUserGithubLoginName: String,
   allowNewLogins: Boolean
 });

@@ -11,6 +11,8 @@ import bodyParser from 'body-parser';
 const appConfig  = require('../outCalls/config');
 const passport = require('../outCalls/auth');
 
+import Rootsettingsmodel from './data/rootsettingsmodel';
+
 import rootSettingsModelController from './controlller/rootSettingsModelController';
 import githubDemoModelController from './controlller/githubdemomodelController';
 import nonghDemoModelController from './controlller/nonghdemomodelController';
@@ -46,19 +48,33 @@ app.use(session);
 app.use(passport.initialize());
 app.use(passport.session());
 
+function checkRootSettingStatus(req, res, next) {
+  Rootsettingsmodel.find((err, model) => {
+    if (err) {
+      res.redirect('/error');
+    } else {
+      if (Object.keys(model).length > 0) {
+        next();
+      } else {
+        res.redirect('/initialsetup');
+      }
+    }
+  });
+}
+
 // Routes
 
-app.get('/alive', (req, res) => {
+app.get('/alive', checkRootSettingStatus, (req, res) => {
   res.sendStatus(200);
 });
 
-app.get('/auth/github', passport.authenticate('github',
+app.get('/auth/github', checkRootSettingStatus, passport.authenticate('github',
   { scope: ['user', 'repo'] }
 ));
 
-app.get('/auth/github/callback', passport.authenticate('github',
+app.get('/auth/github/callback', checkRootSettingStatus, passport.authenticate('github',
   { failureRedirect: '/login?status=failed' }), (req, res) => {
-    res.redirect(`/login?status=passed&token=${req.user.accessToken}&username=${req.user.username}`);
+    res.redirect(`/login?status=passed&token=${req.user.accessToken}&username=${req.user.username}&userid=${req.user.id}`);
   });
 
 app.get('/logout', (req, res) => {
@@ -67,8 +83,12 @@ app.get('/logout', (req, res) => {
   });
 });
 
-app.get('/user', (req, res) => {
-  res.redirect('/');
+app.get('/user*', checkRootSettingStatus, (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../src/index.html'));
+});
+
+app.get('/ngh*', checkRootSettingStatus, (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../src/index.html'));
 });
 
 // API routes

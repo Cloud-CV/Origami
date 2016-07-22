@@ -3,7 +3,7 @@ import Outputcomponentmodel from '../data/outputcomponentmodel';
 import express from 'express';
 
 let router = express.Router();
-router.route('/:id?')
+router.route('/:userid/:id?')
   .get(getOutputComponentModel)
   .post(addOutputComponentModel)
   .put(updateOutputComponentModel)
@@ -11,8 +11,9 @@ router.route('/:id?')
 
 function getOutputComponentModel(req, res) {
   const id = req.params.id;
+  const userid = req.params.userid;
   if (id) {
-    Outputcomponentmodel.find({ id }, (err, singlemodel) => {
+    Outputcomponentmodel.find({ id, userid }, (err, singlemodel) => {
       if (err) {
         res.send(err);
       } else {
@@ -20,7 +21,7 @@ function getOutputComponentModel(req, res) {
       }
     });
   } else {
-    Outputcomponentmodel.find((err, model) => {
+    Outputcomponentmodel.find({ userid }, (err, model) => {
       if (err) {
         res.send(err);
       } else {
@@ -43,11 +44,12 @@ function addOutputComponentModel(req, res) {
 
 function updateOutputComponentModel(req, res) {
   const id = req.params.id;
-  Outputcomponentmodel.find({ id }, (err, singlemodel) => {
+  const userid = req.params.userid;
+  Outputcomponentmodel.find({ id, userid }, (err, singlemodel) => {
     if (err) {
       res.send(err);
     } else {
-      Outputcomponentmodel.update({ id }, req.body, { multi: false }, (err, updatedmodel) => {
+      Outputcomponentmodel.update({ id, userid }, req.body, { multi: false }, (err, updatedmodel) => {
         if (err) {
           res.send(err);
         } else {
@@ -60,7 +62,8 @@ function updateOutputComponentModel(req, res) {
 
 function deleteOutputComponentModel(req, res) {
   const id = req.params.id;
-  Outputcomponentmodel.remove({ id }, (err, removed) => {
+  const userid = req.params.userid;
+  Outputcomponentmodel.remove({ id, userid }, (err, removed) => {
     if (err) {
       res.send(err);
     } else {

@@ -18,6 +18,7 @@ class TextImageInputShowcaseCard extends React.Component {
       previewDialogDisplay: false
     };
     this.demoModel = props.demoProps.demoModel;
+    this.user = props.demoProps.user;
     this.inputComponentDemoModel = props.demoProps.inputComponentDemoModel;
     this.inputComponentModelActions = props.demoProps.inputComponentModelActions;
     this.forwardAddress = props.demoProps.forwardAddress;
@@ -58,6 +59,7 @@ class TextImageInputShowcaseCard extends React.Component {
       });
       this.inputComponentModelActions.updateInputComponentModel({
         id: this.demoModel.id,
+        userid: this.user.id,
         baseComponentId: 2,
         props: propsToStore
       }).then(() => {

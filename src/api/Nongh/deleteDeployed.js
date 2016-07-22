@@ -1,8 +1,8 @@
 import request from 'superagent';
 const appConfig  = require('../../../outCalls/config');
 
-export function deleteDeployed(id) {
-  let URL = `http://${appConfig.CLIENT_IP}:${appConfig.CLIENT_PORT}/api/nonghdemomodel/${id}`;
+export function deleteDeployed(userid, id) {
+  let URL = `http://${appConfig.CLIENT_IP}:${appConfig.CLIENT_PORT}/api/nonghdemomodel/${userid}/${id}`;
   return new Promise((resolve, reject) => {
     request
       .delete(URL)

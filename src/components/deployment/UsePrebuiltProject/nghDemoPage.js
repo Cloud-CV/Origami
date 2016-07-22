@@ -14,6 +14,7 @@ class NGHDemoPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      userid: 0,
       outputData: [],
       terminalData: [],
       inputModel: {},
@@ -58,17 +59,19 @@ class NGHDemoPage extends React.Component {
         });
       }, 1000);
     });
-    getDeployed(this.props.params.repoId).then((data) => {
-      this.setState({ demoModel: JSON.parse(data)[0] });
-      if (JSON.parse(data)[0].status === 'input') {
-        modifyDeployed(Object.assign({}, JSON.parse(data)[0], { status: 'demo' })).then();
-      }
-    });
-    getComponentDeployed(this.props.params.repoId, 'input').then((data) => {
-      this.setState({ inputModel: JSON.parse(data)[0] });
-    });
-    getComponentDeployed(this.props.params.repoId, 'output').then((data) => {
-      this.setState({ outputModel: JSON.parse(data)[0] });
+    this.setState({ userid: parseInt(localStorage.getItem('userid'), 10) }, () => {
+      getDeployed(this.state.userid, this.props.params.repoId).then((data) => {
+        this.setState({ demoModel: JSON.parse(data)[0] });
+        if (JSON.parse(data)[0].status === 'input') {
+          modifyDeployed(this.state.userid, Object.assign({}, JSON.parse(data)[0], { status: 'demo' })).then();
+        }
+      });
+      getComponentDeployed(this.state.userid, this.props.params.repoId, 'input').then((data) => {
+        this.setState({ inputModel: JSON.parse(data)[0] });
+      });
+      getComponentDeployed(this.state.userid, this.props.params.repoId, 'output').then((data) => {
+        this.setState({ outputModel: JSON.parse(data)[0] });
+      });
     });
   }
 
