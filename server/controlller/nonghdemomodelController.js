@@ -1,4 +1,3 @@
-import * as mongoose from 'mongoose';
 import Nonghdemomodel from '../data/nonghdemomodel';
 import express from 'express';
 

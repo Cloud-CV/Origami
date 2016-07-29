@@ -1,4 +1,3 @@
-import * as mongoose from 'mongoose';
 import Githubdemomodel from '../data/githubdemomodel';
 import express from 'express';
 

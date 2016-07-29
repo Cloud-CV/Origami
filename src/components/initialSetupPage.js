@@ -13,11 +13,18 @@ class InitialSetup extends React.Component {
       showRootUserHelpModal: false,
       showClientIdHelpModal: false,
       showClientSecretHelpModal: false,
-      showAppSecretHelpModal: false,
       showAppIpHelpModal: false,
-      showAppPortHelpModal: false
+      root: '',
+      clientid: '',
+      clientsecret: '',
+      appsecret: Math.random().toString(20),
+      appip: window.location.hostname,
+      port: window.location.port,
+      allowNewUsers: false
     };
     this.toggleHelpModal = this.toggleHelpModal.bind(this);
+    this.updateFields = this.updateFields.bind(this);
+    this.updateCheck = this.updateCheck.bind(this);
   }
 
   toggleHelpModal(modalType) {
@@ -31,16 +38,22 @@ class InitialSetup extends React.Component {
     case 'clientsecret':
       this.setState({ showClientSecretHelpModal: !this.state.showClientSecretHelpModal });
       break;
-    case 'appsecret':
-      this.setState({ showAppSecretHelpModal: !this.state.showAppSecretHelpModal });
-      break;
     case 'appip':
       this.setState({ showAppIpHelpModal: !this.state.showAppIpHelpModal });
       break;
-    case 'appport':
-      this.setState({ showAppPortHelpModal: !this.state.showAppPortHelpModal });
-      break;
     }
+  }
+
+  updateFields(fieldToUpdate, value) {
+    this.setState({
+      [fieldToUpdate]: value
+    });
+  }
+
+  updateCheck() {
+    this.setState({
+      allowNewUsers: !this.state.allowNewUsers
+    });
   }
 
   render() {
@@ -55,6 +68,7 @@ class InitialSetup extends React.Component {
           <TextField
             hintText="Root user's github username"
             floatingLabelText="Root user's github username"
+            onChange={(e) => this.updateFields('root', e.target.value)}
           />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <InfoIcon color={green500}
                     style={{ postion: 'absolute', marginTop: '3%', cursor: 'pointer' }}
@@ -65,6 +79,7 @@ class InitialSetup extends React.Component {
           <TextField
             hintText="Github Client ID"
             floatingLabelText="Github Client ID"
+            onChange={(e) => this.updateFields('clientid', e.target.value)}
           />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <InfoIcon color={green500}
                     style={{ postion: 'absolute', marginTop: '3%', cursor: 'pointer' }}
@@ -75,6 +90,7 @@ class InitialSetup extends React.Component {
           <TextField
             hintText="Github Client Secret"
             floatingLabelText="Github Client Secret"
+            onChange={(e) => this.updateFields('clientsecret', e.target.value)}
           />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <InfoIcon color={green500}
                     style={{ postion: 'absolute', marginTop: '3%', cursor: 'pointer' }}
@@ -83,19 +99,10 @@ class InitialSetup extends React.Component {
         </div>
         <div className="centered row">
           <TextField
-            hintText="Enter a long random string"
-            floatingLabelText="Application Secret"
-          />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <InfoIcon color={green500}
-                    style={{ postion: 'absolute', marginTop: '3%', cursor: 'pointer' }}
-                    onClick={() => this.toggleHelpModal('appsecret')}
-          />
-        </div>
-        <div className="centered row">
-          <TextField
-            value={window.location.hostname}
+            defaultValue={this.state.appip}
             hintText="Enter this application's IP address"
             floatingLabelText="Application IP address"
+            onChange={(e) => this.updateFields('clientip', e.target.value)}
           />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <InfoIcon color={green500}
                     style={{ postion: 'absolute', marginTop: '3%', cursor: 'pointer' }}
@@ -103,20 +110,11 @@ class InitialSetup extends React.Component {
           />
         </div>
         <div className="centered row">
-          <TextField
-            value={window.location.port}
-            hintText="Enter this application's port number"
-            floatingLabelText="Application port"
-          />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <InfoIcon color={green500}
-                    style={{ postion: 'absolute', marginTop: '3%', cursor: 'pointer' }}
-                    onClick={() => this.toggleHelpModal('appport')}
-          />
-        </div>
-        <div className="centered row">
           <Checkbox
             label="Allow new users"
             style={{ maxWidth: 200 }}
+            checked={this.state.allowNewUsers}
+            onCheck={this.updateCheck}
           /><br />
         </div>
         <div className="centered row">
@@ -144,22 +142,10 @@ class InitialSetup extends React.Component {
           Some client secret help
         </Dialog>
         <Dialog
-          open={this.state.showAppSecretHelpModal}
-          onRequestClose={() => this.toggleHelpModal('appsecret')}
-        >
-          Some app secret help
-        </Dialog>
-        <Dialog
           open={this.state.showAppIpHelpModal}
           onRequestClose={() => this.toggleHelpModal('appip')}
         >
           Some application IP help
-        </Dialog>
-        <Dialog
-          open={this.state.showAppPortHelpModal}
-          onRequestClose={() => this.toggleHelpModal('appport')}
-        >
-          Some application port help
         </Dialog>
       </div>
     );

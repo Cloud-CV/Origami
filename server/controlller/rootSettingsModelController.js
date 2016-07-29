@@ -1,4 +1,3 @@
-import * as mongoose from 'mongoose';
 import Rootsettingsmodel from '../data/rootsettingsmodel';
 import express from 'express';
 

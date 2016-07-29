@@ -1,4 +1,3 @@
-import * as mongoose from 'mongoose';
 import Inputcomponentmodel from '../data/inputcomponentmodel';
 import express from 'express';
 

@@ -1,4 +1,3 @@
-import * as mongoose from 'mongoose';
 import Outputcomponentmodel from '../data/outputcomponentmodel';
 import express from 'express';
 
