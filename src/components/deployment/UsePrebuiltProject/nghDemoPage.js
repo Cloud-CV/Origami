@@ -59,7 +59,7 @@ class NGHDemoPage extends React.Component {
         });
       }, 1000);
     });
-    this.setState({ userid: parseInt(localStorage.getItem('userid'), 10) }, () => {
+    this.setState({ userid: parseInt(this.props.params.userid, 10) }, () => {
       getDeployed(this.state.userid, this.props.params.repoId).then((data) => {
         this.setState({ demoModel: JSON.parse(data)[0] });
         if (JSON.parse(data)[0].status === 'input') {

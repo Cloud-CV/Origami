@@ -59,7 +59,7 @@ class SelectOutputComponentPage extends React.Component {
                 user: this.props.user,
                 outputComponentDemoModel: this.state.outputComponentDemoModel,
                 outputComponentDemoModelActions: this.props.outputComponentDemoModelActions,
-                forwardAddress: `/ngh/user/${this.props.nonghDemoModel.name}/${this.props.nonghDemoModel.id}/demo`,
+                forwardAddress: `/ngh/user/${this.props.user.id}/${this.props.nonghDemoModel.name}/${this.props.nonghDemoModel.id}/demo`,
                 params: this.props.params
               }).map((showcasecard, index) =>
                 showcasecard

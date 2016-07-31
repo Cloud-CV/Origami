@@ -37,7 +37,7 @@ export default(
     <Route path="ngh/user/:repoName/:repoId/register(/:type)" component={RegisterNonGHPageComponent} />
     <Route path="ngh/user/:repoName/:repoId/inputcomponent(/:type)" component={SelectInputComponentsNonGHPageComponent} />
     <Route path="ngh/user/:repoName/:repoId/outputcomponent(/:type)" component={SelectOutputComponentsNonGHPageComponent} />
-    <Route path="ngh/user/:repoName/:repoId/demo" component={NGHDemoPageComponent} />
+    <Route path="ngh/user/:userid/:repoName/:repoId/demo" component={NGHDemoPageComponent} />
 
     <Route path="initialsetup" component={InitialSetupComponent} />
     <Route path="login*" component={LoginComponent} />

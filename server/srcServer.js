@@ -9,12 +9,12 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 
 const appConfig  = require('../outCalls/config');
-const passport = require('../outCalls/auth');
+const passport = require('passport');
+const GithubStrategy = require('passport-github').Strategy;
 import colors from 'colors';
 
 import Rootsettingsmodel from './data/rootsettingsmodel';
 
-import rootSettingsModelController from './controlller/rootSettingsModelController';
 import githubDemoModelController from './controlller/githubdemomodelController';
 import nonghDemoModelController from './controlller/nonghdemomodelController';
 import inputComponentModelController from './controlller/inputcomponentModelController';
@@ -47,7 +47,7 @@ app.use(bodyParser.json({ limit: '50mb' }));
 //authentication
 
 let session = require('express-session')({
-  secret: appConfig.APP_SECRET,
+  secret: Math.random().toString(20),
   resave: true,
   cookie: { path: '/', httpOnly: true, maxAge: 36000000 },
   saveUninitialized: true
@@ -62,7 +62,28 @@ function checkRootSettingStatus(req, res, next) {
       res.redirect('/error');
     } else {
       if (Object.keys(model).length > 0) {
+
+        passport.use(new GithubStrategy({
+          clientID: model[0].clientid,
+          clientSecret: model[0].clientsecret,
+          callbackURL: `http://${model[0].appip || '0.0.0.0'}:${model[0].port}/auth/github/callback`
+        },
+          (accessToken, refreshToken, profile, done) => {
+            let user = profile;
+            user.accessToken = accessToken;
+            return done(null, user);
+          })
+        );
+
+        passport.serializeUser((user, done) => {
+          done(null, user);
+        });
+
+        passport.deserializeUser((user, done) => {
+          done(null, user);
+        });
         next();
+
       } else {
         res.redirect('/initialsetup');
       }
@@ -72,7 +93,7 @@ function checkRootSettingStatus(req, res, next) {
 
 // routes
 
-app.get('/alive', checkRootSettingStatus, (req, res) => {
+app.get('/alive', (req, res) => {
   res.sendStatus(200);
 });
 
@@ -82,7 +103,19 @@ app.get('/auth/github', checkRootSettingStatus, passport.authenticate('github',
 
 app.get('/auth/github/callback', checkRootSettingStatus, passport.authenticate('github',
   { failureRedirect: '/login?status=failed' }), (req, res) => {
-    res.redirect(`/login?status=passed&token=${req.user.accessToken}&username=${req.user.username}&userid=${req.user.id}`);
+    Rootsettingsmodel.find((err, model) => {
+      if (err) {
+        res.send(err);
+      } else {
+        if ((model[0].rootUserGithubLoginId === parseInt(req.user.id, 10)) || (model[0].allowNewLogins)) {
+          res.redirect(`/login?status=passed&token=${req.user.accessToken}&username=${req.user.username}&userid=${req.user.id}`);
+        } else {
+          req.session.destroy((err) => {
+            res.send('New users are not allowed. Contact admin.');
+          });
+        }
+      }
+    });
   });
 
 app.get('/logout', (req, res) => {
@@ -101,7 +134,69 @@ app.get('/ngh*', checkRootSettingStatus, (req, res) => {
 
 // API routes
 
-app.use('/api/rootsettings', rootSettingsModelController);
+app.get('/api/rootsettings', (req, res) => {
+  Rootsettingsmodel.find((err, model) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.json([{ username: model[0].rootUserGithubLoginName }]);
+    }
+  });
+});
+
+app.post('/api/rootsettings', (req, res) => {
+  Rootsettingsmodel.find((err, model) => {
+    if (err) {
+      res.send(err);
+    } else if (Object.keys(model).length > 0) {
+      res.status(400).send('Root user already exists');
+    } else {
+      const newModel = new Rootsettingsmodel(Object.assign({}, req.body));
+      newModel.save((err) => {
+        if (err) {
+          res.send(err);
+        } else {
+
+          passport.use(new GithubStrategy({
+            clientID: req.body.clientid,
+            clientSecret: req.body.clientsecret,
+            callbackURL: `http://${req.body.appip || '0.0.0.0'}:${req.body.port}/auth/github/callback`
+          },
+            (accessToken, refreshToken, profile, done) => {
+              let user = profile;
+              user.accessToken = accessToken;
+              return done(null, user);
+            })
+          );
+
+          passport.serializeUser((user, done) => {
+            done(null, user);
+          });
+
+          passport.deserializeUser((user, done) => {
+            done(null, user);
+          });
+
+          res.json(newModel);
+        }
+      });
+    }
+  });
+});
+
+app.get('/api/areusersallowed', (req, res) => {
+  Rootsettingsmodel.find((err, model) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      const toSend = {
+        allowNewLogins: model[0].allowNewLogins
+      };
+      res.json(toSend);
+    }
+  });
+});
+
 app.use('/api/githubdemomodel', githubDemoModelController);
 app.use('/api/nonghdemomodel', nonghDemoModelController);
 app.use('/api/inputmodel', inputComponentModelController);
@@ -218,7 +313,6 @@ io.on('connection', (socket) => {
         }
       });
     });
-
 
 
   });

@@ -34,3 +34,20 @@ export function addRootSettings(settingsData) {
       });
   });
 }
+
+export function getIDByName(username) {
+  let URL = `https://api.github.com/users/${username}`;
+  return new Promise((resolve, reject) => {
+    request
+      .get(URL)
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json')
+      .end((err, res) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res.text);
+        }
+      });
+  });
+}

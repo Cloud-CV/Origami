@@ -101,7 +101,7 @@ class NonGHUserProfile extends React.Component {
   }
 
   goToDemoPage(project) {
-    browserHistory.push(`/ngh/user/${project.name}/${project.id}/demo`);
+    browserHistory.push(`/ngh/user/${this.props.user.id}/${project.name}/${project.id}/demo`);
   }
 
   goToRegisterPage() {
