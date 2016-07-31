@@ -4,32 +4,61 @@
 [![Dependency Status](https://david-dm.org/batra-mlp-lab/CloudCVfy-Frontend.svg)](https://david-dm.org/batra-mlp-lab/CloudCVfy-Frontend)
 [![devDependency Status](https://david-dm.org/batra-mlp-lab/CloudCVfy-Frontend/dev-status.svg)](https://david-dm.org/batra-mlp-lab/CloudCVfy-Frontend#info=devDependencies)
 
-Current Status: An app that works.
-
 Follow issues template to file an issue unless it is a feature request.
 
 ## Build instructions
 
-**This application requires node v6.2.0+**
+**This application requires node v5+**
 
-**Using [nvm](https://github.com/creationix/nvm) is recommended**
+### Using Docker:
 
-1. go to [GH developer console](https://github.com/settings/applications/) and create a new application. Enter the app-url as the url where you will run this app (for example `http://0.0.0.0:3000` - this has to be on port 3000 for now). The callback-url will be `app-url/auth/github/callback` (for example `http://0.0.0.0:3000/auth/github/callback`). Note the CLIENT_ID and CLIENT_SECRET.
-2. clone this repo
-3. copy `outCalls/config.sample.js` to `outCalls/config.js` and edit it accordingly. Add the APP_SECRET as a random long string.
-4. `npm i`
-5. Run mongodb at default port (you can use the docker-compose.yml file given in DBSetup/MongoDB)
+1. Install [docker](https://docs.docker.com/engine/installation/)
+2. Install [docker-compose](https://docs.docker.com/compose/install/)
+3. Clone this repository
 
-### Development
+#### A.) docker compose (recommended)
 
-6. `npm start -s`
+1. `docker-compose up -d`
+2. Wait for the build to finish. Visit `0.0.0.0:5001`. Follow on-screen instructions to add a root user.
+3. If you want to change the port from `5001` to something else, edit `docker-compose.yml` file, line `- "5001:5001"` to `- "<REQUIRED_PORT>:5001"`
 
-### Production
+#### B.) Using docker directly
 
-6. `npm run build -s`
+We need to setup mongodb manually in this case.
+You can use the provided Dockerfile in DBSetup/MongoDB for it or use your own mongodb instace running at port `27017` (default). 
+If you are using your own mongodb instance, skip to step 5.
+
+1. `cd` to DBSetup/MongoDB
+2. `docker build -t mongodb .` Wait for the build to finish.
+3. `docker run -d -p 27017:27017 --restart=always mongodb`
+4. `cd` back to the root directory
+5. `docker build -t cvfy .` Wait for the build to finish.
+6. `docker run -d -p 5001:5001 --restart=always cvfy`
+7. Visit `0.0.0.0:5001` and follow the on-screen instructions to add a root user.
+8. If you want to change the port from `5001`, run `docker run -d -p <REQUIRED_PORT>:5001 --restart=always cvfy` instead of command number `6` above.
+
+### Without docker
+
+1. Setup mongodb as described above (your own or from DBSetup/MongoDB).
+2. To change the application port, edit `outCalls/config.js`
+3. `npm i`
+4. `npm run build -s`
+5. `npm start -s`
+
+## Developement
+
+### Dev server (unsuitable for deployment)
+
+1. Setup mongodb as described above (your own or from DBSetup/MongoDB).
+2. To change the application port, edit `outCalls/config.js`
+3. `npm i`
+4. `npm run dev -s`
+
+### Production server
+
+(Same as `Without Docker` section above under `Build instructions`).
 
 (building for production will take some time and require > 1GB ram - use swap if your machine doesn't have meet the requirements)
-
 
 ## License
 

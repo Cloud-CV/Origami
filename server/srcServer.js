@@ -332,6 +332,5 @@ http.listen(port, (err) => {
   }
 });
 
-mongoose.connect('mongodb://0.0.0.0/demo');
-
+mongoose.connect(`mongodb://${process.env.INDOCKER ? 'db' : '0.0.0.0'}:27017/demo`);
 
