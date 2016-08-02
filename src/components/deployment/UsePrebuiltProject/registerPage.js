@@ -87,6 +87,7 @@ class RegisterPage extends React.Component {
         this.socket.on('fetchedcurrentport', (port) => {
           this.setState({ currentPort: port });
         });
+        this.setState({ showLocalDeploymentCheckBox: true });
         this.socket.on('gotpublicip', (ip) => {
           this.setState({ webappaddress: ip }, () => {
             if (this.state.tempwebaddress.length === 0) {
@@ -97,7 +98,6 @@ class RegisterPage extends React.Component {
           })
           .catch((err) => {
             this.setState({ webappUnreachableErrorText: 'This WebApp cannot be reached on its public IP' });
-            this.setState({ showLocalDeploymentCheckBox: true });
           });
           this.toggleShow();
         });

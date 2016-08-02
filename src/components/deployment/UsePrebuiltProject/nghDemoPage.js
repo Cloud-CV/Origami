@@ -67,10 +67,14 @@ class NGHDemoPage extends React.Component {
         }
       });
       getComponentDeployed(this.state.userid, this.props.params.repoId, 'input').then((data) => {
-        this.setState({ inputModel: JSON.parse(data)[0] });
+        if (Object.keys(JSON.parse(data)).length) {
+          this.setState({ inputModel: JSON.parse(data)[0] });
+        }
       });
       getComponentDeployed(this.state.userid, this.props.params.repoId, 'output').then((data) => {
-        this.setState({ outputModel: JSON.parse(data)[0] });
+        if (Object.keys(JSON.parse(data)).length) {
+          this.setState({ outputModel: JSON.parse(data)[0] });
+        }
       });
     });
   }

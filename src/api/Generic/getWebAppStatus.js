@@ -4,7 +4,7 @@ const appConfig = require('../../../outCalls/config');
 export function getWebAppStatus(webappaddress) {
   let URL = `http://${webappaddress}:${appConfig.CLIENT_PORT}/alive`;
   return new Promise((resolve, reject) => {
-    request
+    let req = request
       .get(URL)
       .end((err, res) => {
         if (err) {
@@ -13,5 +13,9 @@ export function getWebAppStatus(webappaddress) {
           resolve('OK');
         }
       });
+    setTimeout(() => {
+      req.abort();
+      reject('Timeout!');
+    }, 3000);
   });
 }

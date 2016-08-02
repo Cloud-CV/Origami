@@ -25,7 +25,8 @@ class NonGHUserProfile extends React.Component {
       showOutput: 'hidden',
       allDeployed: [],
       projectBeingEdited: {},
-      showModifyModal: false
+      showModifyModal: false,
+      showDemo: {}
     };
     this.socket = this.context.socket;
     this.toggleShow = this.toggleShow.bind(this);
@@ -95,9 +96,10 @@ class NonGHUserProfile extends React.Component {
 
   getDisplayForDemoButton(project) {
     if (project) {
-      return project.status === 'input' ? 'None' : '';
+      return '';
+    } else {
+      return 'None';
     }
-    return '';
   }
 
   goToDemoPage(project) {
