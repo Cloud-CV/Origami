@@ -7,6 +7,7 @@ import IconMenu from 'material-ui/IconMenu';
 import { bindActionCreators } from 'redux';
 import * as loginActions from '../actions/loginActions';
 import MenuItem from 'material-ui/MenuItem';
+import { cyan500 } from 'material-ui/styles/colors';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import FlatButton from 'material-ui/FlatButton';
 import io from 'socket.io-client';
@@ -16,7 +17,8 @@ class App extends React.Component {
     super(props, context);
     this.state = {
       login: false,
-      displayLogin: ''
+      displayLogin: '',
+      showTitle: true
     };
     this.initiateLogin = this.initiateLogin.bind(this);
     this.logout = this.logout.bind(this);
@@ -77,46 +79,58 @@ class App extends React.Component {
   }
 
   render() {
+    if (this.props.location.pathname === '/') {
+      $('#appbar-progress').css('display', 'None');
+    } else {
+      $('#appbar-progress').css('display', '');
+    }
     if (this.readSessionToken()) {
       this.props.loginactions.Login();
     }
+
     return (
       <div>
         <AppBar
+          zDepth={0}
           title={
-            <Link to="/"
-              style={{ textDecoration: 'none', color: 'inherit' }}
-            >
-              CVFY
-            </Link>
+            this.state.showTitle ?
+              <Link to="/"
+                    style={{ textDecoration: 'none', color: 'inherit' }}
+              >
+                CVFY
+              </Link>
+              :
+              null
           }
           showMenuIconButton = {false}
           iconElementRight={
-          this.state.login ?
-            <IconMenu
-              style={{ display: this.state.displayLogin }}
-              iconButtonElement={
-                <IconButton><MoreVertIcon /></IconButton>
-              }
-              targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-              anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-            >
-              <MenuItem onTouchTap={this.logout} primaryText="Sign out" />
-            </IconMenu>
-            :
-             <span className="loginButton" style={{ display: this.state.displayLogin }} onClick={this.initiateLogin}>
+            this.state.login ?
+              <IconMenu
+                style={{ display: this.state.displayLogin }}
+                iconButtonElement={
+                  <IconButton><MoreVertIcon /></IconButton>
+                }
+                targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+              >
+                <MenuItem onTouchTap={this.logout} primaryText="Sign out" />
+              </IconMenu>
+              :
+              <span className="loginButton" style={{ display: this.state.displayLogin }} onClick={this.initiateLogin}>
                 <FlatButton label="Login"
-                style={{ margin: '5%', color: 'white' }}
+                            style={{ margin: '5%', color: 'white' }}
                 />
              </span>
           }
         />
+
         <div id="appbar-progress"
              className="ui bottom attached indicating progress"
              style={{ visibility: 'hidden' }}
         >
           <div className="bar"></div>
         </div>
+
         <div className="ui fluid padded grid">
           {this.props.children}
         </div>
@@ -127,6 +141,7 @@ class App extends React.Component {
 
 App.propTypes = {
   children: PropTypes.object.isRequired,
+  location: PropTypes.string.isRequired,
   loginactions: PropTypes.object.isRequired,
   login: PropTypes.bool.isRequired
 };
