@@ -1,8 +1,9 @@
 import request from 'superagent';
 const appConfig  = require('../../../outCalls/config');
+import { baseURL } from '../CommonLocal/baseURL';
 
 export function getDeployed(userid, id) {
-  let URL = `http://${appConfig.CLIENT_IP}:${appConfig.CLIENT_PORT}/api/nonghdemomodel/${userid}`;
+  let URL = `${baseURL}/api/nonghdemomodel/${userid}`;
   if (id) {
     URL += `/${id}`;
   }

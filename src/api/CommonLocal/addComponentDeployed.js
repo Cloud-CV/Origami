@@ -1,8 +1,9 @@
 import request from 'superagent';
 const appConfig  = require('../../../outCalls/config');
+import { baseURL } from './baseURL';
 
 export function addComponentDeployed(userid, componentData, type) {
-  let URL = `http://${appConfig.CLIENT_IP}:${appConfig.CLIENT_PORT}/api/${type}model/${userid}`;
+  let URL = `${baseURL}/api/${type}model/${userid}`;
   return new Promise((resolve, reject) => {
     request
       .post(URL)

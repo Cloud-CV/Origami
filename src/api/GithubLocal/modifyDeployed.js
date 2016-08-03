@@ -1,8 +1,9 @@
 import request from 'superagent';
 const appConfig  = require('../../../outCalls/config');
+import { baseURL } from '../CommonLocal/baseURL';
 
 export function modifyDeployed(repoData) {
-  let URL = `http://${appConfig.CLIENT_IP}:${appConfig.CLIENT_PORT}/api/githubdemomodel/${repoData.id}`;
+  let URL = `${baseURL}/api/githubdemomodel/${repoData.id}`;
   return new Promise((resolve, reject) => {
     request
       .put(URL)

@@ -139,7 +139,11 @@ app.get('/api/rootsettings', (req, res) => {
     if (err) {
       res.send(err);
     } else {
-      res.json([{ username: model[0].rootUserGithubLoginName }]);
+      res.json([{
+        username: model[0].rootUserGithubLoginName,
+        appip: model[0].appip,
+        port: model[0].port
+      }]);
     }
   });
 });

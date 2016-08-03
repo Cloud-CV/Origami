@@ -1,8 +1,9 @@
 import request from 'superagent';
 const appConfig  = require('../../../outCalls/config');
+import { baseURL } from './baseURL';
 
 export function checkRootSettings() {
-  let URL = `http://${appConfig.CLIENT_IP}:${appConfig.CLIENT_PORT}/api/rootsettings`;
+  let URL = `${baseURL}/api/rootsettings`;
   return new Promise((resolve, reject) => {
     request
       .get(URL)
@@ -18,7 +19,7 @@ export function checkRootSettings() {
 }
 
 export function addRootSettings(settingsData) {
-  let URL = `http://${appConfig.CLIENT_IP}:${appConfig.CLIENT_PORT}/api/rootsettings`;
+  let URL = `${baseURL}/api/rootsettings`;
   return new Promise((resolve, reject) => {
     request
       .post(URL)
