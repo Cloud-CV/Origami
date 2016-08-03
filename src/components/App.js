@@ -48,6 +48,14 @@ class App extends React.Component {
     }
   }
 
+  componentDidMount() {
+    if (this.props.location.pathname === '/') {
+      $('#appbar-progress').css('display', 'None');
+    } else {
+      $('#appbar-progress').css('display', '');
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.login !== nextProps.login) {
       this.setState({ login: nextProps.login });
@@ -131,7 +139,7 @@ class App extends React.Component {
           <div className="bar"></div>
         </div>
 
-        <div className="ui fluid padded grid">
+        <div className="ui fluid grid">
           {this.props.children}
         </div>
       </div>
@@ -141,7 +149,7 @@ class App extends React.Component {
 
 App.propTypes = {
   children: PropTypes.object.isRequired,
-  location: PropTypes.string.isRequired,
+  location: PropTypes.object.isRequired,
   loginactions: PropTypes.object.isRequired,
   login: PropTypes.bool.isRequired
 };

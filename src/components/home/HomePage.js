@@ -34,10 +34,10 @@ class HomePage extends React.Component {
 
   render() {
     return (
-      <div className="ui relaxed stackable centered grid">
+      <div className="ui very relaxed stackable centered grid">
 
         <div className="ui fluid row"
-             style={{ height: '30vh', backgroundColor: cyan500 }}
+             style={{ backgroundColor: cyan500 }}
         >
             <a href="http://www.cloudcv.org/">
               <img className="ui centered fluid small bordered rounded image" src={require('./../assets/cloudcv_logo.png')}/>
@@ -62,8 +62,7 @@ class HomePage extends React.Component {
         </div>
 
         <div className="ui fluid row"
-             style={{ minHeight: '20vh', backgroundColor: cyan500
-             }}
+             style={{ backgroundColor: cyan500 }}
         >
           <div className="ui three wide column">
             <RaisedButton
@@ -80,6 +79,10 @@ class HomePage extends React.Component {
             />
           </div>
         </div>
+
+        <div className="ui fluid row"
+             style={{ height: '10vh', backgroundColor: cyan500 }}
+        ></div>
 
         <br />
 

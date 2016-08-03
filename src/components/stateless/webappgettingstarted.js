@@ -48,7 +48,7 @@ function DocsContent(props) {
                   style={style}
                   onTouchTap={() => browserHistory.push('/gettingstarted/io')}
         >
-          Adding I/O components
+          I/O components
         </MenuItem>
 
         <MenuItem leftIcon={<PublishIcon />}
