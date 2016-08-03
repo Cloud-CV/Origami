@@ -1,5 +1,5 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
 import InfoIcon from 'material-ui/svg-icons/action/info-outline';
@@ -13,10 +13,6 @@ class InitialSetup extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      showRootUserHelpModal: false,
-      showClientIdHelpModal: false,
-      showClientSecretHelpModal: false,
-      showAppIpHelpModal: false,
       root: '',
       clientid: '',
       clientsecret: '',
@@ -28,27 +24,9 @@ class InitialSetup extends React.Component {
       appipError: '',
       allowNewUsers: false
     };
-    this.toggleHelpModal = this.toggleHelpModal.bind(this);
     this.updateFields = this.updateFields.bind(this);
     this.updateCheck = this.updateCheck.bind(this);
     this.save = this.save.bind(this);
-  }
-
-  toggleHelpModal(modalType) {
-    switch (modalType) {
-    case 'root':
-      this.setState({ showRootUserHelpModal: !this.state.showRootUserHelpModal });
-      break;
-    case 'clientid':
-      this.setState({ showClientIdHelpModal: !this.state.showClientIdHelpModal });
-      break;
-    case 'clientsecret':
-      this.setState({ showClientSecretHelpModal: !this.state.showClientSecretHelpModal });
-      break;
-    case 'appip':
-      this.setState({ showAppIpHelpModal: !this.state.showAppIpHelpModal });
-      break;
-    }
   }
 
   updateFields(fieldToUpdate, value) {
@@ -160,7 +138,12 @@ class InitialSetup extends React.Component {
         <div className="ui fluid container blue segment grid">
           <div className="centered row">
             <div className="ui very padded text">
-              <h2>FIRST RUN SETUP</h2>
+              <h2>
+                FIRST RUN SETUP &nbsp;
+                <Link to="/gettingstarted">
+                  [Help]
+                </Link>
+              </h2>
             </div>
           </div>
           <div className="centered row">
@@ -169,10 +152,6 @@ class InitialSetup extends React.Component {
               floatingLabelText="Root user's github username"
               errorText={this.state.rootError}
               onChange={(e) => this.updateFields('root', e.target.value)}
-            />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <InfoIcon color={green500}
-                      style={{ postion: 'absolute', marginTop: '3%', cursor: 'pointer' }}
-                      onClick={() => this.toggleHelpModal('root')}
             />
           </div>
           <div className="centered row">
@@ -181,10 +160,6 @@ class InitialSetup extends React.Component {
               floatingLabelText="Github Client ID"
               errorText={this.state.clientidError}
               onChange={(e) => this.updateFields('clientid', e.target.value)}
-            />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <InfoIcon color={green500}
-                      style={{ postion: 'absolute', marginTop: '3%', cursor: 'pointer' }}
-                      onClick={() => this.toggleHelpModal('clientid')}
             />
           </div>
           <div className="centered row">
@@ -193,10 +168,6 @@ class InitialSetup extends React.Component {
               floatingLabelText="Github Client Secret"
               errorText={this.state.clientsecretError}
               onChange={(e) => this.updateFields('clientsecret', e.target.value)}
-            />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <InfoIcon color={green500}
-                      style={{ postion: 'absolute', marginTop: '3%', cursor: 'pointer' }}
-                      onClick={() => this.toggleHelpModal('clientsecret')}
             />
           </div>
           <div className="centered row">
@@ -206,10 +177,6 @@ class InitialSetup extends React.Component {
               floatingLabelText="Application IP address"
               errorText={this.state.appipError}
               onChange={(e) => this.updateFields('clientip', e.target.value)}
-            />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <InfoIcon color={green500}
-                      style={{ postion: 'absolute', marginTop: '3%', cursor: 'pointer' }}
-                      onClick={() => this.toggleHelpModal('appip')}
             />
           </div>
           <div className="centered row">
@@ -226,33 +193,6 @@ class InitialSetup extends React.Component {
                           onClick={this.save}
             />
           </div>
-
-
-
-          <Dialog
-            open={this.state.showRootUserHelpModal}
-            onRequestClose={() => this.toggleHelpModal('root')}
-          >
-            Some root help
-          </Dialog>
-          <Dialog
-            open={this.state.showClientIdHelpModal}
-            onRequestClose={() => this.toggleHelpModal('clientid')}
-          >
-            Some client id help
-          </Dialog>
-          <Dialog
-            open={this.state.showClientSecretHelpModal}
-            onRequestClose={() => this.toggleHelpModal('clientsecret')}
-          >
-            Some client secret help
-          </Dialog>
-          <Dialog
-            open={this.state.showAppIpHelpModal}
-            onRequestClose={() => this.toggleHelpModal('appip')}
-          >
-            Some application IP help
-          </Dialog>
         </div>
       </div>
     );
