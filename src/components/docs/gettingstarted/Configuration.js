@@ -49,11 +49,12 @@ function Configuration() {
               This is the base-URL of CVFY application.
               This is the URL where this webapp is running.
               <br />
-              For local deployments on default port, it is <b>"0.0.0.0:5001/"</b>.
+              For local deployments on default port, it is <b>"http://0.0.0.0:5001/"</b>.
               <br />
               <div className="ui positive compact message">
                 For the current CVFY installation, it is <b>"{
-                `${window.location.hostname}${(window.location.port ? `:${window.location.port}` : '')}/`
+                `${window.location.protocol}//${window.location.hostname}${(window.location.port ?
+                  `:${window.location.port}` : '')}/`
               }"</b>.
               </div>
             </li>
@@ -76,11 +77,12 @@ function Configuration() {
             <li>
               This URL is Homepage URL + "/auth/github/callback".
               <br />
-              For local deployments on default port, it is <b>"0.0.0.0:5001/auth/github/callback"</b>.
+              For local deployments on default port, it is <b>"http://0.0.0.0:5001/auth/github/callback"</b>.
               <br />
               <div className="ui positive compact message">
                 For the current CVFY installation, it is <b>"{
-                `${window.location.hostname}${(window.location.port ? `:${window.location.port}` : '')}/auth/github/callback`
+                `${window.location.protocol}//${window.location.hostname}${(window.location.port ?
+                  `:${window.location.port}` : '')}/auth/github/callback`
               }"</b>.
               </div>
             </li>

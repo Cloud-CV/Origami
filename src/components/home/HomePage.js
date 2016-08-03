@@ -37,7 +37,7 @@ class HomePage extends React.Component {
       <div className="ui very relaxed stackable centered grid">
 
         <div className="ui fluid row"
-             style={{ backgroundColor: cyan500 }}
+             style={{ backgroundColor: cyan500, minWidth: '100vw' }}
         >
             <a href="http://www.cloudcv.org/">
               <img className="ui centered fluid small bordered rounded image" src={require('./../assets/cloudcv_logo.png')}/>
@@ -46,7 +46,7 @@ class HomePage extends React.Component {
 
         <div className="ui fluid row"
              style={{ height: '10vh', backgroundColor: cyan500,
-               color: 'white', fontSize: 'xx-large'
+               color: 'white', fontSize: 'xx-large', minWidth: '100vw'
              }}
         >
           CVFY
@@ -54,7 +54,7 @@ class HomePage extends React.Component {
 
         <div className="ui fluid row"
              style={{ height: '15vh', backgroundColor: cyan500,
-               color: 'white', fontSize: 'x-large'
+               color: 'white', fontSize: 'x-large', minWidth: '100vw'
              }}
         >
           CVFY helps you build a web based demo out of <br /><br />
@@ -62,7 +62,7 @@ class HomePage extends React.Component {
         </div>
 
         <div className="ui fluid row"
-             style={{ backgroundColor: cyan500 }}
+             style={{ backgroundColor: cyan500, minWidth: '100vw' }}
         >
           <div className="ui three wide column">
             <RaisedButton
@@ -81,7 +81,7 @@ class HomePage extends React.Component {
         </div>
 
         <div className="ui fluid row"
-             style={{ height: '10vh', backgroundColor: cyan500 }}
+             style={{ height: '10vh', backgroundColor: cyan500, minWidth: '100vw' }}
         ></div>
 
         <br />
