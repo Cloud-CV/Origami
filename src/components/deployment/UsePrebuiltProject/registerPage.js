@@ -97,7 +97,7 @@ class RegisterPage extends React.Component {
           getWebAppStatus(ip).then(() => {
           })
           .catch((err) => {
-            this.setState({ webappUnreachableErrorText: 'This WebApp cannot be reached on its public IP' });
+            this.setState({ webappUnreachableErrorText: 'This WebApp cannot be reached on it\'s public IP' });
           });
           this.toggleShow();
         });
@@ -115,13 +115,13 @@ class RegisterPage extends React.Component {
 
   onLocalDeploymentCheckBoxCheck(e) {
     if (!this.state.deploymentBoxSelectedStatus) {
-      getWebAppStatus('0.0.0.0').then(() => {
+      getWebAppStatus(window.location.host).then(() => {
       })
         .catch((err) => {
-          this.setState({ webappLocalUnreachableErrorText: 'This WebApp cannot be reached locally on 0.0.0.0' });
+          this.setState({ webappLocalUnreachableErrorText: `This WebApp cannot be reached on ${window.location.host}` });
         });
     }
-    let selectionPool = ['0.0.0.0', this.state.webappaddress];
+    let selectionPool = [window.location.host, this.state.webappaddress];
     this.setState({ tempwebaddress: selectionPool[this.state.deploymentBoxSelectedStatus ? 1 : 0] });
     this.setState({ deploymentBoxSelectedStatus: !this.state.deploymentBoxSelectedStatus });
   }
@@ -346,7 +346,7 @@ class RegisterPage extends React.Component {
                             </div>
                             <ul className="list">
                               <li>"IP of service" is the public IP address of the machine where the
-                                ML evaluation code is running (or the be run) with the help of cvfy lib.</li>
+                                ML evaluation code is running (or will be run) with the help of cvfy lib.</li>
                               <li>"Port of service" is the port of the above mentioned service.</li>
                               <li>Enter the application details and copy the Token.</li>
                               <li>Use this Token to do registration with the cvfy lib. See <Link to="documentation">documentation</Link>.</li>

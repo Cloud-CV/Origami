@@ -44,6 +44,12 @@ app.use(require('webpack-hot-middleware')(compiler));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(bodyParser.json({ limit: '50mb' }));
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
 //authentication
 
 let session = require('express-session')({

@@ -22,7 +22,7 @@ class LoginHandler extends React.Component {
       const username = temp[1].split('=')[1];
       const userid = temp[2].split('=')[1];
       this.setSessionFlag(access_token, username, userid);
-      browserHistory.push('/');
+      browserHistory.push('/ngh/user');
     } else if (window.location.search.indexOf('?status=failed') === 0) {
       toastr.error('Unable to login');
     }

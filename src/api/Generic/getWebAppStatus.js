@@ -16,6 +16,6 @@ export function getWebAppStatus(webappaddress) {
     setTimeout(() => {
       req.abort();
       reject('Timeout!');
-    }, 3000);
+    }, 4000);
   });
 }
