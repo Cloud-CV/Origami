@@ -115,7 +115,7 @@ class RegisterPage extends React.Component {
 
   onLocalDeploymentCheckBoxCheck(e) {
     if (!this.state.deploymentBoxSelectedStatus) {
-      getWebAppStatus(window.location.host).then(() => {
+      getWebAppStatus(window.location.hostname).then(() => {
       })
         .catch((err) => {
           this.setState({ webappLocalUnreachableErrorText: `This WebApp cannot be reached on ${window.location.host}` });
@@ -349,7 +349,9 @@ class RegisterPage extends React.Component {
                                 ML evaluation code is running (or will be run) with the help of cvfy lib.</li>
                               <li>"Port of service" is the port of the above mentioned service.</li>
                               <li>Enter the application details and copy the Token.</li>
-                              <li>Use this Token to do registration with the cvfy lib. See <Link to="documentation">documentation</Link>.</li>
+                              <li>Use this Token to do registration with the cvfy lib.
+                                See <Link to="/gettingstarted"> documentation</Link>.
+                              </li>
                             </ul>
                           </div>
                           {(this.state.webappUnreachableErrorText.length > 0 || this.state.webappLocalUnreachableErrorText.length > 0) &&

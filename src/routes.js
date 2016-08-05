@@ -15,6 +15,7 @@ import GettingStartedConfigurationPageComponent from './components/docs/gettings
 import GettingStartedCreatePageComponent from './components/docs/gettingstarted/Create';
 import GettingStartedIOPageComponent from './components/docs/gettingstarted/IO';
 import GettingStartedPublishPageComponent from './components/docs/gettingstarted/Publish';
+import GettingStartedModifyPageComponent from './components/docs/gettingstarted/Modify';
 
 import GHUserProfileComponent from './components/user/ghUserProfile';
 import NonGHUserProfileComponent from './components/user/nonghUserProfile';
@@ -55,6 +56,7 @@ export default(
       <Route path="create" component={GettingStartedCreatePageComponent}/>
       <Route path="io" component={GettingStartedIOPageComponent}/>
       <Route path="publish" component={GettingStartedPublishPageComponent}/>
+      <Route path="modify" component={GettingStartedModifyPageComponent}/>
     </Route>
 
     <Route path="user" component={GHUserProfileComponent} />

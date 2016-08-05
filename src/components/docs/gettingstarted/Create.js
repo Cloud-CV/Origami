@@ -8,6 +8,10 @@ function Create() {
         Creating a new App
       </h1>
 
+      <div className="ui horizontal divider">
+        <hr />
+      </div>
+
       <div className="ui orange compact message">
         <h3 className="ui header">
           Step 1: Login and provision an App
@@ -16,7 +20,7 @@ function Create() {
 
       <ul className="list">
         <li>
-          After the initial setup, click on "Create a Demo" button on the homepage.
+          After the initial setup, click on <b>Create a Demo</b> button on the homepage.
           <ul className="list">
             <li>
               This takes you to github for login. Authorize the application there when asked.
@@ -30,7 +34,7 @@ function Create() {
         <br />
 
         <li>
-          Click on the "+" button here to create a new application. This takes you to the Registration page.
+          Click on the <b>+</b> button here to create a new application. This takes you to the Registration page.
         </li>
       </ul>
 
@@ -106,27 +110,23 @@ function Create() {
         </li>
 
         <div className="ui yellow compact message">
-          <h3 className="ui header">
-            If an error box says "This webapp cannot be reached on it's public IP",
-            <br /> you need to check the "Webapp is running locally" checkbox.
-          </h3>
-          Checking this checkbox will make the webapp check local connectivity to itself.
+          If an error box says <b>"This webapp cannot be reached on it's public IP"</b>,
+          <br /> you need to check the <b>"Webapp is running locally"</b> checkbox.
+          <p>
+            Checking this checkbox will make the webapp check local connectivity to itself.
+          </p>
         </div>
 
       </ul>
 
       <div className="ui success compact message">
-        <h3 className="ui header">
-          If you see a green "tick" symbol next to the token, your app is configured correctly.
-          <br /> Copy this token for use in CVFY-lib and click on "Save" button.
-        </h3>
+        If you see a <b>green "tick" symbol</b> next to the token, your app is configured correctly.
+        <br /> Copy this token for use in CVFY-lib and click on "Save" button.
       </div>
 
       <div className="ui error compact message">
-        <h3 className="ui header">
-          If you see a red "hand" symbol next to the token, your app is configured incorrectly.
-          <br /> You may not be able to connect to your app.
-        </h3>
+        If you see a <b>red "hand" symbol</b> next to the token, your app is configured incorrectly.
+        <br /> You may not be able to connect to your app.
       </div>
 
     </DocsContent>

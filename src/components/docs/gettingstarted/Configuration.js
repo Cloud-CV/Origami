@@ -7,11 +7,17 @@ function Configuration() {
       <h1 className="ui header">
         Initial Setup
       </h1>
+
+      <div className="ui horizontal divider">
+        <hr />
+      </div>
+
       <div className="ui info compact message">
         <div className="header">
           A root user is created for an installation of CVFY.
         </div>
       </div>
+
       <h3 className="ui header">
         CVFY requires some configuration before it can connect to Github.
       </h3>
@@ -53,8 +59,7 @@ function Configuration() {
               <br />
               <div className="ui positive compact message">
                 For the current CVFY installation, it is <b>"{
-                `${window.location.protocol}//${window.location.hostname}${(window.location.port ?
-                  `:${window.location.port}` : '')}/`
+                `${window.location.protocol}//${window.location.host}/`
               }"</b>.
               </div>
             </li>
@@ -75,14 +80,13 @@ function Configuration() {
           <h5 className="ui header">Authorization callback URL</h5>
           <ul className="list">
             <li>
-              This URL is Homepage URL + "/auth/github/callback".
+              This URL is <b>Homepage URL + "/auth/github/callback"</b>.
               <br />
               For local deployments on default port, it is <b>"http://0.0.0.0:5001/auth/github/callback"</b>.
               <br />
               <div className="ui positive compact message">
                 For the current CVFY installation, it is <b>"{
-                `${window.location.protocol}//${window.location.hostname}${(window.location.port ?
-                  `:${window.location.port}` : '')}/auth/github/callback`
+                `${window.location.protocol}//${window.location.host}/auth/github/callback`
               }"</b>.
               </div>
             </li>
@@ -102,6 +106,7 @@ function Configuration() {
 
       <div>
         This page is visible when the owner of this CVFY installation runs this application for the first time
+        <br />
         and then tries to Login or clicks on "Create a Demo".
       </div>
 

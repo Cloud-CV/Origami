@@ -1,2 +1,1 @@
-export const baseURL = `${window.location.protocol}//${window.location.hostname}${(window.location.port ?
-  `:${window.location.port}` : '')}`;
+export const baseURL = `${window.location.protocol}//${window.location.host}`;

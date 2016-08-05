@@ -7,6 +7,7 @@ import ConfigIcon from 'material-ui/svg-icons/action/settings-applications';
 import AddnewappIcon from 'material-ui/svg-icons/image/control-point';
 import IOIcon from 'material-ui/svg-icons/action/swap-vert';
 import PublishIcon from 'material-ui/svg-icons/editor/publish';
+import ModifyIcon from 'material-ui/svg-icons/action/build';
 
 function DocsContent(props) {
 
@@ -56,6 +57,13 @@ function DocsContent(props) {
                   onTouchTap={() => browserHistory.push('/gettingstarted/publish')}
         >
           Publishing a demo
+        </MenuItem>
+
+        <MenuItem leftIcon={<ModifyIcon />}
+                  style={style}
+                  onTouchTap={() => browserHistory.push('/gettingstarted/modify')}
+        >
+          Modifying an App
         </MenuItem>
 
       </Drawer>
