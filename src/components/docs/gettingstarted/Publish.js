@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import DocsContent from '../../stateless/webappgettingstarted';
 
 function Publish() {
@@ -20,12 +21,12 @@ function Publish() {
 
       <ul className="list">
         <li>
-          The demo can be accessed by clicking on <b>Demo</b> button on the app on user profile page.
+          The demo can be accessed by clicking on <b>Demo</b> button on the app on <Link to="/ngh/user">user profile page</Link>.
         </li>
         <br />
 
         <li>
-          A shortened URL for the demo can be created from the user profile page by clicking
+          A shortened URL for the demo can be created from the <Link to="/ngh/user">user profile page</Link> by clicking
           <br />
           <b>Get permalink</b> on the app.
         </li>

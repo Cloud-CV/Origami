@@ -350,7 +350,7 @@ class RegisterPage extends React.Component {
                               <li>"Port of service" is the port of the above mentioned service.</li>
                               <li>Enter the application details and copy the Token.</li>
                               <li>Use this Token to do registration with the cvfy lib.
-                                See <Link to="/gettingstarted"> documentation</Link>.
+                                See<Link to="/gettingstarted">Getting Started</Link>.
                               </li>
                             </ul>
                           </div>

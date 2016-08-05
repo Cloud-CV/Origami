@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import DocsContent from '../../stateless/webappgettingstarted';
 
 function Modify() {
@@ -20,7 +21,7 @@ function Modify() {
 
       <ul className="list">
         <li>
-          Registration data and I/O components can be modified later on as well from the user profile page
+          Registration data and I/O components can be modified later on as well from the <Link to="/ngh/user">user profile page</Link>
           <br />
           by clicking on <b>Modify</b> button on the component and then in the modal that appears:
         </li>
@@ -65,7 +66,7 @@ function Modify() {
 
       <ul className="list">
         <li>
-          An application can be deleted by visiting the user profile page and clicking on
+          An application can be deleted by visiting the <Link to="/ngh/user">user profile page</Link> and clicking on
           <br />
           <b>Delete</b> button on the component.
         </li>

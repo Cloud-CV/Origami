@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import DocsContent from '../../stateless/webappgettingstarted';
 
 function Create() {
@@ -26,7 +27,7 @@ function Create() {
               This takes you to github for login. Authorize the application there when asked.
             </li>
             <li>
-              Upon successfull login, you are taken to the user profile that lists all his deployed apps.
+              Upon successful login, you are taken to the <Link to="/ngh/user">user profile</Link> that lists all his deployed apps.
             </li>
           </ul>
         </li>
@@ -34,7 +35,7 @@ function Create() {
         <br />
 
         <li>
-          Click on the <b>+</b> button here to create a new application. This takes you to the Registration page.
+          Click on the <b>+</b> button here to create a new application. This takes you to the <Link to="/ngh/user/register">Registration page</Link>.
         </li>
       </ul>
 
