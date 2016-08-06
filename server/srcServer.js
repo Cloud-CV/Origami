@@ -15,6 +15,8 @@ import colors from 'colors';
 
 import Rootsettingsmodel from './data/rootsettingsmodel';
 
+import permalinkModelController from './controlller/permalinkmodelController';
+import permalinkGetController from './controlller/getpermalinkController';
 import githubDemoModelController from './controlller/githubdemomodelController';
 import nonghDemoModelController from './controlller/nonghdemomodelController';
 import inputComponentModelController from './controlller/inputcomponentModelController';
@@ -207,6 +209,8 @@ app.get('/api/areusersallowed', (req, res) => {
   });
 });
 
+app.use('/api/permalink', permalinkModelController);
+app.use('/api/getpermalink', permalinkGetController);
 app.use('/api/githubdemomodel', githubDemoModelController);
 app.use('/api/nonghdemomodel', nonghDemoModelController);
 app.use('/api/inputmodel', inputComponentModelController);

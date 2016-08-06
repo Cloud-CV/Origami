@@ -35,8 +35,8 @@ const CustomCard = ({ header, heading, width, centeredParent, centeredSegment, d
         <div className="extra content">
           {buttonData.map((button, index) =>
             <button key={index}
-                    style={{ display: button.display }}
-                    className="ui basic blue button"
+                    style={{ display: button.display, marginTop: '2%' }}
+                    className="ui basic stackable blue button"
                     onClick={button.onDeployClick}
             >
               {button.label}

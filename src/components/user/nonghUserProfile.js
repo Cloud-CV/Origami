@@ -7,6 +7,7 @@ import * as nonghDemoModelActions from '../../actions/nonghDemoModelActions';
 import * as inputComponentDemoModelActions from '../../actions/inputComponentDemoModelActions';
 import * as outputComponentDemoModelActions from '../../actions/outputComponentDemoModelActions';
 import { getDeployed } from '../../api/Nongh/getDeployed';
+import { getAllPermalink, deletePermalink } from '../../api/Nongh/permalink';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -26,7 +27,10 @@ class NonGHUserProfile extends React.Component {
       allDeployed: [],
       projectBeingEdited: {},
       showModifyModal: false,
-      showDemo: {}
+      showDemo: {},
+      appData: { type: '', content: '' },
+      showDataModal: false,
+      permalinkHolder: {}
     };
     this.socket = this.context.socket;
     this.toggleShow = this.toggleShow.bind(this);
@@ -36,6 +40,7 @@ class NonGHUserProfile extends React.Component {
     this.goToDemoPage = this.goToDemoPage.bind(this);
     this.goToRegisterPage = this.goToRegisterPage.bind(this);
     this.toggleModifyDialog = this.toggleModifyDialog.bind(this);
+    this.toggleShowDataDialog = this.toggleShowDataDialog.bind(this);
   }
 
   componentWillMount() {
@@ -45,6 +50,16 @@ class NonGHUserProfile extends React.Component {
         getDeployed(this.props.user.id).then((alldeployedRepos) => {
           this.setState({ allDeployed: JSON.parse((alldeployedRepos)) });
         })
+          .then(() => {
+            const stateToPut = {};
+            getAllPermalink().then((data) => {
+              JSON.parse(data).map((perma) => {
+                stateToPut[perma.userId] = {};
+                stateToPut[perma.userId][perma.projectId] = perma;
+                this.setState({ permalinkHolder: Object.assign({}, stateToPut) });
+              });
+            });
+          })
           .catch((err) => {
             toastr.error(err);
           });
@@ -65,7 +80,9 @@ class NonGHUserProfile extends React.Component {
       this.props.inputComponentModelActions.killInputComponentModel(this.props.user.id, projectId);
       this.props.outputComponentDemoModelActions.killOutputComponentModel(this.props.user.id, projectId);
       getDeployed(this.props.user.id).then((alldeployedRepos) => {
-        this.setState({ allDeployed: JSON.parse((alldeployedRepos)) });
+        this.setState({ allDeployed: JSON.parse((alldeployedRepos)) }, () => {
+          deletePermalink({ userId: this.props.user.id, projectId }).then();
+        });
       })
         .catch((err) => {
           toastr.error(err);
@@ -81,7 +98,8 @@ class NonGHUserProfile extends React.Component {
       description: project.description,
       timestamp: project.timestamp,
       token: project.token,
-      status: project.status
+      status: project.status,
+      appData: {}
     };
     this.props.nonghModelActions.updateNonGHDemoModel(dataToUpdate).then(() => {
       this.setState({ projectBeingEdited: project }, () => {
@@ -92,6 +110,14 @@ class NonGHUserProfile extends React.Component {
 
   toggleModifyDialog() {
     this.setState({ showModifyModal: !this.state.showModifyModal });
+  }
+
+  toggleShowDataDialog(data) {
+    this.setState({ showDataModal: !this.state.showDataModal }, () => {
+      if (data) {
+        this.setState({ appData: data });
+      }
+    });
   }
 
   getDisplayForDemoButton(project) {
@@ -185,6 +211,22 @@ class NonGHUserProfile extends React.Component {
                       label: 'Demo',
                       onDeployClick: () => this.goToDemoPage(project),
                       display: this.getDisplayForDemoButton(project)
+                    },
+                    {
+                      label: 'Get Token',
+                      onDeployClick: () => this.toggleShowDataDialog({
+                        type: 'token',
+                        content: project.token
+                      })
+                    },
+                    {
+                      label: 'Get Permalink',
+                      onDeployClick: () => this.toggleShowDataDialog({
+                        type: 'permalink',
+                        content: `${window.location.protocol}//${window.location.host}${
+                          this.state.permalinkHolder[this.state.user.id][project.id].shortRelativeURL
+                        }`
+                      })
                     }
                   ]}
                 />
@@ -208,7 +250,7 @@ class NonGHUserProfile extends React.Component {
                   label="Metadata"
                   primary
                   onTouchTap={() => browserHistory.push(
-                  `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/register/modify`
+                    `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/register/modify`
                   )}
                 />
               </div>
@@ -217,7 +259,7 @@ class NonGHUserProfile extends React.Component {
                   label="Input"
                   primary
                   onTouchTap={() => browserHistory.push(
-                  `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/inputcomponent/modify`
+                    `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/inputcomponent/modify`
                   )}
                 />
               </div>
@@ -226,12 +268,21 @@ class NonGHUserProfile extends React.Component {
                   label="Output"
                   primary
                   onTouchTap={() => browserHistory.push(
-                  `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/outputcomponent/modify`
+                    `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/outputcomponent/modify`
                   )}
                 />
               </div>
             </div>
           </div>
+        </Dialog>
+
+        <Dialog
+          title={this.state.appData.type === 'token' ? 'Token' : 'Permalink'}
+          open={this.state.showDataModal}
+          onRequestClose={this.toggleShowDataDialog}
+          contentStyle={{ width: '30%' }}
+        >
+          {this.state.appData.content}
         </Dialog>
 
 

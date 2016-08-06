@@ -6,6 +6,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import * as nonghDemoModelActions from '../../../actions/nonghDemoModelActions';
 import rangeCheck from 'range_check';
 import { getDeployed } from '../../../api/Nongh/getDeployed';
+import { getSinglePermalink, getAllPermalink, addPermalink, modifyPermalink } from '../../../api/Nongh/permalink';
 import { getWebAppStatus } from '../../../api/Generic/getWebAppStatus';
 import RaisedButton from 'material-ui/RaisedButton';
 import StopNow from 'material-ui/svg-icons/action/pan-tool';
@@ -42,7 +43,8 @@ class RegisterPage extends React.Component {
       webappLocalUnreachableErrorText: '',
       showLocalDeploymentCheckBox: false,
       showTerminal: false,
-      returning: false
+      returning: false,
+      permalinkObject: {}
     };
     this.socket = this.context.socket;
     this.toggleShow = this.toggleShow.bind(this);
@@ -82,6 +84,14 @@ class RegisterPage extends React.Component {
       }
     })
       .then(() => {
+        if (this.props.params.repoId) {
+          getSinglePermalink(this.state.userid, this.props.params.repoId)
+            .then((data) => {
+              if (JSON.parse(data).length !== 0) {
+                this.setState({ permalinkObject: JSON.parse(data)[0] });
+              }
+            });
+        }
         this.socket.emit('fetchcurrentport');
         this.socket.emit('getpublicipaddress');
         this.socket.on('fetchedcurrentport', (port) => {
@@ -96,9 +106,9 @@ class RegisterPage extends React.Component {
           });
           getWebAppStatus(ip).then(() => {
           })
-          .catch((err) => {
-            this.setState({ webappUnreachableErrorText: 'This WebApp cannot be reached on it\'s public IP' });
-          });
+            .catch((err) => {
+              this.setState({ webappUnreachableErrorText: 'This WebApp cannot be reached on it\'s public IP' });
+            });
           this.toggleShow();
         });
         this.socket.on('erroringettingpublicip', (err) => {
@@ -157,10 +167,44 @@ class RegisterPage extends React.Component {
       this.props.nonghModelActions.addToDBNonGHDemoModel(dataToPut).then(() => {
         this.props.nonghModelActions.updateNonGHDemoModel(dataToPut).then(() => {
 
-          if (this.props.params.type === 'modify') {
-            browserHistory.push('/ngh/user');
+          if (Object.keys(this.state.permalinkObject).length > 0) {
+            const permaLinkDataToPut = Object.assign({}, this.state.permalinkObject, {
+              fullRelativeURL: `/ngh/user/${dataToPut.userid}/${dataToPut.name}/${dataToPut.id}/demo`
+            });
+
+            modifyPermalink(permaLinkDataToPut)
+              .then(() => {
+                if (this.props.params.type === 'modify') {
+                  browserHistory.push('/ngh/user');
+                } else {
+                  browserHistory.push(`/ngh/user/${this.state.name}/${this.state.id}/inputcomponent`);
+                }
+              })
+              .catch((err) => {
+                toastr.error(`Error occured in creating shortened URL: ${permaLinkDataToPut}`);
+              });
+
           } else {
-            browserHistory.push(`/ngh/user/${this.state.name}/${this.state.id}/inputcomponent`);
+
+            const permaLinkDataToPut = {
+              shortRelativeURL: `/p/${Math.random().toString(36)
+                .substring(2, 11)}`,
+              fullRelativeURL: `/ngh/user/${dataToPut.userid}/${dataToPut.name}/${dataToPut.id}/demo`,
+              userId: dataToPut.userid,
+              projectId: dataToPut.id
+            };
+
+            addPermalink(permaLinkDataToPut)
+              .then(() => {
+                if (this.props.params.type === 'modify') {
+                  browserHistory.push('/ngh/user');
+                } else {
+                  browserHistory.push(`/ngh/user/${this.state.name}/${this.state.id}/inputcomponent`);
+                }
+              })
+              .catch((err) => {
+                toastr.error(`Error occured in creating shortened URL: ${permaLinkDataToPut}`);
+              });
           }
         });
       });
@@ -225,7 +269,7 @@ class RegisterPage extends React.Component {
 
   render() {
     let tokenClassName = this.validateTempwebaddress() &&
-        this.validateIP() && this.validatePort(this.state.port) ? 'ui positive message' : 'ui negative message';
+    this.validateIP() && this.validatePort(this.state.port) ? 'ui positive message' : 'ui negative message';
     return (
       <div className="ui relaxed stackable grid fluid container">
 
@@ -331,10 +375,10 @@ class RegisterPage extends React.Component {
                         </div>
                         <div className="three wide column">
                           {this.validateTempwebaddress() && this.validateIP() &&
-                            this.validatePort(this.state.port) ?
-                              <GoAhead style={{ height: '', width: '' }} color={green500} />
-                              :
-                              <StopNow style={{ height: '', width: '' }} color={red500} />
+                          this.validatePort(this.state.port) ?
+                            <GoAhead style={{ height: '', width: '' }} color={green500} />
+                            :
+                            <StopNow style={{ height: '', width: '' }} color={red500} />
                           }
                         </div>
                       </div>

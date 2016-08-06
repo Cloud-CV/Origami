@@ -1,8 +1,10 @@
 import React from 'react';
 import { Route, IndexRoute, Redirect } from 'react-router';
 import App from './components/App';
+
 import PageNotfoundHandler from './components/PageNotfoundHandler';
 import HomePageComponent from './components/home/HomePage';
+import URLShortenerComponent from './components/urlShortener';
 
 import LibConfigDocsPageComponent from './components/docs/libdocs/Configuration';
 import LibRegistrationDocsPageComponent from './components/docs/libdocs/Registration';
@@ -74,6 +76,7 @@ export default(
     <Route path="ngh/user/:userid/:repoName/:repoId/demo" component={NGHDemoPageComponent} />
 
     <Route path="initialsetup" component={InitialSetupComponent} />
+    <Route path="p/:shorturl" component={URLShortenerComponent} />
     <Route path="login*" component={LoginComponent} />
     <Route path="*" component={PageNotfoundHandler} />
   </Route>
