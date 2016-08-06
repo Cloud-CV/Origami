@@ -8,7 +8,6 @@ import URLShortenerComponent from './components/urlShortener';
 
 import LibConfigDocsPageComponent from './components/docs/libdocs/Configuration';
 import LibRegistrationDocsPageComponent from './components/docs/libdocs/Registration';
-import LibPipelineDocsPageComponent from './components/docs/libdocs/Pipeline';
 import LibInputDocsPageComponent from './components/docs/libdocs/Input';
 import LibOutputDocsPageComponent from './components/docs/libdocs/Output';
 import LibTerminalDocsPageComponent from './components/docs/libdocs/Terminal';
@@ -46,7 +45,6 @@ export default(
     <Route path="libdocs">
       <Route path="configuration" component={LibConfigDocsPageComponent}/>
       <Route path="registration" component={LibRegistrationDocsPageComponent}/>
-      <Route path="pipeline" component={LibPipelineDocsPageComponent}/>
       <Route path="input" component={LibInputDocsPageComponent}/>
       <Route path="output" component={LibOutputDocsPageComponent}/>
       <Route path="terminal" component={LibTerminalDocsPageComponent}/>

@@ -89,16 +89,18 @@ class TextInput extends React.Component {
             )}
             <input type="hidden" name="socket-id" value={this.props.socketId} />
           </div>
-        </form><br />
-        <pre className="ui centered center aligned">
-          <br />
-          <RaisedButton label="Send" primary
-                        key={Math.random()}
-                        onClick={() => {
-                          this.sendRequest(this.props.sendAddr, this.props.calling_context);
-                        }}
-          />
-        </pre>
+        </form>
+        <div className="ui row">
+          <pre className="ui centered center aligned">
+            <br />
+            <RaisedButton label="Send" primary
+                          key={Math.random()}
+                          onClick={() => {
+                            this.sendRequest(this.props.sendAddr, this.props.calling_context);
+                          }}
+            />
+          </pre>
+        </div>
       </div>
     );
   }

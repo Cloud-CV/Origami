@@ -37,7 +37,7 @@ If you are using your own mongodb instance, skip to step 5.
 7. Visit `0.0.0.0:5001` and follow the on-screen instructions to add a root user.
 8. If you want to change the port from `5001`, run `docker run -d -p <REQUIRED_PORT>:5001 --restart=always cvfy` instead of command number `6` above.
 
-### Without docker
+### Without docker (only OSX and Linux are supported as of now)
 
 1. Setup mongodb as described above (your own or from DBSetup/MongoDB).
 2. To change the application port, edit `outCalls/config.js`

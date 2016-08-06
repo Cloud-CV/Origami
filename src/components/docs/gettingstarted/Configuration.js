@@ -5,7 +5,7 @@ function Configuration() {
   return (
     <DocsContent>
       <h1 className="ui header">
-        Initial Setup
+        Configuration
       </h1>
 
       <div className="ui horizontal divider">

@@ -46,13 +46,6 @@ function DocsContent(props) {
           Registering a new App
         </MenuItem>
 
-        <MenuItem leftIcon={<PipelineIcon />}
-                  style={style}
-                  onTouchTap={() => browserHistory.push('/libdocs/pipeline')}
-        >
-          Configuring pipeline
-        </MenuItem>
-
         <MenuItem leftIcon={<IOIcon />}
                   style={style}
                   onTouchTap={() => browserHistory.push('/libdocs/input')}

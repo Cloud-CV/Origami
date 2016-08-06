@@ -5,7 +5,7 @@ function IO() {
   return (
     <DocsContent>
       <h1 className="ui header">
-        Adding Input/Output components
+        I/O Components
       </h1>
 
       <div className="ui horizontal divider">
