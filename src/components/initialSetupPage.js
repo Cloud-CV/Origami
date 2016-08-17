@@ -22,7 +22,8 @@ class InitialSetup extends React.Component {
       clientidError: '',
       clientsecretError: '',
       appipError: '',
-      allowNewUsers: false
+      allowNewUsers: false,
+      isCloudCV: false
     };
     this.updateFields = this.updateFields.bind(this);
     this.updateCheck = this.updateCheck.bind(this);
@@ -35,9 +36,9 @@ class InitialSetup extends React.Component {
     });
   }
 
-  updateCheck() {
+  updateCheck(fieldToUpdate) {
     this.setState({
-      allowNewUsers: !this.state.allowNewUsers
+      [fieldToUpdate]: !this.state[fieldToUpdate]
     });
   }
 
@@ -86,6 +87,7 @@ class InitialSetup extends React.Component {
         clientid: this.state.clientid,
         clientsecret: this.state.clientsecret,
         allowNewLogins: this.state.allowNewUsers,
+        isCloudCV: this.state.isCloudCV,
         appip: this.state.appip,
         port: this.state.port
       };
@@ -184,7 +186,15 @@ class InitialSetup extends React.Component {
               label="Allow new users"
               style={{ maxWidth: 200 }}
               checked={this.state.allowNewUsers}
-              onCheck={this.updateCheck}
+              onCheck={() => this.updateCheck('allowNewUsers')}
+            /><br />
+          </div>
+          <div className="centered row">
+            <Checkbox
+              label="Is this deployment by CloudCV?"
+              style={{ maxWidth: 200 }}
+              checked={this.state.isCloudCV}
+              onCheck={() => this.updateCheck('isCloudCV')}
             /><br />
           </div>
           <div className="centered row">

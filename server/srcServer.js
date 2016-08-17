@@ -209,6 +209,26 @@ app.get('/api/areusersallowed', (req, res) => {
   });
 });
 
+app.get('/api/isCloudCV', (req, res) => {
+  Rootsettingsmodel.find((err, model) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      if (model.length) {
+        const toSend = {
+          isCloudCV: model[0].isCloudCV,
+          rootUserGithubLoginId: model[0].rootUserGithubLoginId,
+          appip: model[0].appip,
+          port: model[0].port
+        };
+        res.json(toSend);
+      } else {
+        res.json({ });
+      }
+    }
+  });
+});
+
 app.use('/api/permalink', permalinkModelController);
 app.use('/api/getpermalink', permalinkGetController);
 app.use('/api/githubdemomodel', githubDemoModelController);

@@ -2,7 +2,10 @@ import React, { PropTypes } from 'react';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { cyan500 } from 'material-ui/styles/colors';
+import { cyan500, blue100, grey900 } from 'material-ui/styles/colors';
+import { isCloudCV, getAllDemosByCloudCV } from '../../api/Generic/getCloudCVDemos';
+import HomePageDemoCard from '../stateless/homePageDemoCard';
+import { getAllPermalink } from '../../api/Nongh/permalink';
 import RaisedButton from 'material-ui/RaisedButton';
 import * as loginActions from '../../actions/loginActions';
 
@@ -14,6 +17,12 @@ class HomePage extends React.Component {
     $('#appbar-progress').progress({
       percent: '0%'
     });
+
+    this.state = {
+      isCloudCV: false,
+      rootData: {},
+      cloudCVDemos: []
+    };
   }
 
   // buildFromGithubLogin() {
@@ -23,6 +32,34 @@ class HomePage extends React.Component {
   //     browserHistory.push('/user');
   //   }
   // }
+
+  componentWillMount() {
+    isCloudCV().then((data) => {
+      const rootData = JSON.parse(data);
+      this.setState({ rootData });
+      if (Object.keys(rootData).length) {
+        if (rootData.isCloudCV) {
+          this.setState({ isCloudCV: true });
+          getAllPermalink().then((links) => {
+            getAllDemosByCloudCV(rootData.rootUserGithubLoginId).then((demos) => {
+              const relevantLink = JSON.parse(links)
+                .filter((x) => parseInt(x.userId, 10) === rootData.rootUserGithubLoginId);
+              JSON.parse(demos).map((demo) => {
+                const demoToPut = Object.assign({}, demo,
+                  { permalink: `http://${rootData.appip}:${rootData.port}${relevantLink[0].shortRelativeURL}` }
+                );
+                this.setState({
+                  cloudCVDemos: Object.assign([], this.state.cloudCVDemos,
+                    [demoToPut]
+                  )
+                });
+              });
+            });
+          });
+        }
+      }
+    });
+  }
 
   useLocalDeploymentLogin() {
     if (!this.props.login) {
@@ -37,29 +74,51 @@ class HomePage extends React.Component {
       <div className="ui very relaxed stackable centered grid">
 
         <div className="ui fluid row"
-             style={{ backgroundColor: cyan500, minWidth: '100vw' }}
-        >
-            <a href="http://www.cloudcv.org/">
-              <img className="ui centered fluid small bordered rounded image" src={require('./../assets/cloudcv_logo.png')}/>
-            </a>
-        </div>
-
-        <div className="ui fluid row"
-             style={{ height: '10vh', backgroundColor: cyan500,
+             style={{ minHeight: '3vh', backgroundColor: cyan500,
                color: 'white', fontSize: 'xx-large', minWidth: '100vw'
              }}
         >
-          CVFY
         </div>
 
         <div className="ui fluid row"
-             style={{ height: '15vh', backgroundColor: cyan500,
+             style={{ backgroundColor: cyan500, minWidth: '100vw'
+             }}
+        >
+          <div className="ui small image">
+            <img src={require('../assets/cloudcv_logo.png')}/>
+          </div>
+        </div>
+
+        <div className="ui fluid row"
+             style={{ minHeight: '2vh', backgroundColor: cyan500
+             }}
+        >
+        </div>
+
+        <div className="ui fluid row"
+             style={{ minHeight: '10vh', backgroundColor: cyan500,
+               color: 'white', fontSize: 'xx-large', minWidth: '100vw'
+             }}
+        >
+          CloudCVFy Your Code
+        </div>
+
+
+
+
+
+        <div className="ui fluid row"
+             style={{ minHeight: '15vh', backgroundColor: cyan500,
                color: 'white', fontSize: 'x-large', minWidth: '100vw'
              }}
         >
           CVFY helps you build a web based demo out of <br /><br />
-          ML Evaluation Code
+          Machine Learning Code
         </div>
+
+
+
+
 
         <div className="ui fluid row"
              style={{ backgroundColor: cyan500, minWidth: '100vw' }}
@@ -80,44 +139,36 @@ class HomePage extends React.Component {
           </div>
         </div>
 
+
+
+
+
         <div className="ui fluid row"
-             style={{ height: '10vh', backgroundColor: cyan500, minWidth: '100vw' }}
-        ></div>
+             style={{ minHeight: '5vh', backgroundColor: cyan500, minWidth: '100vw' }}
+        >
+        </div>
 
-        <br />
+        {Object.keys(this.state.rootData).length === 0 &&
+        <div className="one column stretched row">
+          <div className="column center aligned grid">
+            <div className="ui warning message">
+              <div className="header">
+                <h1>You must <Link to="/gettingstarted/configuration">configure </Link>the application before first use!</h1>
+              </div>
+              <Link to="/initialsetup">
+                <h2>Go to setup page.</h2>
+              </Link>
+            </div>
+          </div>
+        </div>
+        }
 
-        <div className="three column centered stretched row">
+        {Object.keys(this.state.rootData).length > 0 &&
+        <div className="two column stretched row">
 
-          {/*
-           <div className="column center aligned">
-           <div className="ui blue fluid segment">
+          <div className="column center aligned grid">
 
-           <Link className="ui ribbon label raised fluid padded text container segment" to={this.props.login ? '/user' : '/'}
-           onClick={this.buildFromGithubLogin}
-           style={{ textDecoration: 'none', color: 'inherit' }}
-           >
-           <i className="large github middle aligned icon" /> Build From Github
-           </Link>
-           <br /><br />
-
-           <div className="ui centered grid">
-           <div className="ui left aligned centered ten wide column">
-           <div className="ui padded">
-           <div className="ui ordered list">
-           <div className="item">Pull your code from Github</div>
-           <div className="item">Register your app</div>
-           <div className="item">Select I/O components</div>
-           <div className="item">Use your demo</div>
-           </div>
-           </div>
-           </div>
-           </div>
-           </div>
-           </div>
-           */}
-
-          <div className="column center aligned">
-            <div className="ui blue fluid segment">
+            <div className="ui fluid small segment">
 
               <Link className="ui ribbon label raised fluid padded text container segment" to={this.props.login ? '/ngh/user' : '/'}
                     onClick={this.useLocalDeploymentLogin}
@@ -128,21 +179,182 @@ class HomePage extends React.Component {
               <br /><br />
 
               <div className="ui centered grid">
-                <div className="ui left aligned centered ten wide column">
-                  <div className="ui padded">
-                    <div className="ui ordered list">
-                      <div className="item">Run your code</div>
-                      <div className="item">Register your app</div>
-                      <div className="item">Select I/O components</div>
-                      <div className="item">Use your demo</div>
+                <div className="ui aligned centered column">
+                  <div className="ui tiny steps">
+                    <div className="step">
+                      <i className="browser icon" />
+                      <div className="content">
+                        <div className="title">Enter details</div>
+                        <div className="description">Metadata of your app</div>
+                      </div>
+                    </div>
+                    <div className="step">
+                      <i className="compress icon" />
+                      <div className="content">
+                        <div className="title">I/O Components</div>
+                        <div className="description">Build I/O pipeline</div>
+                      </div>
+                    </div>
+                    <div className="step">
+                      <i className="image icon" />
+                      <div className="content">
+                        <div className="title">Demo</div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+
+          </div>
+        </div>
+        }
+
+
+        {this.state.cloudCVDemos.length > 0 &&
+        <div className="ui row">
+          <div className="ui horizontal container divider">
+            -
+          </div>
+        </div>
+        }
+
+        {this.state.cloudCVDemos.length > 0 &&
+        <div className="ui fluid row padded grid"
+             style={{ color: grey900, fontSize: 'x-large', minWidth: '80vw'
+             }}
+        >
+          Try demos by CloudCV
+        </div>
+        }
+
+
+        {this.state.cloudCVDemos.length > 0 &&
+        <div className="ui row">
+          <div className="fifteen wide column stretched stackable centered container">
+            <div className="ui very padded stackable centered grid">
+              {this.state.cloudCVDemos.map((demo, index) =>
+                <HomePageDemoCard
+                  key={index}
+                  {...demo}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+        }
+
+        {this.state.cloudCVDemos.length === 0 &&
+        <div className="ui fluid row padded grid"
+             style={{ minHeight: '3vh', minWidth: '80vw'
+             }}
+        >
+        </div>
+        }
+
+        {this.state.isCloudCV &&
+        <div className="ui row">
+          <div className="ui horizontal container divider">
+            -
+          </div>
+        </div>
+        }
+
+        {this.state.isCloudCV &&
+        <div className="ui fluid row padded grid"
+             style={{ color: grey900, fontSize: 'x-large', minWidth: '80vw'
+             }}
+        >
+          Out Projects Are Funded By
+        </div>
+        }
+
+        {this.state.isCloudCV &&
+        <div className="ui fluid row padded grid"
+             style={{ color: grey900, fontSize: 'x-large', minWidth: '80vw'
+             }}
+        >
+
+          <div className="ui three wide column">
+            <img className="ui middle aligned small image"  src={require('./../assets/vt.png')} />
+          </div>
+
+          <div className="ui three wide column">
+            <img className="ui  middle alignedsmall image" src={require('./../assets/aws.png')} />
+          </div>
+
+          <div className="ui three wide column">
+            <img className="ui middle aligned small image" src={require('./../assets/azure.png')} />
+          </div>
+
+          <div className="ui three wide column">
+            <img className="ui middle aligned small image" src={require('./../assets/nvidia.png')} />
           </div>
 
         </div>
+        }
+
+        <div className="ui fluid row"
+             style={{ minHeight: '5vh', backgroundColor: grey900, color: 'white', minWidth: '100vw' }}
+        >
+        </div>
+
+        <div className="ui fluid container grid row"
+             style={{ minHeight: '20vh', backgroundColor: grey900, color: 'white', minWidth: '100vw' }}
+        >
+          <div className="ui six wide column">
+            <h4 className="ui inverted header">Community</h4>
+            <div className="ui inverted link list">
+              <a className="item" href="https://github.com/Cloud-CV/cvfy-frontend/issues" target="_blank">Submit an Issue</a>
+              <a className="item" href="https://gitter.im/batra-mlp-lab/CloudCV" target="_blank">Join our Chat</a>
+            </div>
+          </div>
+          <div className="ui ten wide column grid">
+            <div className="ui row">
+
+              <div className="eight wide right floated column">
+                <h4 className="ui inverted header" style={{ color: blue100 }}>Contribute to this project</h4>
+                <p>We are looking for people to add features to CVFY.</p>
+                <RaisedButton backgroundColor={blue100}
+                              label="Github"
+                              onClick={() => location.href = 'https://github.com/Cloud-CV/cvfy-frontend'}
+                />
+              </div>
+
+              <div className="eight wide right floated column">
+                <h4 className="ui inverted header" style={{ color: blue100 }}>Know more about CloudCV</h4>
+                <p>CloudCV provides large-scale distributed Computer Vision as a cloud service.</p>
+                <RaisedButton backgroundColor={blue100}
+                              label="Visit cloudcv.org"
+                              onClick={() => location.href = 'https://cloudcv.org'}
+                />
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+        <div className="ui fluid row"
+             style={{ minHeight: '5vh', backgroundColor: grey900, color: 'white', minWidth: '100vw' }}
+        >
+          <div className="ui horizontal container divider">
+            -
+          </div>
+        </div>
+
+
+
+        <div className="ui fluid row"
+             style={{ minHeight: '15vh', backgroundColor: grey900, color: 'white', minWidth: '100vw' }}
+        >
+          Free Software (AGPL 3.0)
+          <br /><br />
+          Crafted with React, Redux, MaterialUI and &lt;3
+          <br /><br />
+          © CloudCV, 2016
+        </div>
+
       </div>
     );
   }

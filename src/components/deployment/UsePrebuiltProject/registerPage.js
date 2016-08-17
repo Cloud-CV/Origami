@@ -10,10 +10,12 @@ import { getSinglePermalink, getAllPermalink, addPermalink, modifyPermalink } fr
 import { getWebAppStatus } from '../../../api/Generic/getWebAppStatus';
 import RaisedButton from 'material-ui/RaisedButton';
 import StopNow from 'material-ui/svg-icons/action/pan-tool';
+import Dropzone from 'react-dropzone';
 import Checkbox from 'material-ui/Checkbox';
 import GoAhead from 'material-ui/svg-icons/action/check-circle';
 import { red500, green500 } from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
+import request from 'superagent';
 import toastr from 'toastr';
 
 toastr.options.closeButton = true;
@@ -37,6 +39,8 @@ class RegisterPage extends React.Component {
       currentPort: '',
       webappaddress: '',
       tempwebaddress: '',
+      footerMessage: '',
+      coverImage: '',
       deploymentBoxSelectedStatus: false,
       status: '',
       webappUnreachableErrorText: '',
@@ -54,6 +58,8 @@ class RegisterPage extends React.Component {
     this.updateAddress = this.updateAddress.bind(this);
     this.updateName = this.updateName.bind(this);
     this.updatePort = this.updatePort.bind(this);
+    this.updateFooterMessage = this.updateFooterMessage.bind(this);
+    this.onDrop = this.onDrop.bind(this);
     this.toggleTerminal = this.toggleTerminal.bind(this);
     this.validateTempwebaddress = this.validateTempwebaddress.bind(this);
     this.validateIP = this.validateIP.bind(this);
@@ -76,6 +82,8 @@ class RegisterPage extends React.Component {
           this.setState({ tempwebaddress: JSON.parse(singleRepo)[0].token.split(':')[5] });
           this.setState({ port: JSON.parse(singleRepo)[0].token.split(':')[4] });
           this.setState({ description: JSON.parse(singleRepo)[0].description });
+          this.setState({ footerMessage: JSON.parse(singleRepo)[0].footerMessage });
+          this.setState({ coverImage: JSON.parse(singleRepo)[0].coverImage });
           this.setState({ showTerminal: JSON.parse(singleRepo)[0].terminal });
           if (JSON.parse(singleRepo)[0].token.split(':')[5] === '0.0.0.0') {
             this.setState({ deploymentBoxSelectedStatus: true });
@@ -159,6 +167,8 @@ class RegisterPage extends React.Component {
         userid: this.state.userid,
         address: this.state.address,
         description: this.state.description,
+        footerMessage: this.state.footerMessage,
+        coverImage: this.state.coverImage,
         terminal: this.state.showTerminal,
         timestamp: Date.now(),
         token: `nongh:${this.state.address}:${this.state.id}:${this.state.currentPort}:${this.state.port}:${this.state.tempwebaddress}`,
@@ -215,6 +225,10 @@ class RegisterPage extends React.Component {
     this.setState({ description: e.target.value });
   }
 
+  updateFooterMessage(e) {
+    this.setState({ footerMessage: e.target.value });
+  }
+
   updateAddress(e) {
     this.setState({ address: e.target.value });
   }
@@ -225,6 +239,21 @@ class RegisterPage extends React.Component {
 
   updateName(e) {
     this.setState({ name: e.target.value });
+  }
+
+  onDrop(files) {
+    if (files[0].size > 5242880) {
+      alert('File size should be < 5MB');
+    } else {
+      document.getElementById('input-image-preview').src =
+        window.URL.createObjectURL(files[0]);
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataURI = reader.result;
+        this.setState({ coverImage: dataURI });
+      };
+      reader.readAsDataURL(files[0]);
+    }
   }
 
   toggleTerminal() {
@@ -238,6 +267,7 @@ class RegisterPage extends React.Component {
     if (this.state.webappLocalUnreachableErrorText.length > 0 && this.state.tempwebaddress === '0.0.0.0') {
       return false;
     }
+
     return true;
   }
 
@@ -290,7 +320,7 @@ class RegisterPage extends React.Component {
           <div className="row">
             <div className="ui relaxed stackable grid container">
               <div className="two column row">
-                <div className="column center aligned">
+                <div className="column aligned">
 
                   <TextField
                     hintText="MyApp"
@@ -298,7 +328,7 @@ class RegisterPage extends React.Component {
                     value={this.state.name}
                     errorText={this.state.nameErrorText}
                     onChange={this.updateName}
-                  /><br />
+                  />&nbsp;&nbsp;&nbsp;&nbsp;
                   <TextField
                     hintText="0.0.0.0"
                     errorText={this.state.addressErrorText}
@@ -307,21 +337,46 @@ class RegisterPage extends React.Component {
                     onChange={this.updateAddress}
                   /><br />
                   <TextField
-                    hintText="8000"
-                    errorText={this.state.portErrorText}
-                    floatingLabelText="Port for service"
-                    value={this.state.port}
-                    onChange={this.updatePort}
-                  /><br />
-                  <TextField
                     hintText="Description"
+                    floatingLabelText="Description"
                     value={this.state.description}
                     onChange={this.updateDescription}
                     multiLine
                     rows={2}
                     rowsMax={8}
+                  />&nbsp;&nbsp;&nbsp;&nbsp;
+                  <TextField
+                    hintText="Footer Message"
+                    floatingLabelText="Footer Message"
+                    value={this.state.footerMessage}
+                    onChange={this.updateFooterMessage}
+                    multiLine
+                    rows={2}
+                    rowsMax={8}
                   /><br />
-                  <div className="" style={{ marginLeft: '27%', maxWidth: '50%' }}>
+                  <TextField
+                    hintText="8000"
+                    errorText={this.state.portErrorText}
+                    floatingLabelText="Port for service"
+                    value={this.state.port}
+                    onChange={this.updatePort}
+                  /><br /><br />
+                  <div className="" style={{ cursor: 'pointer', maxWidth: '50%' }}>
+                    <Dropzone onDrop={this.onDrop} multiple={false} style={{ height: 'inherit' }}>
+                      <div className="ui card">
+                        <div className="ui fluid image">
+                          <img className="ui fluid medium bordered image"
+                               src={this.state.coverImage || require('../../assets/wireframe.png')}
+                               id={'input-image-preview'}
+                          />
+                        </div>
+                        <div className="content">
+                          Drag and Drop or Click to upload cover image
+                        </div>
+                      </div>
+                    </Dropzone>
+                  </div>
+                  <div className="" style={{ maxWidth: '50%' }}>
                     <Checkbox
                       checked={this.state.showTerminal}
                       onCheck={this.toggleTerminal}
@@ -329,17 +384,17 @@ class RegisterPage extends React.Component {
                     /><br />
                   </div>
                   {this.state.webappUnreachableErrorText.length > 0 &&
-                  <div className="ui raised compact centered red segment" style={{ color: 'red', marginLeft: '20%' }}>
+                  <div className="ui raised compact centered red segment" style={{ color: 'red' }}>
                     {this.state.webappUnreachableErrorText}<br />
                   </div>
                   }
                   {this.state.webappLocalUnreachableErrorText.length > 0 &&
-                  <div className="ui raised compact centered red segment" style={{ color: 'red', marginLeft: '20%' }}>
+                  <div className="ui raised compact centered red segment" style={{ color: 'red' }}>
                     {this.state.webappLocalUnreachableErrorText}<br />
                   </div>
                   }
                   {this.state.showLocalDeploymentCheckBox &&
-                  <div className="" style={{ marginLeft: '27%', maxWidth: '45%' }}>
+                  <div className="" style={{ maxWidth: '45%' }}>
                     <Checkbox
                       checked={this.state.deploymentBoxSelectedStatus}
                       disabled={this.state.returning}
@@ -350,7 +405,7 @@ class RegisterPage extends React.Component {
                   }
                   <br />
                   <RaisedButton label="Save"
-                                primary style={{ marginLeft: '30%' }}
+                                primary
                                 onClick={this.updateDemoModelData}
                   />
                 </div>

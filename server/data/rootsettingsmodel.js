@@ -5,6 +5,7 @@ const rootSettingsSchema = mongoose.Schema({
   rootUserGithubLoginName: String,
   clientid: String,
   clientsecret: String,
+  isCloudCV: Boolean,
   allowNewLogins: Boolean,
   appip: String,
   port: String
