@@ -2,12 +2,21 @@ import React, { PropTypes } from 'react';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { cyan500, blue100, grey900 } from 'material-ui/styles/colors';
+import { cyan500, blue100, grey900, indigo600 } from 'material-ui/styles/colors';
 import { isCloudCV, getAllDemosByCloudCV } from '../../api/Generic/getCloudCVDemos';
 import HomePageDemoCard from '../stateless/homePageDemoCard';
 import { getAllPermalink } from '../../api/Nongh/permalink';
 import RaisedButton from 'material-ui/RaisedButton';
+import Dialog from 'material-ui/Dialog';
 import * as loginActions from '../../actions/loginActions';
+import { ShareButtons, ShareCounts, generateShareIcon } from 'react-share';
+
+const { FacebookShareButton, GooglePlusShareButton, LinkedinShareButton, TwitterShareButton } = ShareButtons;
+const { FacebookShareCount, GooglePlusShareCount, LinkedinShareCount } = ShareCounts;
+const FacebookIcon = generateShareIcon('facebook');
+const TwitterIcon = generateShareIcon('twitter');
+const GooglePlusIcon = generateShareIcon('google');
+const LinkedinIcon = generateShareIcon('linkedin');
 
 class HomePage extends React.Component {
   constructor(props, context) {
@@ -21,8 +30,12 @@ class HomePage extends React.Component {
     this.state = {
       isCloudCV: false,
       rootData: {},
-      cloudCVDemos: []
+      cloudCVDemos: [],
+      demoBeingShown: {},
+      shareModalOpen: false
     };
+
+    this.handleShareModal = this.handleShareModal.bind(this);
   }
 
   // buildFromGithubLogin() {
@@ -44,20 +57,30 @@ class HomePage extends React.Component {
             getAllDemosByCloudCV(rootData.rootUserGithubLoginId).then((demos) => {
               const relevantLink = JSON.parse(links)
                 .filter((x) => parseInt(x.userId, 10) === rootData.rootUserGithubLoginId);
-              JSON.parse(demos).map((demo) => {
-                const demoToPut = Object.assign({}, demo,
-                  { permalink: `http://${rootData.appip}:${rootData.port}${relevantLink[0].shortRelativeURL}` }
-                );
-                this.setState({
-                  cloudCVDemos: Object.assign([], this.state.cloudCVDemos,
-                    [demoToPut]
-                  )
-                });
+              const allDemos = [];
+              JSON.parse(demos).map((demo, index) => {
+                if (index < JSON.parse(demos).length) {
+                  const demoToPut = Object.assign({}, demo,
+                    { permalink: `http://${rootData.appip}:${rootData.port}${relevantLink[0].shortRelativeURL}` }
+                  );
+                  allDemos.push(demoToPut);
+                }
+                if (allDemos.length === JSON.parse(demos).length) {
+                  this.setState({
+                    cloudCVDemos: allDemos
+                  });
+                }
               });
             });
           });
         }
       }
+    });
+  }
+
+  handleShareModal(demoBeingShown) {
+    this.setState({ demoBeingShown }, () => {
+      this.setState({ shareModalOpen: !this.state.shareModalOpen });
     });
   }
 
@@ -237,6 +260,7 @@ class HomePage extends React.Component {
                 <HomePageDemoCard
                   key={index}
                   {...demo}
+                  handleShareModal={this.handleShareModal}
                 />
               )}
             </div>
@@ -354,6 +378,96 @@ class HomePage extends React.Component {
           <br /><br />
           © CloudCV, 2016
         </div>
+
+
+        <Dialog
+          title="Share This Demo"
+          modal={false}
+          open={this.state.shareModalOpen}
+          onRequestClose={this.handleShareModal}
+          autoScrollBodyContent
+        >
+
+          <div className="ui padded centered grid">
+
+            <div className="ui row stackable column grid">
+              <TwitterShareButton
+                url={this.state.demoBeingShown.permalink}
+                title={this.state.demoBeingShown.name}
+                className="ui row"
+              >
+                <TwitterIcon
+                  size={64}
+                  round
+                />
+              </TwitterShareButton>
+            </div>
+
+            <div className="ui eight wide stackable row column grid">
+              <FacebookShareButton
+                url={this.state.demoBeingShown.permalink}
+                title={this.state.demoBeingShown.name}
+                className="ui row"
+              >
+                <FacebookIcon
+                  size={64}
+                  round
+                />
+              </FacebookShareButton>
+              <FacebookShareCount
+                url={this.state.demoBeingShown.permalink}
+              >
+                {(count) =>
+                  <div className="ui compact inverted segment"
+                                 style={{ backgroundColor: indigo600 }}
+                  >
+                  {count} Shares
+                </div>}
+              </FacebookShareCount>
+            </div>
+
+            <div className="ui eight wide stackable row column grid">
+              <GooglePlusShareButton
+                url={this.state.demoBeingShown.permalink}
+                className="ui row"
+              >
+                <GooglePlusIcon
+                  size={64}
+                  round
+                />
+              </GooglePlusShareButton>
+
+              <GooglePlusShareCount
+                url={this.state.demoBeingShown.permalink}
+              >
+                {(count) => <div className="ui compact red inverted segment">{count} Shares</div>}
+              </GooglePlusShareCount>
+            </div>
+
+            <div className="ui stackable row column grid">
+              <LinkedinShareButton
+                url={this.state.demoBeingShown.permalink}
+                title={this.state.demoBeingShown.name}
+                windowWidth={750}
+                windowHeight={600}
+                className="ui row"
+              >
+                <LinkedinIcon
+                  size={64}
+                  round
+                />
+              </LinkedinShareButton>
+
+              <LinkedinShareCount
+                url={this.state.demoBeingShown.permalink}
+              >
+                {(count) => <div className="ui compact blue inverted segment">{count} Shares</div>}
+              </LinkedinShareCount>
+            </div>
+
+          </div>
+
+        </Dialog>
 
       </div>
     );

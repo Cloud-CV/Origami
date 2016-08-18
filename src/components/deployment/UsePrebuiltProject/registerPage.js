@@ -155,12 +155,13 @@ class RegisterPage extends React.Component {
     } else {
       this.setState({ portErrorText: '' });
     }
-    if (this.state.name.length === 0) {
+    if (this.state.name.length === 0 || /[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(this.state.name)) {
       this.setState({ nameErrorText: 'Invalid Project Name' });
     } else {
       this.setState({ nameErrorText: '' });
     }
-    if (this.state.name.length > 0 && this.validateIP() && this.validatePort(this.state.port)) {
+    if (this.state.name.length > 0 && !/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(this.state.name)
+      && this.validateIP() && this.validatePort(this.state.port)) {
       let dataToPut = {
         name: this.state.name,
         id: this.state.id,
