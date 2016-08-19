@@ -14,7 +14,7 @@ import StopNow from 'material-ui/svg-icons/action/pan-tool';
 import Dropzone from 'react-dropzone';
 import Checkbox from 'material-ui/Checkbox';
 import GoAhead from 'material-ui/svg-icons/action/check-circle';
-import { red500, green500 } from 'material-ui/styles/colors';
+import { red500, green500, grey900 } from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
 import request from 'superagent';
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
@@ -321,6 +321,9 @@ class RegisterPage extends React.Component {
   }
 
   render() {
+
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+
     let tokenClassName = this.validateTempwebaddress() &&
     this.validateIP() && this.validatePort(this.state.port) ? 'ui positive message' : 'ui negative message';
     return (
@@ -506,6 +509,12 @@ class RegisterPage extends React.Component {
             </div>
           </div>
 
+        </div>
+
+        <div className="ui fluid centered row"
+             style={{ minHeight: '5vh', backgroundColor: grey900, color: 'white', minWidth: '100vw' }}
+        >
+          © CloudCV, 2016
         </div>
 
       </div>

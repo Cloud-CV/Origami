@@ -6,6 +6,7 @@ import { getOutputComponentById } from '../../outputcomponents';
 import { getDeployed } from '../../../api/Nongh/getDeployed';
 import { modifyDeployed } from '../../../api/Nongh/modifyDeployed';
 import { getComponentDeployed } from '../../../api/CommonLocal/getComponentDeployed';
+import { grey900 } from 'material-ui/styles/colors';
 import toastr from 'toastr';
 
 toastr.options.closeButton = true;
@@ -81,72 +82,97 @@ class NGHDemoPage extends React.Component {
 
   render() {
     return (
-      <div className="ui relaxed stackable grid fluid container">
-        {this.state.demoModel &&
-        <div className="sixteen wide column stretched row" style={{ visibility: this.state.showOutput }}>
-          <div className="row" >
-            <h1>{this.state.demoModel.name}</h1>
-            {this.state.demoModel.description}
-          </div>
-
-          <div className="ui horizontal divider row" >
-            <span><hr /></span>
-          </div>
-
-          <div className="row">
-            <div className="ui relaxed stackable grid container">
-              <div className="two column row">
-
-                <div className="center aligned column">
-                  <h2 className="ui row">
-                    Input
-                  </h2>
-                  {Object.keys(this.state.demoModel).length && Object.keys(this.state.inputModel).length &&
-                  getInputComponentById(this.state.inputModel.baseComponentId,
-                    this.state.inputModel.props, 'demo', this.socketId,
-                    `http://${this.state.demoModel.token.split(':')[1]}:${this.state.demoModel.token.split(':')[4]}/event`
-                  )}
-                </div>
-
-                <div className="ui vertical internal divider">
-                  <hr /></div>
-
-                <div className="center aligned column">
-                  <h2 className="ui row">
-                    Output
-                  </h2>
-                  {Object.keys(this.state.demoModel).length && Object.keys(this.state.outputModel).length &&
-                  getOutputComponentById(this.state.outputModel.baseComponentId,
-                    this.state.outputModel.props, 'demo', this.state.outputData
-                  )}
-                </div>
-
-              </div>
+      <div className="ui relaxed stackable grid fluid">
+        <div className="ui relaxed stackable grid fluid container">
+          {this.state.demoModel &&
+          <div className="sixteen wide column stretched row" style={{ visibility: this.state.showOutput }}>
+            <div className="row" >
+              <h1>{this.state.demoModel.name}</h1>
+              <i>{this.state.demoModel.description}</i>
             </div>
-          </div>
-        </div>
-        }
-        {this.state.demoModel.terminal &&
-        <div className="one column row">
-          <div className="column">
-            <div className="ui card" style={{ width: '100%' }}>
-              <div className="content">
-                <div className="header">Terminal</div>
-              </div>
-              <div className="content">
-                <div className="ui padded raised segment container"
-                     style={{ height: '52vh', backgroundColor: 'black',
-                           color: 'white', overflowY: 'scroll' }}
-                >
-                  {this.state.terminalData.map((data) =>
-                    <p key={Math.random()}>{data}</p>
-                  )}
+
+            <div className="ui horizontal divider row" >
+              <span><hr /></span>
+            </div>
+
+            <div className="row">
+              <div className="ui relaxed stackable grid container">
+                <div className="two column row" style={{ minHeight: '90vh' }}>
+
+                  <div className="center aligned column">
+                    <h2 className="ui row">
+                      Input
+                    </h2>
+                    {Object.keys(this.state.demoModel).length && Object.keys(this.state.inputModel).length > 0 &&
+                    getInputComponentById(this.state.inputModel.baseComponentId,
+                      this.state.inputModel.props, 'demo', this.socketId,
+                      `http://${this.state.demoModel.token.split(':')[1]}:${this.state.demoModel.token.split(':')[4]}/event`
+                    )}
+                  </div>
+
+                  <div className="ui vertical internal divider">
+                    <hr /></div>
+
+                  <div className="center aligned column">
+                    <h2 className="ui row">
+                      Output
+                    </h2>
+                    {Object.keys(this.state.demoModel).length && Object.keys(this.state.outputModel).length > 0 &&
+                    getOutputComponentById(this.state.outputModel.baseComponentId,
+                      this.state.outputModel.props, 'demo', this.state.outputData
+                    )}
+                  </div>
+
                 </div>
               </div>
             </div>
           </div>
+          }
+          {this.state.demoModel.terminal &&
+          <div className="one column row">
+            <div className="column">
+              <div className="ui card" style={{ width: '100%' }}>
+                <div className="content">
+                  <div className="header">Terminal</div>
+                </div>
+                <div className="content">
+                  <div className="ui padded raised segment container"
+                       style={{ height: '52vh', backgroundColor: 'black',
+                         color: 'white', overflowY: 'scroll' }}
+                  >
+                    {this.state.terminalData.map((data) =>
+                      <p key={Math.random()}>{data}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+
+        {this.state.demoModel.footerMessage &&
+        <div className="ui fluid centered row"
+             style={{ minHeight: '10vh', minWidth: '100vw' }}
+        >
         </div>
         }
+
+        {this.state.demoModel.footerMessage &&
+        <div className="ui fluid centered row"
+             style={{ minHeight: '15vh', minWidth: '100vw' }}
+        >
+          <div className="ui success message">
+            {this.state.demoModel.footerMessage}
+          </div>
+        </div>
+        }
+
+        <div className="ui fluid centered row"
+             style={{ minHeight: '5vh', backgroundColor: grey900, color: 'white', minWidth: '100vw' }}
+        >
+          © CloudCV, 2016
+        </div>
       </div>
     );
   }

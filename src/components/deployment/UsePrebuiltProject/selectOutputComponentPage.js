@@ -7,6 +7,7 @@ import * as outputComponentDemoModelActions from '../../../actions/outputCompone
 import { getAllOutputComponentsForShowcase } from '../../outputcomponents';
 import { getComponentDeployed } from '../../../api/CommonLocal/getComponentDeployed';
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
+import { grey900 } from 'material-ui/styles/colors';
 import toastr from 'toastr';
 
 toastr.options.closeButton = true;
@@ -49,49 +50,60 @@ class SelectOutputComponentPage extends React.Component {
   }
 
   render() {
+
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+
     return (
-      <div className="ui relaxed stackable grid fluid container">
+      <div className="ui relaxed stackable grid fluid">
 
-        <div style={{ visibility: this.state.showOutput, width: '100%', maxWidth: 700, margin: 'auto' }}>
-          <Stepper linear={false}>
-            <Step active>
-              <StepLabel>Register Application</StepLabel>
-            </Step>
-            <Step active={this.state.inputComponentStepperHighlight}>
-              <StepLabel>Select Input Component</StepLabel>
-            </Step>
-            <Step active>
-              <StepLabel><b style={{ fontSize: 'large' }}>Select Output Component</b></StepLabel>
-            </Step>
-          </Stepper>
-        </div>
-
-        <div className="sixteen wide column stretched row">
-          <div className="row" >
-            <h1>Select Output Component</h1>
+        <div className="ui relaxed stackable grid fluid container">
+          <div style={{ visibility: this.state.showOutput, width: '100%', maxWidth: 700, margin: 'auto' }}>
+            <Stepper linear={false}>
+              <Step active>
+                <StepLabel>Register Application</StepLabel>
+              </Step>
+              <Step active={this.state.inputComponentStepperHighlight}>
+                <StepLabel>Select Input Component</StepLabel>
+              </Step>
+              <Step active>
+                <StepLabel><b style={{ fontSize: 'large' }}>Select Output Component</b></StepLabel>
+              </Step>
+            </Stepper>
           </div>
 
-          <div className="ui horizontal divider row" >
-            <span><hr /></span>
-          </div>
+          <div className="sixteen wide column stretched row">
+            <div className="row" >
+              <h1>Select Output Component</h1>
+            </div>
 
-          <div className="fifteen wide column stretched stackable centered row">
-            <div className="ui three padded column stackable grid" style={{ marginLeft: '3%' }}>
-              {getAllOutputComponentsForShowcase({
-                demoModel: this.props.nonghDemoModel,
-                user: this.props.user,
-                outputComponentDemoModel: this.state.outputComponentDemoModel,
-                outputComponentDemoModelActions: this.props.outputComponentDemoModelActions,
-                forwardAddress:
-                  `/ngh/user/${this.props.user.id ||
-                  localStorage.getItem('userid')}/${this.props.nonghDemoModel.name}/${this.props.nonghDemoModel.id}/demo`,
-                params: this.props.params,
-                selected: this.state.outputComponentDemoModel.baseComponentId
-              }).map((showcasecard, index) =>
-                showcasecard
-              )}
+            <div className="ui horizontal divider row" >
+              <span><hr /></span>
+            </div>
+
+            <div className="fifteen wide column stretched stackable centered row">
+              <div className="ui three padded column stackable grid" style={{ marginLeft: '3%', minHeight: '90vh' }}>
+                {getAllOutputComponentsForShowcase({
+                  demoModel: this.props.nonghDemoModel,
+                  user: this.props.user,
+                  outputComponentDemoModel: this.state.outputComponentDemoModel,
+                  outputComponentDemoModelActions: this.props.outputComponentDemoModelActions,
+                  forwardAddress:
+                    `/ngh/user/${this.props.user.id ||
+                    localStorage.getItem('userid')}/${this.props.nonghDemoModel.name}/${this.props.nonghDemoModel.id}/demo`,
+                  params: this.props.params,
+                  selected: this.state.outputComponentDemoModel.baseComponentId
+                }).map((showcasecard, index) =>
+                  showcasecard
+                )}
+              </div>
             </div>
           </div>
+        </div>
+
+        <div className="ui fluid centered row"
+             style={{ minHeight: '5vh', backgroundColor: grey900, color: 'white', minWidth: '100vw' }}
+        >
+          © CloudCV, 2016
         </div>
       </div>
     );

@@ -390,10 +390,11 @@ class HomePage extends React.Component {
 
           <div className="ui padded centered grid">
 
-            <div className="ui row stackable column grid">
+            <div className="ui row stackable column grid" style={{ cursor: 'pointer' }}>
               <TwitterShareButton
                 url={this.state.demoBeingShown.permalink}
                 title={this.state.demoBeingShown.name}
+                hashtags={['cloudcv', 'cvfy']}
                 className="ui row"
               >
                 <TwitterIcon
@@ -403,7 +404,7 @@ class HomePage extends React.Component {
               </TwitterShareButton>
             </div>
 
-            <div className="ui eight wide stackable row column grid">
+            <div className="ui eight wide stackable row column grid" style={{ cursor: 'pointer' }}>
               <FacebookShareButton
                 url={this.state.demoBeingShown.permalink}
                 title={this.state.demoBeingShown.name}
@@ -426,7 +427,7 @@ class HomePage extends React.Component {
               </FacebookShareCount>
             </div>
 
-            <div className="ui eight wide stackable row column grid">
+            <div className="ui eight wide stackable row column grid" style={{ cursor: 'pointer' }}>
               <GooglePlusShareButton
                 url={this.state.demoBeingShown.permalink}
                 className="ui row"
@@ -444,7 +445,7 @@ class HomePage extends React.Component {
               </GooglePlusShareCount>
             </div>
 
-            <div className="ui stackable row column grid">
+            <div className="ui stackable row column grid" style={{ cursor: 'pointer' }}>
               <LinkedinShareButton
                 url={this.state.demoBeingShown.permalink}
                 title={this.state.demoBeingShown.name}
