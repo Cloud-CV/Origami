@@ -11,6 +11,7 @@ class ImageOutputShowcaseCard extends React.Component {
     let initHeaders = [];
     if (props.demoProps.outputComponentDemoModel.baseComponentId === 2) {
       initHeaders = props.demoProps.outputComponentDemoModel.props;
+      this.selected = props.demoProps.outputComponentDemoModel.baseComponentId === props.demoProps.selected;
     }
     this.state = {
       headers: initHeaders,
@@ -107,6 +108,7 @@ class ImageOutputShowcaseCard extends React.Component {
         <CustomCard
           header="Image Output"
           width="five"
+          selected={this.selected}
           centeredParent
           centeredSegment
           displayData = {[
@@ -122,7 +124,7 @@ class ImageOutputShowcaseCard extends React.Component {
               onDeployClick: () => this.showPreviewDialog()
             },
             {
-              label: 'Use',
+              label: 'Save',
               onDeployClick: () => this.updateOutputComponentModel()
             }
           ]}

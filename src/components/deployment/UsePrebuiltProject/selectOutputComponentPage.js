@@ -6,6 +6,7 @@ import * as nonghDemoModelActions from '../../../actions/nonghDemoModelActions';
 import * as outputComponentDemoModelActions from '../../../actions/outputComponentDemoModelActions';
 import { getAllOutputComponentsForShowcase } from '../../outputcomponents';
 import { getComponentDeployed } from '../../../api/CommonLocal/getComponentDeployed';
+import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
 import toastr from 'toastr';
 
 toastr.options.closeButton = true;
@@ -15,7 +16,8 @@ class SelectOutputComponentPage extends React.Component {
     super(props, context);
     this.state = {
       userid: parseInt(localStorage.getItem('userid'), 10),
-      outputComponentDemoModel: {}
+      outputComponentDemoModel: {},
+      inputComponentStepperHighlight: false
     };
   }
 
@@ -30,7 +32,14 @@ class SelectOutputComponentPage extends React.Component {
         };
         this.setState({ outputComponentDemoModel: dataToSeed });
       }
-    });
+    })
+      .then(() => {
+        getComponentDeployed(this.state.userid, this.props.params.repoId, 'output').then((outputComponentSeedData) => {
+          if (JSON.parse(outputComponentSeedData).length !== 0) {
+            this.setState({ outputComponentStepperHighlight: true });
+          }
+        });
+      });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -42,6 +51,20 @@ class SelectOutputComponentPage extends React.Component {
   render() {
     return (
       <div className="ui relaxed stackable grid fluid container">
+
+        <div style={{ visibility: this.state.showOutput, width: '100%', maxWidth: 700, margin: 'auto' }}>
+          <Stepper linear={false}>
+            <Step active>
+              <StepLabel>Register Application</StepLabel>
+            </Step>
+            <Step active={this.state.inputComponentStepperHighlight}>
+              <StepLabel>Select Input Component</StepLabel>
+            </Step>
+            <Step active>
+              <StepLabel><b style={{ fontSize: 'large' }}>Select Output Component</b></StepLabel>
+            </Step>
+          </Stepper>
+        </div>
 
         <div className="sixteen wide column stretched row">
           <div className="row" >
@@ -62,7 +85,8 @@ class SelectOutputComponentPage extends React.Component {
                 forwardAddress:
                   `/ngh/user/${this.props.user.id ||
                   localStorage.getItem('userid')}/${this.props.nonghDemoModel.name}/${this.props.nonghDemoModel.id}/demo`,
-                params: this.props.params
+                params: this.props.params,
+                selected: this.state.outputComponentDemoModel.baseComponentId
               }).map((showcasecard, index) =>
                 showcasecard
               )}

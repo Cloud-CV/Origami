@@ -6,6 +6,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import * as nonghDemoModelActions from '../../../actions/nonghDemoModelActions';
 import rangeCheck from 'range_check';
 import { getDeployed } from '../../../api/Nongh/getDeployed';
+import { getComponentDeployed } from '../../../api/CommonLocal/getComponentDeployed';
 import { getSinglePermalink, getAllPermalink, addPermalink, modifyPermalink } from '../../../api/Nongh/permalink';
 import { getWebAppStatus } from '../../../api/Generic/getWebAppStatus';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -16,6 +17,7 @@ import GoAhead from 'material-ui/svg-icons/action/check-circle';
 import { red500, green500 } from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
 import request from 'superagent';
+import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
 import toastr from 'toastr';
 
 toastr.options.closeButton = true;
@@ -48,6 +50,8 @@ class RegisterPage extends React.Component {
       showLocalDeploymentCheckBox: false,
       showTerminal: false,
       returning: false,
+      inputComponentStepperHighlight: false,
+      outputComponentStepperHighlight: false,
       permalinkObject: {}
     };
     this.socket = this.context.socket;
@@ -91,6 +95,24 @@ class RegisterPage extends React.Component {
         }
       }
     })
+      .then(() => {
+        if (this.props.params.repoId) {
+          getComponentDeployed(this.state.userid, this.props.params.repoId, 'input').then((inputComponentSeedData) => {
+            if (JSON.parse(inputComponentSeedData).length !== 0) {
+              this.setState({ inputComponentStepperHighlight: true });
+            }
+          });
+        }
+      })
+      .then(() => {
+        if (this.props.params.repoId) {
+          getComponentDeployed(this.state.userid, this.props.params.repoId, 'output').then((outputComponentSeedData) => {
+            if (JSON.parse(outputComponentSeedData).length !== 0) {
+              this.setState({ outputComponentStepperHighlight: true });
+            }
+          });
+        }
+      })
       .then(() => {
         if (this.props.params.repoId) {
           getSinglePermalink(this.state.userid, this.props.params.repoId)
@@ -308,6 +330,20 @@ class RegisterPage extends React.Component {
         <div className="centered row" style={{ marginTop: '30vh' }}>
           <CircularProgress size={1.5} />
         </div>}
+
+        <div style={{ visibility: this.state.showOutput, width: '100%', maxWidth: 700, margin: 'auto' }}>
+          <Stepper linear={false}>
+            <Step active>
+              <StepLabel><b style={{ fontSize: 'large' }}>Register Application</b></StepLabel>
+            </Step>
+            <Step active={this.state.inputComponentStepperHighlight}>
+              <StepLabel>Select Input Component</StepLabel>
+            </Step>
+            <Step active={this.state.outputComponentStepperHighlight}>
+              <StepLabel>Select Output Component</StepLabel>
+            </Step>
+          </Stepper>
+        </div>
 
         <div className="sixteen wide column stretched row" style={{ visibility: this.state.showOutput }}>
           <div className="row" >

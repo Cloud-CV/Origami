@@ -2,6 +2,9 @@ import React from 'react';
 import DocsContent from '../../stateless/webappgettingstarted';
 
 function IO() {
+
+  document.body.scrollTop = document.documentElement.scrollTop = 0;
+
   return (
     <DocsContent>
       <h1 className="ui header">

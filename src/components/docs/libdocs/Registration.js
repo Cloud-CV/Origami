@@ -30,7 +30,7 @@ function Registration() {
 
       <div className="ui orange compact message">
         <div className="ui header">
-          For a complete example, see this <a to="https://gist.github.com/tocttou/021c51a9055dea0ac002b7657c01fc25">Gist</a>.
+          For a complete example, see this <a href="https://gist.github.com/tocttou/021c51a9055dea0ac002b7657c01fc25">Gist</a>.
         </div>
       </div>
 

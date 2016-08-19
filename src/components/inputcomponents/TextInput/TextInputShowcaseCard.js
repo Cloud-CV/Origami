@@ -11,6 +11,7 @@ class TextInputShowcaseCard extends React.Component {
     let initLabels = [];
     if (props.demoProps.inputComponentDemoModel.baseComponentId === 1) {
       initLabels = props.demoProps.inputComponentDemoModel.props;
+      this.selected = props.demoProps.inputComponentDemoModel.baseComponentId === props.demoProps.selected;
     }
     this.state = {
       labels: initLabels,
@@ -98,6 +99,7 @@ class TextInputShowcaseCard extends React.Component {
         <CustomCard
           header="Text Input"
           width="five"
+          selected={this.selected}
           centeredParent
           centeredSegment
           displayData = {[
@@ -113,7 +115,7 @@ class TextInputShowcaseCard extends React.Component {
               onDeployClick: () => this.showPreviewDialog()
             },
             {
-              label: 'Use',
+              label: 'Save',
               onDeployClick: () => this.updateInputComponentModel()
             }
           ]}

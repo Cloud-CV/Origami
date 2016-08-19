@@ -3,6 +3,9 @@ import { Link } from 'react-router';
 import DocsContent from '../../stateless/webappgettingstarted';
 
 function Modify() {
+
+  document.body.scrollTop = document.documentElement.scrollTop = 0;
+
   return (
     <DocsContent>
       <h1 className="ui header">
