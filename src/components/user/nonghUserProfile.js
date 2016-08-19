@@ -27,10 +27,12 @@ class NonGHUserProfile extends React.Component {
       allDeployed: [],
       projectBeingEdited: {},
       showModifyModal: false,
+      showDeleteConfirmationModal: false,
       showDemo: {},
       appData: { type: '', content: '' },
       showDataModal: false,
-      permalinkHolder: {}
+      permalinkHolder: {},
+      projectBeingDeletedId: ''
     };
     this.socket = this.context.socket;
     this.toggleShow = this.toggleShow.bind(this);
@@ -40,6 +42,7 @@ class NonGHUserProfile extends React.Component {
     this.goToDemoPage = this.goToDemoPage.bind(this);
     this.goToRegisterPage = this.goToRegisterPage.bind(this);
     this.toggleModifyDialog = this.toggleModifyDialog.bind(this);
+    this.toggleDeleteConfirmationDialog = this.toggleDeleteConfirmationDialog.bind(this);
     this.toggleShowDataDialog = this.toggleShowDataDialog.bind(this);
   }
 
@@ -75,7 +78,16 @@ class NonGHUserProfile extends React.Component {
     }
   }
 
-  deleteDemo(projectId) {
+  toggleDeleteConfirmationDialog(projectBeingDeletedId) {
+    if (projectBeingDeletedId) {
+      this.setState({ projectBeingDeletedId });
+    }
+    this.setState({ showDeleteConfirmationModal: !this.state.showDeleteConfirmationModal });
+  }
+
+  deleteDemo() {
+    const projectId = this.state.projectBeingDeletedId;
+    this.toggleDeleteConfirmationDialog();
     this.props.nonghModelActions.killNonGHDemoModel(this.props.user.id, projectId).then(() => {
       this.props.inputComponentModelActions.killInputComponentModel(this.props.user.id, projectId);
       this.props.outputComponentDemoModelActions.killOutputComponentModel(this.props.user.id, projectId);
@@ -142,6 +154,24 @@ class NonGHUserProfile extends React.Component {
   }
 
   render() {
+
+    const deletionActions = [
+      <RaisedButton
+        key="0"
+        label="Cancel"
+        primary
+        onTouchTap={this.toggleDeleteConfirmationDialog}
+      />,
+      <span key="2">&nbsp;</span>,
+      <RaisedButton
+        label="Delete"
+        key="3"
+        primary
+        onTouchTap={this.deleteDemo}
+      />
+    ];
+
+
     return (
       <div className="ui relaxed stackable grid fluid container">
 
@@ -192,6 +222,7 @@ class NonGHUserProfile extends React.Component {
                 <CustomCard
                   header={project.name}
                   width="five"
+                  context="profile"
                   centeredParent
                   key={project.id}
                   displayData={[
@@ -201,16 +232,20 @@ class NonGHUserProfile extends React.Component {
                   buttonData={[
                     {
                       label: 'Delete',
-                      onDeployClick: () => this.deleteDemo(project.id)
+                      onDeployClick: () => this.toggleDeleteConfirmationDialog(project.id)
                     },
                     {
                       label: 'Modify',
                       onDeployClick: () => this.modifyProject(project)
                     },
                     {
-                      label: 'Demo',
-                      onDeployClick: () => this.goToDemoPage(project),
-                      display: this.getDisplayForDemoButton(project)
+                      label: 'Get Permalink',
+                      onDeployClick: () => this.toggleShowDataDialog({
+                        type: 'permalink',
+                        content: `${window.location.protocol}//${window.location.host}${
+                          this.state.permalinkHolder[this.state.user.id][project.id].shortRelativeURL
+                          }`
+                      })
                     },
                     {
                       label: 'Get Token',
@@ -220,13 +255,9 @@ class NonGHUserProfile extends React.Component {
                       })
                     },
                     {
-                      label: 'Get Permalink',
-                      onDeployClick: () => this.toggleShowDataDialog({
-                        type: 'permalink',
-                        content: `${window.location.protocol}//${window.location.host}${
-                          this.state.permalinkHolder[this.state.user.id][project.id].shortRelativeURL
-                        }`
-                      })
+                      label: 'Demo',
+                      onDeployClick: () => this.goToDemoPage(project),
+                      display: this.getDisplayForDemoButton(project)
                     }
                   ]}
                 />
@@ -283,6 +314,15 @@ class NonGHUserProfile extends React.Component {
           contentStyle={{ width: '30%' }}
         >
           {this.state.appData.content}
+        </Dialog>
+
+        <Dialog
+          title="Confirm Deletion"
+          actions={deletionActions}
+          open={this.state.showDeleteConfirmationModal}
+          onRequestClose={this.toggleDeleteConfirmationDialog}
+        >
+          Are you sure you want to delete this application?
         </Dialog>
 
 

@@ -108,6 +108,7 @@ class TextOutputShowcaseCard extends React.Component {
         <CustomCard
           header="Text Output"
           width="five"
+          context="selection"
           selected={this.selected}
           centeredParent
           centeredSegment

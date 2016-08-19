@@ -99,6 +99,7 @@ class ImageInputShowcaseCard extends React.Component {
         <CustomCard
           header="Image Input"
           width="five"
+          context="selection"
           selected={this.selected}
           centeredParent
           centeredSegment

@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { grey700, cyan100 } from 'material-ui/styles/colors';
 
-const CustomCard = ({ header, heading, width, centeredParent, centeredSegment, displayData, buttonData, selected }) => {
+const CustomCard = ({ header, heading, width, centeredParent, centeredSegment, displayData, buttonData, selected, context }) => {
 
   const parentClass = `${width ? width : 'four'} wide stackable ${centeredParent ? '' : 'centered'} column`;
   const cardClass = `ui card blue segment ${centeredSegment ? 'centered' : ''}`;
@@ -15,6 +15,12 @@ const CustomCard = ({ header, heading, width, centeredParent, centeredSegment, d
         </div>
         }
         <div className="content" style={{ backgroundColor: cyan100 }}>
+          {context === 'profile' &&
+          <i className="right floated large red circular remove icon"
+             style={{ cursor: 'pointer' }}
+             onClick={() => buttonData.filter((button) => button.label === 'Delete')[0].onDeployClick()}
+          />
+          }
           <div className="header">{header}</div>
         </div>
         {heading &&
@@ -38,7 +44,7 @@ const CustomCard = ({ header, heading, width, centeredParent, centeredSegment, d
           </div>
         </div>
         <div className="extra content">
-          {buttonData.map((button, index) =>
+          {buttonData.filter((button) => button.label !== 'Delete').map((button, index) =>
             <button key={index}
                     style={{ display: button.display, marginTop: '2%' }}
                     className="ui basic stackable blue button"
@@ -57,6 +63,7 @@ CustomCard.propTypes = {
   header: PropTypes.string.isRequired,
   heading: PropTypes.string,
   width: PropTypes.string,
+  context: PropTypes.string.isRequired,
   centeredParent: PropTypes.bool,
   centeredSegment: PropTypes.bool,
   displayData: PropTypes.array.isRequired,

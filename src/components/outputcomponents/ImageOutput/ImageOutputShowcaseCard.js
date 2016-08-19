@@ -108,6 +108,7 @@ class ImageOutputShowcaseCard extends React.Component {
         <CustomCard
           header="Image Output"
           width="five"
+          context="selection"
           selected={this.selected}
           centeredParent
           centeredSegment

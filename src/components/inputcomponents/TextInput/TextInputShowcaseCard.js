@@ -99,6 +99,7 @@ class TextInputShowcaseCard extends React.Component {
         <CustomCard
           header="Text Input"
           width="five"
+          context="selection"
           selected={this.selected}
           centeredParent
           centeredSegment
