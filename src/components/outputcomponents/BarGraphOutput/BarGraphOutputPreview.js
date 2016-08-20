@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import ImageOutput from './ImageOutput';
+import BarGraphOutput from './BarGraphOutput';
 
 
-class ImageOutputPreview extends React.Component {
+class BarGraphOutputPreview extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -31,18 +31,24 @@ class ImageOutputPreview extends React.Component {
       />
     ];
     return (<Dialog
-      title="Preview Image Output Component"
+      title="Preview Bar Graph Output Component"
       actions={actions}
       modal
       autoScrollBodyContent
       open={this.state.open}
             >
-      <ImageOutput
+      <BarGraphOutput
         headers={this.state.headers}
         calling_context="demo"
         data={
           new Array(this.state.headers.length).fill(
-            require('../../assets/wireframe.png')
+            [
+              { x: 1, y: 2 },
+              { x: 2, y: 5 },
+              { x: 3, y: 8 },
+              { x: 4, y: 9 },
+              { x: 5, y: 13 }
+            ]
           )
         }
       />
@@ -50,8 +56,8 @@ class ImageOutputPreview extends React.Component {
   }
 }
 
-ImageOutputPreview.propTypes = {
+BarGraphOutputPreview.propTypes = {
   functions: PropTypes.object.isRequired
 };
 
-export default ImageOutputPreview;
+export default BarGraphOutputPreview;
