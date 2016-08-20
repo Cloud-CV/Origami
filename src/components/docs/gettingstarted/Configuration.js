@@ -176,6 +176,17 @@ function Configuration() {
           </ul>
         </li>
 
+        <br />
+
+        <li>
+          <h5 className="ui header">Is this deployment by CloudCV</h5>
+          <ul className="list">
+            <li>
+              Check this option if the deployment is by CloudCV. This adds some customizations.
+            </li>
+          </ul>
+        </li>
+
       </ul>
 
     </DocsContent>

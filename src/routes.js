@@ -76,7 +76,7 @@ export default(
 
     <Route path="initialsetup" component={InitialSetupComponent} />
     <Route path="p/:shorturl" component={URLShortenerComponent} />
-    <Route path="u/:username" component={ShareProfile} />
+    <Route path="u/:username/:userid" component={ShareProfile} />
     <Route path="login*" component={LoginComponent} />
     <Route path="*" component={PageNotfoundHandler} />
   </Route>

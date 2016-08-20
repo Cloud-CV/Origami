@@ -18,7 +18,6 @@ ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
 ADD . /usr/local
 WORKDIR /usr/local
-EXPOSE 3000
 RUN npm install && \
      npm run build -s
 ENTRYPOINT npm start -s

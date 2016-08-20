@@ -182,6 +182,7 @@ class NonGHUserProfile extends React.Component {
       <div className="ui relaxed stackable grid fluid">
 
         <div className="ui three wide segment column" style={{ minHeight: '100vh' }}>
+          {this.state.user &&
           <List>
             <ListItem primaryText="Docs"
                       leftIcon={<DescriptionIcon />}
@@ -195,10 +196,11 @@ class NonGHUserProfile extends React.Component {
             <Divider />
             <ListItem primaryText="Public Profile"
                       leftIcon={<PublicProfileIcon />}
-                      onTouchTap={() => browserHistory.push(`/u/${this.state.user.login}`)}
+                      onTouchTap={() => browserHistory.push(`/u/${this.state.user.login}/${this.state.user.id}`)}
             />
             <Divider />
           </List>
+          }
         </div>
 
         <div className="ui thirteen wide column grid">
@@ -222,9 +224,16 @@ class NonGHUserProfile extends React.Component {
 
             <div className="seven wide column" >
               <div>
-                <div className="row" style={{ minHeight: '5vh' }} />
+                <div className="row" style={{  }} />
                 <h1 className="row"><u>{this.state.user.name}</u></h1>
-                <h3 className="row">Apps Deployed: {this.state.allDeployed.length}</h3>
+                {this.state.user.company &&
+                <h3 className="row">{this.state.user.company}</h3>
+                }
+                {this.state.user.blog &&
+                <a href={this.state.user.blog}> <h3 className="row">{this.state.user.blog}</h3></a>
+                }
+                <h3 className="row">Github Follower Count: {this.state.user.followers}</h3>
+                <h3 className="row">Number of Apps: {this.state.allDeployed.length}</h3>
               </div>
             </div>
 

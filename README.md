@@ -1,8 +1,8 @@
 # CloudCVfy Webapp
 
-[![Build Status](https://travis-ci.org/batra-mlp-lab/CloudCVfy-Frontend.svg?branch=master)](https://travis-ci.org/batra-mlp-lab/CloudCVfy-Frontend)
-[![Dependency Status](https://david-dm.org/batra-mlp-lab/CloudCVfy-Frontend.svg)](https://david-dm.org/batra-mlp-lab/CloudCVfy-Frontend)
-[![devDependency Status](https://david-dm.org/batra-mlp-lab/CloudCVfy-Frontend/dev-status.svg)](https://david-dm.org/batra-mlp-lab/CloudCVfy-Frontend#info=devDependencies)
+[![Build Status](https://travis-ci.org/Cloud-CV/cvfy-frontend.svg?branch=master)](https://travis-ci.org/Cloud-CV/cvfy-frontend.svg?branch=master)
+[![Dependency Status](https://david-dm.org/Cloud-CV/cvfy-frontend.svg)](https://david-dm.org/Cloud-CV/cvfy-frontend)
+[![devDependency Status](https://david-dm.org/Cloud-CV/cvfy-frontend/dev-status.svg)](https://david-dm.org/Cloud-CV/cvfy-frontend#info=devDependencies)
 
 Follow issues template to file an issue unless it is a feature request.
 

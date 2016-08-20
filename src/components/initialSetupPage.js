@@ -175,8 +175,8 @@ class InitialSetup extends React.Component {
           <div className="centered row">
             <TextField
               defaultValue={this.state.appip}
-              hintText="Enter this application's IP address"
-              floatingLabelText="Application IP address"
+              hintText="This deployment's IP/Domain"
+              floatingLabelText="Application IP/domain"
               errorText={this.state.appipError}
               onChange={(e) => this.updateFields('clientip', e.target.value)}
             />
