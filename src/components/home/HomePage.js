@@ -47,6 +47,9 @@ class HomePage extends React.Component {
   // }
 
   componentWillMount() {
+
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+
     isCloudCV().then((data) => {
       const rootData = JSON.parse(data);
       this.setState({ rootData });
@@ -61,7 +64,7 @@ class HomePage extends React.Component {
               JSON.parse(demos).map((demo, index) => {
                 if (index < JSON.parse(demos).length) {
                   const demoToPut = Object.assign({}, demo,
-                    { permalink: `http://${rootData.appip}:${rootData.port}${relevantLink[0].shortRelativeURL}` }
+                    { permalink: `http://${rootData.appip}:${rootData.port}${relevantLink[index].shortRelativeURL}` }
                   );
                   allDemos.push(demoToPut);
                 }

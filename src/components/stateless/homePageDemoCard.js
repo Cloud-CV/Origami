@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-escape */
+
 import React, { PropTypes } from 'react';
 import { browserHistory } from 'react-router';
 import { Card, CardActions, CardHeader, CardMedia, CardText } from 'material-ui/Card';
@@ -5,6 +7,9 @@ import { blue100 } from 'material-ui/styles/colors';
 import RaisedButton from 'material-ui/RaisedButton';
 
 function HomePageDemoCard(props) {
+
+  const reg = /.+?\:\/\/.+?(\/.+?)(?:#|\?|$)/;
+
   return (
     <div className="ui four wide stackable column">
       <Card>
@@ -19,14 +24,14 @@ function HomePageDemoCard(props) {
         </CardMedia>
         }
         {props.description &&
-        <CardText>
+        <CardText style={{ wordWrap: 'break-word' }}>
           {props.description}
         </CardText>
         }
         <CardActions>
           <RaisedButton backgroundColor={blue100}
                         label="Launch"
-                        onClick={() => browserHistory.push(props.permalink)}
+                        onClick={() => browserHistory.push(reg.exec(props.permalink)[1])}
           />
           <RaisedButton backgroundColor={blue100}
                         label="Share"

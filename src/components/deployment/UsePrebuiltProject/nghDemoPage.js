@@ -17,6 +17,7 @@ class NGHDemoPage extends React.Component {
     this.state = {
       userid: 0,
       outputData: [],
+      showTerminal: false,
       terminalData: [],
       inputModel: {},
       outputModel: {},
@@ -24,9 +25,13 @@ class NGHDemoPage extends React.Component {
     };
     this.socket = this.context.socket;
     this.socketId = this.context.socketId;
+    this.toggleShowTerminal = this.toggleShowTerminal.bind(this);
   }
 
   componentWillMount() {
+
+    $('body').css('overflow', 'hidden');
+
     this.socket.on('injectoutputdata', (data) => {
       if (data.data) {
         this.setState({
@@ -62,7 +67,11 @@ class NGHDemoPage extends React.Component {
     });
     this.setState({ userid: parseInt(this.props.params.userid, 10) }, () => {
       getDeployed(this.state.userid, this.props.params.repoId).then((data) => {
-        this.setState({ demoModel: JSON.parse(data)[0] });
+        this.setState({ demoModel: JSON.parse(data)[0] }, () => {
+          if (this.state.demoModel.terminal) {
+            this.setState({ showTerminal: true });
+          }
+        });
         if (JSON.parse(data)[0].status === 'input') {
           modifyDeployed(this.state.userid, Object.assign({}, JSON.parse(data)[0], { status: 'demo' })).then();
         }
@@ -80,24 +89,50 @@ class NGHDemoPage extends React.Component {
     });
   }
 
+  componentWillUnmount() {
+    $('body').css('overflow', 'auto');
+  }
+
+  toggleShowTerminal() {
+    this.setState({ showTerminal: !this.state.showTerminal });
+  }
+
   render() {
+
+    const mainClassName = this.state.showTerminal ? 'ui twelve wide column grid' : 'ui sixteen wide column grid';
+
     return (
       <div className="ui relaxed stackable grid fluid">
-        <div className="ui relaxed stackable grid fluid container">
-          {this.state.demoModel &&
-          <div className="sixteen wide column stretched row" style={{ visibility: this.state.showOutput }}>
-            <div className="row" >
+
+        {this.state.demoModel &&
+        <div className={mainClassName} style={{ visibility: this.state.showOutput }}>
+          <div className="sixteen wide column stretched centered row" id="output-outer"
+               style={{
+                 maxHeight: '90vh', overflowY: 'scroll', overflowX: 'hidden', whiteSpace: 'nowrap'
+               }}
+          >
+            {!this.state.showTerminal && this.state.demoModel.terminal &&
+            <div className="row">
+              <i className="large browser icon"
+                 style={{ cursor: 'pointer', float: 'right' }}
+                 onClick={() => this.toggleShowTerminal()}
+              />
+              <br />
+              <br />
+            </div>
+            }
+            <div className="row">
               <h1>{this.state.demoModel.name}</h1>
               <i>{this.state.demoModel.description}</i>
             </div>
 
-            <div className="ui horizontal divider row" >
+            <div className="ui horizontal divider row">
               <span><hr /></span>
             </div>
 
             <div className="row">
               <div className="ui relaxed stackable grid container">
-                <div className="two column row" style={{ minHeight: '90vh' }}>
+                <div className="column row">
 
                   <div className="center aligned column">
                     <h2 className="ui row">
@@ -110,8 +145,24 @@ class NGHDemoPage extends React.Component {
                     )}
                   </div>
 
-                  <div className="ui vertical internal divider">
-                    <hr /></div>
+                </div>
+              </div>
+            </div>
+
+            <div className="ui horizontal divider row">
+              <span><hr /></span>
+            </div>
+
+            <div id="appbar-progress"
+                 className="ui bottom attached indicating progress"
+                 style={{ visibility: 'hidden' }}
+            >
+              <div className="bar"></div>
+            </div>
+
+            <div className="row" id="output-div">
+              <div className="ui relaxed stackable grid container">
+                <div className="column row">
 
                   <div className="center aligned column">
                     <h2 className="ui row">
@@ -121,58 +172,61 @@ class NGHDemoPage extends React.Component {
                     getOutputComponentById(this.state.outputModel.baseComponentId,
                       this.state.outputModel.props, 'demo', this.state.outputData
                     )}
+
+                    {this.state.demoModel.footerMessage &&
+                    <div className="ui fluid centered row"
+                         style={{ maxWidth: '100vw', overflowX: 'auto' }}
+                    >
+                      <h4>
+                        {this.state.demoModel.footerMessage}
+                      </h4>
+                    </div>
+                    }
+
+
+                    <div className="ui fluid centered row"
+                         style={{ minHeight: '5vh' }}
+                    >
+                    </div>
+
+                    <div className="ui fluid centered row">
+                      © CloudCV, 2016
+                    </div>
+
                   </div>
 
                 </div>
               </div>
             </div>
           </div>
-          }
-          {this.state.demoModel.terminal &&
-          <div className="one column row">
-            <div className="column">
-              <div className="ui card" style={{ width: '100%' }}>
-                <div className="content">
-                  <div className="header">Terminal</div>
-                </div>
-                <div className="content">
-                  <div className="ui padded raised segment container"
-                       style={{ height: '52vh', backgroundColor: 'black',
-                         color: 'white', overflowY: 'scroll' }}
-                  >
-                    {this.state.terminalData.map((data) =>
-                      <p key={Math.random()}>{data}</p>
-                    )}
-                  </div>
-                </div>
+        </div>
+        }
+
+        {this.state.showTerminal &&
+        <div className="ui four wide column">
+          <h2 className="ui header grid" style={{ marginTop: '1vh' }}>
+            <div className="ui twelve wide column">
+              <div className="content">
+                Terminal
               </div>
             </div>
-          </div>
-          }
-        </div>
-
-        {this.state.demoModel.footerMessage &&
-        <div className="ui fluid centered row"
-             style={{ minHeight: '10vh', minWidth: '100vw' }}
-        >
-        </div>
-        }
-
-        {this.state.demoModel.footerMessage &&
-        <div className="ui fluid centered row"
-             style={{ minHeight: '15vh', minWidth: '100vw' }}
-        >
-          <div className="ui success message">
-            {this.state.demoModel.footerMessage}
+            <div className="ui four wide column">
+              <i className="circular small remove icon"
+                 style={{ cursor: 'pointer' }}
+                 onClick={() => this.toggleShowTerminal()}
+              />
+            </div>
+          </h2>
+          <div className="ui padded segment"
+               style={{ minHeight: '100vh', maxHeight: '100vh', backgroundColor: 'black',
+                 color: 'white', overflowY: 'scroll', wordWrap: 'break-word' }}
+          >
+            {this.state.terminalData.map((data) =>
+              <p key={Math.random()}>{data}</p>
+            )}
           </div>
         </div>
         }
-
-        <div className="ui fluid centered row"
-             style={{ minHeight: '5vh', backgroundColor: grey900, color: 'white', minWidth: '100vw' }}
-        >
-          © CloudCV, 2016
-        </div>
       </div>
     );
   }

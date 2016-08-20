@@ -19,6 +19,10 @@ class TextImageInput extends React.Component {
 
   sendRequest(sendAddr, calling_context) {
 
+    $('#output-outer').animate({
+      scrollTop: $('#output-div').offset().top
+    }, 1000);
+
     let formData = new FormData($('#send-text')[0]);
     this.state.files.map((file) => {
       formData.set(file.newfilename, file.newfile, file.newfilename);

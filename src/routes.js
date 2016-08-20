@@ -5,6 +5,7 @@ import App from './components/App';
 import PageNotfoundHandler from './components/PageNotfoundHandler';
 import HomePageComponent from './components/home/HomePage';
 import URLShortenerComponent from './components/urlShortener';
+import ShareProfile from './components/user/userShareProfile';
 
 import LibConfigDocsPageComponent from './components/docs/libdocs/Configuration';
 import LibRegistrationDocsPageComponent from './components/docs/libdocs/Registration';
@@ -75,6 +76,7 @@ export default(
 
     <Route path="initialsetup" component={InitialSetupComponent} />
     <Route path="p/:shorturl" component={URLShortenerComponent} />
+    <Route path="u/:username" component={ShareProfile} />
     <Route path="login*" component={LoginComponent} />
     <Route path="*" component={PageNotfoundHandler} />
   </Route>

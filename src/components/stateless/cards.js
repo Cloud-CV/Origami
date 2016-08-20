@@ -5,6 +5,7 @@ const CustomCard = ({ header, heading, width, centeredParent, centeredSegment, d
 
   const parentClass = `${width ? width : 'four'} wide stackable ${centeredParent ? '' : 'centered'} column`;
   const cardClass = `ui card blue segment ${centeredSegment ? 'centered' : ''}`;
+  const headerToPut = selected ? `${header} - (In Use)` : header;
 
   return (
     <div className={parentClass}>
@@ -21,7 +22,7 @@ const CustomCard = ({ header, heading, width, centeredParent, centeredSegment, d
              onClick={() => buttonData.filter((button) => button.label === 'Delete')[0].onDeployClick()}
           />
           }
-          <div className="header">{header}</div>
+          <div className="header">{headerToPut}</div>
         </div>
         {heading &&
           <div className="content">

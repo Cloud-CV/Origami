@@ -16,6 +16,21 @@ class userApi {
         });
     });
   }
+
+  static userProfileFromName(username) {
+    return new Promise((resolve, reject) => {
+      request
+        .get(`https://api.github.com/users/${username}`)
+        .set('Accept', 'application/json')
+        .end((err, res) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(res.text);
+          }
+        });
+    });
+  }
 }
 
 

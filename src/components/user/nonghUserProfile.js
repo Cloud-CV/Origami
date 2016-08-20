@@ -18,6 +18,7 @@ import { List, ListItem } from 'material-ui/List';
 import { grey900 } from 'material-ui/styles/colors';
 import Divider from 'material-ui/Divider';
 import DescriptionIcon from 'material-ui/svg-icons/action/description';
+import PublicProfileIcon from 'material-ui/svg-icons/action/face';
 import toastr from 'toastr';
 
 toastr.options.closeButton = true;
@@ -192,6 +193,11 @@ class NonGHUserProfile extends React.Component {
                       onTouchTap={() => browserHistory.push('/libdocs/configuration')}
             />
             <Divider />
+            <ListItem primaryText="Public Profile"
+                      leftIcon={<PublicProfileIcon />}
+                      onTouchTap={() => browserHistory.push(`/u/${this.state.user.login}`)}
+            />
+            <Divider />
           </List>
         </div>
 
@@ -205,7 +211,7 @@ class NonGHUserProfile extends React.Component {
           {this.state.user &&
           <div className="sixteen column stretched row" style={{ visibility: this.state.showOutput }}>
 
-            <div className="four wide column ui raised rounded" style={{ minHeight: '15vh' }}>
+            <div className="four wide column ui raised rounded" style={{ minHeight: '15vh', marginTop: '1vh' }}>
               <div className="ui fluid bottom aligned medium rounded image">
                 <div className="ui medium ribbon black label">@{this.state.user.login}</div>
                 <img className="" onLoad={this.toggleShow}
