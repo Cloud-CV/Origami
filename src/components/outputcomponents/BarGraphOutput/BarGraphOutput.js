@@ -1,8 +1,7 @@
 import React, { PropTypes } from 'react';
 import SingleOutput from './SingleOutput';
-import LinearProgress from 'material-ui/LinearProgress';
 
-const BarGraphOutput = ({ headers, calling_context, data }) => {
+const TextOutput = ({ headers, calling_context, data }) => {
   return (
     <div>
       <div key={Math.random()} className="six wide stackable stretched grid container">
@@ -13,7 +12,7 @@ const BarGraphOutput = ({ headers, calling_context, data }) => {
               calling_context={calling_context}
               index={index}
               header={header}
-              data={data[index] || <LinearProgress mode="indeterminate" />}
+              data={data[index]}
            />,
             <br key={Math.random()} />,
             <br key={Math.random()} />]
@@ -23,10 +22,10 @@ const BarGraphOutput = ({ headers, calling_context, data }) => {
   );
 };
 
-BarGraphOutput.propTypes = {
+TextOutput.propTypes = {
   headers: PropTypes.array.isRequired,
   calling_context: PropTypes.string.isRequired,
   data: PropTypes.array
 };
 
-export default BarGraphOutput;
+export default TextOutput;

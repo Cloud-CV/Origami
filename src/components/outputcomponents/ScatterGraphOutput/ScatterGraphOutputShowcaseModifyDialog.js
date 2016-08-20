@@ -3,7 +3,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import OverloadedBarGraphHeader from './OverloadedBarGraphHeader';
+import OverloadedBarGraphHeader from './OverloadedScatterGraphHeader';
 
 class BarGraphOutputShowcaseModifyDialog extends React.Component {
   constructor(props, context) {
@@ -109,7 +109,7 @@ class BarGraphOutputShowcaseModifyDialog extends React.Component {
     ];
     return (
       <Dialog
-        title="Modify Bar Graph Output Component"
+        title="Modify Scatter Graph Output Component"
         actions={actions}
         modal
         autoScrollBodyContent

@@ -3,9 +3,9 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import OverloadedBarGraphHeader from './OverloadedBarGraphHeader';
+import OverloadedPieChartHeader from './OverloadedPieChartHeader';
 
-class BarGraphOutputShowcaseModifyDialog extends React.Component {
+class PieChartOutputShowcaseModifyDialog extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -66,7 +66,7 @@ class BarGraphOutputShowcaseModifyDialog extends React.Component {
 
   getNewField() {
     return (
-      <OverloadedBarGraphHeader
+      <OverloadedPieChartHeader
         data={{
           headerLength: this.state.headers.length,
           addLocalHeaders: this.addLocalHeaders,
@@ -109,7 +109,7 @@ class BarGraphOutputShowcaseModifyDialog extends React.Component {
     ];
     return (
       <Dialog
-        title="Modify Bar Graph Output Component"
+        title="Modify Pie Chart Output Component"
         actions={actions}
         modal
         autoScrollBodyContent
@@ -128,8 +128,8 @@ class BarGraphOutputShowcaseModifyDialog extends React.Component {
   }
 }
 
-BarGraphOutputShowcaseModifyDialog.propTypes = {
+PieChartOutputShowcaseModifyDialog.propTypes = {
   functions: PropTypes.object.isRequired
 };
 
-export default BarGraphOutputShowcaseModifyDialog;
+export default PieChartOutputShowcaseModifyDialog;

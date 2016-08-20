@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
-class OverloadedBarGraphHeader extends React.Component {
+class OverloadedPieChartHeader extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -39,9 +39,9 @@ class OverloadedBarGraphHeader extends React.Component {
   }
 }
 
-OverloadedBarGraphHeader.propTypes = {
+OverloadedPieChartHeader.propTypes = {
   data: PropTypes.object.isRequired
 };
 
-export default OverloadedBarGraphHeader;
+export default OverloadedPieChartHeader;
 

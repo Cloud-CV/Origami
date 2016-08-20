@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import BarGraphOutput from './BarGraphOutput';
+import PieChartOutput from './PieChartOutput';
 
 
-class BarGraphOutputPreview extends React.Component {
+class PieChartOutputPreview extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -31,13 +31,13 @@ class BarGraphOutputPreview extends React.Component {
       />
     ];
     return (<Dialog
-      title="Preview Bar Graph Output Component"
+      title="Preview Pie Chart Output Component"
       actions={actions}
       modal
       autoScrollBodyContent
       open={this.state.open}
             >
-      <BarGraphOutput
+      <PieChartOutput
         headers={this.state.headers}
         calling_context="demo"
         data={
@@ -56,8 +56,8 @@ class BarGraphOutputPreview extends React.Component {
   }
 }
 
-BarGraphOutputPreview.propTypes = {
+PieChartOutputPreview.propTypes = {
   functions: PropTypes.object.isRequired
 };
 
-export default BarGraphOutputPreview;
+export default PieChartOutputPreview;

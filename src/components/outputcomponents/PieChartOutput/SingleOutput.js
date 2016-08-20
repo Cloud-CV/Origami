@@ -1,7 +1,7 @@
 /*eslint-disable react/forbid-prop-types */
 import React, { PropTypes } from 'react';
 import Dialog from 'material-ui/Dialog';
-import { VictoryBar, VictoryChart } from 'victory';
+import { VictoryPie, VictoryChart } from 'victory';
 
 class singleOutput extends React.Component {
   constructor(props) {
@@ -15,19 +15,12 @@ class singleOutput extends React.Component {
   }
 
   componentWillMount() {
-    this.xAxis = 'xaxis';
-    this.yAxis = 'yaxis';
 
     if (this.props.data instanceof Array && this.props.data.length > 0) {
-      this.xAxis = Object.keys(this.props.data[0])[0];
-      this.yAxis = Object.keys(this.props.data[0])[1];
-
       const dataToPlot = [];
       this.props.data.map((dataPoint) => {
-        const pointToPut = {};
-        Object.keys(dataPoint).map((key) => {
-          pointToPut[key] = parseInt(dataPoint[key], 10);
-        });
+        const pointToPut = Object.assign({}, dataPoint);
+        pointToPut.y = parseInt(dataPoint.y, 10);
         dataToPlot.push(pointToPut);
       });
 
@@ -59,18 +52,16 @@ class singleOutput extends React.Component {
             <div className="event">
               <div className="content">
                 <div className="ui very padded text summary">
-                  <VictoryChart domainPadding={20}>
-                    <VictoryBar
-                      style={{
-                        data: {
-                          fill: 'tomato'
-                        }
-                      }}
-                      data={this.state.data}
-                      x={this.xAxis}
-                      y={this.yAxis}
-                    />
-                  </VictoryChart>
+                  <VictoryPie
+                    style={{
+                      labels: {
+                        fontSize: 20
+                      }
+                    }}
+                    data={this.state.data}
+                    x={'x'}
+                    y={'y'}
+                  />
                 </div>
               </div>
             </div>
@@ -85,18 +76,16 @@ class singleOutput extends React.Component {
           onRequestClose={this.handleClose}
         >
           <div className="ui row">
-            <VictoryChart domainPadding={20}>
-              <VictoryBar
-                style={{
-                  data: {
-                    fill: 'tomato'
-                  }
-                }}
-                data={this.state.data}
-                x={this.xAxis}
-                y={this.yAxis}
-              />
-            </VictoryChart>
+            <VictoryPie
+              style={{
+                labels: {
+                  fontSize: 20
+                }
+              }}
+              data={this.state.data}
+              x={'x'}
+              y={'y'}
+            />
           </div>
         </Dialog>
 

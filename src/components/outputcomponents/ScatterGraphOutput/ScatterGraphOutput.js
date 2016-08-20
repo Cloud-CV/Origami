@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import SingleOutput from './SingleOutput';
-import LinearProgress from 'material-ui/LinearProgress';
 
 const ScatterGraphOutput = ({ headers, calling_context, data }) => {
   return (
@@ -13,7 +12,7 @@ const ScatterGraphOutput = ({ headers, calling_context, data }) => {
               calling_context={calling_context}
               index={index}
               header={header}
-              data={data[index] || <LinearProgress mode="indeterminate" />}
+              data={data[index]}
            />,
             <br key={Math.random()} />,
             <br key={Math.random()} />]

@@ -1,15 +1,15 @@
 import React, { PropTypes } from 'react';
 import { browserHistory } from 'react-router';
 import CustomCard from '../../stateless/cards';
-import BarGraphOutputShowcaseModifyDialog from './BarGraphOutputShowcaseModifyDialog';
-import BarGraphOutputPreview from './BarGraphOutputPreview';
+import PieChartOutputShowcaseModifyDialog from './PieChartOutputShowcaseModifyDialog';
+import PieChartOutputPreview from './PieChartOutputPreview';
 import toastr from 'toastr';
 
-class BarGraphOutputShowcaseCard extends React.Component {
+class PieChartOutputShowcaseCard extends React.Component {
   constructor(props) {
     super(props);
     let initHeaders = [];
-    if (props.demoProps.outputComponentDemoModel.baseComponentId === 3) {
+    if (props.demoProps.outputComponentDemoModel.baseComponentId === 5) {
       initHeaders = props.demoProps.outputComponentDemoModel.props;
       this.selected = props.demoProps.outputComponentDemoModel.baseComponentId === props.demoProps.selected;
     }
@@ -62,7 +62,7 @@ class BarGraphOutputShowcaseCard extends React.Component {
       this.outputComponentDemoModelActions.updateOutputComponentModel({
         id: this.demoModel.id,
         userid: this.user.id,
-        baseComponentId: 3,
+        baseComponentId: 5,
         props: propsToStore
       }).then(() => {
         if (this.props.demoProps.params.type === 'modify') {
@@ -106,7 +106,7 @@ class BarGraphOutputShowcaseCard extends React.Component {
     return (
       <div>
         <CustomCard
-          header="Bar Graph Output"
+          header="Pie Chart Output"
           width="five"
           context="selection"
           selected={this.selected}
@@ -130,7 +130,7 @@ class BarGraphOutputShowcaseCard extends React.Component {
             }
           ]}
         />
-        {this.state.modifyDialogDisplay && <BarGraphOutputShowcaseModifyDialog
+        {this.state.modifyDialogDisplay && <PieChartOutputShowcaseModifyDialog
           functions={{
             updateHeaders: this.updateHeaders,
             hideModifyDialog: this.hideModifyDialog,
@@ -138,7 +138,7 @@ class BarGraphOutputShowcaseCard extends React.Component {
           }}
                                            />}
 
-        {this.state.previewDialogDisplay && <BarGraphOutputPreview
+        {this.state.previewDialogDisplay && <PieChartOutputPreview
           functions={{
             getHeaders: this.getHeaders,
             hidePreviewDialog: this.hidePreviewDialog
@@ -150,9 +150,9 @@ class BarGraphOutputShowcaseCard extends React.Component {
   }
 }
 
-BarGraphOutputShowcaseCard.propTypes = {
+PieChartOutputShowcaseCard.propTypes = {
   demoProps: PropTypes.object.isRequired
 };
 
-export default BarGraphOutputShowcaseCard;
+export default PieChartOutputShowcaseCard;
 

@@ -15,19 +15,13 @@ class singleOutput extends React.Component {
   }
 
   componentWillMount() {
-    this.xAxis = 'xaxis';
-    this.yAxis = 'yaxis';
 
     if (this.props.data instanceof Array && this.props.data.length > 0) {
-      this.xAxis = Object.keys(this.props.data[0])[0];
-      this.yAxis = Object.keys(this.props.data[0])[1];
-
       const dataToPlot = [];
       this.props.data.map((dataPoint) => {
-        const pointToPut = {};
-        Object.keys(dataPoint).map((key) => {
-          pointToPut[key] = parseInt(dataPoint[key], 10);
-        });
+        const pointToPut = Object.assign({}, dataPoint);
+        pointToPut.x = parseInt(dataPoint.x, 10);
+        pointToPut.y = parseInt(dataPoint.y, 10);
         dataToPlot.push(pointToPut);
       });
 
@@ -67,8 +61,8 @@ class singleOutput extends React.Component {
                         }
                       }}
                       data={this.state.data}
-                      x={this.xAxis}
-                      y={this.yAxis}
+                      x={'x'}
+                      y={'y'}
                     />
                   </VictoryChart>
                 </div>
@@ -93,8 +87,8 @@ class singleOutput extends React.Component {
                   }
                 }}
                 data={this.state.data}
-                x={this.xAxis}
-                y={this.yAxis}
+                x={'x'}
+                y={'y'}
               />
             </VictoryChart>
           </div>
