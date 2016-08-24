@@ -16,6 +16,14 @@ Follow issues template to file an issue unless it is a feature request.
 2. Install [docker-compose](https://docs.docker.com/compose/install/)
 3. Clone this repository
 
+**Note: Make sure the user deploying this application is in the "docker" group. That is, the user can use docker without sudo access.**
+
+> sudo groupadd docker
+
+> sudo usermod -aG docker $USER
+
+Then logout and log back in.
+
 #### A.) docker compose (recommended)
 
 1. `docker-compose up -d`
