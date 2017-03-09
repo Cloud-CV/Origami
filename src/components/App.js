@@ -7,7 +7,6 @@ import IconMenu from 'material-ui/IconMenu';
 import { bindActionCreators } from 'redux';
 import * as loginActions from '../actions/loginActions';
 import MenuItem from 'material-ui/MenuItem';
-import { cyan500 } from 'material-ui/styles/colors';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import FlatButton from 'material-ui/FlatButton';
 import io from 'socket.io-client';

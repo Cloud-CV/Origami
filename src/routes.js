@@ -19,23 +19,14 @@ import GettingStartedIOPageComponent from './components/docs/gettingstarted/IO';
 import GettingStartedPublishPageComponent from './components/docs/gettingstarted/Publish';
 import GettingStartedModifyPageComponent from './components/docs/gettingstarted/Modify';
 
-import GHUserProfileComponent from './components/user/ghUserProfile';
 import NonGHUserProfileComponent from './components/user/nonghUserProfile';
 
 import LoginComponent from './components/stateless/login';
 import InitialSetupComponent from './components/initialSetupPage';
 
-import RegisterGithubPageComponent from './components/deployment/BuildWIthGithub/registerPage';
 import RegisterNonGHPageComponent from './components/deployment/UsePrebuiltProject/registerPage';
-
-import SelectInputComponentsGithubPageComponent from './components/deployment/BuildWIthGithub/selectInputComponentPage';
 import SelectInputComponentsNonGHPageComponent from './components/deployment/UsePrebuiltProject/selectInputComponentPage';
-
-import SelectOutputComponentsGithubPageComponent from './components/deployment/BuildWIthGithub/selectOutputComponentPage';
 import SelectOutputComponentsNonGHPageComponent from './components/deployment/UsePrebuiltProject/selectOutputComponentPage';
-
-import GHBuildPageComponent from './components/deployment/BuildWIthGithub/ghBuildPage';
-import GHDemoPageComponent from './components/deployment/BuildWIthGithub/ghDemoPage';
 import NGHDemoPageComponent from './components/deployment/UsePrebuiltProject/nghDemoPage';
 
 export default(
@@ -59,13 +50,6 @@ export default(
       <Route path="publish" component={GettingStartedPublishPageComponent}/>
       <Route path="modify" component={GettingStartedModifyPageComponent}/>
     </Route>
-
-    <Route path="user" component={GHUserProfileComponent} />
-    <Route path="user/repo/:repoName/:repoId" component={RegisterGithubPageComponent} />
-    <Route path="user/repo/:repoName/:repoId/inputcomponent" component={SelectInputComponentsGithubPageComponent} />
-    <Route path="user/repo/:repoName/:repoId/outputcomponent" component={SelectOutputComponentsGithubPageComponent} />
-    <Route path="user/repo/:repoName/:repoId/build" component={GHBuildPageComponent} />
-    <Route path="user/repo/:repoName/:repoId/demo" component={GHDemoPageComponent} />
 
     <Route path="ngh/user" component={NonGHUserProfileComponent} />
     <Route path="ngh/user/register" component={RegisterNonGHPageComponent} />

@@ -79,7 +79,7 @@ function DocsContent(props) {
 }
 
 DocsContent.propTypes = {
-  children: PropTypes.element.isRequired
+  children: PropTypes.array.isRequired
 };
 
 export default DocsContent;

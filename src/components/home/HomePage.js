@@ -39,14 +39,6 @@ class HomePage extends React.Component {
     this.handleShareModal = this.handleShareModal.bind(this);
   }
 
-  // buildFromGithubLogin() {
-  //   if (!this.props.login) {
-  //     $('.loginButton').trigger('click');
-  //   } else {
-  //     browserHistory.push('/user');
-  //   }
-  // }
-
   componentWillMount() {
 
     document.body.scrollTop = document.documentElement.scrollTop = 0;
@@ -357,8 +349,6 @@ class HomePage extends React.Component {
                style={{ minHeight: '15vh', backgroundColor: grey900, color: 'white', minWidth: '100vw' }}
           >
             Free Software (AGPL 3.0)
-            <br /><br />
-            Crafted with React, Redux, MaterialUI and &lt;3
             <br /><br />
             © CloudCV, 2016
           </div>

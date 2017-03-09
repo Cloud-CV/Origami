@@ -59,7 +59,6 @@
     "prefer-arrow-callback": 2,
     "no-useless-concat": 2,
     "prefer-template": 2,
-    "no-useless-escape": 2,
     "quotes": [2, "single"],
     "wrap-iife": 2,
     "no-console": 2,
@@ -73,6 +72,7 @@
     "no-alert": 0,
     "no-lone-blocks": 0,
     "jsx-quotes": 2,
+    "import/extensions": 1,
     "react/display-name": [ 2, {"ignoreTranspilerName": false }],
     "react/forbid-prop-types": [2, {"forbid": ["any"]}],
     "react/jsx-boolean-value": 2,
@@ -105,6 +105,6 @@
     "react/require-extension": 2,
     "react/self-closing-comp": 2,
     "react/sort-comp": 2,
-    "react/wrap-multilines": 2
+    "react/jsx-wrap-multilines": 1
   }
 }

@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import { Link, browserHistory } from 'react-router';
 import HomePageDemoCard from '../stateless/homePageDemoCard';
 import { getAllPermalink } from '../../api/Nongh/permalink';
 import { getDeployed } from '../../api/Nongh/getDeployed';
