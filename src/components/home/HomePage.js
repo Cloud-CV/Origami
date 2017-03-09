@@ -107,8 +107,7 @@ class HomePage extends React.Component {
                style={{ minHeight: '3vh', backgroundColor: cyan500,
                  color: 'white', fontSize: 'xx-large', minWidth: '100vw'
                }}
-          >
-          </div>
+          />
 
           <div className="ui fluid row"
                style={{ backgroundColor: cyan500, minWidth: '100vw'
@@ -122,8 +121,7 @@ class HomePage extends React.Component {
           <div className="ui fluid row"
                style={{ minHeight: '2vh', backgroundColor: cyan500
                }}
-          >
-          </div>
+          />
 
           <div className="ui fluid row"
                style={{ minHeight: '10vh', backgroundColor: cyan500,
@@ -133,10 +131,6 @@ class HomePage extends React.Component {
             CloudCVFy Your Code
           </div>
 
-
-
-
-
           <div className="ui fluid row"
                style={{ minHeight: '15vh', backgroundColor: cyan500,
                  color: 'white', fontSize: 'x-large', minWidth: '100vw'
@@ -145,10 +139,6 @@ class HomePage extends React.Component {
             CVFY helps you build a web based demo out of <br /><br />
             Machine Learning Code
           </div>
-
-
-
-
 
           <div className="ui fluid row"
                style={{ backgroundColor: cyan500, minWidth: '100vw' }}
@@ -169,14 +159,9 @@ class HomePage extends React.Component {
             </div>
           </div>
 
-
-
-
-
           <div className="ui fluid row"
                style={{ minHeight: '5vh', backgroundColor: cyan500, minWidth: '100vw' }}
-          >
-          </div>
+          />
 
           {Object.keys(this.state.rootData).length === 0 &&
           <div className="one column stretched row">
@@ -240,7 +225,6 @@ class HomePage extends React.Component {
           </div>
           }
 
-
           {this.state.cloudCVDemos.length > 0 &&
           <div className="ui row">
             <div className="ui horizontal container divider">
@@ -257,7 +241,6 @@ class HomePage extends React.Component {
             Try demos by CloudCV
           </div>
           }
-
 
           {this.state.cloudCVDemos.length > 0 &&
           <div className="ui row">
@@ -279,8 +262,7 @@ class HomePage extends React.Component {
           <div className="ui fluid row padded grid"
                style={{ minHeight: '3vh', minWidth: '80vw'
                }}
-          >
-          </div>
+          />
           }
 
           {this.state.isCloudCV &&
@@ -305,7 +287,6 @@ class HomePage extends React.Component {
                style={{ color: grey900, fontSize: 'x-large', minWidth: '80vw'
                }}
           >
-
             <div className="ui three wide column">
               <img className="ui middle aligned small image"  src={require('./../assets/vt.png')} />
             </div>
@@ -327,8 +308,7 @@ class HomePage extends React.Component {
 
           <div className="ui fluid row"
                style={{ minHeight: '5vh', backgroundColor: grey900, color: 'white', minWidth: '100vw' }}
-          >
-          </div>
+          />
 
           <div className="ui fluid container grid row"
                style={{ minHeight: '20vh', backgroundColor: grey900, color: 'white', minWidth: '100vw' }}
@@ -365,7 +345,6 @@ class HomePage extends React.Component {
             </div>
           </div>
 
-
           <div className="ui fluid row"
                style={{ minHeight: '5vh', backgroundColor: grey900, color: 'white', minWidth: '100vw' }}
           >
@@ -373,8 +352,6 @@ class HomePage extends React.Component {
               -
             </div>
           </div>
-
-
 
           <div className="ui fluid row"
                style={{ minHeight: '15vh', backgroundColor: grey900, color: 'white', minWidth: '100vw' }}
@@ -386,7 +363,6 @@ class HomePage extends React.Component {
             © CloudCV, 2016
           </div>
 
-
           <Dialog
             title="Share This Demo"
             modal={false}
@@ -394,7 +370,6 @@ class HomePage extends React.Component {
             onRequestClose={this.handleShareModal}
             autoScrollBodyContent
           >
-
             <div className="ui padded centered grid">
 
               <div className="ui row stackable column grid" style={{ cursor: 'pointer' }}>

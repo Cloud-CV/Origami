@@ -157,7 +157,7 @@ class NGHDemoPage extends React.Component {
                  className="ui bottom attached indicating progress"
                  style={{ visibility: 'hidden' }}
             >
-              <div className="bar"></div>
+              <div className="bar" />
             </div>
 
             <div className="row" id="output-div">
@@ -186,8 +186,7 @@ class NGHDemoPage extends React.Component {
 
                     <div className="ui fluid centered row"
                          style={{ minHeight: '5vh' }}
-                    >
-                    </div>
+                    />
 
                     <div className="ui fluid centered row">
                       © CloudCV, 2016

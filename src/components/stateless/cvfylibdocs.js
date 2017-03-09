@@ -69,8 +69,7 @@ function DocsContent(props) {
 
       </Drawer>
 
-      <div className="ui four wide column" >
-      </div>
+      <div className="ui four wide column"  />
 
       <div className="ui padded twelve wide centered column" >
         <br />

@@ -85,7 +85,7 @@ class GHBuildPage extends React.Component {
                     <div className="content">
                       <div className="ui padded raised segment container"
                            style={{ height: '52vh', backgroundColor: 'black',
-                           color: 'white', overflowY: 'scroll' }}
+                             color: 'white', overflowY: 'scroll' }}
                       >
                         {this.state.data.map((data) =>
                           <p key={Math.random()}>{data}</p>

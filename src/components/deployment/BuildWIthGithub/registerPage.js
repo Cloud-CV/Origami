@@ -217,7 +217,7 @@ class RegisterPage extends React.Component {
 
         {this.state.showOutput === 'hidden' &&
         <div className="centered row" style={{ marginTop: '30vh' }}>
-          <CircularProgress size={1.5} />
+          <CircularProgress size={89.25} />
         </div>}
 
         {this.state.currentRepo &&

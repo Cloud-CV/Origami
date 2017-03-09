@@ -85,8 +85,7 @@ class ShareProfile extends React.Component {
 
         <div className="ui container row"
              style={{ height: '10vh' }}
-        >
-        </div>
+        />
 
         <div className="ui container row grid">
           <div className="ui four wide right aligned column" style={{ minHeight: '15vh' }}>
@@ -135,13 +134,11 @@ class ShareProfile extends React.Component {
 
           <div className="ui fluid row"
                style={{ minHeight: '10vh', minWidth: '100vw' }}
-          >
-          </div>
+          />
 
           <div className="ui fluid row"
                style={{ minHeight: '5vh', backgroundColor: grey900, color: 'white', minWidth: '100vw' }}
-          >
-          </div>
+          />
 
           <div className="ui fluid container grid row"
                style={{ minHeight: '20vh', backgroundColor: grey900, color: 'white', minWidth: '100vw' }}

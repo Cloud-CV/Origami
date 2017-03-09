@@ -177,12 +177,12 @@ class RegisterPage extends React.Component {
     } else {
       this.setState({ portErrorText: '' });
     }
-    if (this.state.name.length === 0 || /[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(this.state.name)) {
+    if (this.state.name.length === 0 || /^\w+$/.test(this.state.name)) {
       this.setState({ nameErrorText: 'Invalid Project Name' });
     } else {
       this.setState({ nameErrorText: '' });
     }
-    if (this.state.name.length > 0 && !/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(this.state.name)
+    if (this.state.name.length > 0 && ! /^\w+$/.test(this.state.name)
       && this.validateIP() && this.validatePort(this.state.port)) {
       let dataToPut = {
         name: this.state.name,
@@ -330,7 +330,7 @@ class RegisterPage extends React.Component {
         <div className="ui relaxed stackable grid fluid container">
           {this.state.showOutput === 'hidden' &&
           <div className="centered row" style={{ marginTop: '30vh' }}>
-            <CircularProgress size={1.5} />
+            <CircularProgress size={89.25} />
           </div>}
 
           <div style={{ visibility: this.state.showOutput, width: '100%', maxWidth: 700, margin: 'auto' }}>
@@ -514,8 +514,7 @@ class RegisterPage extends React.Component {
 
         <div className="ui fluid centered row"
              style={{ minHeight: '10vh', minWidth: '100vw' }}
-        >
-        </div>
+        />
 
         <div className="ui fluid centered row"
              style={{ minHeight: '5vh', backgroundColor: grey900, color: 'white', minWidth: '100vw' }}
@@ -531,6 +530,7 @@ RegisterPage.propTypes = {
   login: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired,
+  nonghDemoModel: PropTypes.object.isRequired,
   nonghModelActions: PropTypes.object.isRequired
 };
 
