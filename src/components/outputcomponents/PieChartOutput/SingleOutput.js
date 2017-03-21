@@ -1,7 +1,7 @@
 /*eslint-disable react/forbid-prop-types */
-import React, { PropTypes } from 'react';
-import Dialog from 'material-ui/Dialog';
-import { VictoryPie, VictoryChart } from 'victory';
+import React, { PropTypes } from "react";
+import Dialog from "material-ui/Dialog";
+import { VictoryPie, VictoryChart } from "victory";
 
 class singleOutput extends React.Component {
   constructor(props) {
@@ -15,17 +15,15 @@ class singleOutput extends React.Component {
   }
 
   componentWillMount() {
-
     if (this.props.data instanceof Array && this.props.data.length > 0) {
       const dataToPlot = [];
-      this.props.data.map((dataPoint) => {
+      this.props.data.map(dataPoint => {
         const pointToPut = Object.assign({}, dataPoint);
         pointToPut.y = parseInt(dataPoint.y, 10);
         dataToPlot.push(pointToPut);
       });
 
       this.setState({ data: dataToPlot });
-
     }
   }
 
@@ -39,10 +37,11 @@ class singleOutput extends React.Component {
 
   render() {
     return (
-      <div className="ui card centered"
-           id={`output-text-${this.props.index}`}
-           style={{ cursor: 'pointer' }}
-           onClick={this.showGraphFull}
+      <div
+        className="ui card centered"
+        id={`output-text-${this.props.index}`}
+        style={{ cursor: "pointer" }}
+        onClick={this.showGraphFull}
       >
         <div className="content">
           <div className="header">{this.props.header}</div>
@@ -59,8 +58,8 @@ class singleOutput extends React.Component {
                       }
                     }}
                     data={this.state.data}
-                    x={'x'}
-                    y={'y'}
+                    x={"x"}
+                    y={"y"}
                   />
                 </div>
               </div>
@@ -83,8 +82,8 @@ class singleOutput extends React.Component {
                 }
               }}
               data={this.state.data}
-              x={'x'}
-              y={'y'}
+              x={"x"}
+              y={"y"}
             />
           </div>
         </Dialog>

@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const githubDemoSchema = mongoose.Schema({
-  name:  String,
+  name: String,
   id: {
     type: String,
     unique: true
@@ -15,5 +15,4 @@ const githubDemoSchema = mongoose.Schema({
   status: String
 });
 
-export default mongoose.model('githubDemo', githubDemoSchema);
-
+export default mongoose.model("githubDemo", githubDemoSchema);

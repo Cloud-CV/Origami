@@ -1,12 +1,12 @@
-import request from 'superagent';
+import request from "superagent";
 
 class userApi {
   static userProfile() {
     return new Promise((resolve, reject) => {
       request
-        .get('https://api.github.com/user')
-        .set('Authorization', `token ${localStorage.getItem('access_token')}`)
-        .set('Accept', 'application/json')
+        .get("https://api.github.com/user")
+        .set("Authorization", `token ${localStorage.getItem("access_token")}`)
+        .set("Accept", "application/json")
         .end((err, res) => {
           if (err) {
             reject(err);
@@ -21,7 +21,7 @@ class userApi {
     return new Promise((resolve, reject) => {
       request
         .get(`https://api.github.com/users/${username}`)
-        .set('Accept', 'application/json')
+        .set("Accept", "application/json")
         .end((err, res) => {
           if (err) {
             reject(err);
@@ -33,6 +33,4 @@ class userApi {
   }
 }
 
-
 export default userApi;
-

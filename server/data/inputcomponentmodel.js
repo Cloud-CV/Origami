@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const inputComponentSchema = mongoose.Schema({
   id: {
@@ -10,4 +10,4 @@ const inputComponentSchema = mongoose.Schema({
   props: Array
 });
 
-export default mongoose.model('inputComponent', inputComponentSchema);
+export default mongoose.model("inputComponent", inputComponentSchema);

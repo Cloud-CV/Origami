@@ -1,13 +1,18 @@
 /* eslint-disable no-useless-escape */
 
-import React, { PropTypes } from 'react';
-import { browserHistory } from 'react-router';
-import { Card, CardActions, CardHeader, CardMedia, CardText } from 'material-ui/Card';
-import { blue100 } from 'material-ui/styles/colors';
-import RaisedButton from 'material-ui/RaisedButton';
+import React, { PropTypes } from "react";
+import { browserHistory } from "react-router";
+import {
+  Card,
+  CardActions,
+  CardHeader,
+  CardMedia,
+  CardText
+} from "material-ui/Card";
+import { blue100 } from "material-ui/styles/colors";
+import RaisedButton from "material-ui/RaisedButton";
 
 function HomePageDemoCard(props) {
-
   const reg = /.+?\:\/\/.+?(\/.+?)(?:#|\?|$)/;
 
   return (
@@ -16,26 +21,26 @@ function HomePageDemoCard(props) {
         <CardHeader
           title={props.name}
           subtitle="CloudCV"
-          avatar={require('../assets/cloudcv_logo.png')}
+          avatar={require("../assets/cloudcv_logo.png")}
         />
         {props.coverImage &&
-        <CardMedia className="ui medium image">
-          <img src={props.coverImage} />
-        </CardMedia>
-        }
+          <CardMedia className="ui medium image">
+            <img src={props.coverImage} />
+          </CardMedia>}
         {props.description &&
-        <CardText style={{ wordWrap: 'break-word' }}>
-          {props.description}
-        </CardText>
-        }
+          <CardText style={{ wordWrap: "break-word" }}>
+            {props.description}
+          </CardText>}
         <CardActions>
-          <RaisedButton backgroundColor={blue100}
-                        label="Launch"
-                        onClick={() => browserHistory.push(reg.exec(props.permalink)[1])}
+          <RaisedButton
+            backgroundColor={blue100}
+            label="Launch"
+            onClick={() => browserHistory.push(reg.exec(props.permalink)[1])}
           />
-          <RaisedButton backgroundColor={blue100}
-                        label="Share"
-                        onClick={() => props.handleShareModal(props)}
+          <RaisedButton
+            backgroundColor={blue100}
+            label="Share"
+            onClick={() => props.handleShareModal(props)}
           />
         </CardActions>
       </Card>
@@ -50,6 +55,5 @@ HomePageDemoCard.propTypes = {
   permalink: PropTypes.string.isRequired,
   handleShareModal: PropTypes.func.isRequired
 };
-
 
 export default HomePageDemoCard;

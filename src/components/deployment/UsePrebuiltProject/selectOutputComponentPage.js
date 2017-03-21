@@ -1,14 +1,17 @@
-import React, { PropTypes } from 'react';
-import { Link, browserHistory } from 'react-router';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as nonghDemoModelActions from '../../../actions/nonghDemoModelActions';
-import * as outputComponentDemoModelActions from '../../../actions/outputComponentDemoModelActions';
-import { getAllOutputComponentsForShowcase } from '../../outputcomponents';
-import { getComponentDeployed } from '../../../api/CommonLocal/getComponentDeployed';
-import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
-import { grey900 } from 'material-ui/styles/colors';
-import toastr from 'toastr';
+import React, { PropTypes } from "react";
+import { Link, browserHistory } from "react-router";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as nonghDemoModelActions from "../../../actions/nonghDemoModelActions";
+import * as outputComponentDemoModelActions
+  from "../../../actions/outputComponentDemoModelActions";
+import { getAllOutputComponentsForShowcase } from "../../outputcomponents";
+import {
+  getComponentDeployed
+} from "../../../api/CommonLocal/getComponentDeployed";
+import { Step, Stepper, StepLabel } from "material-ui/Stepper";
+import { grey900 } from "material-ui/styles/colors";
+import toastr from "toastr";
 
 toastr.options.closeButton = true;
 
@@ -16,26 +19,37 @@ class SelectOutputComponentPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      userid: parseInt(localStorage.getItem('userid'), 10),
+      userid: parseInt(localStorage.getItem("userid"), 10),
       outputComponentDemoModel: {},
       inputComponentStepperHighlight: false
     };
   }
 
   componentWillMount() {
-    getComponentDeployed(this.state.userid, this.props.nonghDemoModel.id, 'output').then((outputComponentSeedData) => {
-      if (JSON.parse(outputComponentSeedData).length !== 0) {
-        let dataToSeed = {
-          id: JSON.parse(outputComponentSeedData)[0].id,
-          userid: JSON.parse(outputComponentSeedData)[0].userid,
-          baseComponentId: JSON.parse(outputComponentSeedData)[0].baseComponentId,
-          props: JSON.parse(outputComponentSeedData)[0].props
-        };
-        this.setState({ outputComponentDemoModel: dataToSeed });
-      }
-    })
+    getComponentDeployed(
+      this.state.userid,
+      this.props.nonghDemoModel.id,
+      "output"
+    )
+      .then(outputComponentSeedData => {
+        if (JSON.parse(outputComponentSeedData).length !== 0) {
+          let dataToSeed = {
+            id: JSON.parse(outputComponentSeedData)[0].id,
+            userid: JSON.parse(outputComponentSeedData)[0].userid,
+            baseComponentId: JSON.parse(outputComponentSeedData)[
+              0
+            ].baseComponentId,
+            props: JSON.parse(outputComponentSeedData)[0].props
+          };
+          this.setState({ outputComponentDemoModel: dataToSeed });
+        }
+      })
       .then(() => {
-        getComponentDeployed(this.state.userid, this.props.params.repoId, 'output').then((outputComponentSeedData) => {
+        getComponentDeployed(
+          this.state.userid,
+          this.props.params.repoId,
+          "output"
+        ).then(outputComponentSeedData => {
           if (JSON.parse(outputComponentSeedData).length !== 0) {
             this.setState({ outputComponentStepperHighlight: true });
           }
@@ -44,20 +58,30 @@ class SelectOutputComponentPage extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.state.outputComponentDemoModel !== nextProps.outputComponentDemoModel) {
-      this.setState({ outputComponentDemoModel: nextProps.outputComponentDemoModel });
+    if (
+      this.state.outputComponentDemoModel !== nextProps.outputComponentDemoModel
+    ) {
+      this.setState({
+        outputComponentDemoModel: nextProps.outputComponentDemoModel
+      });
     }
   }
 
   render() {
-
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
+    document.body.scrollTop = (document.documentElement.scrollTop = 0);
 
     return (
       <div className="ui relaxed stackable grid fluid">
 
         <div className="ui relaxed stackable grid fluid container">
-          <div style={{ visibility: this.state.showOutput, width: '100%', maxWidth: 700, margin: 'auto' }}>
+          <div
+            style={{
+              visibility: this.state.showOutput,
+              width: "100%",
+              maxWidth: 700,
+              margin: "auto"
+            }}
+          >
             <Stepper linear={false}>
               <Step active>
                 <StepLabel>Register Application</StepLabel>
@@ -66,42 +90,51 @@ class SelectOutputComponentPage extends React.Component {
                 <StepLabel>Select Input Component</StepLabel>
               </Step>
               <Step active>
-                <StepLabel><b style={{ fontSize: 'large' }}>Select Output Component</b></StepLabel>
+                <StepLabel>
+                  <b style={{ fontSize: "large" }}>Select Output Component</b>
+                </StepLabel>
               </Step>
             </Stepper>
           </div>
 
           <div className="sixteen wide column stretched row">
-            <div className="row" >
+            <div className="row">
               <h1>Select Output Component</h1>
             </div>
 
-            <div className="ui horizontal divider row" >
+            <div className="ui horizontal divider row">
               <span><hr /></span>
             </div>
 
-            <div className="fifteen wide column stretched stackable centered row">
-              <div className="ui three padded column stackable grid" style={{ marginLeft: '3%', minHeight: '90vh' }}>
+            <div
+              className="fifteen wide column stretched stackable centered row"
+            >
+              <div
+                className="ui three padded column stackable grid"
+                style={{ marginLeft: "3%", minHeight: "90vh" }}
+              >
                 {getAllOutputComponentsForShowcase({
                   demoModel: this.props.nonghDemoModel,
                   user: this.props.user,
                   outputComponentDemoModel: this.state.outputComponentDemoModel,
                   outputComponentDemoModelActions: this.props.outputComponentDemoModelActions,
-                  forwardAddress:
-                    `/ngh/user/${this.props.user.id ||
-                    localStorage.getItem('userid')}/${this.props.nonghDemoModel.name}/${this.props.nonghDemoModel.id}/demo`,
+                  forwardAddress: `/ngh/user/${this.props.user.id || localStorage.getItem("userid")}/${this.props.nonghDemoModel.name}/${this.props.nonghDemoModel.id}/demo`,
                   params: this.props.params,
                   selected: this.state.outputComponentDemoModel.baseComponentId
-                }).map((showcasecard, index) =>
-                  showcasecard
-                )}
+                }).map((showcasecard, index) => showcasecard)}
               </div>
             </div>
           </div>
         </div>
 
-        <div className="ui fluid centered row"
-             style={{ minHeight: '5vh', backgroundColor: grey900, color: 'white', minWidth: '100vw' }}
+        <div
+          className="ui fluid centered row"
+          style={{
+            minHeight: "5vh",
+            backgroundColor: grey900,
+            color: "white",
+            minWidth: "100vw"
+          }}
         >
           © CloudCV, 2016
         </div>
@@ -132,8 +165,13 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     nonghModelActions: bindActionCreators(nonghDemoModelActions, dispatch),
-    outputComponentDemoModelActions: bindActionCreators(outputComponentDemoModelActions, dispatch)
+    outputComponentDemoModelActions: bindActionCreators(
+      outputComponentDemoModelActions,
+      dispatch
+    )
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SelectOutputComponentPage);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  SelectOutputComponentPage
+);

@@ -1,9 +1,8 @@
-import React from 'react';
-import DocsContent from '../../stateless/webappgettingstarted';
+import React from "react";
+import DocsContent from "../../stateless/webappgettingstarted";
 
 function Configuration() {
-
-  document.body.scrollTop = document.documentElement.scrollTop = 0;
+  document.body.scrollTop = (document.documentElement.scrollTop = 0);
 
   return (
     <DocsContent>
@@ -26,7 +25,10 @@ function Configuration() {
       </h3>
 
       <h4>
-        A video guide for this can be found <a href="https://youtu.be/V-cQQdM4HzE">here</a>.
+        A video guide for this can be found
+        {" "}
+        <a href="https://youtu.be/V-cQQdM4HzE">here</a>
+        .
       </h4>
 
       <div className="ui orange compact message">
@@ -37,7 +39,13 @@ function Configuration() {
 
       <ui className="list">
         <li>
-          Go to <a href="https://github.com/settings/developers">Github Developer Applications</a> page
+          Go to
+          {" "}
+          <a href="https://github.com/settings/developers">
+            Github Developer Applications
+          </a>
+          {" "}
+          page
           and "Register a new application" and enter the application details.
         </li>
         <br />
@@ -58,12 +66,18 @@ function Configuration() {
               This is the base-URL of CVFY application.
               This is the URL where this webapp is running.
               <br />
-              For local deployments on default port, it is <b>"http://0.0.0.0:5001/"</b>.
+              For local deployments on default port, it is
+              {" "}
+              <b>"http://0.0.0.0:5001/"</b>
+              .
               <br />
               <div className="ui positive compact message">
-                For the current CVFY installation, it is <b>"{
-                `${window.location.protocol}//${window.location.host}/`
-              }"</b>.
+                For the current CVFY installation, it is
+                {" "}
+                <b>
+                  "{`${window.location.protocol}//${window.location.host}/`}"
+                </b>
+                .
               </div>
             </li>
           </ul>
@@ -85,19 +99,40 @@ function Configuration() {
             <li>
               This URL is <b>Homepage URL + "/auth/github/callback"</b>.
               <br />
-              For local deployments on default port, it is <b>"http://0.0.0.0:5001/auth/github/callback"</b>.
+              For local deployments on default port, it is
+              {" "}
+              <b>"http://0.0.0.0:5001/auth/github/callback"</b>
+              .
               <br />
               <div className="ui positive compact message">
-                For the current CVFY installation, it is <b>"{
-                `${window.location.protocol}//${window.location.host}/auth/github/callback`
-              }"</b>.
+                For the current CVFY installation, it is
+                {" "}
+                <b>
+                  "
+                  {
+                    `${window.location.protocol}//${window.location.host}/auth/github/callback`
+                  }
+                  "
+                </b>
+                .
               </div>
             </li>
           </ul>
         </li>
 
-        <h5>Now click on the "Register application" button to register this application.</h5>
-        <h5>On the subsequent page, note down the <b>Client ID</b> and <b>Client Secret</b>.</h5>
+        <h5>
+          Now click on the "Register application" button to register this application.
+        </h5>
+        <h5>
+          On the subsequent page, note down the
+          {" "}
+          <b>Client ID</b>
+          {" "}
+          and
+          {" "}
+          <b>Client Secret</b>
+          .
+        </h5>
 
       </ui>
 
@@ -158,7 +193,9 @@ function Configuration() {
             <li>
               This is the IP address (or domain name) where the CVFY webapp is running.
               <br />
-              It is pre-filled with the value for current installation ie "{window.location.hostname}".
+              It is pre-filled with the value for current installation ie "
+              {window.location.hostname}
+              ".
             </li>
           </ul>
         </li>

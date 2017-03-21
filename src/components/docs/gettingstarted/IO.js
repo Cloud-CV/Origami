@@ -1,9 +1,8 @@
-import React from 'react';
-import DocsContent from '../../stateless/webappgettingstarted';
+import React from "react";
+import DocsContent from "../../stateless/webappgettingstarted";
 
 function IO() {
-
-  document.body.scrollTop = document.documentElement.scrollTop = 0;
+  document.body.scrollTop = (document.documentElement.scrollTop = 0);
 
   return (
     <DocsContent>
@@ -39,23 +38,43 @@ function IO() {
           Choose the kind of Input component your machine learning code requires.
           <ul className="list">
             <li>
-              If your code requires processing 1 (or more) images, you need <b>Image Input</b> component.
+              If your code requires processing 1 (or more) images, you need
+              {" "}
+              <b>Image Input</b>
+              {" "}
+              component.
             </li>
             <li>
-              If it requires both an image and a text input with it, you need <b>Text Image Input</b> component and so on.
+              If it requires both an image and a text input with it, you need
+              {" "}
+              <b>Text Image Input</b>
+              {" "}
+              component and so on.
             </li>
           </ul>
         </li>
         <br />
 
         <li>
-          After choosing the Input component of your choice, click on <b>Modify</b> button on the component you want.
+          After choosing the Input component of your choice, click on
+          {" "}
+          <b>Modify</b>
+          {" "}
+          button on the component you want.
           <ul className="list">
             <li>
               This opens the modification modal for that component. Each component can have different type of configuration.
             </li>
             <li>
-              For example, <b>Text Input</b> component has an <b>Add Label</b> option that adds a new text field for input.
+              For example,
+              {" "}
+              <b>Text Input</b>
+              {" "}
+              component has an
+              {" "}
+              <b>Add Label</b>
+              {" "}
+              option that adds a new text field for input.
               <br />
               The text entered here appears in the placeholder for the field in the Input component on demo page.
             </li>
@@ -77,7 +96,11 @@ function IO() {
 
       <ul className="list">
         <li>
-          After configuring the Input component, you can preview it by pressing the <b>Preview</b> button on the component.
+          After configuring the Input component, you can preview it by pressing the
+          {" "}
+          <b>Preview</b>
+          {" "}
+          button on the component.
         </li>
         <br />
 
@@ -87,7 +110,11 @@ function IO() {
         <br />
 
         <li>
-          If you are satisfied with the preview, you can click on <b>OK</b> and move to the next step.
+          If you are satisfied with the preview, you can click on
+          {" "}
+          <b>OK</b>
+          {" "}
+          and move to the next step.
           <br />
           Otherwise you can edit the Input component and see the preview again.
         </li>
@@ -101,14 +128,22 @@ function IO() {
 
       <ul className="list">
         <li>
-          Once you are satisfied with the preview, you can press the <b>Use</b> button on the component to add
+          Once you are satisfied with the preview, you can press the
+          {" "}
+          <b>Use</b>
+          {" "}
+          button on the component to add
           <br />
           to the demo page.
         </li>
         <br />
 
         <li>
-          You can come back to this page anytime from the user profile page by clicking on <b>Modify</b> on the project
+          You can come back to this page anytime from the user profile page by clicking on
+          {" "}
+          <b>Modify</b>
+          {" "}
+          on the project
           <br />
           and selecting <b>Input</b> thereafter.
         </li>
@@ -117,7 +152,9 @@ function IO() {
       <div className="ui yellow compact message">
         Refreshing the page or going back refreshes the app-state.
         <br />
-        In that case, you have to go back to the Input component page from the user profile page by clicking <b>Modify</b>
+        In that case, you have to go back to the Input component page from the user profile page by clicking
+        {" "}
+        <b>Modify</b>
         <br />
         and selecting <b>Input</b> thereafter.
       </div>

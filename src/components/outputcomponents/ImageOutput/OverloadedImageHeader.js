@@ -1,12 +1,12 @@
-import React, { PropTypes } from 'react';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
+import React, { PropTypes } from "react";
+import TextField from "material-ui/TextField";
+import RaisedButton from "material-ui/RaisedButton";
 
 class OverloadedImageHeader extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      elementId: ''
+      elementId: ""
     };
     this.headerLength = props.data.headerLength;
     this.addLocalHeadersToParent = props.data.addLocalHeaders;
@@ -18,7 +18,7 @@ class OverloadedImageHeader extends React.Component {
   }
 
   componentDidMount() {
-    this.addLocalHeadersToParent(this.headerLength, '');
+    this.addLocalHeadersToParent(this.headerLength, "");
   }
 
   render() {
@@ -26,13 +26,15 @@ class OverloadedImageHeader extends React.Component {
       <div>
         <TextField
           hintText="Header"
-          onChange={(e) => this.addLocalHeadersToParent(this.headerLength, e.target.value)}
+          onChange={e =>
+            this.addLocalHeadersToParent(this.headerLength, e.target.value)}
         />
         &nbsp;&nbsp;&nbsp;
         <RaisedButton
           label="Delete"
           primary
-          onMouseDown={() => this.deleteLocalHeadersFromParent(this.state.elementId)}
+          onMouseDown={() =>
+            this.deleteLocalHeadersFromParent(this.state.elementId)}
         />
       </div>
     );
@@ -44,4 +46,3 @@ OverloadedImageHeader.propTypes = {
 };
 
 export default OverloadedImageHeader;
-

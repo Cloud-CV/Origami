@@ -1,8 +1,9 @@
-import Inputcomponentmodel from '../data/inputcomponentmodel';
-import express from 'express';
+import Inputcomponentmodel from "../data/inputcomponentmodel";
+import express from "express";
 
 let router = express.Router();
-router.route('/:userid/:id?')
+router
+  .route("/:userid/:id?")
   .get(getInputComponentModel)
   .post(addInputComponentModel)
   .put(updateInputComponentModel)
@@ -32,7 +33,7 @@ function getInputComponentModel(req, res) {
 
 function addInputComponentModel(req, res) {
   const newModel = new Inputcomponentmodel(Object.assign({}, req.body));
-  newModel.save((err) => {
+  newModel.save(err => {
     if (err) {
       res.send(err);
     } else {
@@ -48,13 +49,18 @@ function updateInputComponentModel(req, res) {
     if (err) {
       res.send(err);
     } else {
-      Inputcomponentmodel.update({ id, userid }, req.body, { multi: false }, (err, updatedmodel) => {
-        if (err) {
-          res.send(err);
-        } else {
-          res.json(updatedmodel);
+      Inputcomponentmodel.update(
+        { id, userid },
+        req.body,
+        { multi: false },
+        (err, updatedmodel) => {
+          if (err) {
+            res.send(err);
+          } else {
+            res.json(updatedmodel);
+          }
         }
-      });
+      );
     }
   });
 }

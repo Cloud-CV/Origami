@@ -1,10 +1,9 @@
-import React, { PropTypes } from 'react';
-import { getPermalinkFromShortURL } from '../api/Nongh/getPermalink';
-import { browserHistory } from 'react-router';
+import React, { PropTypes } from "react";
+import { getPermalinkFromShortURL } from "../api/Nongh/getPermalink";
+import { browserHistory } from "react-router";
 
 function UrlShortener(props) {
-
-  getPermalinkFromShortURL(props.params.shorturl).then((data) => {
+  getPermalinkFromShortURL(props.params.shorturl).then(data => {
     browserHistory.push(JSON.parse(data)[0].fullRelativeURL);
   });
 

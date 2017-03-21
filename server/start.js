@@ -1,2 +1,2 @@
-require('babel-core/register');
-require('./distServer.js');
+require("babel-core/register");
+require("./distServer.js");

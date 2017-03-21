@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const permalinkSchema = mongoose.Schema({
   shortRelativeURL: String,
@@ -7,4 +7,4 @@ const permalinkSchema = mongoose.Schema({
   projectId: String
 });
 
-export default mongoose.model('permalink', permalinkSchema);
+export default mongoose.model("permalink", permalinkSchema);

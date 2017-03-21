@@ -1,11 +1,11 @@
-import React, { PropTypes } from 'react';
-import Dropzone from 'react-dropzone';
+import React, { PropTypes } from "react";
+import Dropzone from "react-dropzone";
 
-const singleInput = (props) => {
-
+const singleInput = props => {
   function updateImage(index, file) {
-    document.getElementById(`input-image-preview-${index}`).src =
-      window.URL.createObjectURL(file);
+    document.getElementById(
+      `input-image-preview-${index}`
+    ).src = window.URL.createObjectURL(file);
   }
 
   function onDrop(files) {
@@ -21,13 +21,18 @@ const singleInput = (props) => {
         </div>
       </div>
       <div className="centered row">
-        <div className="" style={{ height: '100%', cursor: 'pointer' }}>
-          <Dropzone onDrop={onDrop} multiple={false} style={{ height: 'inherit' }}>
+        <div className="" style={{ height: "100%", cursor: "pointer" }}>
+          <Dropzone
+            onDrop={onDrop}
+            multiple={false}
+            style={{ height: "inherit" }}
+          >
             <div className="ui card">
               <div className="ui fluid image">
-                <img className="ui fluid medium bordered image"
-                     src={require('../../assets/wireframe.png')}
-                     id={`input-image-preview-${props.index}`}
+                <img
+                  className="ui fluid medium bordered image"
+                  src={require("../../assets/wireframe.png")}
+                  id={`input-image-preview-${props.index}`}
                 />
               </div>
               <div className="content">

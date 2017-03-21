@@ -1,10 +1,9 @@
-import React from 'react';
-import { Link } from 'react-router';
-import DocsContent from '../../stateless/webappgettingstarted';
+import React from "react";
+import { Link } from "react-router";
+import DocsContent from "../../stateless/webappgettingstarted";
 
 function Create() {
-
-  document.body.scrollTop = document.documentElement.scrollTop = 0;
+  document.body.scrollTop = (document.documentElement.scrollTop = 0);
 
   return (
     <DocsContent>
@@ -24,13 +23,21 @@ function Create() {
 
       <ul className="list">
         <li>
-          After the initial setup, click on <b>Create a Demo</b> button on the homepage.
+          After the initial setup, click on
+          {" "}
+          <b>Create a Demo</b>
+          {" "}
+          button on the homepage.
           <ul className="list">
             <li>
               This takes you to github for login. Authorize the application there when asked.
             </li>
             <li>
-              Upon successful login, you are taken to the <Link to="/ngh/user">user profile</Link> that lists all his deployed apps.
+              Upon successful login, you are taken to the
+              {" "}
+              <Link to="/ngh/user">user profile</Link>
+              {" "}
+              that lists all his deployed apps.
             </li>
           </ul>
         </li>
@@ -38,7 +45,14 @@ function Create() {
         <br />
 
         <li>
-          Click on the <b>+</b> button here to create a new application. This takes you to the <Link to="/ngh/user/register">Registration page</Link>.
+          Click on the
+          {" "}
+          <b>+</b>
+          {" "}
+          button here to create a new application. This takes you to the
+          {" "}
+          <Link to="/ngh/user/register">Registration page</Link>
+          .
         </li>
       </ul>
 
@@ -69,7 +83,11 @@ function Create() {
           <h5 className="ui header">IP of service</h5>
           <ul className="list">
             <li>
-              This is the IP address of the system that <i>will</i> be running your machine learning code using CVFY-lib.
+              This is the IP address of the system that
+              {" "}
+              <i>will</i>
+              {" "}
+              be running your machine learning code using CVFY-lib.
               <br />
               For local deployments, it is <b>0.0.0.0</b>.
             </li>
@@ -106,7 +124,11 @@ function Create() {
           <h5 className="ui header">Show Terminal on demo page</h5>
           <ul className="list">
             <li>
-              This displays a <b>Terminal</b> style text box below the I/O components on the demo page.
+              This displays a
+              {" "}
+              <b>Terminal</b>
+              {" "}
+              style text box below the I/O components on the demo page.
               <br />
               Additional data can be sent to this terminal using CVFY-lib.
             </li>
@@ -114,8 +136,17 @@ function Create() {
         </li>
 
         <div className="ui yellow compact message">
-          If an error box says <b>"This webapp cannot be reached on it's public IP"</b>,
-          <br /> you need to check the <b>"Webapp is running locally"</b> checkbox.
+          If an error box says
+          {" "}
+          <b>"This webapp cannot be reached on it's public IP"</b>
+          ,
+          <br />
+          {" "}
+          you need to check the
+          {" "}
+          <b>"Webapp is running locally"</b>
+          {" "}
+          checkbox.
           <p>
             Checking this checkbox will make the webapp check local connectivity to itself.
           </p>
@@ -124,12 +155,20 @@ function Create() {
       </ul>
 
       <div className="ui success compact message">
-        If you see a <b>green "tick" symbol</b> next to the token, your app is configured correctly.
+        If you see a
+        {" "}
+        <b>green "tick" symbol</b>
+        {" "}
+        next to the token, your app is configured correctly.
         <br /> Copy this token for use in CVFY-lib and click on "Save" button.
       </div>
 
       <div className="ui error compact message">
-        If you see a <b>red "hand" symbol</b> next to the token, your app is configured incorrectly.
+        If you see a
+        {" "}
+        <b>red "hand" symbol</b>
+        {" "}
+        next to the token, your app is configured incorrectly.
         <br /> You may not be able to connect to your app.
       </div>
 
@@ -138,4 +177,3 @@ function Create() {
 }
 
 export default Create;
-

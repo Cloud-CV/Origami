@@ -1,11 +1,12 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes } from "react";
 
-const singleInput = (props) => {
+const singleInput = props => {
   return (
-    <input placeholder={props.label}
-           name={`input-text-${props.index}`}
-           type="text"
-           style={{ width: '25vw' }}
+    <input
+      placeholder={props.label}
+      name={`input-text-${props.index}`}
+      type="text"
+      style={{ width: "25vw" }}
     />
   );
 };

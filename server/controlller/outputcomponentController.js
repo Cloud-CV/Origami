@@ -1,8 +1,9 @@
-import Outputcomponentmodel from '../data/outputcomponentmodel';
-import express from 'express';
+import Outputcomponentmodel from "../data/outputcomponentmodel";
+import express from "express";
 
 let router = express.Router();
-router.route('/:userid/:id?')
+router
+  .route("/:userid/:id?")
   .get(getOutputComponentModel)
   .post(addOutputComponentModel)
   .put(updateOutputComponentModel)
@@ -32,7 +33,7 @@ function getOutputComponentModel(req, res) {
 
 function addOutputComponentModel(req, res) {
   const newModel = new Outputcomponentmodel(Object.assign({}, req.body));
-  newModel.save((err) => {
+  newModel.save(err => {
     if (err) {
       res.send(err);
     } else {
@@ -48,13 +49,18 @@ function updateOutputComponentModel(req, res) {
     if (err) {
       res.send(err);
     } else {
-      Outputcomponentmodel.update({ id, userid }, req.body, { multi: false }, (err, updatedmodel) => {
-        if (err) {
-          res.send(err);
-        } else {
-          res.json(updatedmodel);
+      Outputcomponentmodel.update(
+        { id, userid },
+        req.body,
+        { multi: false },
+        (err, updatedmodel) => {
+          if (err) {
+            res.send(err);
+          } else {
+            res.json(updatedmodel);
+          }
         }
-      });
+      );
     }
   });
 }

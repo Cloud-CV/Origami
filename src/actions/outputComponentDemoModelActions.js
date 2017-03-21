@@ -1,9 +1,12 @@
-import * as types from './actionTypes';
-import { getComponentDeployed } from '../api/CommonLocal/getComponentDeployed';
-import { addComponentDeployed } from '../api/CommonLocal/addComponentDeployed';
-import { modifyComponentDeployed } from '../api/CommonLocal/modifyComponentDeployed';
-import { deleteComponentDeployed } from '../api/CommonLocal/deleteComponentDeployed';
-
+import * as types from "./actionTypes";
+import { getComponentDeployed } from "../api/CommonLocal/getComponentDeployed";
+import { addComponentDeployed } from "../api/CommonLocal/addComponentDeployed";
+import {
+  modifyComponentDeployed
+} from "../api/CommonLocal/modifyComponentDeployed";
+import {
+  deleteComponentDeployed
+} from "../api/CommonLocal/deleteComponentDeployed";
 
 export function updateOutputComponentModelSuccess(model) {
   return { type: types.ADD_OUTPUT_COMPONENT_DEMO_MODEL_SUCCESS, model };
@@ -16,22 +19,28 @@ export function killOutputComponentModelSuccess() {
 export function updateOutputComponentModel(newModelData) {
   return function(dispatch) {
     return new Promise((resolve, reject) => {
-      getComponentDeployed(newModelData.userid, newModelData.id, 'output').then((data) => {
+      getComponentDeployed(
+        newModelData.userid,
+        newModelData.id,
+        "output"
+      ).then(data => {
         if (JSON.parse(data).length > 0) {
-          modifyComponentDeployed(newModelData.userid, newModelData, 'output').then(() => {
-            dispatch(updateOutputComponentModelSuccess(newModelData));
-            resolve('dispatched output component model update call');
-          })
-            .catch((err) => {
-              reject('cannot dispatch output component model update call');
+          modifyComponentDeployed(newModelData.userid, newModelData, "output")
+            .then(() => {
+              dispatch(updateOutputComponentModelSuccess(newModelData));
+              resolve("dispatched output component model update call");
+            })
+            .catch(err => {
+              reject("cannot dispatch output component model update call");
             });
         } else {
-          addComponentDeployed(newModelData.userid, newModelData, 'output').then(() => {
-            dispatch(updateOutputComponentModelSuccess(newModelData));
-            resolve('dispatched output component model update call');
-          })
-            .catch((err) => {
-              reject('cannot dispatch output component model update call');
+          addComponentDeployed(newModelData.userid, newModelData, "output")
+            .then(() => {
+              dispatch(updateOutputComponentModelSuccess(newModelData));
+              resolve("dispatched output component model update call");
+            })
+            .catch(err => {
+              reject("cannot dispatch output component model update call");
             });
         }
       });
@@ -42,7 +51,7 @@ export function updateOutputComponentModel(newModelData) {
 export function killOutputComponentModel(userid, repoId) {
   return function(dispatch) {
     return new Promise((reject, resolve) => {
-      deleteComponentDeployed(userid, repoId, 'output').then(() => {
+      deleteComponentDeployed(userid, repoId, "output").then(() => {
         dispatch(killOutputComponentModelSuccess());
       });
     });

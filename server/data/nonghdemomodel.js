@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const nonghDemoSchema = mongoose.Schema({
-  name:  String,
+  name: String,
   id: {
     type: String,
     unique: true
@@ -17,5 +17,4 @@ const nonghDemoSchema = mongoose.Schema({
   status: String
 });
 
-export default mongoose.model('nonghDemo', nonghDemoSchema);
-
+export default mongoose.model("nonghDemo", nonghDemoSchema);

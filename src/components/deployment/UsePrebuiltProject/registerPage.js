@@ -1,24 +1,31 @@
-import React, { PropTypes } from 'react';
-import { Link, browserHistory } from 'react-router';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import CircularProgress from 'material-ui/CircularProgress';
-import * as nonghDemoModelActions from '../../../actions/nonghDemoModelActions';
-import rangeCheck from 'range_check';
-import { getDeployed } from '../../../api/Nongh/getDeployed';
-import { getComponentDeployed } from '../../../api/CommonLocal/getComponentDeployed';
-import { getSinglePermalink, getAllPermalink, addPermalink, modifyPermalink } from '../../../api/Nongh/permalink';
-import { getWebAppStatus } from '../../../api/Generic/getWebAppStatus';
-import RaisedButton from 'material-ui/RaisedButton';
-import StopNow from 'material-ui/svg-icons/action/pan-tool';
-import Dropzone from 'react-dropzone';
-import Checkbox from 'material-ui/Checkbox';
-import GoAhead from 'material-ui/svg-icons/action/check-circle';
-import { red500, green500, grey900 } from 'material-ui/styles/colors';
-import TextField from 'material-ui/TextField';
-import request from 'superagent';
-import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
-import toastr from 'toastr';
+import React, { PropTypes } from "react";
+import { Link, browserHistory } from "react-router";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import CircularProgress from "material-ui/CircularProgress";
+import * as nonghDemoModelActions from "../../../actions/nonghDemoModelActions";
+import rangeCheck from "range_check";
+import { getDeployed } from "../../../api/Nongh/getDeployed";
+import {
+  getComponentDeployed
+} from "../../../api/CommonLocal/getComponentDeployed";
+import {
+  getSinglePermalink,
+  getAllPermalink,
+  addPermalink,
+  modifyPermalink
+} from "../../../api/Nongh/permalink";
+import { getWebAppStatus } from "../../../api/Generic/getWebAppStatus";
+import RaisedButton from "material-ui/RaisedButton";
+import StopNow from "material-ui/svg-icons/action/pan-tool";
+import Dropzone from "react-dropzone";
+import Checkbox from "material-ui/Checkbox";
+import GoAhead from "material-ui/svg-icons/action/check-circle";
+import { red500, green500, grey900 } from "material-ui/styles/colors";
+import TextField from "material-ui/TextField";
+import request from "superagent";
+import { Step, Stepper, StepLabel } from "material-ui/Stepper";
+import toastr from "toastr";
 
 toastr.options.closeButton = true;
 
@@ -26,27 +33,27 @@ class RegisterPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      showOutput: 'hidden',
+      showOutput: "hidden",
       id: Math.floor(Math.random() * 10000000).toString(),
-      userid: parseInt(localStorage.getItem('userid'), 10),
+      userid: parseInt(localStorage.getItem("userid"), 10),
       currentProject: {},
       nonghDemoModel: {},
-      name: '',
-      description: '',
-      nameErrorText: '',
-      addressErrorText: '',
-      portErrorText: '',
-      address: '',
-      port: '',
-      currentPort: '',
-      webappaddress: '',
-      tempwebaddress: '',
-      footerMessage: '',
-      coverImage: '',
+      name: "",
+      description: "",
+      nameErrorText: "",
+      addressErrorText: "",
+      portErrorText: "",
+      address: "",
+      port: "",
+      currentPort: "",
+      webappaddress: "",
+      tempwebaddress: "",
+      footerMessage: "",
+      coverImage: "",
       deploymentBoxSelectedStatus: false,
-      status: '',
-      webappUnreachableErrorText: '',
-      webappLocalUnreachableErrorText: '',
+      status: "",
+      webappUnreachableErrorText: "",
+      webappLocalUnreachableErrorText: "",
       showLocalDeploymentCheckBox: false,
       showTerminal: false,
       returning: false,
@@ -57,7 +64,9 @@ class RegisterPage extends React.Component {
     this.socket = this.context.socket;
     this.toggleShow = this.toggleShow.bind(this);
     this.updateDemoModelData = this.updateDemoModelData.bind(this);
-    this.onLocalDeploymentCheckBoxCheck = this.onLocalDeploymentCheckBoxCheck.bind(this);
+    this.onLocalDeploymentCheckBoxCheck = this.onLocalDeploymentCheckBoxCheck.bind(
+      this
+    );
     this.updateDescription = this.updateDescription.bind(this);
     this.updateAddress = this.updateAddress.bind(this);
     this.updateName = this.updateName.bind(this);
@@ -71,33 +80,50 @@ class RegisterPage extends React.Component {
   }
 
   componentWillMount() {
-    getDeployed(this.state.userid, this.props.params.repoId).then((singleRepo) => {
-      if (this.props.params.repoId) {
-        if (JSON.parse(singleRepo).length !== 0) {
-          this.setState({ returning: true });
-          this.setState({ tempwebaddress: JSON.parse(singleRepo)[0].token.split(':')[1] });
-          if (JSON.parse(singleRepo)[0].token.split(':')[1] === '0.0.0.0') {
-            this.setState({ showLocalDeploymentCheckBox: true });
-          }
-          this.setState({ id: JSON.parse(singleRepo)[0].id });
-          this.setState({ name: JSON.parse(singleRepo)[0].name });
-          this.setState({ status: JSON.parse(singleRepo)[0].status });
-          this.setState({ address: JSON.parse(singleRepo)[0].token.split(':')[1] });
-          this.setState({ tempwebaddress: JSON.parse(singleRepo)[0].token.split(':')[5] });
-          this.setState({ port: JSON.parse(singleRepo)[0].token.split(':')[4] });
-          this.setState({ description: JSON.parse(singleRepo)[0].description });
-          this.setState({ footerMessage: JSON.parse(singleRepo)[0].footerMessage });
-          this.setState({ coverImage: JSON.parse(singleRepo)[0].coverImage });
-          this.setState({ showTerminal: JSON.parse(singleRepo)[0].terminal });
-          if (JSON.parse(singleRepo)[0].token.split(':')[5] === '0.0.0.0') {
-            this.setState({ deploymentBoxSelectedStatus: true });
+    getDeployed(this.state.userid, this.props.params.repoId)
+      .then(singleRepo => {
+        if (this.props.params.repoId) {
+          if (JSON.parse(singleRepo).length !== 0) {
+            this.setState({ returning: true });
+            this.setState({
+              tempwebaddress: JSON.parse(singleRepo)[0].token.split(":")[1]
+            });
+            if (JSON.parse(singleRepo)[0].token.split(":")[1] === "0.0.0.0") {
+              this.setState({ showLocalDeploymentCheckBox: true });
+            }
+            this.setState({ id: JSON.parse(singleRepo)[0].id });
+            this.setState({ name: JSON.parse(singleRepo)[0].name });
+            this.setState({ status: JSON.parse(singleRepo)[0].status });
+            this.setState({
+              address: JSON.parse(singleRepo)[0].token.split(":")[1]
+            });
+            this.setState({
+              tempwebaddress: JSON.parse(singleRepo)[0].token.split(":")[5]
+            });
+            this.setState({
+              port: JSON.parse(singleRepo)[0].token.split(":")[4]
+            });
+            this.setState({
+              description: JSON.parse(singleRepo)[0].description
+            });
+            this.setState({
+              footerMessage: JSON.parse(singleRepo)[0].footerMessage
+            });
+            this.setState({ coverImage: JSON.parse(singleRepo)[0].coverImage });
+            this.setState({ showTerminal: JSON.parse(singleRepo)[0].terminal });
+            if (JSON.parse(singleRepo)[0].token.split(":")[5] === "0.0.0.0") {
+              this.setState({ deploymentBoxSelectedStatus: true });
+            }
           }
         }
-      }
-    })
+      })
       .then(() => {
         if (this.props.params.repoId) {
-          getComponentDeployed(this.state.userid, this.props.params.repoId, 'input').then((inputComponentSeedData) => {
+          getComponentDeployed(
+            this.state.userid,
+            this.props.params.repoId,
+            "input"
+          ).then(inputComponentSeedData => {
             if (JSON.parse(inputComponentSeedData).length !== 0) {
               this.setState({ inputComponentStepperHighlight: true });
             }
@@ -106,7 +132,11 @@ class RegisterPage extends React.Component {
       })
       .then(() => {
         if (this.props.params.repoId) {
-          getComponentDeployed(this.state.userid, this.props.params.repoId, 'output').then((outputComponentSeedData) => {
+          getComponentDeployed(
+            this.state.userid,
+            this.props.params.repoId,
+            "output"
+          ).then(outputComponentSeedData => {
             if (JSON.parse(outputComponentSeedData).length !== 0) {
               this.setState({ outputComponentStepperHighlight: true });
             }
@@ -115,34 +145,36 @@ class RegisterPage extends React.Component {
       })
       .then(() => {
         if (this.props.params.repoId) {
-          getSinglePermalink(this.state.userid, this.props.params.repoId)
-            .then((data) => {
-              if (JSON.parse(data).length !== 0) {
-                this.setState({ permalinkObject: JSON.parse(data)[0] });
-              }
-            });
+          getSinglePermalink(
+            this.state.userid,
+            this.props.params.repoId
+          ).then(data => {
+            if (JSON.parse(data).length !== 0) {
+              this.setState({ permalinkObject: JSON.parse(data)[0] });
+            }
+          });
         }
-        this.socket.emit('fetchcurrentport');
-        this.socket.emit('getpublicipaddress');
-        this.socket.on('fetchedcurrentport', (port) => {
+        this.socket.emit("fetchcurrentport");
+        this.socket.emit("getpublicipaddress");
+        this.socket.on("fetchedcurrentport", port => {
           this.setState({ currentPort: port });
         });
         this.setState({ showLocalDeploymentCheckBox: true });
-        this.socket.on('gotpublicip', (ip) => {
+        this.socket.on("gotpublicip", ip => {
           this.setState({ webappaddress: ip }, () => {
             if (this.state.tempwebaddress.length === 0) {
               this.setState({ tempwebaddress: this.state.webappaddress });
             }
           });
-          getWebAppStatus(ip).then(() => {
-          })
-            .catch((err) => {
-              this.setState({ webappUnreachableErrorText: 'This WebApp cannot be reached on it\'s public IP' });
+          getWebAppStatus(ip).then(() => {}).catch(err => {
+            this.setState({
+              webappUnreachableErrorText: "This WebApp cannot be reached on it's public IP"
             });
+          });
           this.toggleShow();
         });
-        this.socket.on('erroringettingpublicip', (err) => {
-          toastr.error('Error in getting public IP :(');
+        this.socket.on("erroringettingpublicip", err => {
+          toastr.error("Error in getting public IP :(");
         });
       });
   }
@@ -155,35 +187,48 @@ class RegisterPage extends React.Component {
 
   onLocalDeploymentCheckBoxCheck(e) {
     if (!this.state.deploymentBoxSelectedStatus) {
-      getWebAppStatus(window.location.hostname).then(() => {
-      })
-        .catch((err) => {
-          this.setState({ webappLocalUnreachableErrorText: `This WebApp cannot be reached on ${window.location.host}` });
+      getWebAppStatus(window.location.hostname).then(() => {}).catch(err => {
+        this.setState({
+          webappLocalUnreachableErrorText: `This WebApp cannot be reached on ${window.location.host}`
         });
+      });
     }
     let selectionPool = [window.location.host, this.state.webappaddress];
-    this.setState({ tempwebaddress: selectionPool[this.state.deploymentBoxSelectedStatus ? 1 : 0] });
-    this.setState({ deploymentBoxSelectedStatus: !this.state.deploymentBoxSelectedStatus });
+    this.setState({
+      tempwebaddress: selectionPool[
+        this.state.deploymentBoxSelectedStatus ? 1 : 0
+      ]
+    });
+    this.setState({
+      deploymentBoxSelectedStatus: !this.state.deploymentBoxSelectedStatus
+    });
   }
 
   updateDemoModelData() {
     if (!this.validateIP()) {
-      this.setState({ addressErrorText: 'Invalid IP address' });
+      this.setState({ addressErrorText: "Invalid IP address" });
     } else {
-      this.setState({ addressErrorText: '' });
+      this.setState({ addressErrorText: "" });
     }
     if (!this.validatePort(this.state.port)) {
-      this.setState({ portErrorText: 'Invalid port number' });
+      this.setState({ portErrorText: "Invalid port number" });
     } else {
-      this.setState({ portErrorText: '' });
+      this.setState({ portErrorText: "" });
     }
-    if (this.state.name.length === 0 || /[~`!#$%\^&*+=\-\[\]\\';,/{}|":<>\?]/g.test(this.state.name)) {
-      this.setState({ nameErrorText: 'Invalid Project Name' });
+    if (
+      this.state.name.length === 0 ||
+      /[~`!#$%\^&*+=\-\[\]\\';,/{}|":<>\?]/g.test(this.state.name)
+    ) {
+      this.setState({ nameErrorText: "Invalid Project Name" });
     } else {
-      this.setState({ nameErrorText: '' });
+      this.setState({ nameErrorText: "" });
     }
-    if (this.state.name.length > 0 && ! /[~`!#$%\^&*+=\-\[\]\\';,/{}|":<>\?]/g.test(this.state.name)
-      && this.validateIP() && this.validatePort(this.state.port)) {
+    if (
+      this.state.name.length > 0 &&
+      !/[~`!#$%\^&*+=\-\[\]\\';,/{}|":<>\?]/g.test(this.state.name) &&
+      this.validateIP() &&
+      this.validatePort(this.state.port)
+    ) {
       let dataToPut = {
         name: this.state.name,
         id: this.state.id,
@@ -195,51 +240,63 @@ class RegisterPage extends React.Component {
         terminal: this.state.showTerminal,
         timestamp: Date.now(),
         token: `nongh:${this.state.address}:${this.state.id}:${this.state.currentPort}:${this.state.port}:${this.state.tempwebaddress}`,
-        status: this.state.status || 'input'
+        status: this.state.status || "input"
       };
       this.props.nonghModelActions.addToDBNonGHDemoModel(dataToPut).then(() => {
-        this.props.nonghModelActions.updateNonGHDemoModel(dataToPut).then(() => {
-
-          if (Object.keys(this.state.permalinkObject).length > 0) {
-            const permaLinkDataToPut = Object.assign({}, this.state.permalinkObject, {
-              fullRelativeURL: `/ngh/user/${dataToPut.userid}/${dataToPut.name}/${dataToPut.id}/demo`
-            });
-
-            modifyPermalink(permaLinkDataToPut)
-              .then(() => {
-                if (this.props.params.type === 'modify') {
-                  browserHistory.push('/ngh/user');
-                } else {
-                  browserHistory.push(`/ngh/user/${this.state.name}/${this.state.id}/inputcomponent`);
+        this.props.nonghModelActions
+          .updateNonGHDemoModel(dataToPut)
+          .then(() => {
+            if (Object.keys(this.state.permalinkObject).length > 0) {
+              const permaLinkDataToPut = Object.assign(
+                {},
+                this.state.permalinkObject,
+                {
+                  fullRelativeURL: `/ngh/user/${dataToPut.userid}/${dataToPut.name}/${dataToPut.id}/demo`
                 }
-              })
-              .catch((err) => {
-                toastr.error(`Error occured in creating shortened URL: ${permaLinkDataToPut}`);
-              });
+              );
 
-          } else {
+              modifyPermalink(permaLinkDataToPut)
+                .then(() => {
+                  if (this.props.params.type === "modify") {
+                    browserHistory.push("/ngh/user");
+                  } else {
+                    browserHistory.push(
+                      `/ngh/user/${this.state.name}/${this.state.id}/inputcomponent`
+                    );
+                  }
+                })
+                .catch(err => {
+                  toastr.error(
+                    `Error occured in creating shortened URL: ${permaLinkDataToPut}`
+                  );
+                });
+            } else {
+              const permaLinkDataToPut = {
+                shortRelativeURL: `/p/${Math.random()
+                  .toString(36)
+                  .substring(2, 11)}`,
+                fullRelativeURL: `/ngh/user/${dataToPut.userid}/${dataToPut.name}/${dataToPut.id}/demo`,
+                userId: dataToPut.userid,
+                projectId: dataToPut.id
+              };
 
-            const permaLinkDataToPut = {
-              shortRelativeURL: `/p/${Math.random().toString(36)
-                .substring(2, 11)}`,
-              fullRelativeURL: `/ngh/user/${dataToPut.userid}/${dataToPut.name}/${dataToPut.id}/demo`,
-              userId: dataToPut.userid,
-              projectId: dataToPut.id
-            };
-
-            addPermalink(permaLinkDataToPut)
-              .then(() => {
-                if (this.props.params.type === 'modify') {
-                  browserHistory.push('/ngh/user');
-                } else {
-                  browserHistory.push(`/ngh/user/${this.state.name}/${this.state.id}/inputcomponent`);
-                }
-              })
-              .catch((err) => {
-                toastr.error(`Error occured in creating shortened URL: ${permaLinkDataToPut}`);
-              });
-          }
-        });
+              addPermalink(permaLinkDataToPut)
+                .then(() => {
+                  if (this.props.params.type === "modify") {
+                    browserHistory.push("/ngh/user");
+                  } else {
+                    browserHistory.push(
+                      `/ngh/user/${this.state.name}/${this.state.id}/inputcomponent`
+                    );
+                  }
+                })
+                .catch(err => {
+                  toastr.error(
+                    `Error occured in creating shortened URL: ${permaLinkDataToPut}`
+                  );
+                });
+            }
+          });
       });
     }
   }
@@ -266,10 +323,11 @@ class RegisterPage extends React.Component {
 
   onDrop(files) {
     if (files[0].size > 5242880) {
-      alert('File size should be < 5MB');
+      alert("File size should be < 5MB");
     } else {
-      document.getElementById('input-image-preview').src =
-        window.URL.createObjectURL(files[0]);
+      document.getElementById(
+        "input-image-preview"
+      ).src = window.URL.createObjectURL(files[0]);
       const reader = new FileReader();
       reader.onload = () => {
         const dataURI = reader.result;
@@ -284,10 +342,16 @@ class RegisterPage extends React.Component {
   }
 
   validateTempwebaddress() {
-    if (this.state.webappUnreachableErrorText.length > 0 && this.state.tempwebaddress === this.state.webappaddress) {
+    if (
+      this.state.webappUnreachableErrorText.length > 0 &&
+      this.state.tempwebaddress === this.state.webappaddress
+    ) {
       return false;
     }
-    if (this.state.webappLocalUnreachableErrorText.length > 0 && this.state.tempwebaddress === '0.0.0.0') {
+    if (
+      this.state.webappLocalUnreachableErrorText.length > 0 &&
+      this.state.tempwebaddress === "0.0.0.0"
+    ) {
       return false;
     }
 
@@ -295,7 +359,7 @@ class RegisterPage extends React.Component {
   }
 
   validateIP() {
-    if (this.state.address.split('.').length <= 2) {
+    if (this.state.address.split(".").length <= 2) {
       return false;
     } else {
       return rangeCheck.validIp(this.state.address);
@@ -303,7 +367,6 @@ class RegisterPage extends React.Component {
   }
 
   validatePort(port) {
-
     function isNumeric(value) {
       return /^\d+$/.test(value);
     }
@@ -317,26 +380,39 @@ class RegisterPage extends React.Component {
   }
 
   toggleShow() {
-    this.setState({ showOutput: this.state.showOutput === 'visible' ? 'hidden' : 'visible' });
+    this.setState({
+      showOutput: this.state.showOutput === "visible" ? "hidden" : "visible"
+    });
   }
 
   render() {
-
     let tokenClassName = this.validateTempwebaddress() &&
-    this.validateIP() && this.validatePort(this.state.port) ? 'ui positive message' : 'ui negative message';
+      this.validateIP() &&
+      this.validatePort(this.state.port)
+      ? "ui positive message"
+      : "ui negative message";
     return (
       <div className="ui relaxed stackable grid fluid">
 
         <div className="ui relaxed stackable grid fluid container">
-          {this.state.showOutput === 'hidden' &&
-          <div className="centered row" style={{ marginTop: '30vh' }}>
-            <CircularProgress size={89.25} />
-          </div>}
+          {this.state.showOutput === "hidden" &&
+            <div className="centered row" style={{ marginTop: "30vh" }}>
+              <CircularProgress size={89.25} />
+            </div>}
 
-          <div style={{ visibility: this.state.showOutput, width: '100%', maxWidth: 700, margin: 'auto' }}>
+          <div
+            style={{
+              visibility: this.state.showOutput,
+              width: "100%",
+              maxWidth: 700,
+              margin: "auto"
+            }}
+          >
             <Stepper linear={false}>
               <Step active>
-                <StepLabel><b style={{ fontSize: 'large' }}>Register Application</b></StepLabel>
+                <StepLabel>
+                  <b style={{ fontSize: "large" }}>Register Application</b>
+                </StepLabel>
               </Step>
               <Step active={this.state.inputComponentStepperHighlight}>
                 <StepLabel>Select Input Component</StepLabel>
@@ -347,12 +423,15 @@ class RegisterPage extends React.Component {
             </Stepper>
           </div>
 
-          <div className="sixteen wide column stretched row" style={{ visibility: this.state.showOutput }}>
-            <div className="row" >
+          <div
+            className="sixteen wide column stretched row"
+            style={{ visibility: this.state.showOutput }}
+          >
+            <div className="row">
               <h1>Register Application</h1>
             </div>
 
-            <div className="ui horizontal divider row" >
+            <div className="ui horizontal divider row">
               <span><hr /></span>
             </div>
 
@@ -374,7 +453,8 @@ class RegisterPage extends React.Component {
                       floatingLabelText="IP of service (no http://)"
                       value={this.state.address}
                       onChange={this.updateAddress}
-                    /><br />
+                    />
+                    <br />
                     <TextField
                       hintText="Description"
                       floatingLabelText="Description"
@@ -392,21 +472,35 @@ class RegisterPage extends React.Component {
                       multiLine
                       rows={2}
                       rowsMax={8}
-                    /><br />
+                    />
+                    <br />
                     <TextField
                       hintText="8000"
                       errorText={this.state.portErrorText}
                       floatingLabelText="Port for service"
                       value={this.state.port}
                       onChange={this.updatePort}
-                    /><br /><br />
-                    <div className="" style={{ cursor: 'pointer', maxWidth: '50%' }}>
-                      <Dropzone onDrop={this.onDrop} multiple={false} style={{ height: 'inherit' }}>
+                    />
+                    <br />
+                    <br />
+                    <div
+                      className=""
+                      style={{ cursor: "pointer", maxWidth: "50%" }}
+                    >
+                      <Dropzone
+                        onDrop={this.onDrop}
+                        multiple={false}
+                        style={{ height: "inherit" }}
+                      >
                         <div className="ui card">
                           <div className="ui fluid image">
-                            <img className="ui fluid medium bordered image"
-                                 src={this.state.coverImage || require('../../assets/wireframe.png')}
-                                 id={'input-image-preview'}
+                            <img
+                              className="ui fluid medium bordered image"
+                              src={
+                                this.state.coverImage ||
+                                  require("../../assets/wireframe.png")
+                              }
+                              id={"input-image-preview"}
                             />
                           </div>
                           <div className="content">
@@ -415,42 +509,48 @@ class RegisterPage extends React.Component {
                         </div>
                       </Dropzone>
                     </div>
-                    <div className="" style={{ maxWidth: '50%' }}>
+                    <div className="" style={{ maxWidth: "50%" }}>
                       <Checkbox
                         checked={this.state.showTerminal}
                         onCheck={this.toggleTerminal}
                         label="Show Terminal on demo page"
-                      /><br />
+                      />
+                      <br />
                     </div>
                     {this.state.webappUnreachableErrorText.length > 0 &&
-                    <div className="ui raised compact centered red segment" style={{ color: 'red' }}>
-                      {this.state.webappUnreachableErrorText}<br />
-                    </div>
-                    }
+                      <div
+                        className="ui raised compact centered red segment"
+                        style={{ color: "red" }}
+                      >
+                        {this.state.webappUnreachableErrorText}<br />
+                      </div>}
                     {this.state.webappLocalUnreachableErrorText.length > 0 &&
-                    <div className="ui raised compact centered red segment" style={{ color: 'red' }}>
-                      {this.state.webappLocalUnreachableErrorText}<br />
-                    </div>
-                    }
+                      <div
+                        className="ui raised compact centered red segment"
+                        style={{ color: "red" }}
+                      >
+                        {this.state.webappLocalUnreachableErrorText}<br />
+                      </div>}
                     {this.state.showLocalDeploymentCheckBox &&
-                    <div className="" style={{ maxWidth: '45%' }}>
-                      <Checkbox
-                        checked={this.state.deploymentBoxSelectedStatus}
-                        disabled={this.state.returning}
-                        onCheck={this.onLocalDeploymentCheckBoxCheck}
-                        label="WebApp is running locally"
-                      />
-                    </div>
-                    }
+                      <div className="" style={{ maxWidth: "45%" }}>
+                        <Checkbox
+                          checked={this.state.deploymentBoxSelectedStatus}
+                          disabled={this.state.returning}
+                          onCheck={this.onLocalDeploymentCheckBoxCheck}
+                          label="WebApp is running locally"
+                        />
+                      </div>}
                     <br />
-                    <RaisedButton label="Save"
-                                  primary
-                                  onClick={this.updateDemoModelData}
+                    <RaisedButton
+                      label="Save"
+                      primary
+                      onClick={this.updateDemoModelData}
                     />
                   </div>
 
                   <div className="ui vertical internal divider">
-                    <hr /></div>
+                    <hr />
+                  </div>
                   <div className="column">
 
                     <div className="ui raise fluid very padded container text">
@@ -458,22 +558,31 @@ class RegisterPage extends React.Component {
                       <div className="ui relaxed grid container segment">
                         <div className="two column row">
                           <div className="thirteen wide column">
-                            <div className={tokenClassName} style={{ wordWrap: 'break-word' }}>
+                            <div
+                              className={tokenClassName}
+                              style={{ wordWrap: "break-word" }}
+                            >
                               <u>Token:</u>
                               <b>
-                                <p style={{ fontSize: '90%' }}>
+                                <p style={{ fontSize: "90%" }}>
                                   {`nongh:${this.state.address}:${this.state.id}:${this.state.currentPort}:` +
-                                  `${this.state.port}:${this.state.tempwebaddress}`}</p>
+                                    `${this.state.port}:${this.state.tempwebaddress}`}
+                                </p>
                               </b>
                             </div>
                           </div>
                           <div className="three wide column">
-                            {this.validateTempwebaddress() && this.validateIP() &&
-                            this.validatePort(this.state.port) ?
-                              <GoAhead style={{ height: '', width: '' }} color={green500} />
-                              :
-                              <StopNow style={{ height: '', width: '' }} color={red500} />
-                            }
+                            {this.validateTempwebaddress() &&
+                              this.validateIP() &&
+                              this.validatePort(this.state.port)
+                              ? <GoAhead
+                                  style={{ height: "", width: "" }}
+                                  color={green500}
+                                />
+                              : <StopNow
+                                  style={{ height: "", width: "" }}
+                                  color={red500}
+                                />}
                           </div>
                         </div>
                         <div className="one column row">
@@ -483,21 +592,36 @@ class RegisterPage extends React.Component {
                                 Steps
                               </div>
                               <ul className="list">
-                                <li>"IP of service" is the public IP address of the machine where the
-                                  ML evaluation code is running (or will be run) with the help of cvfy lib.</li>
-                                <li>"Port of service" is the port of the above mentioned service.</li>
-                                <li>Enter the application details and copy the Token.</li>
-                                <li>Use this Token to do registration with the cvfy lib.
-                                  See<Link to="/gettingstarted">Getting Started</Link>.
+                                <li>
+                                  "IP of service" is the public IP address of the machine where the
+                                  ML evaluation code is running (or will be run) with the help of cvfy lib.
+                                </li>
+                                <li>
+                                  "Port of service" is the port of the above mentioned service.
+                                </li>
+                                <li>
+                                  Enter the application details and copy the Token.
+                                </li>
+                                <li>
+                                  Use this Token to do registration with the cvfy lib.
+                                  See
+                                  <Link to="/gettingstarted">
+                                    Getting Started
+                                  </Link>
+                                  .
                                 </li>
                               </ul>
                             </div>
-                            {(this.state.webappUnreachableErrorText.length > 0 || this.state.webappLocalUnreachableErrorText.length > 0) &&
-                            <div className="ui orange message">
-                              <p>If this is a local deployment (your machine is not reachable on it's public IP),
-                                you must select the "Webapp is running locally" option.</p>
-                            </div>
-                            }
+                            {(this.state.webappUnreachableErrorText.length >
+                              0 ||
+                              this.state.webappLocalUnreachableErrorText.length >
+                                0) &&
+                              <div className="ui orange message">
+                                <p>
+                                  If this is a local deployment (your machine is not reachable on it's public IP),
+                                  you must select the "Webapp is running locally" option.
+                                </p>
+                              </div>}
                           </div>
                         </div>
                       </div>
@@ -511,13 +635,19 @@ class RegisterPage extends React.Component {
           </div>
         </div>
 
-
-        <div className="ui fluid centered row"
-             style={{ minHeight: '10vh', minWidth: '100vw' }}
+        <div
+          className="ui fluid centered row"
+          style={{ minHeight: "10vh", minWidth: "100vw" }}
         />
 
-        <div className="ui fluid centered row"
-             style={{ minHeight: '5vh', backgroundColor: grey900, color: 'white', minWidth: '100vw' }}
+        <div
+          className="ui fluid centered row"
+          style={{
+            minHeight: "5vh",
+            backgroundColor: grey900,
+            color: "white",
+            minWidth: "100vw"
+          }}
         >
           © CloudCV, 2016
         </div>

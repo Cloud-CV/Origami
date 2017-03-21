@@ -1,8 +1,7 @@
-import React, { PropTypes } from 'react';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import PieChartOutput from './PieChartOutput';
-
+import React, { PropTypes } from "react";
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
+import PieChartOutput from "./PieChartOutput";
 
 class PieChartOutputPreview extends React.Component {
   constructor(props, context) {
@@ -14,7 +13,6 @@ class PieChartOutputPreview extends React.Component {
     this.hidePreviewDialog = props.functions.hidePreviewDialog;
     this.handleOk = this.handleOk.bind(this);
   }
-
 
   handleOk() {
     this.hidePreviewDialog();
@@ -30,29 +28,27 @@ class PieChartOutputPreview extends React.Component {
         onTouchTap={this.handleOk}
       />
     ];
-    return (<Dialog
-      title="Preview Pie Chart Output Component"
-      actions={actions}
-      modal
-      autoScrollBodyContent
-      open={this.state.open}
-            >
-      <PieChartOutput
-        headers={this.state.headers}
-        calling_context="demo"
-        data={
-          new Array(this.state.headers.length).fill(
-            [
-              { x: 1, y: 2 },
-              { x: 2, y: 5 },
-              { x: 3, y: 8 },
-              { x: 4, y: 9 },
-              { x: 5, y: 13 }
-            ]
-          )
-        }
-      />
-    </Dialog>);
+    return (
+      <Dialog
+        title="Preview Pie Chart Output Component"
+        actions={actions}
+        modal
+        autoScrollBodyContent
+        open={this.state.open}
+      >
+        <PieChartOutput
+          headers={this.state.headers}
+          calling_context="demo"
+          data={new Array(this.state.headers.length).fill([
+            { x: 1, y: 2 },
+            { x: 2, y: 5 },
+            { x: 3, y: 8 },
+            { x: 4, y: 9 },
+            { x: 5, y: 13 }
+          ])}
+        />
+      </Dialog>
+    );
   }
 }
 

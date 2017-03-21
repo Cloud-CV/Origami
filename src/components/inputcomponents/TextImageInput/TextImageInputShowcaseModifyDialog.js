@@ -1,22 +1,26 @@
-import React, { PropTypes } from 'react';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-import OverloadedTextField from './OverloadedTextField';
+import React, { PropTypes } from "react";
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
+import RaisedButton from "material-ui/RaisedButton";
+import TextField from "material-ui/TextField";
+import OverloadedTextField from "./OverloadedTextField";
 
 class TextImageInputShowcaseModifyDialog extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      textFields: this.makeTextFieldsFromParentLabels(props.functions.getLabels()),
+      textFields: this.makeTextFieldsFromParentLabels(
+        props.functions.getLabels()
+      ),
       labels: props.functions.getLabels(),
       open: true
     };
     this.updateLabelsInParent = props.functions.updateLabels;
     this.getLabelsFromParent = props.functions.getLabels;
     this.hideModifyDialog = props.functions.hideModifyDialog;
-    this.makeTextFieldsFromParentLabels = this.makeTextFieldsFromParentLabels.bind(this);
+    this.makeTextFieldsFromParentLabels = this.makeTextFieldsFromParentLabels.bind(
+      this
+    );
     this.addLocalLabels = this.addLocalLabels.bind(this);
     this.deleteLocalLabels = this.deleteLocalLabels.bind(this);
     this.addMoreTextFields = this.addMoreTextFields.bind(this);
@@ -28,14 +32,14 @@ class TextImageInputShowcaseModifyDialog extends React.Component {
   makeTextFieldsFromParentLabels(allLabels) {
     let tempText = [];
     allLabels.map((label, index) => {
-      let currentIndex = allLabels.findIndex((x) => x === label);
+      let currentIndex = allLabels.findIndex(x => x === label);
       tempText[currentIndex] = (
         <div>
           <TextField
             key={Math.random()}
             hintText="Label"
             defaultValue={label}
-            onChange={(e) => this.addLocalLabels(currentIndex, e.target.value)}
+            onChange={e => this.addLocalLabels(currentIndex, e.target.value)}
           />
           &nbsp;&nbsp;&nbsp;
           <RaisedButton
@@ -115,16 +119,19 @@ class TextImageInputShowcaseModifyDialog extends React.Component {
         autoScrollBodyContent
         open={this.state.open}
       >
-        {this.state.textFields.map((field) =>
-          [field, <br key={Math.random()} />]
-        )}
-        <RaisedButton key={Math.random()}
-                      label="Add Field"
-                      primary
-                      onClick={() => this.addMoreTextFields()}
-                      style={{ marginTop: '2%' }}
+        {this.state.textFields.map(field => [
+          field,
+          <br key={Math.random()} />
+        ])}
+        <RaisedButton
+          key={Math.random()}
+          label="Add Field"
+          primary
+          onClick={() => this.addMoreTextFields()}
+          style={{ marginTop: "2%" }}
         />
-      </Dialog>);
+      </Dialog>
+    );
   }
 }
 

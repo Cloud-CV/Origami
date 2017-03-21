@@ -1,20 +1,17 @@
-import request from 'superagent';
-const appConfig  = require('../../../outCalls/config');
-import { baseURL } from './baseURL';
+import request from "superagent";
+const appConfig = require("../../../outCalls/config");
+import { baseURL } from "./baseURL";
 
 export function checkRootSettings() {
   let URL = `${baseURL}/api/rootsettings`;
   return new Promise((resolve, reject) => {
-    request
-      .get(URL)
-      .set('Accept', 'application/json')
-      .end((err, res) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(res.text);
-        }
-      });
+    request.get(URL).set("Accept", "application/json").end((err, res) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(res.text);
+      }
+    });
   });
 }
 
@@ -24,8 +21,8 @@ export function addRootSettings(settingsData) {
     request
       .post(URL)
       .send(settingsData)
-      .set('Content-Type', 'application/json')
-      .set('Accept', 'application/json')
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
       .end((err, res) => {
         if (err) {
           reject(err);
@@ -41,8 +38,8 @@ export function getIDByName(username) {
   return new Promise((resolve, reject) => {
     request
       .get(URL)
-      .set('Content-Type', 'application/json')
-      .set('Accept', 'application/json')
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
       .end((err, res) => {
         if (err) {
           reject(err);

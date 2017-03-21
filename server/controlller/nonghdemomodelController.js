@@ -1,8 +1,9 @@
-import Nonghdemomodel from '../data/nonghdemomodel';
-import express from 'express';
+import Nonghdemomodel from "../data/nonghdemomodel";
+import express from "express";
 
 let router = express.Router();
-router.route('/:userid/:id?')
+router
+  .route("/:userid/:id?")
   .get(getNonGHDemoModel)
   .post(addNonGHDemoModel)
   .put(updateNonGHDemoModel)
@@ -32,7 +33,7 @@ function getNonGHDemoModel(req, res) {
 
 function addNonGHDemoModel(req, res) {
   const newModel = new Nonghdemomodel(Object.assign({}, req.body));
-  newModel.save((err) => {
+  newModel.save(err => {
     if (err) {
       res.send(err);
     } else {
@@ -48,13 +49,18 @@ function updateNonGHDemoModel(req, res) {
     if (err) {
       res.send(err);
     } else {
-      Nonghdemomodel.update({ id, userid }, req.body, { multi: false }, (err, updatedmodel) => {
-        if (err) {
-          res.send(err);
-        } else {
-          res.json(updatedmodel);
+      Nonghdemomodel.update(
+        { id, userid },
+        req.body,
+        { multi: false },
+        (err, updatedmodel) => {
+          if (err) {
+            res.send(err);
+          } else {
+            res.json(updatedmodel);
+          }
         }
-      });
+      );
     }
   });
 }

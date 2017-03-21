@@ -1,22 +1,26 @@
-import React, { PropTypes } from 'react';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-import OverloadedImageOutput from './OverloadedImageHeader';
+import React, { PropTypes } from "react";
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
+import RaisedButton from "material-ui/RaisedButton";
+import TextField from "material-ui/TextField";
+import OverloadedImageOutput from "./OverloadedImageHeader";
 
 class ImageOutputShowcaseModifyDialog extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      textFields: this.makeTextFieldsFromParentHeaders(props.functions.getHeaders()),
+      textFields: this.makeTextFieldsFromParentHeaders(
+        props.functions.getHeaders()
+      ),
       headers: props.functions.getHeaders(),
       open: true
     };
     this.updateHeadersInParent = props.functions.updateHeaders;
     this.getLabelsFromParent = props.functions.getLabels;
     this.hideModifyDialog = props.functions.hideModifyDialog;
-    this.makeTextFieldsFromParentHeaders = this.makeTextFieldsFromParentHeaders.bind(this);
+    this.makeTextFieldsFromParentHeaders = this.makeTextFieldsFromParentHeaders.bind(
+      this
+    );
     this.addLocalHeaders = this.addLocalHeaders.bind(this);
     this.deleteLocalHeaders = this.deleteLocalHeaders.bind(this);
     this.addMoreTextFields = this.addMoreTextFields.bind(this);
@@ -28,14 +32,14 @@ class ImageOutputShowcaseModifyDialog extends React.Component {
   makeTextFieldsFromParentHeaders(allHeaders) {
     let tempText = [];
     allHeaders.map((header, index) => {
-      let currentIndex = allHeaders.findIndex((x) => x === header);
+      let currentIndex = allHeaders.findIndex(x => x === header);
       tempText[currentIndex] = (
         <div>
           <TextField
             key={Math.random()}
             hintText="Header"
             defaultValue={header}
-            onChange={(e) => this.addLocalHeaders(currentIndex, e.target.value)}
+            onChange={e => this.addLocalHeaders(currentIndex, e.target.value)}
           />
           &nbsp;&nbsp;&nbsp;
           <RaisedButton
@@ -115,16 +119,19 @@ class ImageOutputShowcaseModifyDialog extends React.Component {
         autoScrollBodyContent
         open={this.state.open}
       >
-        {this.state.textFields.map((field) =>
-          [field, <br key={Math.random()} />]
-        )}
-        <RaisedButton key={Math.random()}
-                      label="Add Output Field"
-                      primary
-                      onClick={() => this.addMoreTextFields()}
-                      style={{ marginTop: '2%' }}
+        {this.state.textFields.map(field => [
+          field,
+          <br key={Math.random()} />
+        ])}
+        <RaisedButton
+          key={Math.random()}
+          label="Add Output Field"
+          primary
+          onClick={() => this.addMoreTextFields()}
+          style={{ marginTop: "2%" }}
         />
-      </Dialog>);
+      </Dialog>
+    );
   }
 }
 

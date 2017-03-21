@@ -1,8 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router';
-import DocsContent from '../../stateless/cvfylibdocs';
+import React from "react";
+import { Link } from "react-router";
+import DocsContent from "../../stateless/cvfylibdocs";
 
 function Registration() {
+  document.body.scrollTop = (document.documentElement.scrollTop = 0);
+
   return (
     <DocsContent>
       <h1 className="ui header">
@@ -22,7 +24,14 @@ function Registration() {
             This TOKEN can be copied from the registration page of the application.
           </li>
           <li>
-            Or by clicking <b>Get Token</b> on the app on <Link to="/user/ngh">user profile page</Link>.
+            Or by clicking
+            {" "}
+            <b>Get Token</b>
+            {" "}
+            on the app on
+            {" "}
+            <Link to="/user/ngh">user profile page</Link>
+            .
           </li>
         </ul>
       </div>
@@ -30,7 +39,14 @@ function Registration() {
 
       <div className="ui orange compact message">
         <div className="ui header">
-          For a complete example, see this <a href="https://gist.github.com/tocttou/021c51a9055dea0ac002b7657c01fc25">Gist</a>.
+          For a complete example, see this
+          {" "}
+          <a
+            href="https://gist.github.com/tocttou/021c51a9055dea0ac002b7657c01fc25"
+          >
+            Gist
+          </a>
+          .
         </div>
       </div>
 
@@ -50,7 +66,11 @@ function Registration() {
             app = cvfy.register($TOKEN)
           </div>
           <br />
-          Note that <b>$TOKEN</b> here is replaced by the TOKEN obtained from CVFY webapp.
+          Note that
+          {" "}
+          <b>$TOKEN</b>
+          {" "}
+          here is replaced by the TOKEN obtained from CVFY webapp.
         </li>
         <br />
         <li>
@@ -89,4 +109,3 @@ function Registration() {
 }
 
 export default Registration;
-

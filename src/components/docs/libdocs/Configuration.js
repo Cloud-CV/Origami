@@ -1,9 +1,8 @@
-import React from 'react';
-import DocsContent from '../../stateless/cvfylibdocs';
+import React from "react";
+import DocsContent from "../../stateless/cvfylibdocs";
 
 function Configuration() {
-
-  document.body.scrollTop = document.documentElement.scrollTop = 0;
+  document.body.scrollTop = (document.documentElement.scrollTop = 0);
 
   return (
     <DocsContent>
@@ -23,7 +22,15 @@ function Configuration() {
 
       <ul className="list">
         <li>
-          Download <b>cvfy.py</b> from <a href="https://github.com/batra-mlp-lab/cvfy-lib">Github repo</a> to
+          Download
+          {" "}
+          <b>cvfy.py</b>
+          {" "}
+          from
+          {" "}
+          <a href="https://github.com/batra-mlp-lab/cvfy-lib">Github repo</a>
+          {" "}
+          to
           your projects root directory (where the launcher python script is).
         </li>
         <br />
@@ -39,7 +46,11 @@ function Configuration() {
             </li>
             <br />
             <li>
-              CVFY-lib has a file <b>requirements.txt</b> that contains dependency python packages.
+              CVFY-lib has a file
+              {" "}
+              <b>requirements.txt</b>
+              {" "}
+              that contains dependency python packages.
               <br />
               <div className="ui success compact message">
                 pip install -r requirements.txt

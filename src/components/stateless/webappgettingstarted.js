@@ -1,76 +1,77 @@
-import React, { PropTypes } from 'react';
-import { Link, browserHistory } from 'react-router';
-import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
-import AppBar from 'material-ui/AppBar';
-import ConfigIcon from 'material-ui/svg-icons/action/settings-applications';
-import AddnewappIcon from 'material-ui/svg-icons/image/control-point';
-import IOIcon from 'material-ui/svg-icons/action/swap-vert';
-import PublishIcon from 'material-ui/svg-icons/editor/publish';
-import ModifyIcon from 'material-ui/svg-icons/action/build';
+import React, { PropTypes } from "react";
+import { Link, browserHistory } from "react-router";
+import Drawer from "material-ui/Drawer";
+import MenuItem from "material-ui/MenuItem";
+import AppBar from "material-ui/AppBar";
+import ConfigIcon from "material-ui/svg-icons/action/settings-applications";
+import AddnewappIcon from "material-ui/svg-icons/image/control-point";
+import IOIcon from "material-ui/svg-icons/action/swap-vert";
+import PublishIcon from "material-ui/svg-icons/editor/publish";
+import ModifyIcon from "material-ui/svg-icons/action/build";
 
 function DocsContent(props) {
-
   const style = {
-    cursor: 'pointer'
+    cursor: "pointer"
   };
 
   return (
     <div className="ui fluid row">
-      <Drawer open
-              zDepth={3}
-      >
+      <Drawer open zDepth={3}>
         <AppBar
           title={
-            <Link to="/"
-                  style={{ textDecoration: 'none', color: 'inherit' }}
-            >
+            <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
               CVFY
             </Link>
           }
-          showMenuIconButton = {false}
+          showMenuIconButton={false}
         />
 
-        <MenuItem leftIcon={<ConfigIcon />}
-                  style={style}
-                  onTouchTap={() => browserHistory.push('/gettingstarted/configuration')}
+        <MenuItem
+          leftIcon={<ConfigIcon />}
+          style={style}
+          onTouchTap={() =>
+            browserHistory.push("/gettingstarted/configuration")}
         >
           Configuration
         </MenuItem>
 
-        <MenuItem leftIcon={<AddnewappIcon />}
-                  style={style}
-                  onTouchTap={() => browserHistory.push('/gettingstarted/create')}
+        <MenuItem
+          leftIcon={<AddnewappIcon />}
+          style={style}
+          onTouchTap={() => browserHistory.push("/gettingstarted/create")}
         >
           Creating a new App
         </MenuItem>
 
-        <MenuItem leftIcon={<IOIcon />}
-                  style={style}
-                  onTouchTap={() => browserHistory.push('/gettingstarted/io')}
+        <MenuItem
+          leftIcon={<IOIcon />}
+          style={style}
+          onTouchTap={() => browserHistory.push("/gettingstarted/io")}
         >
           I/O components
         </MenuItem>
 
-        <MenuItem leftIcon={<PublishIcon />}
-                  style={style}
-                  onTouchTap={() => browserHistory.push('/gettingstarted/publish')}
+        <MenuItem
+          leftIcon={<PublishIcon />}
+          style={style}
+          onTouchTap={() => browserHistory.push("/gettingstarted/publish")}
         >
           Publishing a demo
         </MenuItem>
 
-        <MenuItem leftIcon={<ModifyIcon />}
-                  style={style}
-                  onTouchTap={() => browserHistory.push('/gettingstarted/modify')}
+        <MenuItem
+          leftIcon={<ModifyIcon />}
+          style={style}
+          onTouchTap={() => browserHistory.push("/gettingstarted/modify")}
         >
           Modifying an App
         </MenuItem>
 
       </Drawer>
 
-      <div className="ui four wide column"  />
+      <div className="ui four wide column" />
 
-      <div className="ui padded twelve wide centered column" >
+      <div className="ui padded twelve wide centered column">
         <br />
         {props.children}
       </div>

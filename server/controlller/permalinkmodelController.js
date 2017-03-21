@@ -1,8 +1,9 @@
-import Permalinkmodel from '../data/permalinkmodel';
-import express from 'express';
+import Permalinkmodel from "../data/permalinkmodel";
+import express from "express";
 
 let router = express.Router();
-router.route('/:userId?/:projectId?')
+router
+  .route("/:userId?/:projectId?")
   .get(getPermalink)
   .post(addPermalink)
   .put(updatePermalink)
@@ -32,7 +33,7 @@ function getPermalink(req, res) {
 
 function addPermalink(req, res) {
   const newModel = new Permalinkmodel(Object.assign({}, req.body));
-  newModel.save((err) => {
+  newModel.save(err => {
     if (err) {
       res.send(err);
     } else {
@@ -48,13 +49,18 @@ function updatePermalink(req, res) {
     if (err) {
       res.send(err);
     } else {
-      Permalinkmodel.update({ userId, projectId }, req.body, { multi: false }, (err, updatedmodel) => {
-        if (err) {
-          res.send(err);
-        } else {
-          res.json(updatedmodel);
+      Permalinkmodel.update(
+        { userId, projectId },
+        req.body,
+        { multi: false },
+        (err, updatedmodel) => {
+          if (err) {
+            res.send(err);
+          } else {
+            res.json(updatedmodel);
+          }
         }
-      });
+      );
     }
   });
 }

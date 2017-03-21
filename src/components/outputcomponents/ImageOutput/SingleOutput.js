@@ -1,7 +1,7 @@
 /*eslint-disable react/forbid-prop-types */
-import React, { PropTypes } from 'react';
-import LinearProgress from 'material-ui/LinearProgress';
-import Dialog from 'material-ui/Dialog';
+import React, { PropTypes } from "react";
+import LinearProgress from "material-ui/LinearProgress";
+import Dialog from "material-ui/Dialog";
 
 class singleOutput extends React.Component {
   constructor(props) {
@@ -23,9 +23,10 @@ class singleOutput extends React.Component {
 
   render() {
     return (
-      <div className="ui card centered"
-           style={{ height: '100%', width: '75%' }}
-           id={`output-text-${this.props.index}`}
+      <div
+        className="ui card centered"
+        style={{ height: "100%", width: "75%" }}
+        id={`output-text-${this.props.index}`}
       >
         <div className="content">
           <div className="header">{this.props.header}</div>
@@ -35,14 +36,14 @@ class singleOutput extends React.Component {
             <div className="event">
               <div className="content">
                 <div className="center aligned summary">
-                  {this.props.data ?
-                    <img className="ui centered center aligned fluid large image"
-                         style={{ cursor: 'pointer' }}
-                         src={this.props.data}
-                         onClick={this.showImageFull}
-                    />
-                    :
-                    <LinearProgress mode="indeterminate" />}
+                  {this.props.data
+                    ? <img
+                        className="ui centered center aligned fluid large image"
+                        style={{ cursor: "pointer" }}
+                        src={this.props.data}
+                        onClick={this.showImageFull}
+                      />
+                    : <LinearProgress mode="indeterminate" />}
                 </div>
               </div>
             </div>
@@ -56,8 +57,9 @@ class singleOutput extends React.Component {
           onRequestClose={this.handleClose}
         >
           <div className="ui blue segment row">
-            <img className="ui centered center aligned fluid large image"
-                 src={this.props.data}
+            <img
+              className="ui centered center aligned fluid large image"
+              src={this.props.data}
             />
           </div>
         </Dialog>

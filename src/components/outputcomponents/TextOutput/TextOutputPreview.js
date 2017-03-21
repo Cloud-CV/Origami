@@ -1,8 +1,7 @@
-import React, { PropTypes } from 'react';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import TextOutput from './TextOutput';
-
+import React, { PropTypes } from "react";
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
+import TextOutput from "./TextOutput";
 
 class TextOutputPreview extends React.Component {
   constructor(props, context) {
@@ -14,7 +13,6 @@ class TextOutputPreview extends React.Component {
     this.hidePreviewDialog = props.functions.hidePreviewDialog;
     this.handleOk = this.handleOk.bind(this);
   }
-
 
   handleOk() {
     this.hidePreviewDialog();
@@ -30,23 +28,23 @@ class TextOutputPreview extends React.Component {
         onTouchTap={this.handleOk}
       />
     ];
-    return (<Dialog
-      title="Preview Text Output Component"
-      actions={actions}
-      modal
-      autoScrollBodyContent
-      open={this.state.open}
-            >
-      <TextOutput
-        headers={this.state.headers}
-        calling_context="demo"
-        data={
-          new Array(this.state.headers.length).fill(
-            'Text Output sent from your code!'
-          )
-        }
-      />
-    </Dialog>);
+    return (
+      <Dialog
+        title="Preview Text Output Component"
+        actions={actions}
+        modal
+        autoScrollBodyContent
+        open={this.state.open}
+      >
+        <TextOutput
+          headers={this.state.headers}
+          calling_context="demo"
+          data={new Array(this.state.headers.length).fill(
+            "Text Output sent from your code!"
+          )}
+        />
+      </Dialog>
+    );
   }
 }
 

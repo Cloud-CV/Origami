@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const rootSettingsSchema = mongoose.Schema({
   rootUserGithubLoginId: Number,
@@ -11,4 +11,4 @@ const rootSettingsSchema = mongoose.Schema({
   port: String
 });
 
-export default mongoose.model('rootSettings', rootSettingsSchema);
+export default mongoose.model("rootSettings", rootSettingsSchema);

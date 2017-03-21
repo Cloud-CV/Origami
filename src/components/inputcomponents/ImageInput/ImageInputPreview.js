@@ -1,8 +1,7 @@
-import React, { PropTypes } from 'react';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import ImageInput from './ImageInput';
-
+import React, { PropTypes } from "react";
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
+import ImageInput from "./ImageInput";
 
 class ImageInputPreview extends React.Component {
   constructor(props, context) {
@@ -14,7 +13,6 @@ class ImageInputPreview extends React.Component {
     this.hidePreviewDialog = props.functions.hidePreviewDialog;
     this.handleOk = this.handleOk.bind(this);
   }
-
 
   handleOk() {
     this.hidePreviewDialog();
@@ -43,7 +41,8 @@ class ImageInputPreview extends React.Component {
           labels={this.state.labels}
           sendAddr=""
         />
-    </Dialog>);
+      </Dialog>
+    );
   }
 }
 

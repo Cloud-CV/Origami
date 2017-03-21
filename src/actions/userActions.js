@@ -1,5 +1,5 @@
-import * as types from './actionTypes';
-import userApi from '../api/Github/userApi';
+import * as types from "./actionTypes";
+import userApi from "../api/Github/userApi";
 
 export function enableUserLoad(user) {
   let userJSON = JSON.parse(user);
@@ -8,11 +8,13 @@ export function enableUserLoad(user) {
 
 export function LoadUser() {
   return function(dispatch) {
-    return userApi.userProfile().then((user) => {
-      dispatch(enableUserLoad(user));
-    })
-      .catch((err) => {
-        throw (err);
+    return userApi
+      .userProfile()
+      .then(user => {
+        dispatch(enableUserLoad(user));
+      })
+      .catch(err => {
+        throw err;
       });
   };
 }

@@ -1,9 +1,8 @@
-import React from 'react';
-import DocsContent from '../../stateless/cvfylibdocs';
+import React from "react";
+import DocsContent from "../../stateless/cvfylibdocs";
 
 function Output() {
-
-  document.body.scrollTop = document.documentElement.scrollTop = 0;
+  document.body.scrollTop = (document.documentElement.scrollTop = 0);
 
   return (
     <DocsContent>
@@ -54,17 +53,15 @@ function Output() {
       <br />
 
       <div className="ui success compact message">
-        An example can bee seen at this <a href="https://gist.github.com/tocttou/da35d86376f134d232907d626bccee9e">gist</a>.
+        An example can bee seen at this
+        {" "}
+        <a
+          href="https://gist.github.com/tocttou/da35d86376f134d232907d626bccee9e"
+        >
+          gist
+        </a>
+        .
       </div>
-
-
-
-
-
-
-
-
-
 
       <br />
 
@@ -75,7 +72,9 @@ function Output() {
       </div>
       <br />
 
-      <b>cvfy.sendImageArray()</b> injects an array of images into fields in Output component.
+      <b>cvfy.sendImageArray()</b>
+      {" "}
+      injects an array of images into fields in Output component.
       <br />
 
       <h4 className="ui header">
@@ -102,7 +101,14 @@ function Output() {
                 <br />
                 <li>
                   <div className="ui success compact message">
-                    An example can be seen at this <a href="https://gist.github.com/tocttou/591d28bb89641ba7b94783687be65fdb">gist</a>.
+                    An example can be seen at this
+                    {" "}
+                    <a
+                      href="https://gist.github.com/tocttou/591d28bb89641ba7b94783687be65fdb"
+                    >
+                      gist
+                    </a>
+                    .
                   </div>
                 </li>
               </ul>
@@ -122,7 +128,14 @@ function Output() {
                 <br />
                 <li>
                   <div className="ui success compact message">
-                    An example can be seen at this <a href="https://gist.github.com/tocttou/58ef4c77d06c0190443ec721e1a233d4">gist</a>.
+                    An example can be seen at this
+                    {" "}
+                    <a
+                      href="https://gist.github.com/tocttou/58ef4c77d06c0190443ec721e1a233d4"
+                    >
+                      gist
+                    </a>
+                    .
                   </div>
                 </li>
               </ul>
@@ -150,17 +163,6 @@ function Output() {
         </li>
       </ul>
 
-
-
-
-
-
-
-
-
-
-
-
       <br />
 
       <div className="ui orange compact message">
@@ -170,7 +172,9 @@ function Output() {
       </div>
       <br />
 
-      <b>cvfy.sendGraphArray()</b> injects an array of plot data into graph in Output component.
+      <b>cvfy.sendGraphArray()</b>
+      {" "}
+      injects an array of plot data into graph in Output component.
       <br />
 
       <h4 className="ui header">
@@ -198,12 +202,21 @@ function Output() {
                   <br />
                   y: INTEGER
                   <br />
-                  <h4>'x' and 'y' correspond to X-Axis and Y-Axis on the graph.</h4>
+                  <h4>
+                    'x' and 'y' correspond to X-Axis and Y-Axis on the graph.
+                  </h4>
                 </li>
                 <br />
                 <li>
                   <div className="ui success compact message">
-                    An example can be seen at this <a href="https://gist.github.com/tocttou/f82f730be453f872395c5f30df89b763">gist</a>.
+                    An example can be seen at this
+                    {" "}
+                    <a
+                      href="https://gist.github.com/tocttou/f82f730be453f872395c5f30df89b763"
+                    >
+                      gist
+                    </a>
+                    .
                   </div>
                 </li>
               </ul>
@@ -222,12 +235,21 @@ function Output() {
                   <br />
                   y: INTEGER
                   <br />
-                  <h4>'x' and 'y' correspond to X-Axis and Y-Axis on the graph.</h4>
+                  <h4>
+                    'x' and 'y' correspond to X-Axis and Y-Axis on the graph.
+                  </h4>
                 </li>
                 <br />
                 <li>
                   <div className="ui success compact message">
-                    An example can be seen at this <a href="https://gist.github.com/tocttou/f82f730be453f872395c5f30df89b763">gist</a>.
+                    An example can be seen at this
+                    {" "}
+                    <a
+                      href="https://gist.github.com/tocttou/f82f730be453f872395c5f30df89b763"
+                    >
+                      gist
+                    </a>
+                    .
                   </div>
                 </li>
               </ul>
@@ -246,12 +268,21 @@ function Output() {
                   <br />
                   y: INTEGER
                   <br />
-                  <h4>'x' and 'y' correspond to X-Axis and Y-Axis on the graph.</h4>
+                  <h4>
+                    'x' and 'y' correspond to X-Axis and Y-Axis on the graph.
+                  </h4>
                 </li>
                 <br />
                 <li>
                   <div className="ui success compact message">
-                    An example can be seen at this <a href="https://gist.github.com/tocttou/f82f730be453f872395c5f30df89b763">gist</a>.
+                    An example can be seen at this
+                    {" "}
+                    <a
+                      href="https://gist.github.com/tocttou/f82f730be453f872395c5f30df89b763"
+                    >
+                      gist
+                    </a>
+                    .
                   </div>
                 </li>
               </ul>
@@ -270,12 +301,21 @@ function Output() {
                   <br />
                   y: INTEGER
                   <br />
-                  <h4>'x' correponds to the sectio name, 'y' correponds to share of that section in the pie.</h4>
+                  <h4>
+                    'x' correponds to the sectio name, 'y' correponds to share of that section in the pie.
+                  </h4>
                 </li>
                 <br />
                 <li>
                   <div className="ui success compact message">
-                    An example can be seen at this <a href="https://gist.github.com/tocttou/c0885ce4077d972765b00c56f79b5445">gist</a>.
+                    An example can be seen at this
+                    {" "}
+                    <a
+                      href="https://gist.github.com/tocttou/c0885ce4077d972765b00c56f79b5445"
+                    >
+                      gist
+                    </a>
+                    .
                   </div>
                 </li>
               </ul>
@@ -303,7 +343,7 @@ function Output() {
           Bar Graph Output Component
         </li>
         <li>
-           Scatter Graph Component
+          Scatter Graph Component
         </li>
         <li>
           Area Graph Component
@@ -318,4 +358,3 @@ function Output() {
 }
 
 export default Output;
-

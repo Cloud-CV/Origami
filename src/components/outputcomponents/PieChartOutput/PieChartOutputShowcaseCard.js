@@ -1,9 +1,10 @@
-import React, { PropTypes } from 'react';
-import { browserHistory } from 'react-router';
-import CustomCard from '../../stateless/cards';
-import PieChartOutputShowcaseModifyDialog from './PieChartOutputShowcaseModifyDialog';
-import PieChartOutputPreview from './PieChartOutputPreview';
-import toastr from 'toastr';
+import React, { PropTypes } from "react";
+import { browserHistory } from "react-router";
+import CustomCard from "../../stateless/cards";
+import PieChartOutputShowcaseModifyDialog
+  from "./PieChartOutputShowcaseModifyDialog";
+import PieChartOutputPreview from "./PieChartOutputPreview";
+import toastr from "toastr";
 
 class PieChartOutputShowcaseCard extends React.Component {
   constructor(props) {
@@ -11,7 +12,8 @@ class PieChartOutputShowcaseCard extends React.Component {
     let initHeaders = [];
     if (props.demoProps.outputComponentDemoModel.baseComponentId === 5) {
       initHeaders = props.demoProps.outputComponentDemoModel.props;
-      this.selected = props.demoProps.outputComponentDemoModel.baseComponentId === props.demoProps.selected;
+      this.selected = props.demoProps.outputComponentDemoModel.baseComponentId ===
+        props.demoProps.selected;
     }
     this.state = {
       headers: initHeaders,
@@ -27,7 +29,9 @@ class PieChartOutputShowcaseCard extends React.Component {
     this.showModifyDialog = this.showModifyDialog.bind(this);
     this.getHeaderRealLength = this.getHeaderRealLength.bind(this);
     this.showPreviewDialog = this.showPreviewDialog.bind(this);
-    this.updateOutputComponentModel = this.updateOutputComponentModel.bind(this);
+    this.updateOutputComponentModel = this.updateOutputComponentModel.bind(
+      this
+    );
     this.updateHeaders = this.updateHeaders.bind(this);
     this.getHeaders = this.getHeaders.bind(this);
     this.hideModifyDialog = this.hideModifyDialog.bind(this);
@@ -52,39 +56,41 @@ class PieChartOutputShowcaseCard extends React.Component {
 
   updateOutputComponentModel() {
     if (Object.keys(this.demoModel).length === 0) {
-      toastr.error('Registration info not found! Register again');
-      browserHistory.push('/');
+      toastr.error("Registration info not found! Register again");
+      browserHistory.push("/");
     } else {
       let propsToStore = [];
-      this.state.headers.map((header) => {
+      this.state.headers.map(header => {
         propsToStore.push(header);
       });
-      this.outputComponentDemoModelActions.updateOutputComponentModel({
-        id: this.demoModel.id,
-        userid: this.user.id,
-        baseComponentId: 5,
-        props: propsToStore
-      }).then(() => {
-        if (this.props.demoProps.params.type === 'modify') {
-          browserHistory.push('/ngh/user');
-        } else {
-          if (this.forwardAddressAlternate) {
-            if (this.demoModel.status === 'input') {
-              browserHistory.push(this.forwardAddress);
-            } else if (this.demoModel.status === 'demo') {
-              browserHistory.push(this.forwardAddressAlternate);
-            }
+      this.outputComponentDemoModelActions
+        .updateOutputComponentModel({
+          id: this.demoModel.id,
+          userid: this.user.id,
+          baseComponentId: 5,
+          props: propsToStore
+        })
+        .then(() => {
+          if (this.props.demoProps.params.type === "modify") {
+            browserHistory.push("/ngh/user");
           } else {
-            browserHistory.push(this.forwardAddress);
+            if (this.forwardAddressAlternate) {
+              if (this.demoModel.status === "input") {
+                browserHistory.push(this.forwardAddress);
+              } else if (this.demoModel.status === "demo") {
+                browserHistory.push(this.forwardAddressAlternate);
+              }
+            } else {
+              browserHistory.push(this.forwardAddress);
+            }
           }
-        }
-      });
+        });
     }
   }
 
   updateHeaders(data) {
     let dataToUpdate = [];
-    data.map((value) => {
+    data.map(value => {
       dataToUpdate.push(value);
     });
     this.setState({ headers: dataToUpdate });
@@ -112,40 +118,39 @@ class PieChartOutputShowcaseCard extends React.Component {
           selected={this.selected}
           centeredParent
           centeredSegment
-          displayData = {[
-            `Number of Outputs: ${this.getHeaderRealLength()}`
-          ]}
-          buttonData = {[
+          displayData={[`Number of Outputs: ${this.getHeaderRealLength()}`]}
+          buttonData={[
             {
-              label: 'Modify',
+              label: "Modify",
               onDeployClick: () => this.showModifyDialog()
             },
             {
-              label: 'Preview',
+              label: "Preview",
               onDeployClick: () => this.showPreviewDialog()
             },
             {
-              label: 'Save',
+              label: "Save",
               onDeployClick: () => this.updateOutputComponentModel()
             }
           ]}
         />
-        {this.state.modifyDialogDisplay && <PieChartOutputShowcaseModifyDialog
-          functions={{
-            updateHeaders: this.updateHeaders,
-            hideModifyDialog: this.hideModifyDialog,
-            getHeaders: this.getHeaders
-          }}
-                                           />}
+        {this.state.modifyDialogDisplay &&
+          <PieChartOutputShowcaseModifyDialog
+            functions={{
+              updateHeaders: this.updateHeaders,
+              hideModifyDialog: this.hideModifyDialog,
+              getHeaders: this.getHeaders
+            }}
+          />}
 
-        {this.state.previewDialogDisplay && <PieChartOutputPreview
-          functions={{
-            getHeaders: this.getHeaders,
-            hidePreviewDialog: this.hidePreviewDialog
-          }}
-                                            />}
+        {this.state.previewDialogDisplay &&
+          <PieChartOutputPreview
+            functions={{
+              getHeaders: this.getHeaders,
+              hidePreviewDialog: this.hidePreviewDialog
+            }}
+          />}
       </div>
-
     );
   }
 }
@@ -155,4 +160,3 @@ PieChartOutputShowcaseCard.propTypes = {
 };
 
 export default PieChartOutputShowcaseCard;
-
