@@ -225,7 +225,65 @@ function Configuration() {
         </li>
 
       </ul>
-
+      <div className="ui horizontal divider">
+        <hr />
+      </div>
+      <h3 className="ui header">
+        CVFY requires a Dropbox App key if you intend to allow users to download/upload from Dropbox
+      </h3>
+      <div className="ui blue compact message">
+        <h3 className="ui header">
+          Create a Dropbox developer application
+        </h3>
+      </div>
+      <ui className="list">
+        <li>
+          Go to
+          {" "}
+          <a href="https://www.dropbox.com/developers">
+            Dropbox Developers Page
+          </a>
+          {" "}
+          page
+          and click on "Create your app".
+        </li>
+        <br />
+        <li>
+          In step 1, choose the Dropbox API
+        </li>
+        <br />
+        <li>
+          In step 2, select Full Dropbox. This allows the app access to the users full dropbox.
+        </li>
+        <br />
+        <li>
+          Now, Name your app and click on create app. The name needs to be unique.
+        </li>
+        <br />
+        <li>
+          Once the app is created, Dropbox redirects you to its configuration page. Note down the App Key
+        </li>
+        <br />
+        <li>
+          Also, find Chooser/Saver domains and add the domains
+          <ul className="list">
+            <li>
+              0.0.0.0
+            </li>
+            <li>
+              localhost
+            </li>
+            <li>
+              cvfy.cloudcv.org
+            </li>
+          </ul>
+        </li>
+        <br />
+        <li>
+          Paste the App Key into <b>outCalls/config.js</b>.
+        </li>
+        <br />
+      </ui>
     </DocsContent>
   );
 }
