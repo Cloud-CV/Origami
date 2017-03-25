@@ -57,21 +57,25 @@ const singleInput = props => {
           </Dropzone>
         </div>
       </div>
-      <div className="ui horizontal divider">Or</div>
-      <div className="centered row">
-        <div className="" style={{ height: "100%", cursor: "pointer" }}>
-          <DropboxChooser
-            appKey={appConfig.DROPBOX_APP_KEY}
-            success={files => onSelect(files)}
-            multiselect={false}
-          >
-            <a className="ui blue button">
-              <span>Upload from dropbox</span>
-            </a>
-            <br />
-          </DropboxChooser>
-        </div>
-      </div>
+      {appConfig.DROPBOX_API_KEY !== "API_KEY" &&
+        <div>
+          <div className="ui horizontal divider">Or</div>
+          <div className="centered row">
+            <div className="" style={{ height: "100%", cursor: "pointer" }}>
+              <DropboxChooser
+                appKey={appConfig.DROPBOX_API_KEY}
+                success={files => onSelect(files)}
+                multiselect={false}
+              >
+                <a className="ui blue button">
+                  <span>Upload from dropbox</span>
+                </a>
+                <br />
+              </DropboxChooser>
+            </div>
+          </div>
+        </div>}
+      }
       <div className="ui horizontal divider">Text</div>
       <div className="centered row">
         <div className="centered center aligned stretched row">
