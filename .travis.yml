@@ -1,7 +1,17 @@
 language: node_js
+
 node_js:
+  - "7"
   - "6"
   - "5"
+
+cache:
+  directories: 
+    - node_modules
+
+install:
+  - yarn install
+
 script:
   - npm run lint:build
   - npm run test
