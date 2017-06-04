@@ -13,6 +13,7 @@ import "../node_modules/semantic-ui-css/semantic.min";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import "../node_modules/toastr/build/toastr.min.css";
+import "../node_modules/antd/dist/antd.css";
 
 const store = configureStore();
 injectTapEventPlugin();
