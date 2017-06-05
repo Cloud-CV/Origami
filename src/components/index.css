@@ -1,5 +1,3 @@
-
-
 #layout {
   background: #FEFEFE;
 }
@@ -17,19 +15,4 @@
 
 #search{
   width: 100%; 
-}
-
-#content{
-  margin: 24px 16px 0;
-  overflow: initial;
-}
-
-#content-div{
-  padding: 12;
-  background: #FEFEFE;
-  text-align: center;
-}
-
-#launch-button{
-  margin-bottom: 5%;
 }

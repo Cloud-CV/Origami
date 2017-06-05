@@ -18,7 +18,7 @@ import RaisedButton from "material-ui/RaisedButton";
 import Dialog from "material-ui/Dialog";
 import * as loginActions from "../../actions/loginActions";
 import { ShareButtons, ShareCounts, generateShareIcon } from "react-share";
-import "./index.css";
+import Radium from "radium";
 import { Layout, Menu, Icon, Button, Card, Row, Col, Input } from "antd";
 const { Header, Content, Footer } = Layout;
 
@@ -38,7 +38,7 @@ const TwitterIcon = generateShareIcon("twitter");
 const GooglePlusIcon = generateShareIcon("google");
 const LinkedinIcon = generateShareIcon("linkedin");
 
-class HomePage extends React.Component {
+class HomePageComponent extends React.Component {
   constructor(props, context) {
     super(props, context);
     // this.buildFromGithubLogin = this.buildFromGithubLogin.bind(this);
@@ -57,6 +57,7 @@ class HomePage extends React.Component {
     };
 
     this.handleShareModal = this.handleShareModal.bind(this);
+    this.getStyles = this.getStyles.bind(this);
   }
 
   componentWillMount() {
@@ -110,11 +111,29 @@ class HomePage extends React.Component {
     }
   }
 
+  getStyles() {
+    return {
+      content: {
+        margin: "24px 16px 0",
+        overflow: "initial"
+      },
+      contentDiv: {
+        padding: 12,
+        background: "#FEFEFE",
+        textAlign: "center"
+      },
+      launchButton: {
+        "margin-bottom": "5%"
+      }
+    };
+  }
+
   render() {
+    const styles = this.getStyles();
     return (
       <div>
-        <Content id="content">
-          <div id="content-div">
+        <Content id="content" style={styles.content}>
+          <div id="content-div" style={styles.contentDiv}>
             <Row>
               <Col span={5} offset={1}>
                 <Card style={{ width: "100%" }} bodyStyle={{ padding: 0 }}>
@@ -133,7 +152,13 @@ class HomePage extends React.Component {
                   <div className="custom-card">
                     <p>Description</p>
                     <br />
-                    <Button type="primary" id="launch-button">Launch</Button>
+                    <Button
+                      type="primary"
+                      id="launchButton"
+                      style={styles.launchButton}
+                    >
+                      Launch
+                    </Button>
                   </div>
                 </Card>
               </Col>
@@ -154,7 +179,13 @@ class HomePage extends React.Component {
                   <div className="custom-card">
                     <p>Description</p>
                     <br />
-                    <Button type="primary" id="launch-button">Launch</Button>
+                    <Button
+                      type="primary"
+                      id="launchButton"
+                      style={styles.launchButton}
+                    >
+                      Launch
+                    </Button>
                   </div>
                 </Card>
               </Col>
@@ -175,7 +206,13 @@ class HomePage extends React.Component {
                   <div className="custom-card">
                     <p>Description</p>
                     <br />
-                    <Button type="primary" id="launch-button">Launch</Button>
+                    <Button
+                      type="primary"
+                      id="launchButton"
+                      style={styles.launchButton}
+                    >
+                      Launch
+                    </Button>
                   </div>
                 </Card>
               </Col>
@@ -196,7 +233,13 @@ class HomePage extends React.Component {
                   <div className="custom-card">
                     <p>Description</p>
                     <br />
-                    <Button type="primary" id="launch-button">Launch</Button>
+                    <Button
+                      type="primary"
+                      id="launchButton"
+                      style={styles.launchButton}
+                    >
+                      Launch
+                    </Button>
                   </div>
                 </Card>
               </Col>
@@ -227,7 +270,7 @@ class HomePage extends React.Component {
   }
 }
 
-HomePage.propTypes = {
+HomePageComponent.propTypes = {
   loginactions: PropTypes.object.isRequired,
   login: PropTypes.bool.isRequired
 };
@@ -243,5 +286,7 @@ function mapDispatchToProps(dispatch) {
     loginactions: bindActionCreators(loginActions, dispatch)
   };
 }
+
+const HomePage = Radium(HomePageComponent);
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

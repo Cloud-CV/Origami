@@ -11,6 +11,7 @@ import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
 import FlatButton from "material-ui/FlatButton";
 import io from "socket.io-client";
 import { Layout, Menu, Icon, Button, Card, Row, Col, Input } from "antd";
+import "./index.css";
 const { Header } = Layout;
 
 class App extends React.Component {
