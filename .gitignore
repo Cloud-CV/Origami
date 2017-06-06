@@ -24,3 +24,8 @@ node_modules
 
 # Webstorm specific files
 .idea
+
+# Docs
+_build
+_static
+_templates
