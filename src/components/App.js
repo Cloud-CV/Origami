@@ -10,6 +10,9 @@ import MenuItem from "material-ui/MenuItem";
 import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
 import FlatButton from "material-ui/FlatButton";
 import io from "socket.io-client";
+import { Layout, Menu, Icon, Button, Card, Row, Col, Input } from "antd";
+import "./index.css";
+const { Header } = Layout;
 
 class App extends React.Component {
   constructor(props, context) {
@@ -19,6 +22,7 @@ class App extends React.Component {
       displayLogin: "",
       showTitle: true
     };
+    this.handleClick = this.handleClick.bind(this);
     this.initiateLogin = this.initiateLogin.bind(this);
     this.logout = this.logout.bind(this);
     this.readSessionToken = this.readSessionToken.bind(this);
@@ -89,6 +93,12 @@ class App extends React.Component {
     window.location = "/logout";
   }
 
+  handleClick(e) {
+    if (!this.state.login && e.key === "2") {
+      this.initiateLogin();
+    }
+  }
+
   render() {
     if (this.props.location.pathname === "/") {
       $("#appbar-progress").css("display", "None");
@@ -98,50 +108,96 @@ class App extends React.Component {
     if (this.readSessionToken()) {
       this.props.loginactions.Login();
     }
-
-    return (
-      <div>
-        <AppBar
-          zDepth={0}
-          title={
-            this.state.showTitle
-              ? <Link
-                  to="/"
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
-                  CVFY
-                </Link>
-              : null
-          }
-          showMenuIconButton={false}
-          iconElementRight={
-            this.state.login
-              ? <IconMenu
-                  style={{ display: this.state.displayLogin }}
-                  iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-                  targetOrigin={{ horizontal: "right", vertical: "top" }}
-                  anchorOrigin={{ horizontal: "right", vertical: "top" }}
-                >
-                  <MenuItem onTouchTap={this.logout} primaryText="Sign out" />
-                </IconMenu>
-              : <span
-                  className="loginButton"
-                  style={{ display: this.state.displayLogin }}
-                  onClick={this.initiateLogin}
-                >
-                  <FlatButton
-                    label="Login"
-                    style={{ margin: "5%", color: "white" }}
-                  />
-                </span>
-          }
-        />
-
-        <div className="ui fluid grid">
-          {this.props.children}
+    if (this.state.login) {
+      return (
+        <div>
+          <AppBar
+            zDepth={0}
+            title={
+              this.state.showTitle
+                ? <Link
+                    to="/"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    CVFY
+                  </Link>
+                : null
+            }
+            showMenuIconButton={false}
+            iconElementRight={
+              this.state.login
+                ? <IconMenu
+                    style={{ display: this.state.displayLogin }}
+                    iconButtonElement={
+                      <IconButton><MoreVertIcon /></IconButton>
+                    }
+                    targetOrigin={{ horizontal: "right", vertical: "top" }}
+                    anchorOrigin={{ horizontal: "right", vertical: "top" }}
+                  >
+                    <MenuItem onTouchTap={this.logout} primaryText="Sign out" />
+                  </IconMenu>
+                : <span
+                    className="loginButton"
+                    style={{ display: this.state.displayLogin }}
+                    onClick={this.initiateLogin}
+                  >
+                    <FlatButton
+                      label="Login"
+                      style={{ margin: "5%", color: "white" }}
+                    />
+                  </span>
+            }
+          />
+          <div className="ui fluid grid">
+            {this.props.children}
+          </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <Layout id="layout">
+          <Header id="layout-header">
+            <Row>
+              <Col span={3} offset={1}>
+                <h2 id="logo-title">
+                  Origami
+                </h2>
+              </Col>
+              <Col span={10} offset={1}>
+                <Input.Search
+                  id="search"
+                  placeholder="Search for demos, users"
+                />
+              </Col>
+              <Col span={2} offset={0}>
+                <Button style={{ marginLeft: 30, textAlign: "right" }}>
+                  Search By <Icon type="down" />
+                </Button>
+              </Col>
+              <Col span={6} offset={1}>
+                <Menu
+                  mode="horizontal"
+                  defaultSelectedKeys={["1"]}
+                  style={{ lineHeight: "64px" }}
+                  onClick={this.handleClick}
+                >
+                  <Menu.Item key="1">Home</Menu.Item>
+                  <Menu.Item key="2">
+
+                    Login
+
+                  </Menu.Item>
+                  <Menu.Item key="3">Docs</Menu.Item>
+                </Menu>
+              </Col>
+            </Row>
+          </Header>
+          <div>
+            {this.props.children}
+          </div>
+        </Layout>
+      );
+    }
   }
 }
 
