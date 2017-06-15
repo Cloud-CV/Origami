@@ -34,5 +34,7 @@ _templates
 db.sqlite3
 
 # Bundle
+django-server/static/bundles/local/*.js
 
-static/bundles/local/
+# Python
+*.pyc
