@@ -1,0 +1,18 @@
+#layout {
+  background: #FEFEFE;
+}
+
+#layout-header {
+  background: #FEFEFE; 
+  padding: 0; 
+  box-shadow: 0px 2px 5px #E0E0E0;
+}
+
+#logo-title{
+  margin-top: 15px;
+  
+}
+
+#search{
+  width: 100%; 
+}

@@ -29,3 +29,10 @@ node_modules
 _build
 _static
 _templates
+
+# SQLite 
+db.sqlite3
+
+# Bundle
+
+static/bundles/local/
