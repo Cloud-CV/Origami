@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import mongoengine
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -38,9 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'webpack_loader',
+    'rest_framework',
+    'rest_framework_mongoengine',
+    'mongoengine.django.mongo_auth'
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -81,6 +86,9 @@ DATABASES = {
     }
 }
 
+mongoengine.connect(
+    db='demo'
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -100,6 +108,24 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+# This is a dummy django model. It's just a crutch to keep django content,
+# while all the real functionality is associated with MONGOENGINE_USER_DOCUMENT
+AUTH_USER_MODEL = 'mongo_auth.MongoUser'
+
+
+# Don't confuse Django's AUTHENTICATION_BACKENDS with DRF's AUTHENTICATION_CLASSES!
+AUTHENTICATION_BACKENDS = (
+    'mongoengine.django.auth.MongoEngineBackend',
+    #'django.contrib.auth.backends.ModelBackend'
+)
+
+DEFAULT_AUTHENTICATION_CLASSES = (
+    'rest_framework.authentication.SessionAuthentication',
+)
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
