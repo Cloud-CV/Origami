@@ -31,6 +31,7 @@ class App extends React.Component {
     this.socket = io();
     this.socketId = Math.random().toString(36);
     this.socket.on("connect", () => {
+      console.log("Emitting");
       this.socket.emit("savesessiontoken", this.socketId);
     });
   }
@@ -84,13 +85,13 @@ class App extends React.Component {
   }
 
   initiateLogin() {
-    window.location = "/auth/github";
+    window.location = "/auth/github/login";
   }
 
   logout() {
     this.props.loginactions.Logout();
     this.clearSessionFlag();
-    window.location = "/logout";
+    window.location = "/auth/logout";
   }
 
   handleClick(e) {

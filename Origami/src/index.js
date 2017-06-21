@@ -8,12 +8,12 @@ import { Provider } from "react-redux";
 import { Router, browserHistory } from "react-router";
 import routes from "./routes";
 import configureStore from "./store/configureStore";
-import "../node_modules/semantic-ui-css/semantic.min.css";
-import "../node_modules/semantic-ui-css/semantic.min";
+import "../../node_modules/semantic-ui-css/semantic.min.css";
+import "../../node_modules/semantic-ui-css/semantic.min";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import "../node_modules/toastr/build/toastr.min.css";
-import "../node_modules/antd/dist/antd.css";
+import "../../node_modules/toastr/build/toastr.min.css";
+import "../../node_modules/antd/dist/antd.css";
 
 const store = configureStore();
 injectTapEventPlugin();
@@ -30,5 +30,5 @@ render(
       <Router history={browserHistory} routes={routes} />
     </MuiThemeProvider>
   </Provider>,
-  document.getElementById("app")
+  document.getElementById("root")
 );
