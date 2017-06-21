@@ -30,6 +30,8 @@ router.register(r'root-settings', DemoViewSet, r"root-settings")
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^accounts/profile', redirect_login),
+    url(r'^auth/', include('allauth.urls')),
     url(r'^api/', include(router.urls, namespace='api')),
     url(r'^api/demo/(\d+)/(\d+)', user_demo),
     url(r'^api/input-component/(\d+)/(\d+)', user_input_component),

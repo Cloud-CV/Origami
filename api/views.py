@@ -5,7 +5,8 @@ from rest_framework.decorators import detail_route
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from api.serializers import *
 from api.models import *
-
+from django.contrib.auth.models import User
+from allauth.socialaccount.models import SocialAccount, SocialToken
 
 
 class DemoViewSet(ModelViewSet):
@@ -21,11 +22,12 @@ class DemoViewSet(ModelViewSet):
 
     @detail_route(methods=['get'])
     def user_demo(self, request, id, userid):
-    	demo = Demo.objects(id=id, userid=userid).first()
-    	serialize = DemoSerializer(demo)
-    	return JsonResponse(serialize.data)
+        demo = Demo.objects(id=id, userid=userid).first()
+        serialize = DemoSerializer(demo)
+        return JsonResponse(serialize.data)
 
-user_demo = DemoViewSet.as_view({'get':'user_demo'})
+user_demo = DemoViewSet.as_view({'get': 'user_demo'})
+
 
 class InputComponentViewSet(ModelViewSet):
     '''
@@ -40,11 +42,13 @@ class InputComponentViewSet(ModelViewSet):
 
     @detail_route(methods=['get'])
     def user_input_component(self, request, id, userid):
-    	input = InputComponent.objects(id=id, userid=userid).first()
-    	serialize = InputComponentSerializer(input)
-    	return JsonResponse(serialize.data)
+        input = InputComponent.objects(id=id, userid=userid).first()
+        serialize = InputComponentSerializer(input)
+        return JsonResponse(serialize.data)
 
-user_input_component = InputComponentViewSet.as_view({'get':'user_input_component'})
+user_input_component = InputComponentViewSet.as_view(
+    {'get': 'user_input_component'})
+
 
 class OutputComponentViewSet(ModelViewSet):
     '''
@@ -59,11 +63,13 @@ class OutputComponentViewSet(ModelViewSet):
 
     @detail_route(methods=['get'])
     def user_output_component(self, request, id, userid):
-    	output = OutputComponent.objects(id=id, userid=userid).first()
-    	serialize = OutputComponentSerializer(output)
-    	return JsonResponse(serialize.data)
+        output = OutputComponent.objects(id=id, userid=userid).first()
+        serialize = OutputComponentSerializer(output)
+        return JsonResponse(serialize.data)
 
-user_output_component = OutputComponentViewSet.as_view({'get':'user_output_component'})
+user_output_component = OutputComponentViewSet.as_view(
+    {'get': 'user_output_component'})
+
 
 class PermalinkViewSet(ModelViewSet):
     '''
@@ -76,6 +82,7 @@ class PermalinkViewSet(ModelViewSet):
     def get_queryset(self):
         return Permalink.objects.all()
 
+
 class RootSettingsViewSet(ModelViewSet):
     '''
     Contains information about inputs/outputs of a single program
@@ -85,4 +92,11 @@ class RootSettingsViewSet(ModelViewSet):
     serializer_class = RootSettingsSerializer
 
     def get_queryset(self):
-        return RootSettings.objects.all()        
+        return RootSettings.objects.all()
+
+
+def redirect_login(req):
+    user = User.objects.get(username=req.user.username)
+    acc = SocialAccount.objects.get(user=user)
+    token = SocialToken.objects.get(account=acc)
+    return HttpResponseRedirect('/login?status=passed&token=' + token.token + '&username=' + user.username + '&userid=' + str(user.id))
