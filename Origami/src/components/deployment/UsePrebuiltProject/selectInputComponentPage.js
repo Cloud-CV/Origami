@@ -26,9 +26,11 @@ class SelectInputComponentPage extends React.Component {
   }
 
   componentWillMount() {
+    console.log(this.state.userid, this.props.params.repoId)
     getComponentDeployed(this.state.userid, this.props.params.repoId, "input")
       .then(inputComponentSeedData => {
-        if (JSON.parse(inputComponentSeedData).length !== 0) {
+        console.log(JSON.parse(inputComponentSeedData).length);
+        if (JSON.parse(inputComponentSeedData).length > 0) {
           let dataToSeed = {
             id: JSON.parse(inputComponentSeedData)[0].id,
             userid: JSON.parse(inputComponentSeedData)[0].userid,
@@ -46,7 +48,7 @@ class SelectInputComponentPage extends React.Component {
           this.props.params.repoId,
           "output"
         ).then(outputComponentSeedData => {
-          if (JSON.parse(outputComponentSeedData).length !== 0) {
+          if (JSON.parse(outputComponentSeedData).length > 0) {
             this.setState({ outputComponentStepperHighlight: true });
           }
         });

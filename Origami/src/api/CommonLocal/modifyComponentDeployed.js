@@ -3,7 +3,7 @@ const appConfig = require("../../../outCalls/config");
 import { baseURL } from "./baseURL";
 
 export function modifyComponentDeployed(userid, componentData, type) {
-  let URL = `${baseURL}/api/${type}model/${userid}/${componentData.id}`;
+  let URL = `${baseURL}/api/${type}component/${userid}/${componentData.id}`;
   return new Promise((resolve, reject) => {
     request
       .put(URL)

@@ -16,7 +16,7 @@ export function isCloudCV() {
 }
 
 export function getAllDemosByCloudCV(userid) {
-  let URL = `${baseURL}/api/nonghdemomodel/${userid}`;
+  let URL = `${baseURL}/api/demo/user/${userid}`;
   return new Promise((resolve, reject) => {
     request.get(URL).set("Accept", "application/json").end((err, res) => {
       if (err) {

@@ -1,6 +1,10 @@
 import request from "superagent";
 const appConfig = require("../../../outCalls/config");
 import { baseURL } from "../CommonLocal/baseURL";
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
+
 
 export function getSinglePermalink(userId, projectId) {
   let URL = `${baseURL}/api/permalink/${userId}/${projectId}`;
@@ -36,6 +40,7 @@ export function addPermalink(data) {
       .send(data)
       .set("Content-Type", "application/json")
       .set("Accept", "application/json")
+      .set("X-CSRFToken", cookies.get("csrftoken"))
       .end((err, res) => {
         if (err) {
           reject(err);

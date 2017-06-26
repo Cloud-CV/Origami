@@ -45,16 +45,16 @@ class RegisterPage extends React.Component {
       portErrorText: "",
       address: "",
       port: "",
-      currentPort: "",
-      webappaddress: "",
-      tempwebaddress: "",
+      currentPort: "8000",
+      webappaddress: "127.0.0.1",
+      tempwebaddress: "127.0.0.1",
       footerMessage: "",
       coverImage: "",
       deploymentBoxSelectedStatus: false,
       status: "",
       webappUnreachableErrorText: "",
       webappLocalUnreachableErrorText: "",
-      showLocalDeploymentCheckBox: false,
+      showLocalDeploymentCheckBox: true,
       showTerminal: false,
       returning: false,
       inputComponentStepperHighlight: false,
@@ -63,6 +63,7 @@ class RegisterPage extends React.Component {
     };
     this.socket = this.context.socket;
     this.toggleShow = this.toggleShow.bind(this);
+    this.try = this.try.bind(this);
     this.updateDemoModelData = this.updateDemoModelData.bind(this);
     this.onLocalDeploymentCheckBoxCheck = this.onLocalDeploymentCheckBoxCheck.bind(
       this
@@ -82,6 +83,7 @@ class RegisterPage extends React.Component {
   componentWillMount() {
     getDeployed(this.state.userid, this.props.params.repoId)
       .then(singleRepo => {
+        console.log("Chala");
         if (this.props.params.repoId) {
           if (JSON.parse(singleRepo).length !== 0) {
             this.setState({ returning: true });
@@ -116,9 +118,11 @@ class RegisterPage extends React.Component {
             }
           }
         }
+        console.log("Yaha tak" + this.props.params.repoId);
       })
       .then(() => {
         if (this.props.params.repoId) {
+          console.log("Yes")
           getComponentDeployed(
             this.state.userid,
             this.props.params.repoId,
@@ -154,28 +158,37 @@ class RegisterPage extends React.Component {
             }
           });
         }
-        this.socket.emit("fetchcurrentport");
-        this.socket.emit("getpublicipaddress");
-        this.socket.on("fetchedcurrentport", port => {
-          this.setState({ currentPort: port });
-        });
-        this.setState({ showLocalDeploymentCheckBox: true });
-        this.socket.on("gotpublicip", ip => {
-          this.setState({ webappaddress: ip }, () => {
-            if (this.state.tempwebaddress.length === 0) {
-              this.setState({ tempwebaddress: this.state.webappaddress });
-            }
-          });
-          getWebAppStatus(ip).then(() => {}).catch(err => {
-            this.setState({
-              webappUnreachableErrorText: "This WebApp cannot be reached on it's public IP"
+        console.log("This gets called");
+        let socket = this.socket;
+        socket.send(JSON.stringify({
+          "event": "fetchcurrentport",
+        }));
+        socket.send(JSON.stringify({
+          "event": "getpublicipaddress",
+        }));
+        socket.onmessage = function(response) {
+          console.log(response);
+          let data = JSON.parse(response.data);
+          const event = data["event"];
+          data = data["data"]
+          if (event === "fetchedcurrentport"){
+            this.setState({ currentPort: data });
+          }
+          else if (event === "gotpublicip"){
+            this.setState({ webappaddress: data }, () => {
+              if (this.state.tempwebaddress.length === 0) {
+                this.setState({ tempwebaddress: this.state.webappaddress });
+              }
             });
-          });
-          this.toggleShow();
-        });
-        this.socket.on("erroringettingpublicip", err => {
-          toastr.error("Error in getting public IP :(");
-        });
+            getWebAppStatus(data).then(() => {}).catch(err => {
+              this.setState({
+                webappUnreachableErrorText: "This WebApp cannot be reached on it's public IP"
+              });
+            });
+            this.toggleShow();
+          }
+        }.bind(this);
+        this.setState({ showLocalDeploymentCheckBox: true });
       });
   }
 
@@ -383,6 +396,10 @@ class RegisterPage extends React.Component {
     this.setState({
       showOutput: this.state.showOutput === "visible" ? "hidden" : "visible"
     });
+  }
+
+  try() {
+    console.log("Yehi");
   }
 
   render() {

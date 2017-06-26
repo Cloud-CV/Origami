@@ -3,7 +3,7 @@ const appConfig = require("../../../outCalls/config");
 import { baseURL } from "./baseURL";
 
 export function getComponentDeployed(userid, repoId, type) {
-  let URL = `${baseURL}/api/${type}model/${userid}`;
+  let URL = `${baseURL}/api/${type}component/${userid}`;
   if (repoId) {
     URL += `/${repoId}`;
   }

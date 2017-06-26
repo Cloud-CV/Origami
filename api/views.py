@@ -7,6 +7,7 @@ from api.serializers import *
 from api.models import *
 from django.contrib.auth.models import User
 from allauth.socialaccount.models import SocialAccount, SocialToken
+from django.http import QueryDict
 
 
 class DemoViewSet(ModelViewSet):
@@ -19,14 +20,6 @@ class DemoViewSet(ModelViewSet):
 
     def get_queryset(self):
         return Demo.objects.all()
-
-    @detail_route(methods=['get'])
-    def user_demo(self, request, id, userid):
-        demo = Demo.objects(id=id, userid=userid).first()
-        serialize = DemoSerializer(demo)
-        return JsonResponse(serialize.data)
-
-user_demo = DemoViewSet.as_view({'get': 'user_demo'})
 
 
 class InputComponentViewSet(ModelViewSet):
@@ -100,3 +93,227 @@ def redirect_login(req):
     acc = SocialAccount.objects.get(user=user)
     token = SocialToken.objects.get(account=acc)
     return HttpResponseRedirect('/login?status=passed&token=' + token.token + '&username=' + user.username + '&userid=' + str(user.id))
+
+def isCloudCV(request):
+    settings = RootSettings.objects.all().first()
+    send = {
+        "isCloudCV" : settings.isCloudCV,
+        "rootUserGithubLoginId" : settings.rootUserGithubLoginId,
+        "appip" : settings.appip,
+        "port" : settings.port
+    }
+    return JsonResponse(send)
+
+def getAllDemos(request, id):
+    demos = Demo.objects.filter(userid = id)
+    response = []
+    for demo in demos:
+        d = {
+            "id" : demo.id,
+            "userid" : demo.userid
+        }
+        response.append(d)
+    return JsonResponse(response, safe=False)
+
+def custom_component_controller(request, type_req, userid, demoid):
+    model = ""
+    if type_req ==  "input":
+        model = InputComponent
+    elif type_req == "output":
+        model = OutputComponent
+    else:
+        return HttpResponse("Invalid URL")
+    if request.method == "POST":
+        body = json.loads(request.body)
+        demo_id = body["id"]
+        demo = Demo.objects.get(id=demo_id)
+        base_comp_id = body["baseComponentId"]
+        props = body["props"]
+        user_id = body["userid"]
+
+        model.objects.create(demo=demo, baseComponentId=base_comp_id, 
+            props=props, userid=user_id, id = demo_id)
+        return JsonResponse(body)
+    elif request.method == "GET":
+        if userid:
+            if demoid:
+                demo = Demo.objects.get(id=demoid)
+                
+                try:
+                    component = model.objects.get(demo=demo)
+                
+                except Exception,e:
+                    return JsonResponse({})
+                
+                send = {
+                    "id" : demoid,
+                    "userid" : userid,
+                    "baseComponentId" : component.baseComponentId,
+                    "props" : component.props
+                }
+                return JsonResponse(send)
+            else:
+                components = model.objects.filter(userid = userid)
+                response = []
+                for component in components:
+                    d = {
+                        "id" : component.demo.id,
+                        "userid" : component.userid,
+                        "baseComponentId" : component.baseComponentId,
+                        "props" : component.props
+                    }
+                    response.append(d)
+                return JsonResponse(response, safe=False)
+        else:
+            return HttpResponse("Invalid URL")
+    elif request.method == "PUT":
+        body = QueryDict(request.body)
+        if userid and demoid:
+            component = model.objects.get(id=demoid, userid = userid)
+            component.baseComponentId = body["baseComponentId"]
+            component.props = body["props"]
+            component.save()
+            return JsonResponse(body)
+        else:    
+            return HttpResponse("Invalid URL")
+    elif request.method == "DELETE":
+        if userid and demoid:
+            model.objects.get(id=demoid, userid = userid).delete()
+            return JsonResponse({"removed":True})
+        else:
+            return HttpResponse("Invalid URL")
+    return HttpResponse("Invalid URL")
+
+def alive(request):
+    return HttpResponse(status=200)
+
+
+def custom_demo_controller(request, userid, id):
+    if request.method == "GET":
+        if id:
+            try:
+                demo = Demo.objects.get(id=id, userid=userid)
+            except Exception,e:
+                return JsonResponse({})
+            serialize = DemoSerializer(demo)
+            return JsonResponse(serialize.data)
+        else:
+            demos = Demo.objects.filter(userid=userid)
+            serialize = DemoSerializer(demos, many=True)
+            return JsonResponse(serialize.data, safe=False)
+    elif request.method == "POST":
+        body = json.loads(request.body)
+        name = body["name"]
+        id = body["id"]
+        userid = body["userid"]
+        address = body ["address"]
+        description = body["description"]
+        footerMessage = body["footerMessage"]
+        coverImage = body["coverImage"]
+        terminal = body["terminal"]
+        timestamp = body["timestamp"]
+        token = body["token"]
+        status = body["status"]
+        demo = Demo.objects.create(name=name, id=id, userid=userid, 
+                address=address, description=description, footerMessage=footerMessage,
+                coverImage=coverImage, terminal=terminal, timestamp=timestamp,
+                token=token, status=status)
+        serialize = DemoSerializer(demo)
+        return JsonResponse(serialize.data)
+
+    elif request.method == "PUT":
+        if id and userid:
+            body = QueryDict(request.body)
+            demo = Demo.objects.get(id=id, userid=userid)
+            demo.name = body["name"]
+            demo.address = body ["address"]
+            demo.description = body["description"]
+            demo.footerMessage = body["footerMessage"]
+            demo.coverImage = body["coverImage"]
+            demo.terminal = body["terminal"]
+            #demo.timestamp = body["timestamp"]
+            demo.token = body["token"]
+            demo.status = body["status"]
+            demo.save()
+            serialize = DemoSerializer(demo)
+            return JsonResponse(serialize.data, safe=False)
+        else:
+            return Http("Invalid URL")
+
+    elif request.method == "DELETE":
+        if userid and id:
+            Demo.objects.get(id=id, userid = userid).delete()
+            return JsonResponse({"removed":True})
+        else:
+            return HttpResponse("Invalid URL")
+    return HttpResponse("Invalid URL")
+
+
+def getpermalink(request, shorturl):
+    
+    try:
+        permalink = Permalink.objects.get(shortRelativeURL=shorturl)
+
+    except Exception,e:
+                return JsonResponse({})
+    send = {
+        "shortRelativeURL" : shorturl,
+        "fullRelativeURL" : permalink.fullRelativeURL,
+        "projectId" : permalink.demoid,
+        "userId" : permalink.userid
+    }
+    return JsonResponse(send)
+
+def custom_permalink_controller(request, userid, demoid):
+    
+    if request.method == "GET":
+        
+        if userid and demoid:
+        
+            try:
+                permalink = Permalink.objects.get(demoid=demoid, userid=userid)
+        
+            except Exception,e:
+                return JsonResponse({})
+        
+            return JsonResponse(PermalinkSerializer(permalink).data)
+        
+        else:
+            try:
+                permalinks = Permalink.objects.all()
+        
+            except Exception,e:
+                return JsonResponse({})
+
+            return JsonResponse(PermalinkSerializer(permalinks, many=True).data, safe=False)
+
+    elif request.method == "POST":
+        print request.body
+        body = json.loads(request.body)
+        shortRelativeURL = body["shortRelativeURL"]
+        fullRelativeURL = body["fullRelativeURL"]
+        projectId = body["projectId"]
+        userid = body["userId"]
+        permalink = Permalink.objects.create(shortRelativeURL=shortRelativeURL,
+                    fullRelativeURL=fullRelativeURL, demoid=projectId, userid=userid)
+        return JsonResponse(PermalinkSerializer(permalink).data)
+
+    elif request.method == "PUT":
+        if userid and demoid:
+            body = QueryDict(request.body)
+            perm = Permalink.objects.get(userid=userid, demoid=demoid)
+            perm.shortRelativeURL = body["shortRelativeURL"]
+            perm.fullRelativeURL = body["fullRelativeURL"]
+            perm.save()
+            return JsonResponse(PermalinkSerializer(perm).data)
+        else:
+            return HttpResponse("Invalid URL")
+
+    elif request.method == "DELETE":
+        if userid and id:
+            Permalink.objects.get(demoid=id, userid = userid).delete()
+            return JsonResponse({"removed":True})
+        else:
+            return HttpResponse("Invalid URL")
+    return HttpResponse("Invalid URL")
+

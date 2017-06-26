@@ -22,6 +22,7 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "antd": "^2.10.4",
+    "babel-plugin-import": "^1.2.1",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-polyfill": "^6.23.0",
     "babel-preset-es2015": "^6.22.0",
@@ -54,6 +55,7 @@
     "socket.io": "^1.7.3",
     "socket.io-client": "^1.7.3",
     "toastr": "^2.1.2",
+    "universal-cookie": "^2.0.8",
     "victory": "^0.18.0"
   },
   "devDependencies": {

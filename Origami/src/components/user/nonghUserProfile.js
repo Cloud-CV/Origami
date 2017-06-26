@@ -60,7 +60,9 @@ class NonGHUserProfile extends React.Component {
     this.props.useractions
       .LoadUser()
       .then(() => {
-        getDeployed(this.props.user.id)
+        console.log("See");
+        console.log(this.props.user.id);
+        getDeployed(3)
           .then(alldeployedRepos => {
             this.setState({ allDeployed: JSON.parse(alldeployedRepos) });
           })

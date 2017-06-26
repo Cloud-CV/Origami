@@ -24,18 +24,24 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 router.register(r'demo', DemoViewSet, r"demo")
 router.register(r'input-component', InputComponentViewSet, r"input-component")
-router.register(r'output-component', InputComponentViewSet, r"output-component")
-router.register(r'getpermalink', DemoViewSet, r"getpermalink")
-router.register(r'root-settings', DemoViewSet, r"root-settings")
+router.register(r'output-component', OutputComponentViewSet, r"output-component")
+router.register(r'get-permalink', PermalinkViewSet, r"get-permalink")
+router.register(r'root-settings', RootSettingsViewSet, r"root-settings")
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'alive', alive),
     url(r'^accounts/profile', redirect_login),
     url(r'^auth/', include('allauth.urls')),
+    url(r'api/isCloudCV', isCloudCV),
+    url(r'api/getpermalink/([A-Za-z0-9]+)/?$', getpermalink),
+    url(r'api/demo/user/(\d+)', getAllDemos),
+    url(r'api/(input|output)component/?(\d*)/?(\d*)', custom_component_controller),
+    url(r'^api/demo/(\d+)/?(\d*)', custom_demo_controller),
+    url(r'^api/permalink/?(\d*)/?(\d*)', custom_permalink_controller),
     url(r'^api/', include(router.urls, namespace='api')),
-    url(r'^api/demo/(\d+)/(\d+)', user_demo),
-    url(r'^api/input-component/(\d+)/(\d+)', user_input_component),
-    url(r'^api/output-component/(\d+)/(\d+)', user_output_component),
+    #url(r'^api/input-component/(\d+)/(\d+)', user_input_component),
+    #url(r'^api/output-component/(\d+)/(\d+)', user_output_component),
     url(r'^$',
         generic.TemplateView.as_view(template_name='view1.html')),
     url(r'^(?:.*)/?$',

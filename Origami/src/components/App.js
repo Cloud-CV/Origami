@@ -25,15 +25,35 @@ class App extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.initiateLogin = this.initiateLogin.bind(this);
     this.logout = this.logout.bind(this);
+    this.setSocket = this.setSocket.bind(this);
     this.readSessionToken = this.readSessionToken.bind(this);
     this.clearSessionFlag = this.clearSessionFlag.bind(this);
     this.setSessionFlag = this.setSessionFlag.bind(this);
-    this.socket = io();
+    let ws_scheme = "ws";
+    this.socket= new WebSocket(ws_scheme + '://' + window.location.host + "/chat/");
+    let socket = this.socket
     this.socketId = Math.random().toString(36);
-    this.socket.on("connect", () => {
-      console.log("Emitting");
-      this.socket.emit("savesessiontoken", this.socketId);
-    });
+    socket.onopen = function() {
+      // var $toastContent = $('<span>Websocket connection established.</span>');
+      // Materialize.toast($toastContent, 5000, 'rounded');
+      console.log("Sending");
+      socket.send(JSON.stringify({
+        "event": "ConnectionEstablished",
+        "socketid": this.socketId,
+      }));
+    }
+    socket.onmessage = function(response) {
+      console.log("Message aaya");
+      //response = JSON.parse(response.data);
+      // var $toastContent = $('<span>Websocket connection established.</span>');
+      // Materialize.toast($toastContent, 5000, 'rounded');
+      console.log(response.data);
+      /*socket.send(JSON.stringify({
+        "event": "message",
+        "socketid": this.socketId,
+      }));*/
+    }
+    console.log("Done");
   }
 
   getChildContext() {
@@ -41,6 +61,10 @@ class App extends React.Component {
       socket: this.socket,
       socketId: this.socketId
     };
+  }
+
+  setSocket() {
+    console.log("Testqwe");
   }
 
   componentWillMount() {
@@ -85,7 +109,7 @@ class App extends React.Component {
   }
 
   initiateLogin() {
-    window.location = "/auth/github/login";
+    window.location = "/auth/github/login/";
   }
 
   logout() {

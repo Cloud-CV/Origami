@@ -32,7 +32,7 @@ class SelectOutputComponentPage extends React.Component {
       "output"
     )
       .then(outputComponentSeedData => {
-        if (JSON.parse(outputComponentSeedData).length !== 0) {
+        if (JSON.parse(outputComponentSeedData).length > 0) {
           let dataToSeed = {
             id: JSON.parse(outputComponentSeedData)[0].id,
             userid: JSON.parse(outputComponentSeedData)[0].userid,
@@ -50,7 +50,7 @@ class SelectOutputComponentPage extends React.Component {
           this.props.params.repoId,
           "output"
         ).then(outputComponentSeedData => {
-          if (JSON.parse(outputComponentSeedData).length !== 0) {
+          if (JSON.parse(outputComponentSeedData).length > 0) {
             this.setState({ outputComponentStepperHighlight: true });
           }
         });

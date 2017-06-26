@@ -7,10 +7,12 @@ import json
 # Create your models here.
 
 class Demo(models.Model):
+    name = models.CharField(max_length=100)
     id = models.IntegerField(primary_key=True)
     userid = models.IntegerField()
     coverImage = models.CharField(max_length=300)
     footerMessage = models.CharField(max_length=400)
+    address = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
     terminal = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True, blank=True)
@@ -22,7 +24,8 @@ class InputComponent(models.Model):
     baseComponentId = models.IntegerField()
     props = models.TextField()
     demo = models.OneToOneField(Demo, on_delete=models.CASCADE)
-    
+    userid = models.IntegerField()
+
     def setprops(self, props):
     	self.props = json.dumps(props)
 
@@ -34,6 +37,7 @@ class OutputComponent(models.Model):
     baseComponentId = models.IntegerField()
     props = models.TextField()
     demo = models.OneToOneField(Demo, on_delete=models.CASCADE)
+    userid = models.IntegerField()
     
     def setprops(self, props):
     	self.props = json.dumps(props)
@@ -45,7 +49,8 @@ class OutputComponent(models.Model):
 class Permalink(models.Model):
     shortRelativeURL = models.CharField(max_length=100)
     fullRelativeURL = models.CharField(max_length=300)
-    demo = models.OneToOneField(Demo, on_delete=models.CASCADE)
+    demoid = models.IntegerField()
+    userid = models.IntegerField()
 
 class RootSettings(models.Model):
     rootUserGithubLoginId = models.IntegerField()
