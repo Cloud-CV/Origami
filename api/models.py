@@ -23,7 +23,7 @@ class InputComponent(models.Model):
     id = models.IntegerField(primary_key=True)
     baseComponentId = models.IntegerField()
     props = models.TextField()
-    demo = models.OneToOneField(Demo, on_delete=models.CASCADE)
+    demo = models.OneToOneField(Demo)
     userid = models.IntegerField()
 
     def setprops(self, props):
@@ -36,7 +36,7 @@ class OutputComponent(models.Model):
     id = models.IntegerField(primary_key=True)
     baseComponentId = models.IntegerField()
     props = models.TextField()
-    demo = models.OneToOneField(Demo, on_delete=models.CASCADE)
+    demo = models.OneToOneField(Demo)
     userid = models.IntegerField()
     
     def setprops(self, props):
@@ -49,8 +49,8 @@ class OutputComponent(models.Model):
 class Permalink(models.Model):
     shortRelativeURL = models.CharField(max_length=100)
     fullRelativeURL = models.CharField(max_length=300)
-    demoid = models.IntegerField()
-    userid = models.IntegerField()
+    projectId = models.IntegerField()
+    userId = models.IntegerField()
 
 class RootSettings(models.Model):
     rootUserGithubLoginId = models.IntegerField()

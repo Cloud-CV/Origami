@@ -92,7 +92,16 @@ def redirect_login(req):
     user = User.objects.get(username=req.user.username)
     acc = SocialAccount.objects.get(user=user)
     token = SocialToken.objects.get(account=acc)
-    return HttpResponseRedirect('/login?status=passed&token=' + token.token + '&username=' + user.username + '&userid=' + str(user.id))
+    print req.user.username
+    print user.id
+    print acc.user.id
+    tmp = user
+    user = user.delete()
+    tmp.id = acc.uid
+    tmp.save()
+    acc.user = tmp
+    acc.save()
+    return HttpResponseRedirect('/login?status=passed&token=' + token.token + '&username=' + tmp.username + '&userid=' + str(tmp.id))
 
 def isCloudCV(request):
     settings = RootSettings.objects.all().first()
@@ -124,11 +133,16 @@ def custom_component_controller(request, type_req, userid, demoid):
     else:
         return HttpResponse("Invalid URL")
     if request.method == "POST":
+        print request.body
+        print request.POST
         body = json.loads(request.body)
         demo_id = body["id"]
         demo = Demo.objects.get(id=demo_id)
         base_comp_id = body["baseComponentId"]
-        props = body["props"]
+        props = []
+        for prop in body["props"]:
+            if prop:
+                props.append(prop.encode("ascii", "ignore").replace("'","\\" + "\'"))
         user_id = body["userid"]
 
         model.objects.create(demo=demo, baseComponentId=base_comp_id, 
@@ -137,21 +151,23 @@ def custom_component_controller(request, type_req, userid, demoid):
     elif request.method == "GET":
         if userid:
             if demoid:
+                print "HE"
                 demo = Demo.objects.get(id=demoid)
-                
+                print "RE"
                 try:
-                    component = model.objects.get(demo=demo)
-                
+                    component = model.objects.get(userid=userid, demo=demo)
+                    print "N"
                 except Exception,e:
+                    print "O"
                     return JsonResponse({})
                 
-                send = {
+                send = [{
                     "id" : demoid,
                     "userid" : userid,
                     "baseComponentId" : component.baseComponentId,
-                    "props" : component.props
-                }
-                return JsonResponse(send)
+                    "props" : json.loads(component.props)
+                }]
+                return JsonResponse(send, safe=False)
             else:
                 components = model.objects.filter(userid = userid)
                 response = []
@@ -167,11 +183,15 @@ def custom_component_controller(request, type_req, userid, demoid):
         else:
             return HttpResponse("Invalid URL")
     elif request.method == "PUT":
-        body = QueryDict(request.body)
+        body = json.loads(request.body)
         if userid and demoid:
             component = model.objects.get(id=demoid, userid = userid)
             component.baseComponentId = body["baseComponentId"]
-            component.props = body["props"]
+            props = []
+            for prop in body["props"]:
+                if prop:
+                    props.append(prop.encode("ascii", "ignore").replace("'","\\" + "\'"))
+            component.props = props        
             component.save()
             return JsonResponse(body)
         else:    
@@ -264,20 +284,17 @@ def getpermalink(request, shorturl):
     }
     return JsonResponse(send)
 
-def custom_permalink_controller(request, userid, demoid):
+def custom_permalink_controller(request, userId, projectId):
     
-    if request.method == "GET":
-        
-        if userid and demoid:
-        
+    if request.method == "GET":    
+        if userId and projectId:
             try:
-                permalink = Permalink.objects.get(demoid=demoid, userid=userid)
-        
+                permalink = Permalink.objects.get(projectId=projectId, userId=userId)
+            
             except Exception,e:
                 return JsonResponse({})
         
             return JsonResponse(PermalinkSerializer(permalink).data)
-        
         else:
             try:
                 permalinks = Permalink.objects.all()
@@ -293,15 +310,15 @@ def custom_permalink_controller(request, userid, demoid):
         shortRelativeURL = body["shortRelativeURL"]
         fullRelativeURL = body["fullRelativeURL"]
         projectId = body["projectId"]
-        userid = body["userId"]
+        userId = body["userId"]
         permalink = Permalink.objects.create(shortRelativeURL=shortRelativeURL,
-                    fullRelativeURL=fullRelativeURL, demoid=projectId, userid=userid)
+                    fullRelativeURL=fullRelativeURL, projectId=projectId, userId=userId)
         return JsonResponse(PermalinkSerializer(permalink).data)
 
     elif request.method == "PUT":
-        if userid and demoid:
+        if userId and projectId:
             body = QueryDict(request.body)
-            perm = Permalink.objects.get(userid=userid, demoid=demoid)
+            perm = Permalink.objects.get(userId=userId, projectId=projectId)
             perm.shortRelativeURL = body["shortRelativeURL"]
             perm.fullRelativeURL = body["fullRelativeURL"]
             perm.save()
@@ -310,8 +327,8 @@ def custom_permalink_controller(request, userid, demoid):
             return HttpResponse("Invalid URL")
 
     elif request.method == "DELETE":
-        if userid and id:
-            Permalink.objects.get(demoid=id, userid = userid).delete()
+        if userId and projectId:
+            Permalink.objects.get(projectId=projectId, userId = userId).delete()
             return JsonResponse({"removed":True})
         else:
             return HttpResponse("Invalid URL")
