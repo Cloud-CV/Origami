@@ -62,13 +62,15 @@ class NonGHUserProfile extends React.Component {
       .then(() => {
         console.log("See");
         console.log(this.props.user.id);
-        getDeployed(3)
+        getDeployed(this.props.user.id)
           .then(alldeployedRepos => {
             this.setState({ allDeployed: JSON.parse(alldeployedRepos) });
           })
           .then(() => {
             const stateToPut = {};
             getAllPermalink().then(data => {
+              console.log("Avais")
+              console.log(data);
               JSON.parse(data).map(perma => {
                 stateToPut[perma.userId] = {};
                 stateToPut[perma.userId][perma.projectId] = perma;
@@ -108,14 +110,6 @@ class NonGHUserProfile extends React.Component {
     this.props.nonghModelActions
       .killNonGHDemoModel(this.props.user.id, projectId)
       .then(() => {
-        this.props.inputComponentModelActions.killInputComponentModel(
-          this.props.user.id,
-          projectId
-        );
-        this.props.outputComponentDemoModelActions.killOutputComponentModel(
-          this.props.user.id,
-          projectId
-        );
         getDeployed(this.props.user.id)
           .then(alldeployedRepos => {
             this.setState({ allDeployed: JSON.parse(alldeployedRepos) }, () => {

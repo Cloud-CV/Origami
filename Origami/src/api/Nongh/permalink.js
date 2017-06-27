@@ -59,6 +59,7 @@ export function modifyPermalink(data) {
       .send(data)
       .set("Content-Type", "application/json")
       .set("Accept", "application/json")
+      .set("X-CSRFToken", cookies.get("csrftoken"))
       .end((err, res) => {
         if (err) {
           reject(err);
@@ -72,7 +73,10 @@ export function modifyPermalink(data) {
 export function deletePermalink(data) {
   let URL = `${baseURL}/api/permalink/${data.userId}/${data.projectId}`;
   return new Promise((resolve, reject) => {
-    request.delete(URL).set("Accept", "application/json").end((err, res) => {
+    request.delete(URL)
+    .set("Accept", "application/json")
+    .set("X-CSRFToken", cookies.get("csrftoken"))
+    .end((err, res) => {
       if (err) {
         reject(err);
       } else {
