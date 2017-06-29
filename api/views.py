@@ -143,6 +143,9 @@ def custom_component_controller(request, type_req, userid, demoid):
         for prop in body["props"]:
             if prop:
                 props.append(prop.encode("ascii", "ignore").replace("'","\\" + "\'"))
+            else:
+                props.append({})
+        print props
         user_id = body["userid"]
 
         model.objects.create(demo=demo, baseComponentId=base_comp_id, 
@@ -151,14 +154,10 @@ def custom_component_controller(request, type_req, userid, demoid):
     elif request.method == "GET":
         if userid:
             if demoid:
-                print "HE"
                 demo = Demo.objects.get(id=demoid)
-                print "RE"
                 try:
                     component = model.objects.get(userid=userid, demo=demo)
-                    print "N"
                 except Exception,e:
-                    print "O"
                     return JsonResponse({})
                 
                 send = [{
@@ -191,6 +190,8 @@ def custom_component_controller(request, type_req, userid, demoid):
             for prop in body["props"]:
                 if prop:
                     props.append(prop.encode("ascii", "ignore").replace("'","\\" + "\'"))
+                else:
+                    props.append({})
             component.props = props        
             component.save()
             return JsonResponse(body)
