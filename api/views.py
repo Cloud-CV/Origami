@@ -7,7 +7,6 @@ from api.serializers import *
 from api.models import *
 from django.contrib.auth.models import User
 from allauth.socialaccount.models import SocialAccount, SocialToken
-from django.http import QueryDict
 
 
 class DemoViewSet(ModelViewSet):
@@ -217,7 +216,7 @@ def custom_demo_controller(request, userid, id):
             except Exception,e:
                 return JsonResponse({})
             serialize = DemoSerializer(demo)
-            return JsonResponse(serialize.data)
+            return JsonResponse([serialize.data], safe=False)
         else:
             demos = Demo.objects.filter(userid=userid)
             serialize = DemoSerializer(demos, many=True)
@@ -244,7 +243,7 @@ def custom_demo_controller(request, userid, id):
 
     elif request.method == "PUT":
         if id and userid:
-            body = QueryDict(request.body)
+            body = json.loads(request.body)
             demo = Demo.objects.get(id=id, userid=userid)
             demo.name = body["name"]
             demo.address = body ["address"]
@@ -273,17 +272,19 @@ def custom_demo_controller(request, userid, id):
 def getpermalink(request, shorturl):
     
     try:
-        permalink = Permalink.objects.get(shortRelativeURL=shorturl)
+        permalink = Permalink.objects.get(shortRelativeURL='/p/' + shorturl)
 
     except Exception,e:
-                return JsonResponse({})
-    send = {
+        print e
+        return JsonResponse({})
+
+    send = [{
         "shortRelativeURL" : shorturl,
         "fullRelativeURL" : permalink.fullRelativeURL,
-        "projectId" : permalink.demoid,
-        "userId" : permalink.userid
-    }
-    return JsonResponse(send)
+        "projectId" : permalink.projectId,
+        "userId" : permalink.userId
+    }]
+    return JsonResponse(send, safe=False)
 
 def custom_permalink_controller(request, userId, projectId):
     
@@ -318,7 +319,7 @@ def custom_permalink_controller(request, userId, projectId):
 
     elif request.method == "PUT":
         if userId and projectId:
-            body = QueryDict(request.body)
+            body = json.loads(request.body)
             perm = Permalink.objects.get(userId=userId, projectId=projectId)
             perm.shortRelativeURL = body["shortRelativeURL"]
             perm.fullRelativeURL = body["fullRelativeURL"]

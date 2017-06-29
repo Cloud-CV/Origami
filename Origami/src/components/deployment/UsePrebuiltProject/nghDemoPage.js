@@ -33,7 +33,7 @@ class NGHDemoPage extends React.Component {
   componentWillMount() {
     $("body").css("overflow", "hidden");
 
-    this.socket.on("injectoutputdata", data => {
+    /*this.socket.on("injectoutputdata", data => {
       if (data.data) {
         this.setState({
           outputData: Object.assign(
@@ -74,9 +74,12 @@ class NGHDemoPage extends React.Component {
         },
         1000
       );
-    });
+    });*/
     this.setState({ userid: parseInt(this.props.params.userid, 10) }, () => {
       getDeployed(this.state.userid, this.props.params.repoId).then(data => {
+        console.log(this.state.userid);
+        console.log(this.state.repoId);
+        console.log(data);
         this.setState({ demoModel: JSON.parse(data)[0] }, () => {
           if (this.state.demoModel.terminal) {
             this.setState({ showTerminal: true });

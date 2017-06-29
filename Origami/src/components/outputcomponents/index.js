@@ -18,7 +18,14 @@ import PieChartOutputShowCaseCard
 import AreaGraphOutputShowCaseCard
   from "./AreaGraphOutput/AreaGraphOutputShowcaseCard";
 
-export function getOutputComponentById(id, headers, calling_context, data) {
+export function getOutputComponentById(id, props, calling_context, data) {
+  let headers = [];
+  props.map((header, index) => {
+    if (typeof header === 'object'){
+      header = "";
+    }
+    headers[index] = header;
+  });
   switch (id) {
     case 1:
       return (
