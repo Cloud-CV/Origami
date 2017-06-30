@@ -29,7 +29,7 @@ router.register(r'get-permalink', PermalinkViewSet, r"get-permalink")
 router.register(r'root-settings', RootSettingsViewSet, r"root-settings")
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^admin', admin.site.urls),
     url(r'alive', alive),
     url(r'^accounts/profile', redirect_login),
     url(r'^auth/', include('allauth.urls')),

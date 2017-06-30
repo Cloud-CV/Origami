@@ -68,8 +68,11 @@ class NonGHUserProfile extends React.Component {
             const stateToPut = {};
             getAllPermalink().then(data => {
               JSON.parse(data).map(perma => {
-                stateToPut[perma.userId] = {};
+                if (!stateToPut[perma.userId]) {
+                  stateToPut[perma.userId] = {};
+                }
                 stateToPut[perma.userId][perma.projectId] = perma;
+                console.log(stateToPut[perma.userId][perma.projectId]);
                 this.setState({
                   permalinkHolder: Object.assign({}, stateToPut)
                 });
@@ -314,11 +317,12 @@ class NonGHUserProfile extends React.Component {
                           },
                           {
                             label: "Get Permalink",
-                            onDeployClick: () =>
+                            onDeployClick: () => { 
+                              console.log(this.state.permalinkHolder);
                               this.toggleShowDataDialog({
                                 type: "permalink",
                                 content: `${window.location.protocol}//${window.location.host}${this.state.permalinkHolder[this.state.user.id][project.id].shortRelativeURL}`
-                              })
+                              })}
                           },
                           {
                             label: "Get Token",
