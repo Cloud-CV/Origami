@@ -1,6 +1,9 @@
 import request from "superagent";
 const appConfig = require("../../../outCalls/config");
 import { baseURL } from "./baseURL";
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 export function checkRootSettings() {
   let URL = `${baseURL}/api/rootsettings`;
@@ -23,6 +26,7 @@ export function addRootSettings(settingsData) {
       .send(settingsData)
       .set("Content-Type", "application/json")
       .set("Accept", "application/json")
+      .set("X-CSRFToken", cookies.get("csrftoken"))
       .end((err, res) => {
         if (err) {
           reject(err);

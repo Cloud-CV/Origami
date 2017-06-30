@@ -34,6 +34,7 @@ urlpatterns = [
     url(r'^accounts/profile', redirect_login),
     url(r'^auth/', include('allauth.urls')),
     url(r'api/isCloudCV', isCloudCV),
+    url(r'api/rootsettings', rootsettings),
     url(r'api/getpermalink/([A-Za-z0-9]+)/?$', getpermalink),
     url(r'api/demo/user/(\d+)', getAllDemos),
     url(r'api/(input|output)component/?(\d*)/?(\d*)', custom_component_controller),

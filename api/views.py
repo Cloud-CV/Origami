@@ -330,3 +330,11 @@ def custom_permalink_controller(request, userId, projectId):
             return HttpResponse("Invalid URL")
     return HttpResponse("Invalid URL")
 
+def rootsettings(request):
+    body = json.loads(request.body)
+    root = RootSettings.objects.create(rootUserGithubLoginId=body["rootUserGithubLoginId"],
+            rootUserGithubLoginName=body["rootUserGithubLoginName"], 
+            clientid=body["clientid"], clientsecret=body["clientsecret"],
+            isCloudCV=body["isCloudCV"], allowNewLogins=body["allowNewLogins"],
+            appip=body["appip"], port=body["port"])
+    return JsonResponse(body)
