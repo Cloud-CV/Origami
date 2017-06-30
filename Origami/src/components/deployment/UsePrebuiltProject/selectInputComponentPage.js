@@ -26,10 +26,8 @@ class SelectInputComponentPage extends React.Component {
   }
 
   componentWillMount() {
-    console.log(this.state.userid, this.props.params.repoId)
     getComponentDeployed(this.state.userid, this.props.params.repoId, "input")
       .then(inputComponentSeedData => {
-        console.log(JSON.parse(inputComponentSeedData).length);
         if (JSON.parse(inputComponentSeedData).length > 0) {
           let dataToSeed = {
             id: JSON.parse(inputComponentSeedData)[0].id,

@@ -24,8 +24,6 @@ export function updateInputComponentModel(newModelData) {
         newModelData.id,
         "input"
       ).then(data => {
-        console.log(data);
-        console.log(JSON.parse(data).length);
         if (JSON.parse(data).length > 0) {
           modifyComponentDeployed(newModelData.userid, newModelData, "input")
             .then(() => {

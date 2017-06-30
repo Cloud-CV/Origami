@@ -63,7 +63,6 @@ class RegisterPage extends React.Component {
     };
     this.socket = this.context.socket;
     this.toggleShow = this.toggleShow.bind(this);
-    this.try = this.try.bind(this);
     this.updateDemoModelData = this.updateDemoModelData.bind(this);
     this.onLocalDeploymentCheckBoxCheck = this.onLocalDeploymentCheckBoxCheck.bind(
       this
@@ -83,7 +82,6 @@ class RegisterPage extends React.Component {
   componentWillMount() {
     getDeployed(this.state.userid, this.props.params.repoId)
       .then(singleRepo => {
-        console.log("Chala");
         if (this.props.params.repoId) {
           if (JSON.parse(singleRepo).length !== 0) {
             this.setState({ returning: true });
@@ -118,11 +116,9 @@ class RegisterPage extends React.Component {
             }
           }
         }
-        console.log("Yaha tak" + this.props.params.repoId);
       })
       .then(() => {
         if (this.props.params.repoId) {
-          console.log("Yes")
           getComponentDeployed(
             this.state.userid,
             this.props.params.repoId,
@@ -158,7 +154,6 @@ class RegisterPage extends React.Component {
             }
           });
         }
-        console.log("This gets called");
         let socket = this.socket;
         socket.send(JSON.stringify({
           "event": "fetchcurrentport",
@@ -167,7 +162,6 @@ class RegisterPage extends React.Component {
           "event": "getpublicipaddress",
         }));
         socket.onmessage = function(response) {
-          console.log(response);
           let data = JSON.parse(response.data);
           const event = data["event"];
           data = data["data"]
@@ -397,11 +391,7 @@ class RegisterPage extends React.Component {
       showOutput: this.state.showOutput === "visible" ? "hidden" : "visible"
     });
   }
-
-  try() {
-    console.log("Yehi");
-  }
-
+  
   render() {
     let tokenClassName = this.validateTempwebaddress() &&
       this.validateIP() &&

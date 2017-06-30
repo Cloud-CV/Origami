@@ -60,8 +60,6 @@ class NonGHUserProfile extends React.Component {
     this.props.useractions
       .LoadUser()
       .then(() => {
-        console.log("See");
-        console.log(this.props.user.id);
         getDeployed(this.props.user.id)
           .then(alldeployedRepos => {
             this.setState({ allDeployed: JSON.parse(alldeployedRepos) });
@@ -69,8 +67,6 @@ class NonGHUserProfile extends React.Component {
           .then(() => {
             const stateToPut = {};
             getAllPermalink().then(data => {
-              console.log("Avais")
-              console.log(data);
               JSON.parse(data).map(perma => {
                 stateToPut[perma.userId] = {};
                 stateToPut[perma.userId][perma.projectId] = perma;
