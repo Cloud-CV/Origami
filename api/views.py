@@ -91,9 +91,6 @@ def redirect_login(req):
     user = User.objects.get(username=req.user.username)
     acc = SocialAccount.objects.get(user=user)
     token = SocialToken.objects.get(account=acc)
-    print req.user.username
-    print user.id
-    print acc.user.id
     tmp = user
     user = user.delete()
     tmp.id = acc.uid
@@ -125,15 +122,15 @@ def getAllDemos(request, id):
 
 def custom_component_controller(request, type_req, userid, demoid):
     model = ""
+    
     if type_req ==  "input":
         model = InputComponent
     elif type_req == "output":
         model = OutputComponent
     else:
         return HttpResponse("Invalid URL")
+
     if request.method == "POST":
-        print request.body
-        print request.POST
         body = json.loads(request.body)
         demo_id = body["id"]
         demo = Demo.objects.get(id=demo_id)
@@ -144,7 +141,6 @@ def custom_component_controller(request, type_req, userid, demoid):
                 props.append(prop.encode("ascii", "ignore").replace("'","\\" + "\'"))
             else:
                 props.append({})
-        print props
         user_id = body["userid"]
 
         model.objects.create(demo=demo, baseComponentId=base_comp_id, 
@@ -275,7 +271,6 @@ def getpermalink(request, shorturl):
         permalink = Permalink.objects.get(shortRelativeURL='/p/' + shorturl)
 
     except Exception,e:
-        print e
         return JsonResponse({})
 
     send = [{
@@ -307,7 +302,6 @@ def custom_permalink_controller(request, userId, projectId):
             return JsonResponse(PermalinkSerializer(permalinks, many=True).data, safe=False)
 
     elif request.method == "POST":
-        print request.body
         body = json.loads(request.body)
         shortRelativeURL = body["shortRelativeURL"]
         fullRelativeURL = body["fullRelativeURL"]
