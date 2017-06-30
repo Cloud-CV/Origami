@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.views import generic
-
+from api.consumers import inject
 from api.views import *
 
 from rest_framework import routers
@@ -40,6 +40,7 @@ urlpatterns = [
     url(r'^api/demo/(\d+)/?(\d*)', custom_demo_controller),
     url(r'^api/permalink/?(\d*)/?(\d*)', custom_permalink_controller),
     url(r'^api/', include(router.urls, namespace='api')),
+    url(r'^inject$', inject),
     #url(r'^api/input-component/(\d+)/(\d+)', user_input_component),
     #url(r'^api/output-component/(\d+)/(\d+)', user_output_component),
     url(r'^$',

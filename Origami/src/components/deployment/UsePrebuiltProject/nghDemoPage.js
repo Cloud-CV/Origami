@@ -33,53 +33,41 @@ class NGHDemoPage extends React.Component {
   componentWillMount() {
     $("body").css("overflow", "hidden");
 
-    /*this.socket.on("injectoutputdata", data => {
-      if (data.data) {
-        this.setState({
-          outputData: Object.assign(
-            Object.assign([], this.state.outputData),
-            data.data
-          )
-        });
-        $("#appbar-progress").progress({
-          percent: "100%"
-        });
-        setTimeout(
-          () => {
-            $("#appbar-progress").css("visibility", "hidden");
-            $("#appbar-progress").progress({
-              percent: "0%"
-            });
-          },
-          1000
-        );
-      }
-      if (data.terminalData) {
-        this.setState({
-          terminalData: [...data.terminalData, ...this.state.terminalData]
-        });
-      }
-    });
-    this.socket.on("malformedoutputdata", () => {
-      toastr.error("Malformed output data received");
-      $("#appbar-progress").progress({
-        percent: "100%"
-      });
-      setTimeout(
-        () => {
-          $("#appbar-progress").css("visibility", "hidden");
-          $("#appbar-progress").progress({
-            percent: "0%"
+    let socket = this.socket;
+    socket.onmessage = function(response) {
+      let data = JSON.parse(response.data);
+      const event = data["event"];
+      data = data["data"];
+      if (event == "injectoutputdata"){
+        if (data.data) {
+          this.setState({
+            outputData: Object.assign(
+              Object.assign([], this.state.outputData),
+              data.data
+            )
           });
-        },
-        1000
-      );
-    });*/
+          $("#appbar-progress").progress({
+            percent: "100%"
+          });
+          setTimeout(
+            () => {
+              $("#appbar-progress").css("visibility", "hidden");
+              $("#appbar-progress").progress({
+                percent: "0%"
+              });
+            },
+            1000
+          );
+        }
+        if (data.terminalData) {
+          this.setState({
+            terminalData: [...data.terminalData, ...this.state.terminalData]
+          });
+        }
+      }
+    }.bind(this);
     this.setState({ userid: parseInt(this.props.params.userid, 10) }, () => {
       getDeployed(this.state.userid, this.props.params.repoId).then(data => {
-        console.log(this.state.userid);
-        console.log(this.state.repoId);
-        console.log(data);
         this.setState({ demoModel: JSON.parse(data)[0] }, () => {
           if (this.state.demoModel.terminal) {
             this.setState({ showTerminal: true });
