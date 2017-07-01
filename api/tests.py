@@ -223,8 +223,6 @@ class CustomComponentControllerTests(TestCase):
 
     def test_delete_input_component(self):
         payload = self.input_component
-        payload["baseComponentId"] = 3
-        payload.pop("demo", None)
         url =  '/api/inputcomponent/' + str(payload["userid"]) + '/' + str(payload["id"])
         response = self.client.delete(url)
         response = json.loads(response.content)
@@ -290,9 +288,88 @@ class CustomComponentControllerTests(TestCase):
 
     def test_delete_output_component(self):
         payload = self.output_component
-        payload["baseComponentId"] = 3
-        payload.pop("demo", None)
         url =  '/api/outputcomponent/' + str(payload["userid"]) + '/' + str(payload["id"])
+        response = self.client.delete(url)
+        response = json.loads(response.content)
+        self.assertEqual(response["removed"], True)
+
+class CustomPermalinkControllerTests(TestCase):
+
+    def setUp(self):
+        self.permalink = {
+            "shortRelativeURL" : "/p/1az",
+            "fullRelativeURL" : "/qwerty/zxcvb/demo",
+            "projectId" : 20,
+            "userId" : 20
+        }
+        Permalink.objects.create(shortRelativeURL=self.permalink["shortRelativeURL"],
+            fullRelativeURL=self.permalink["fullRelativeURL"], 
+            projectId=self.permalink["projectId"],
+            userId=self.permalink["userId"])
+
+    def test_getpermalink_fn(self):
+        payload = self.permalink
+        payload["shortRelativeURL"] = payload["shortRelativeURL"].split('/')[-1]
+        url = '/api/getpermalink/' +  payload["shortRelativeURL"]
+        responses = self.client.get(url)
+        # It returns a list containing a single demo object
+        response = json.loads(responses.content)[0]
+        self.assertEqual(response["userId"], payload["userId"])
+        self.assertEqual(response["projectId"], payload["projectId"])
+        self.assertEqual(response["shortRelativeURL"], payload["shortRelativeURL"])
+        self.assertEqual(response["fullRelativeURL"], payload["fullRelativeURL"])
+
+    def test_get_one_permalink(self):
+        payload = self.permalink
+        url = '/api/permalink/' +  str(payload["userId"]) + '/' + str(payload["projectId"])
+        response = self.client.get(url)
+        response = json.loads(response.content)
+        self.assertEqual(response["userId"], payload["userId"])
+        self.assertEqual(response["projectId"], payload["projectId"])
+        self.assertEqual(response["shortRelativeURL"], payload["shortRelativeURL"])
+        self.assertEqual(response["fullRelativeURL"], payload["fullRelativeURL"])
+
+    def test_get_all_user_permalink(self):
+        payload = self.permalink
+        url = '/api/permalink/' +  str(payload["userId"])
+        responses = self.client.get(url)
+        response = json.loads(responses.content)[0]
+        self.assertEqual(response["userId"], payload["userId"])
+        self.assertEqual(response["projectId"], payload["projectId"])
+        self.assertEqual(response["shortRelativeURL"], payload["shortRelativeURL"])
+        self.assertEqual(response["fullRelativeURL"], payload["fullRelativeURL"])
+
+    def test_create_permalink(self):
+        payload = {
+            "shortRelativeURL" : "/p/ppoqw",
+            "fullRelativeURL" : "/asdfgh/lkjh/demo",
+            "projectId" : 10,
+            "userId" : 10
+        }
+        url = '/api/permalink/'
+        response = self.client.post(url, json.dumps(payload),
+                     content_type="application/json")
+        response = json.loads(response.content)
+        self.assertEqual(response["userId"], payload["userId"])
+        self.assertEqual(response["projectId"], payload["projectId"])
+        self.assertEqual(response["shortRelativeURL"], payload["shortRelativeURL"])
+        self.assertEqual(response["fullRelativeURL"], payload["fullRelativeURL"])
+
+    def test_modify_permalink(self):
+        payload = self.permalink
+        payload["shortRelativeURL"] = '/p/qazxsw'
+        url = '/api/permalink/' +  str(payload["userId"]) + '/' + str(payload["projectId"])
+        response = self.client.put(url, json.dumps(payload),
+                     content_type="application/json")
+        response = json.loads(response.content)
+        self.assertEqual(response["userId"], payload["userId"])
+        self.assertEqual(response["projectId"], payload["projectId"])
+        self.assertEqual(response["shortRelativeURL"], payload["shortRelativeURL"])
+        self.assertEqual(response["fullRelativeURL"], payload["fullRelativeURL"])
+
+    def test_delete_permalink(self):
+        payload = self.permalink
+        url = '/api/permalink/' +  str(payload["userId"]) + '/' + str(payload["projectId"])
         response = self.client.delete(url)
         response = json.loads(response.content)
         self.assertEqual(response["removed"], True)
