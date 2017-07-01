@@ -6,7 +6,9 @@ from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from api.serializers import *
 from api.models import *
 from django.contrib.auth.models import User
-from allauth.socialaccount.models import SocialAccount, SocialToken
+from allauth.socialaccount.models import SocialAccount, SocialToken, SocialApp
+from django.contrib.sites.models import Site
+import datetime
 
 
 class DemoViewSet(ModelViewSet):
@@ -349,4 +351,9 @@ def rootsettings(request):
                                        isCloudCV=body["isCloudCV"], allowNewLogins=body[
                                            "allowNewLogins"],
                                        appip=body["appip"], port=body["port"])
+    app = SocialApp.objects.create(provider=u'github', name=str(datetime.datetime.now().isoformat()),
+                                   client_id=body["clientid"], secret=body["clientsecret"])
+    site = Site.objects.get(id=1)
+    app.sites.add(site)
+    app.save()
     return JsonResponse(body)
