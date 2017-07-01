@@ -156,8 +156,8 @@ def custom_component_controller(request, type_req, userid, demoid):
                     return JsonResponse({})
                 
                 send = [{
-                    "id" : demoid,
-                    "userid" : userid,
+                    "id" : int(demoid),
+                    "userid" : int(userid),
                     "baseComponentId" : component.baseComponentId,
                     "props" : json.loads(component.props)
                 }]
@@ -170,7 +170,7 @@ def custom_component_controller(request, type_req, userid, demoid):
                         "id" : component.demo.id,
                         "userid" : component.userid,
                         "baseComponentId" : component.baseComponentId,
-                        "props" : component.props
+                        "props" : json.loads(component.props)
                     }
                     response.append(d)
                 return JsonResponse(response, safe=False)
