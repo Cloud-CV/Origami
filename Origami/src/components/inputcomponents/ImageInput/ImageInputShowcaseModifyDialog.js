@@ -33,7 +33,7 @@ class ImageInputShowcaseModifyDialog extends React.Component {
     let tempText = [];
     allLabels.map((label, index) => {
       let currentIndex = allLabels.findIndex(x => x === label);
-      if (typeof label === 'object'){
+      if (typeof label === "object") {
         label = "";
       }
       tempText[currentIndex] = (

@@ -155,20 +155,23 @@ class RegisterPage extends React.Component {
           });
         }
         let socket = this.socket;
-        socket.send(JSON.stringify({
-          "event": "fetchcurrentport",
-        }));
-        socket.send(JSON.stringify({
-          "event": "getpublicipaddress",
-        }));
+        socket.send(
+          JSON.stringify({
+            event: "fetchcurrentport"
+          })
+        );
+        socket.send(
+          JSON.stringify({
+            event: "getpublicipaddress"
+          })
+        );
         socket.onmessage = function(response) {
           let data = JSON.parse(response.data);
           const event = data["event"];
-          data = data["data"]
-          if (event === "fetchedcurrentport"){
+          data = data["data"];
+          if (event === "fetchedcurrentport") {
             this.setState({ currentPort: data });
-          }
-          else if (event === "gotpublicip"){
+          } else if (event === "gotpublicip") {
             this.setState({ webappaddress: data }, () => {
               if (this.state.tempwebaddress.length === 0) {
                 this.setState({ tempwebaddress: this.state.webappaddress });
@@ -391,7 +394,7 @@ class RegisterPage extends React.Component {
       showOutput: this.state.showOutput === "visible" ? "hidden" : "visible"
     });
   }
-  
+
   render() {
     let tokenClassName = this.validateTempwebaddress() &&
       this.validateIP() &&

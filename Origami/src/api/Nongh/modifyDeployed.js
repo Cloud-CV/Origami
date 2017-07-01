@@ -1,7 +1,7 @@
 import request from "superagent";
 const appConfig = require("../../../outCalls/config");
 import { baseURL } from "../CommonLocal/baseURL";
-import Cookies from 'universal-cookie';
+import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 

@@ -29,14 +29,18 @@ class App extends React.Component {
     this.clearSessionFlag = this.clearSessionFlag.bind(this);
     this.setSessionFlag = this.setSessionFlag.bind(this);
     let ws_scheme = "ws";
-    this.socket= new WebSocket(ws_scheme + '://' + window.location.host + "/chat/");
-    let socket = this.socket
+    this.socket = new WebSocket(
+      ws_scheme + "://" + window.location.host + "/chat/"
+    );
+    let socket = this.socket;
     this.socketId = Math.random().toString(36);
     socket.onopen = function() {
-      socket.send(JSON.stringify({
-        "event": "ConnectionEstablished",
-        "socketId": this.socketId,
-      }));
+      socket.send(
+        JSON.stringify({
+          event: "ConnectionEstablished",
+          socketId: this.socketId
+        })
+      );
     }.bind(this);
   }
 

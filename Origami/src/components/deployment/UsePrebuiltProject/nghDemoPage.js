@@ -38,7 +38,7 @@ class NGHDemoPage extends React.Component {
       let data = JSON.parse(response.data);
       const event = data["event"];
       data = data["data"];
-      if (event == "injectoutputdata"){
+      if (event == "injectoutputdata") {
         if (data.data) {
           this.setState({
             outputData: Object.assign(

@@ -1,10 +1,9 @@
 import request from "superagent";
 const appConfig = require("../../../outCalls/config");
 import { baseURL } from "./baseURL";
-import Cookies from 'universal-cookie';
+import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
-
 
 export function addComponentDeployed(userid, componentData, type) {
   let URL = `${baseURL}/api/${type}component/${userid}`;

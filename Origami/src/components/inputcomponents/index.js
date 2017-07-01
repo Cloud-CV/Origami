@@ -16,7 +16,7 @@ export function getInputComponentById(
 ) {
   let labels = [];
   props.map((label, index) => {
-    if (typeof label === 'object'){
+    if (typeof label === "object") {
       label = "";
     }
     labels[index] = label;

@@ -1,10 +1,9 @@
 import request from "superagent";
 const appConfig = require("../../../outCalls/config");
 import { baseURL } from "../CommonLocal/baseURL";
-import Cookies from 'universal-cookie';
+import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
-
 
 export function getSinglePermalink(userId, projectId) {
   let URL = `${baseURL}/api/permalink/${userId}/${projectId}`;
@@ -73,15 +72,16 @@ export function modifyPermalink(data) {
 export function deletePermalink(data) {
   let URL = `${baseURL}/api/permalink/${data.userId}/${data.projectId}`;
   return new Promise((resolve, reject) => {
-    request.delete(URL)
-    .set("Accept", "application/json")
-    .set("X-CSRFToken", cookies.get("csrftoken"))
-    .end((err, res) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(res.text);
-      }
-    });
+    request
+      .delete(URL)
+      .set("Accept", "application/json")
+      .set("X-CSRFToken", cookies.get("csrftoken"))
+      .end((err, res) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res.text);
+        }
+      });
   });
 }
