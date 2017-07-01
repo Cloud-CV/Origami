@@ -7,15 +7,12 @@ import json
 
 
 def ws_connect(message):
-    print "User connnected via Socket"
     message.reply_channel.send({"accept": True})
 
 
 def ws_message(message):
     body = json.loads(message.content['text'])
-    print "Incoming request to socket"
     if body["event"] == "ConnectionEstablished":
-        print "Adding to group"
         Group(body["socketId"]).add(message.reply_channel)
 
     elif body["event"] == "fetchcurrentport":
