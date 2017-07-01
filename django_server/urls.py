@@ -24,7 +24,8 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 router.register(r'demo', DemoViewSet, r"demo")
 router.register(r'input-component', InputComponentViewSet, r"input-component")
-router.register(r'output-component', OutputComponentViewSet, r"output-component")
+router.register(r'output-component',
+                OutputComponentViewSet, r"output-component")
 router.register(r'get-permalink', PermalinkViewSet, r"get-permalink")
 router.register(r'root-settings', RootSettingsViewSet, r"root-settings")
 

@@ -99,31 +99,34 @@ def redirect_login(req):
     acc.save()
     return HttpResponseRedirect('/login?status=passed&token=' + token.token + '&username=' + tmp.username + '&userid=' + str(tmp.id))
 
+
 def isCloudCV(request):
     settings = RootSettings.objects.all().first()
     send = {
-        "isCloudCV" : settings.isCloudCV,
-        "rootUserGithubLoginId" : settings.rootUserGithubLoginId,
-        "appip" : settings.appip,
-        "port" : settings.port
+        "isCloudCV": settings.isCloudCV,
+        "rootUserGithubLoginId": settings.rootUserGithubLoginId,
+        "appip": settings.appip,
+        "port": settings.port
     }
     return JsonResponse(send)
 
+
 def getAllDemos(request, id):
-    demos = Demo.objects.filter(userid = id)
+    demos = Demo.objects.filter(userid=id)
     response = []
     for demo in demos:
         d = {
-            "id" : demo.id,
-            "userid" : demo.userid
+            "id": demo.id,
+            "userid": demo.userid
         }
         response.append(d)
     return JsonResponse(response, safe=False)
 
+
 def custom_component_controller(request, type_req, userid, demoid):
     model = ""
-    
-    if type_req ==  "input":
+
+    if type_req == "input":
         model = InputComponent
     elif type_req == "output":
         model = OutputComponent
@@ -138,13 +141,14 @@ def custom_component_controller(request, type_req, userid, demoid):
         props = []
         for prop in body["props"]:
             if prop:
-                props.append(prop.encode("ascii", "ignore").replace("'","\\" + "\'"))
+                props.append(prop.encode(
+                    "ascii", "ignore").replace("'", "\\" + "\'"))
             else:
                 props.append({})
         user_id = body["userid"]
 
-        model.objects.create(demo=demo, baseComponentId=base_comp_id, 
-            props=props, userid=user_id, id = demo_id)
+        model.objects.create(demo=demo, baseComponentId=base_comp_id,
+                             props=props, userid=user_id, id=demo_id)
         return JsonResponse(body)
     elif request.method == "GET":
         if userid:
@@ -152,25 +156,25 @@ def custom_component_controller(request, type_req, userid, demoid):
                 demo = Demo.objects.get(id=demoid)
                 try:
                     component = model.objects.get(userid=userid, demo=demo)
-                except Exception,e:
+                except Exception, e:
                     return JsonResponse({})
-                
+
                 send = [{
-                    "id" : int(demoid),
-                    "userid" : int(userid),
-                    "baseComponentId" : component.baseComponentId,
-                    "props" : json.loads(component.props)
+                    "id": int(demoid),
+                    "userid": int(userid),
+                    "baseComponentId": component.baseComponentId,
+                    "props": json.loads(component.props)
                 }]
                 return JsonResponse(send, safe=False)
             else:
-                components = model.objects.filter(userid = userid)
+                components = model.objects.filter(userid=userid)
                 response = []
                 for component in components:
                     d = {
-                        "id" : component.demo.id,
-                        "userid" : component.userid,
-                        "baseComponentId" : component.baseComponentId,
-                        "props" : json.loads(component.props)
+                        "id": component.demo.id,
+                        "userid": component.userid,
+                        "baseComponentId": component.baseComponentId,
+                        "props": json.loads(component.props)
                     }
                     response.append(d)
                 return JsonResponse(response, safe=False)
@@ -179,26 +183,28 @@ def custom_component_controller(request, type_req, userid, demoid):
     elif request.method == "PUT":
         body = json.loads(request.body)
         if userid and demoid:
-            component = model.objects.get(id=demoid, userid = userid)
+            component = model.objects.get(id=demoid, userid=userid)
             component.baseComponentId = body["baseComponentId"]
             props = []
             for prop in body["props"]:
                 if prop:
-                    props.append(prop.encode("ascii", "ignore").replace("'","\\" + "\'"))
+                    props.append(prop.encode(
+                        "ascii", "ignore").replace("'", "\\" + "\'"))
                 else:
                     props.append({})
-            component.props = props        
+            component.props = props
             component.save()
             return JsonResponse(body)
-        else:    
+        else:
             return HttpResponse("Invalid URL")
     elif request.method == "DELETE":
         if userid and demoid:
-            model.objects.get(id=demoid, userid = userid).delete()
-            return JsonResponse({"removed":True})
+            model.objects.get(id=demoid, userid=userid).delete()
+            return JsonResponse({"removed": True})
         else:
             return HttpResponse("Invalid URL")
     return HttpResponse("Invalid URL")
+
 
 def alive(request):
     return HttpResponse(status=200)
@@ -209,7 +215,7 @@ def custom_demo_controller(request, userid, id):
         if id:
             try:
                 demo = Demo.objects.get(id=id, userid=userid)
-            except Exception,e:
+            except Exception, e:
                 return JsonResponse({})
             serialize = DemoSerializer(demo)
             return JsonResponse([serialize.data], safe=False)
@@ -222,7 +228,7 @@ def custom_demo_controller(request, userid, id):
         name = body["name"]
         id = body["id"]
         userid = body["userid"]
-        address = body ["address"]
+        address = body["address"]
         description = body["description"]
         footerMessage = body["footerMessage"]
         coverImage = body["coverImage"]
@@ -230,10 +236,10 @@ def custom_demo_controller(request, userid, id):
         timestamp = body["timestamp"]
         token = body["token"]
         status = body["status"]
-        demo = Demo.objects.create(name=name, id=id, userid=userid, 
-                address=address, description=description, footerMessage=footerMessage,
-                coverImage=coverImage, terminal=terminal, timestamp=timestamp,
-                token=token, status=status)
+        demo = Demo.objects.create(name=name, id=id, userid=userid,
+                                   address=address, description=description, footerMessage=footerMessage,
+                                   coverImage=coverImage, terminal=terminal, timestamp=timestamp,
+                                   token=token, status=status)
         serialize = DemoSerializer(demo)
         return JsonResponse(serialize.data)
 
@@ -242,7 +248,7 @@ def custom_demo_controller(request, userid, id):
             body = json.loads(request.body)
             demo = Demo.objects.get(id=id, userid=userid)
             demo.name = body["name"]
-            demo.address = body ["address"]
+            demo.address = body["address"]
             demo.description = body["description"]
             demo.footerMessage = body["footerMessage"]
             demo.coverImage = body["coverImage"]
@@ -258,45 +264,47 @@ def custom_demo_controller(request, userid, id):
 
     elif request.method == "DELETE":
         if userid and id:
-            Demo.objects.get(id=id, userid = userid).delete()
-            return JsonResponse({"removed":True})
+            Demo.objects.get(id=id, userid=userid).delete()
+            return JsonResponse({"removed": True})
         else:
             return HttpResponse("Invalid URL")
     return HttpResponse("Invalid URL")
 
 
 def getpermalink(request, shorturl):
-    
+
     try:
         permalink = Permalink.objects.get(shortRelativeURL='/p/' + shorturl)
 
-    except Exception,e:
+    except Exception, e:
         return JsonResponse({})
 
     send = [{
-        "shortRelativeURL" : shorturl,
-        "fullRelativeURL" : permalink.fullRelativeURL,
-        "projectId" : permalink.projectId,
-        "userId" : permalink.userId
+        "shortRelativeURL": shorturl,
+        "fullRelativeURL": permalink.fullRelativeURL,
+        "projectId": permalink.projectId,
+        "userId": permalink.userId
     }]
     return JsonResponse(send, safe=False)
 
+
 def custom_permalink_controller(request, userId, projectId):
-    
-    if request.method == "GET":    
+
+    if request.method == "GET":
         if userId and projectId:
             try:
-                permalink = Permalink.objects.get(projectId=projectId, userId=userId)
-            
-            except Exception,e:
+                permalink = Permalink.objects.get(
+                    projectId=projectId, userId=userId)
+
+            except Exception, e:
                 return JsonResponse({})
-        
+
             return JsonResponse(PermalinkSerializer(permalink).data)
         else:
             try:
                 permalinks = Permalink.objects.all()
-        
-            except Exception,e:
+
+            except Exception, e:
                 return JsonResponse({})
 
             return JsonResponse(PermalinkSerializer(permalinks, many=True).data, safe=False)
@@ -308,7 +316,7 @@ def custom_permalink_controller(request, userId, projectId):
         projectId = body["projectId"]
         userId = body["userId"]
         permalink = Permalink.objects.create(shortRelativeURL=shortRelativeURL,
-                    fullRelativeURL=fullRelativeURL, projectId=projectId, userId=userId)
+                                             fullRelativeURL=fullRelativeURL, projectId=projectId, userId=userId)
         return JsonResponse(PermalinkSerializer(permalink).data)
 
     elif request.method == "PUT":
@@ -324,17 +332,21 @@ def custom_permalink_controller(request, userId, projectId):
 
     elif request.method == "DELETE":
         if userId and projectId:
-            Permalink.objects.get(projectId=projectId, userId = userId).delete()
-            return JsonResponse({"removed":True})
+            Permalink.objects.get(projectId=projectId, userId=userId).delete()
+            return JsonResponse({"removed": True})
         else:
             return HttpResponse("Invalid URL")
     return HttpResponse("Invalid URL")
 
+
 def rootsettings(request):
     body = json.loads(request.body)
     root = RootSettings.objects.create(rootUserGithubLoginId=body["rootUserGithubLoginId"],
-            rootUserGithubLoginName=body["rootUserGithubLoginName"], 
-            clientid=body["clientid"], clientsecret=body["clientsecret"],
-            isCloudCV=body["isCloudCV"], allowNewLogins=body["allowNewLogins"],
-            appip=body["appip"], port=body["port"])
+                                       rootUserGithubLoginName=body[
+                                           "rootUserGithubLoginName"],
+                                       clientid=body["clientid"], clientsecret=body[
+                                           "clientsecret"],
+                                       isCloudCV=body["isCloudCV"], allowNewLogins=body[
+                                           "allowNewLogins"],
+                                       appip=body["appip"], port=body["port"])
     return JsonResponse(body)

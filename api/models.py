@@ -6,6 +6,7 @@ import json
 
 # Create your models here.
 
+
 class Demo(models.Model):
     name = models.CharField(max_length=100)
     id = models.IntegerField(primary_key=True)
@@ -19,6 +20,7 @@ class Demo(models.Model):
     token = models.CharField(max_length=200)
     status = models.CharField(max_length=100)
 
+
 class InputComponent(models.Model):
     id = models.IntegerField(primary_key=True)
     baseComponentId = models.IntegerField()
@@ -27,10 +29,11 @@ class InputComponent(models.Model):
     userid = models.IntegerField()
 
     def setprops(self, props):
-    	self.props = json.dumps(props)
+        self.props = json.dumps(props)
 
     def getprops(self):
-    	return json.loads(self.props)
+        return json.loads(self.props)
+
 
 class OutputComponent(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -38,12 +41,12 @@ class OutputComponent(models.Model):
     props = models.TextField()
     demo = models.OneToOneField(Demo)
     userid = models.IntegerField()
-    
+
     def setprops(self, props):
-    	self.props = json.dumps(props)
+        self.props = json.dumps(props)
 
     def getprops(self):
-    	return json.loads(self.props)
+        return json.loads(self.props)
 
 
 class Permalink(models.Model):
@@ -51,6 +54,7 @@ class Permalink(models.Model):
     fullRelativeURL = models.CharField(max_length=300)
     projectId = models.IntegerField()
     userId = models.IntegerField()
+
 
 class RootSettings(models.Model):
     rootUserGithubLoginId = models.IntegerField()
