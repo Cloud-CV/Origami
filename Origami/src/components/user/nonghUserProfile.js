@@ -205,13 +205,13 @@ class NonGHUserProfile extends React.Component {
               <ListItem
                 primaryText="Docs"
                 leftIcon={<DescriptionIcon />}
-                onTouchTap={() => browserHistory.push("/gettingstarted/create")}
+                onTouchTap={() => window.location = "http://cloudcv-origami.readthedocs.io/en/latest/web-app.html"}
               />
               <Divider />
               <ListItem
                 primaryText="CVFY-Lib Docs"
                 leftIcon={<DescriptionIcon />}
-                onTouchTap={() => browserHistory.push("/libdocs/configuration")}
+                onTouchTap={() => window.location = "http://cloudcv-origami.readthedocs.io/en/latest/library.html"}
               />
               <Divider />
               <ListItem
@@ -317,7 +317,6 @@ class NonGHUserProfile extends React.Component {
                           {
                             label: "Get Permalink",
                             onDeployClick: () => {
-                              console.log(this.state.permalinkHolder);
                               this.toggleShowDataDialog({
                                 type: "permalink",
                                 content: `${window.location.protocol}//${window.location.host}${this.state.permalinkHolder[this.state.user.id][project.id].shortRelativeURL}`
