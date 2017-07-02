@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from models import Demo, InputComponent, OutputComponent, RootSettings, Permalink
+from api.models import Demo, InputComponent, OutputComponent, RootSettings, Permalink
 
 # Register your models here.
 
