@@ -1,0 +1,28 @@
+sudo: required
+language: python
+
+python:
+  - "2.7"
+  - "3.4"
+
+before_cache:
+  - rm -f $HOME/.cache/pip/log/debug.log
+
+
+before_install:
+  - pip install -U pip
+  - nvm install 6.0.0
+  - nvm use 6.0.0
+  - npm install -g yarn@0.23.4
+
+install:
+  - pip install -r requirements.txt
+  - yarn install
+
+script:
+  - python manage.py test
+
+cache:
+  directories:
+    - node_modules
+    - $HOME/.cache/pip
