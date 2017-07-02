@@ -31,7 +31,7 @@ def ws_message(message):
 
 
 def ws_disconnect(message):
-    print message.content
+    print (message.content)
 
 
 @csrf_exempt

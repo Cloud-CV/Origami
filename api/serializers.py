@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from models import *
+from api.models import *
 
 
 class DemoSerializer(serializers.ModelSerializer):

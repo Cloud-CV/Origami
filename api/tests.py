@@ -38,7 +38,7 @@ class CustomDemoControllerViewTests(TestCase):
 
     def test_get_all_demos(self):
         response = self.client.get('/api/demo/user/99')
-        responses = json.loads(response.content)
+        responses = json.loads(response.content.decode('utf-8'))
         response = responses[0]
         self.assertEqual(response["id"], self.demo["id"])
         self.assertEqual(response["userid"], self.demo["userid"])
@@ -48,7 +48,7 @@ class CustomDemoControllerViewTests(TestCase):
         url = '/api/demo/' + str(payload["userid"]) + '/' + str(payload["id"])
         responses = self.client.get(url)
         # It returns a list containing a single demo object
-        response = json.loads(responses.content)[0]
+        response = json.loads(responses.content.decode('utf-8'))[0]
         self.assertEqual(response["name"], payload["name"])
         self.assertEqual(response["id"], str(payload["id"]))
         self.assertEqual(response["userid"], payload["userid"])
@@ -77,7 +77,7 @@ class CustomDemoControllerViewTests(TestCase):
         }
         response = self.client.post('/api/demo/100', json.dumps(payload),
                                     content_type="application/json")
-        response = json.loads(response.content)
+        response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["name"], payload["name"])
         self.assertEqual(response["id"], str(payload["id"]))
         self.assertEqual(response["userid"], payload["userid"])
@@ -95,7 +95,7 @@ class CustomDemoControllerViewTests(TestCase):
         url = '/api/demo/' + str(payload["userid"]) + '/' + str(payload["id"])
         response = self.client.put(url, json.dumps(payload),
                                    content_type="application/json")
-        response = json.loads(response.content)
+        response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["name"], payload["name"])
         self.assertEqual(response["id"], str(payload["id"]))
         self.assertEqual(response["userid"], payload["userid"])
@@ -111,7 +111,7 @@ class CustomDemoControllerViewTests(TestCase):
         payload = self.demo
         url = '/api/demo/' + str(payload["userid"]) + '/' + str(payload["id"])
         response = self.client.delete(url)
-        response = json.loads(response.content)
+        response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["removed"], True)
 
 
@@ -181,7 +181,7 @@ class CustomComponentControllerTests(TestCase):
             str(payload["userid"]) + '/' + str(payload["id"])
         responses = self.client.get(url)
         # It returns a list containing a single demo object
-        response = json.loads(responses.content)[0]
+        response = json.loads(responses.content.decode('utf-8'))[0]
         self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["baseComponentId"],
                          payload["baseComponentId"])
@@ -193,7 +193,7 @@ class CustomComponentControllerTests(TestCase):
         url = '/api/inputcomponent/' + str(payload["userid"])
         responses = self.client.get(url)
         # It returns a list containing a single demo object
-        response = json.loads(responses.content)[0]
+        response = json.loads(responses.content.decode('utf-8'))[0]
         self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["baseComponentId"],
                          payload["baseComponentId"])
@@ -219,7 +219,7 @@ class CustomComponentControllerTests(TestCase):
         url = '/api/inputcomponent/'
         response = self.client.post(url, json.dumps(payload),
                                     content_type="application/json")
-        response = json.loads(response.content)
+        response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["baseComponentId"],
                          payload["baseComponentId"])
@@ -234,7 +234,7 @@ class CustomComponentControllerTests(TestCase):
             str(payload["userid"]) + '/' + str(payload["id"])
         response = self.client.put(url, json.dumps(payload),
                                    content_type="application/json")
-        response = json.loads(response.content)
+        response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["baseComponentId"],
                          payload["baseComponentId"])
@@ -246,7 +246,7 @@ class CustomComponentControllerTests(TestCase):
         url = '/api/inputcomponent/' + \
             str(payload["userid"]) + '/' + str(payload["id"])
         response = self.client.delete(url)
-        response = json.loads(response.content)
+        response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["removed"], True)
 
     def test_get_one_output_component(self):
@@ -255,7 +255,7 @@ class CustomComponentControllerTests(TestCase):
             str(payload["userid"]) + '/' + str(payload["id"])
         responses = self.client.get(url)
         # It returns a list containing a single demo object
-        response = json.loads(responses.content)[0]
+        response = json.loads(responses.content.decode('utf-8'))[0]
         self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["baseComponentId"],
                          payload["baseComponentId"])
@@ -267,7 +267,7 @@ class CustomComponentControllerTests(TestCase):
         url = '/api/outputcomponent/' + str(payload["userid"])
         responses = self.client.get(url)
         # It returns a list containing a single demo object
-        response = json.loads(responses.content)[0]
+        response = json.loads(responses.content.decode('utf-8'))[0]
         self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["baseComponentId"],
                          payload["baseComponentId"])
@@ -293,7 +293,7 @@ class CustomComponentControllerTests(TestCase):
         url = '/api/outputcomponent/'
         response = self.client.post(url, json.dumps(payload),
                                     content_type="application/json")
-        response = json.loads(response.content)
+        response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["baseComponentId"],
                          payload["baseComponentId"])
@@ -308,7 +308,7 @@ class CustomComponentControllerTests(TestCase):
             str(payload["userid"]) + '/' + str(payload["id"])
         response = self.client.put(url, json.dumps(payload),
                                    content_type="application/json")
-        response = json.loads(response.content)
+        response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["baseComponentId"],
                          payload["baseComponentId"])
@@ -320,7 +320,7 @@ class CustomComponentControllerTests(TestCase):
         url = '/api/outputcomponent/' + \
             str(payload["userid"]) + '/' + str(payload["id"])
         response = self.client.delete(url)
-        response = json.loads(response.content)
+        response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["removed"], True)
 
 
@@ -346,7 +346,7 @@ class CustomPermalinkControllerTests(TestCase):
         url = '/api/getpermalink/' + payload["shortRelativeURL"]
         responses = self.client.get(url)
         # It returns a list containing a single demo object
-        response = json.loads(responses.content)[0]
+        response = json.loads(responses.content.decode('utf-8'))[0]
         self.assertEqual(response["userId"], payload["userId"])
         self.assertEqual(response["projectId"], payload["projectId"])
         self.assertEqual(response["shortRelativeURL"],
@@ -359,7 +359,7 @@ class CustomPermalinkControllerTests(TestCase):
         url = '/api/permalink/' + \
             str(payload["userId"]) + '/' + str(payload["projectId"])
         response = self.client.get(url)
-        response = json.loads(response.content)
+        response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["userId"], payload["userId"])
         self.assertEqual(response["projectId"], payload["projectId"])
         self.assertEqual(response["shortRelativeURL"],
@@ -371,7 +371,7 @@ class CustomPermalinkControllerTests(TestCase):
         payload = self.permalink
         url = '/api/permalink/' + str(payload["userId"])
         responses = self.client.get(url)
-        response = json.loads(responses.content)[0]
+        response = json.loads(responses.content.decode('utf-8'))[0]
         self.assertEqual(response["userId"], payload["userId"])
         self.assertEqual(response["projectId"], payload["projectId"])
         self.assertEqual(response["shortRelativeURL"],
@@ -389,7 +389,7 @@ class CustomPermalinkControllerTests(TestCase):
         url = '/api/permalink/'
         response = self.client.post(url, json.dumps(payload),
                                     content_type="application/json")
-        response = json.loads(response.content)
+        response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["userId"], payload["userId"])
         self.assertEqual(response["projectId"], payload["projectId"])
         self.assertEqual(response["shortRelativeURL"],
@@ -404,7 +404,7 @@ class CustomPermalinkControllerTests(TestCase):
             str(payload["userId"]) + '/' + str(payload["projectId"])
         response = self.client.put(url, json.dumps(payload),
                                    content_type="application/json")
-        response = json.loads(response.content)
+        response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["userId"], payload["userId"])
         self.assertEqual(response["projectId"], payload["projectId"])
         self.assertEqual(response["shortRelativeURL"],
@@ -417,5 +417,5 @@ class CustomPermalinkControllerTests(TestCase):
         url = '/api/permalink/' + \
             str(payload["userId"]) + '/' + str(payload["projectId"])
         response = self.client.delete(url)
-        response = json.loads(response.content)
+        response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["removed"], True)

@@ -136,7 +136,7 @@ def custom_component_controller(request, type_req, userid, demoid):
         return HttpResponse("Invalid URL")
 
     if request.method == "POST":
-        body = json.loads(request.body)
+        body = json.loads(request.body.decode('utf-8'))
         demo_id = body["id"]
         demo = Demo.objects.get(id=demo_id)
         base_comp_id = body["baseComponentId"]
@@ -144,7 +144,7 @@ def custom_component_controller(request, type_req, userid, demoid):
         for prop in body["props"]:
             if prop:
                 props.append(prop.encode(
-                    "ascii", "ignore").replace("'", "\\" + "\'"))
+                    "ascii", "ignore"))
             else:
                 props.append({})
         user_id = body["userid"]
@@ -158,7 +158,7 @@ def custom_component_controller(request, type_req, userid, demoid):
                 demo = Demo.objects.get(id=demoid)
                 try:
                     component = model.objects.get(userid=userid, demo=demo)
-                except Exception, e:
+                except Exception as e:
                     return JsonResponse({})
 
                 send = [{
@@ -183,7 +183,7 @@ def custom_component_controller(request, type_req, userid, demoid):
         else:
             return HttpResponse("Invalid URL")
     elif request.method == "PUT":
-        body = json.loads(request.body)
+        body = json.loads(request.body.decode('utf-8'))
         if userid and demoid:
             component = model.objects.get(id=demoid, userid=userid)
             component.baseComponentId = body["baseComponentId"]
@@ -191,7 +191,7 @@ def custom_component_controller(request, type_req, userid, demoid):
             for prop in body["props"]:
                 if prop:
                     props.append(prop.encode(
-                        "ascii", "ignore").replace("'", "\\" + "\'"))
+                        "ascii", "ignore"))
                 else:
                     props.append({})
             component.props = props
@@ -217,7 +217,7 @@ def custom_demo_controller(request, userid, id):
         if id:
             try:
                 demo = Demo.objects.get(id=id, userid=userid)
-            except Exception, e:
+            except Exception as e:
                 return JsonResponse({})
             serialize = DemoSerializer(demo)
             return JsonResponse([serialize.data], safe=False)
@@ -226,7 +226,7 @@ def custom_demo_controller(request, userid, id):
             serialize = DemoSerializer(demos, many=True)
             return JsonResponse(serialize.data, safe=False)
     elif request.method == "POST":
-        body = json.loads(request.body)
+        body = json.loads(request.body.decode('utf-8'))
         name = body["name"]
         id = body["id"]
         userid = body["userid"]
@@ -247,7 +247,7 @@ def custom_demo_controller(request, userid, id):
 
     elif request.method == "PUT":
         if id and userid:
-            body = json.loads(request.body)
+            body = json.loads(request.body.decode('utf-8'))
             demo = Demo.objects.get(id=id, userid=userid)
             demo.name = body["name"]
             demo.address = body["address"]
@@ -278,7 +278,7 @@ def getpermalink(request, shorturl):
     try:
         permalink = Permalink.objects.get(shortRelativeURL='/p/' + shorturl)
 
-    except Exception, e:
+    except Exception as e:
         return JsonResponse({})
 
     send = [{
@@ -298,7 +298,7 @@ def custom_permalink_controller(request, userId, projectId):
                 permalink = Permalink.objects.get(
                     projectId=projectId, userId=userId)
 
-            except Exception, e:
+            except Exception as e:
                 return JsonResponse({})
 
             return JsonResponse(PermalinkSerializer(permalink).data)
@@ -306,13 +306,13 @@ def custom_permalink_controller(request, userId, projectId):
             try:
                 permalinks = Permalink.objects.all()
 
-            except Exception, e:
+            except Exception as e:
                 return JsonResponse({})
 
             return JsonResponse(PermalinkSerializer(permalinks, many=True).data, safe=False)
 
     elif request.method == "POST":
-        body = json.loads(request.body)
+        body = json.loads(request.body.decode('utf-8'))
         shortRelativeURL = body["shortRelativeURL"]
         fullRelativeURL = body["fullRelativeURL"]
         projectId = body["projectId"]
@@ -323,7 +323,7 @@ def custom_permalink_controller(request, userId, projectId):
 
     elif request.method == "PUT":
         if userId and projectId:
-            body = json.loads(request.body)
+            body = json.loads(request.body.decode('utf-8'))
             perm = Permalink.objects.get(userId=userId, projectId=projectId)
             perm.shortRelativeURL = body["shortRelativeURL"]
             perm.fullRelativeURL = body["fullRelativeURL"]
@@ -342,7 +342,7 @@ def custom_permalink_controller(request, userId, projectId):
 
 
 def rootsettings(request):
-    body = json.loads(request.body)
+    body = json.loads(request.body.decode('utf-8'))
     root = RootSettings.objects.create(rootUserGithubLoginId=body["rootUserGithubLoginId"],
                                        rootUserGithubLoginName=body[
                                            "rootUserGithubLoginName"],
