@@ -97,13 +97,15 @@ def redirect_login(req):
     user = User.objects.get(username=req.user.username)
     acc = SocialAccount.objects.get(user=user)
     token = SocialToken.objects.get(account=acc)
-    tmp = user
-    user = user.delete()
-    tmp.id = acc.uid
-    tmp.save()
-    acc.user = tmp
-    acc.save()
-    return HttpResponseRedirect('/login?status=passed&token=' + token.token + '&username=' + tmp.username + '&user_id=' + str(tmp.id))
+    if not str(user.id) == acc.uid:
+        tmp = user
+        user = user.delete()
+        tmp.id = acc.uid
+        tmp.save()
+        acc.user = tmp
+        acc.save()
+        return HttpResponseRedirect('/login?status=passed&token=' + token.token + '&username=' + tmp.username + '&user_id=' + str(tmp.id))
+    return HttpResponseRedirect('/login?status=passed&token=' + token.token + '&username=' + user.username + '&user_id=' + str(user.id))    
 
 
 @api_view(['GET'])
