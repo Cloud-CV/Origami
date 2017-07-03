@@ -5,8 +5,8 @@ import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
-export function modifyComponentDeployed(userid, componentData, type) {
-  let URL = `${baseURL}/api/${type}component/${userid}/${componentData.id}`;
+export function modifyComponentDeployed(user_id, componentData, type) {
+  let URL = `${baseURL}/api/${type}component/${user_id}/${componentData.id}`;
   return new Promise((resolve, reject) => {
     request
       .put(URL)

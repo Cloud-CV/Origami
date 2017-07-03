@@ -17,7 +17,7 @@ class NGHDemoPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      userid: 0,
+      user_id: 0,
       outputData: [],
       showTerminal: false,
       terminalData: [],
@@ -66,8 +66,8 @@ class NGHDemoPage extends React.Component {
         }
       }
     }.bind(this);
-    this.setState({ userid: parseInt(this.props.params.userid, 10) }, () => {
-      getDeployed(this.state.userid, this.props.params.repoId).then(data => {
+    this.setState({ user_id: parseInt(this.props.params.user_id, 10) }, () => {
+      getDeployed(this.state.user_id, this.props.params.repoId).then(data => {
         this.setState({ demoModel: JSON.parse(data)[0] }, () => {
           if (this.state.demoModel.terminal) {
             this.setState({ showTerminal: true });
@@ -75,13 +75,13 @@ class NGHDemoPage extends React.Component {
         });
         if (JSON.parse(data)[0].status === "input") {
           modifyDeployed(
-            this.state.userid,
+            this.state.user_id,
             Object.assign({}, JSON.parse(data)[0], { status: "demo" })
           ).then();
         }
       });
       getComponentDeployed(
-        this.state.userid,
+        this.state.user_id,
         this.props.params.repoId,
         "input"
       ).then(data => {
@@ -90,7 +90,7 @@ class NGHDemoPage extends React.Component {
         }
       });
       getComponentDeployed(
-        this.state.userid,
+        this.state.user_id,
         this.props.params.repoId,
         "output"
       ).then(data => {
@@ -164,7 +164,7 @@ class NGHDemoPage extends React.Component {
                       {Object.keys(this.state.demoModel).length &&
                         Object.keys(this.state.inputModel).length > 0 &&
                         getInputComponentById(
-                          this.state.inputModel.baseComponentId,
+                          this.state.inputModel.base_component_id,
                           this.state.inputModel.props,
                           "demo",
                           this.socketId,
@@ -199,19 +199,19 @@ class NGHDemoPage extends React.Component {
                       {Object.keys(this.state.demoModel).length &&
                         Object.keys(this.state.outputModel).length > 0 &&
                         getOutputComponentById(
-                          this.state.outputModel.baseComponentId,
+                          this.state.outputModel.base_component_id,
                           this.state.outputModel.props,
                           "demo",
                           this.state.outputData
                         )}
 
-                      {this.state.demoModel.footerMessage &&
+                      {this.state.demoModel.footer_message &&
                         <div
                           className="ui fluid centered row"
                           style={{ maxWidth: "100vw", overflowX: "auto" }}
                         >
                           <h4>
-                            {this.state.demoModel.footerMessage}
+                            {this.state.demoModel.footer_message}
                           </h4>
                         </div>}
 

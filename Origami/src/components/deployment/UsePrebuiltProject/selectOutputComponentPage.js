@@ -19,7 +19,7 @@ class SelectOutputComponentPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      userid: parseInt(localStorage.getItem("userid"), 10),
+      user_id: parseInt(localStorage.getItem("user_id"), 10),
       outputComponentDemoModel: {},
       inputComponentStepperHighlight: false
     };
@@ -27,7 +27,7 @@ class SelectOutputComponentPage extends React.Component {
 
   componentWillMount() {
     getComponentDeployed(
-      this.state.userid,
+      this.state.user_id,
       this.props.nonghDemoModel.id,
       "output"
     )
@@ -35,10 +35,10 @@ class SelectOutputComponentPage extends React.Component {
         if (JSON.parse(outputComponentSeedData).length > 0) {
           let dataToSeed = {
             id: JSON.parse(outputComponentSeedData)[0].id,
-            userid: JSON.parse(outputComponentSeedData)[0].userid,
-            baseComponentId: JSON.parse(outputComponentSeedData)[
+            user_id: JSON.parse(outputComponentSeedData)[0].user_id,
+            base_component_id: JSON.parse(outputComponentSeedData)[
               0
-            ].baseComponentId,
+            ].base_component_id,
             props: JSON.parse(outputComponentSeedData)[0].props
           };
           this.setState({ outputComponentDemoModel: dataToSeed });
@@ -46,7 +46,7 @@ class SelectOutputComponentPage extends React.Component {
       })
       .then(() => {
         getComponentDeployed(
-          this.state.userid,
+          this.state.user_id,
           this.props.params.repoId,
           "output"
         ).then(outputComponentSeedData => {
@@ -118,9 +118,9 @@ class SelectOutputComponentPage extends React.Component {
                   user: this.props.user,
                   outputComponentDemoModel: this.state.outputComponentDemoModel,
                   outputComponentDemoModelActions: this.props.outputComponentDemoModelActions,
-                  forwardAddress: `/ngh/user/${this.props.user.id || localStorage.getItem("userid")}/${this.props.nonghDemoModel.name}/${this.props.nonghDemoModel.id}/demo`,
+                  forwardAddress: `/ngh/user/${this.props.user.id || localStorage.getItem("user_id")}/${this.props.nonghDemoModel.name}/${this.props.nonghDemoModel.id}/demo`,
                   params: this.props.params,
-                  selected: this.state.outputComponentDemoModel.baseComponentId
+                  selected: this.state.outputComponentDemoModel.base_component_id
                 }).map((showcasecard, index) => showcasecard)}
               </div>
             </div>

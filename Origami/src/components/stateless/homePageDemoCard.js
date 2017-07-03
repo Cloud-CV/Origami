@@ -23,9 +23,9 @@ function HomePageDemoCard(props) {
           subtitle="CloudCV"
           avatar={require("../assets/cloudcv_logo.png")}
         />
-        {props.coverImage &&
+        {props.cover_image &&
           <CardMedia className="ui medium image">
-            <img src={props.coverImage} />
+            <img src={props.cover_image} />
           </CardMedia>}
         {props.description &&
           <CardText style={{ wordWrap: "break-word" }}>
@@ -50,7 +50,7 @@ function HomePageDemoCard(props) {
 
 HomePageDemoCard.propTypes = {
   name: PropTypes.string.isRequired,
-  coverImage: PropTypes.string.isRequired,
+  cover_image: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   permalink: PropTypes.string.isRequired,
   handleShareModal: PropTypes.func.isRequired

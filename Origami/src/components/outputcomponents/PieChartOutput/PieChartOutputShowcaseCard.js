@@ -10,9 +10,9 @@ class PieChartOutputShowcaseCard extends React.Component {
   constructor(props) {
     super(props);
     let initHeaders = [];
-    if (props.demoProps.outputComponentDemoModel.baseComponentId === 5) {
+    if (props.demoProps.outputComponentDemoModel.base_component_id === 5) {
       initHeaders = props.demoProps.outputComponentDemoModel.props;
-      this.selected = props.demoProps.outputComponentDemoModel.baseComponentId ===
+      this.selected = props.demoProps.outputComponentDemoModel.base_component_id ===
         props.demoProps.selected;
     }
     this.state = {
@@ -66,8 +66,8 @@ class PieChartOutputShowcaseCard extends React.Component {
       this.outputComponentDemoModelActions
         .updateOutputComponentModel({
           id: this.demoModel.id,
-          userid: this.user.id,
-          baseComponentId: 5,
+          user_id: this.user.id,
+          base_component_id: 5,
           props: propsToStore
         })
         .then(() => {

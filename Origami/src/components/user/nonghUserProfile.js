@@ -68,10 +68,10 @@ class NonGHUserProfile extends React.Component {
             const stateToPut = {};
             getAllPermalink().then(data => {
               JSON.parse(data).map(perma => {
-                if (!stateToPut[perma.userId]) {
-                  stateToPut[perma.userId] = {};
+                if (!stateToPut[perma.user_id]) {
+                  stateToPut[perma.user_id] = {};
                 }
-                stateToPut[perma.userId][perma.projectId] = perma;
+                stateToPut[perma.user_id][perma.project_id] = perma;
                 this.setState({
                   permalinkHolder: Object.assign({}, stateToPut)
                 });
@@ -103,15 +103,15 @@ class NonGHUserProfile extends React.Component {
   }
 
   deleteDemo() {
-    const projectId = this.state.projectBeingDeletedId;
+    const project_id = this.state.projectBeingDeletedId;
     this.toggleDeleteConfirmationDialog();
     this.props.nonghModelActions
-      .killNonGHDemoModel(this.props.user.id, projectId)
+      .killNonGHDemoModel(this.props.user.id, project_id)
       .then(() => {
         getDeployed(this.props.user.id)
           .then(alldeployedRepos => {
             this.setState({ allDeployed: JSON.parse(alldeployedRepos) }, () => {
-              deletePermalink({ userId: this.props.user.id, projectId }).then();
+              deletePermalink({ user_id: this.props.user.id, project_id }).then();
             });
           })
           .catch(err => {
@@ -124,7 +124,7 @@ class NonGHUserProfile extends React.Component {
     let dataToUpdate = {
       name: project.name,
       id: project.id,
-      userid: project.userid,
+      user_id: project.user_id,
       description: project.description,
       timestamp: project.timestamp,
       token: project.token,
@@ -319,7 +319,7 @@ class NonGHUserProfile extends React.Component {
                             onDeployClick: () => {
                               this.toggleShowDataDialog({
                                 type: "permalink",
-                                content: `${window.location.protocol}//${window.location.host}${this.state.permalinkHolder[this.state.user.id][project.id].shortRelativeURL}`
+                                content: `${window.location.protocol}//${window.location.host}${this.state.permalinkHolder[this.state.user.id][project.id].short_relative_url}`
                               });
                             }
                           },

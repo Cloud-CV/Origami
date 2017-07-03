@@ -19,22 +19,22 @@ class SelectInputComponentPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      userid: parseInt(localStorage.getItem("userid"), 10),
+      user_id: parseInt(localStorage.getItem("user_id"), 10),
       inputComponentDemoModel: {},
       outputComponentStepperHighlight: false
     };
   }
 
   componentWillMount() {
-    getComponentDeployed(this.state.userid, this.props.params.repoId, "input")
+    getComponentDeployed(this.state.user_id, this.props.params.repoId, "input")
       .then(inputComponentSeedData => {
         if (JSON.parse(inputComponentSeedData).length > 0) {
           let dataToSeed = {
             id: JSON.parse(inputComponentSeedData)[0].id,
-            userid: JSON.parse(inputComponentSeedData)[0].userid,
-            baseComponentId: JSON.parse(inputComponentSeedData)[
+            user_id: JSON.parse(inputComponentSeedData)[0].user_id,
+            base_component_id: JSON.parse(inputComponentSeedData)[
               0
-            ].baseComponentId,
+            ].base_component_id,
             props: JSON.parse(inputComponentSeedData)[0].props
           };
           this.setState({ inputComponentDemoModel: dataToSeed });
@@ -42,7 +42,7 @@ class SelectInputComponentPage extends React.Component {
       })
       .then(() => {
         getComponentDeployed(
-          this.state.userid,
+          this.state.user_id,
           this.props.params.repoId,
           "output"
         ).then(outputComponentSeedData => {
@@ -116,7 +116,7 @@ class SelectInputComponentPage extends React.Component {
                   inputComponentModelActions: this.props.inputComponentModelActions,
                   forwardAddress: `/ngh/user/${this.props.nonghDemoModel.name}/${this.props.nonghDemoModel.id}/outputcomponent`,
                   params: this.props.params,
-                  selected: this.state.inputComponentDemoModel.baseComponentId
+                  selected: this.state.inputComponentDemoModel.base_component_id
                 }).map((showcasecard, index) => showcasecard)}
               </div>
             </div>

@@ -5,8 +5,8 @@ import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
-export function deleteDeployed(userid, id) {
-  let URL = `${baseURL}/api/demo/${userid}/${id}`;
+export function deleteDeployed(user_id, id) {
+  let URL = `${baseURL}/api/demo/${user_id}/${id}`;
   return new Promise((resolve, reject) => {
     request
       .delete(URL)

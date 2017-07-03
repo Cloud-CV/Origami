@@ -5,8 +5,8 @@ import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
-export function getSinglePermalink(userId, projectId) {
-  let URL = `${baseURL}/api/permalink/${userId}/${projectId}`;
+export function getSinglePermalink(user_id, project_id) {
+  let URL = `${baseURL}/api/permalink/${user_id}/${project_id}`;
   return new Promise((resolve, reject) => {
     request.get(URL).set("Accept", "application/json").end((err, res) => {
       if (err) {
@@ -32,7 +32,7 @@ export function getAllPermalink() {
 }
 
 export function addPermalink(data) {
-  let URL = `${baseURL}/api/permalink/${data.userId}/${data.projectId}`;
+  let URL = `${baseURL}/api/permalink/${data.user_id}/${data.project_id}`;
   return new Promise((resolve, reject) => {
     request
       .post(URL)
@@ -51,7 +51,7 @@ export function addPermalink(data) {
 }
 
 export function modifyPermalink(data) {
-  let URL = `${baseURL}/api/permalink/${data.userId}/${data.projectId}`;
+  let URL = `${baseURL}/api/permalink/${data.user_id}/${data.project_id}`;
   return new Promise((resolve, reject) => {
     request
       .put(URL)
@@ -70,7 +70,7 @@ export function modifyPermalink(data) {
 }
 
 export function deletePermalink(data) {
-  let URL = `${baseURL}/api/permalink/${data.userId}/${data.projectId}`;
+  let URL = `${baseURL}/api/permalink/${data.user_id}/${data.project_id}`;
   return new Promise((resolve, reject) => {
     request
       .delete(URL)

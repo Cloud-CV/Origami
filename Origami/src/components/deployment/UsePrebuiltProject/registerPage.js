@@ -35,7 +35,7 @@ class RegisterPage extends React.Component {
     this.state = {
       showOutput: "hidden",
       id: Math.floor(Math.random() * 10000000).toString(),
-      userid: parseInt(localStorage.getItem("userid"), 10),
+      user_id: parseInt(localStorage.getItem("user_id"), 10),
       currentProject: {},
       nonghDemoModel: {},
       name: "",
@@ -48,8 +48,8 @@ class RegisterPage extends React.Component {
       currentPort: "8000",
       webappaddress: "127.0.0.1",
       tempwebaddress: "127.0.0.1",
-      footerMessage: "",
-      coverImage: "",
+      footer_message: "",
+      cover_image: "",
       deploymentBoxSelectedStatus: false,
       status: "",
       webappUnreachableErrorText: "",
@@ -71,7 +71,7 @@ class RegisterPage extends React.Component {
     this.updateAddress = this.updateAddress.bind(this);
     this.updateName = this.updateName.bind(this);
     this.updatePort = this.updatePort.bind(this);
-    this.updateFooterMessage = this.updateFooterMessage.bind(this);
+    this.updatefooter_message = this.updatefooter_message.bind(this);
     this.onDrop = this.onDrop.bind(this);
     this.toggleTerminal = this.toggleTerminal.bind(this);
     this.validateTempwebaddress = this.validateTempwebaddress.bind(this);
@@ -80,7 +80,7 @@ class RegisterPage extends React.Component {
   }
 
   componentWillMount() {
-    getDeployed(this.state.userid, this.props.params.repoId)
+    getDeployed(this.state.user_id, this.props.params.repoId)
       .then(singleRepo => {
         if (this.props.params.repoId) {
           if (JSON.parse(singleRepo).length !== 0) {
@@ -107,9 +107,9 @@ class RegisterPage extends React.Component {
               description: JSON.parse(singleRepo)[0].description
             });
             this.setState({
-              footerMessage: JSON.parse(singleRepo)[0].footerMessage
+              footer_message: JSON.parse(singleRepo)[0].footer_message
             });
-            this.setState({ coverImage: JSON.parse(singleRepo)[0].coverImage });
+            this.setState({ cover_image: JSON.parse(singleRepo)[0].cover_image });
             this.setState({ showTerminal: JSON.parse(singleRepo)[0].terminal });
             if (JSON.parse(singleRepo)[0].token.split(":")[5] === "0.0.0.0") {
               this.setState({ deploymentBoxSelectedStatus: true });
@@ -120,7 +120,7 @@ class RegisterPage extends React.Component {
       .then(() => {
         if (this.props.params.repoId) {
           getComponentDeployed(
-            this.state.userid,
+            this.state.user_id,
             this.props.params.repoId,
             "input"
           ).then(inputComponentSeedData => {
@@ -133,7 +133,7 @@ class RegisterPage extends React.Component {
       .then(() => {
         if (this.props.params.repoId) {
           getComponentDeployed(
-            this.state.userid,
+            this.state.user_id,
             this.props.params.repoId,
             "output"
           ).then(outputComponentSeedData => {
@@ -146,7 +146,7 @@ class RegisterPage extends React.Component {
       .then(() => {
         if (this.props.params.repoId) {
           getSinglePermalink(
-            this.state.userid,
+            this.state.user_id,
             this.props.params.repoId
           ).then(data => {
             if (JSON.parse(data).length !== 0) {
@@ -242,11 +242,11 @@ class RegisterPage extends React.Component {
       let dataToPut = {
         name: this.state.name,
         id: this.state.id,
-        userid: this.state.userid,
+        user_id: this.state.user_id,
         address: this.state.address,
         description: this.state.description,
-        footerMessage: this.state.footerMessage,
-        coverImage: this.state.coverImage,
+        footer_message: this.state.footer_message,
+        cover_image: this.state.cover_image,
         terminal: this.state.showTerminal,
         timestamp: Date.now(),
         token: `nongh:${this.state.address}:${this.state.id}:${this.state.currentPort}:${this.state.port}:${this.state.tempwebaddress}`,
@@ -261,7 +261,7 @@ class RegisterPage extends React.Component {
                 {},
                 this.state.permalinkObject,
                 {
-                  fullRelativeURL: `/ngh/user/${dataToPut.userid}/${dataToPut.name}/${dataToPut.id}/demo`
+                  full_relative_url: `/ngh/user/${dataToPut.user_id}/${dataToPut.name}/${dataToPut.id}/demo`
                 }
               );
 
@@ -282,12 +282,12 @@ class RegisterPage extends React.Component {
                 });
             } else {
               const permaLinkDataToPut = {
-                shortRelativeURL: `/p/${Math.random()
+                short_relative_url: `/p/${Math.random()
                   .toString(36)
                   .substring(2, 11)}`,
-                fullRelativeURL: `/ngh/user/${dataToPut.userid}/${dataToPut.name}/${dataToPut.id}/demo`,
-                userId: dataToPut.userid,
-                projectId: dataToPut.id
+                full_relative_url: `/ngh/user/${dataToPut.user_id}/${dataToPut.name}/${dataToPut.id}/demo`,
+                user_id: dataToPut.user_id,
+                project_id: dataToPut.id
               };
 
               addPermalink(permaLinkDataToPut)
@@ -315,8 +315,8 @@ class RegisterPage extends React.Component {
     this.setState({ description: e.target.value });
   }
 
-  updateFooterMessage(e) {
-    this.setState({ footerMessage: e.target.value });
+  updatefooter_message(e) {
+    this.setState({ footer_message: e.target.value });
   }
 
   updateAddress(e) {
@@ -341,7 +341,7 @@ class RegisterPage extends React.Component {
       const reader = new FileReader();
       reader.onload = () => {
         const dataURI = reader.result;
-        this.setState({ coverImage: dataURI });
+        this.setState({ cover_image: dataURI });
       };
       reader.readAsDataURL(files[0]);
     }
@@ -477,8 +477,8 @@ class RegisterPage extends React.Component {
                     <TextField
                       hintText="Footer Message"
                       floatingLabelText="Footer Message"
-                      value={this.state.footerMessage}
-                      onChange={this.updateFooterMessage}
+                      value={this.state.footer_message}
+                      onChange={this.updatefooter_message}
                       multiLine
                       rows={2}
                       rowsMax={8}
@@ -507,7 +507,7 @@ class RegisterPage extends React.Component {
                             <img
                               className="ui fluid medium bordered image"
                               src={
-                                this.state.coverImage ||
+                                this.state.cover_image ||
                                   require("../../assets/wireframe.png")
                               }
                               id={"input-image-preview"}

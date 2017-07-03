@@ -5,8 +5,8 @@ import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
-export function addDeployed(userid, data) {
-  let URL = `${baseURL}/api/demo/${userid}`;
+export function addDeployed(user_id, data) {
+  let URL = `${baseURL}/api/demo/${user_id}`;
   return new Promise((resolve, reject) => {
     request
       .post(URL)

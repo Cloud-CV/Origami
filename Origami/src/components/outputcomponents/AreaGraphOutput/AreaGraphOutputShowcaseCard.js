@@ -10,9 +10,9 @@ class AreaGraphOutputShowcaseCard extends React.Component {
   constructor(props) {
     super(props);
     let initHeaders = [];
-    if (props.demoProps.outputComponentDemoModel.baseComponentId === 6) {
+    if (props.demoProps.outputComponentDemoModel.base_component_id === 6) {
       initHeaders = props.demoProps.outputComponentDemoModel.props;
-      this.selected = props.demoProps.outputComponentDemoModel.baseComponentId ===
+      this.selected = props.demoProps.outputComponentDemoModel.base_component_id ===
         props.demoProps.selected;
     }
     this.state = {
@@ -66,8 +66,8 @@ class AreaGraphOutputShowcaseCard extends React.Component {
       this.outputComponentDemoModelActions
         .updateOutputComponentModel({
           id: this.demoModel.id,
-          userid: this.user.id,
-          baseComponentId: 6,
+          user_id: this.user.id,
+          base_component_id: 6,
           props: propsToStore
         })
         .then(() => {

@@ -4,7 +4,7 @@ import { browserHistory } from "react-router";
 
 function UrlShortener(props) {
   getPermalinkFromShortURL(props.params.shorturl).then(data => {
-    browserHistory.push(JSON.parse(data)[0].fullRelativeURL);
+    browserHistory.push(JSON.parse(data)[0].full_relative_url);
   });
 
   return (

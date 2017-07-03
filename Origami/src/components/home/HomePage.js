@@ -9,7 +9,7 @@ import {
   indigo600
 } from "material-ui/styles/colors";
 import {
-  isCloudCV,
+  is_cloudcv,
   getAllDemosByCloudCV
 } from "../../api/Generic/getCloudCVDemos";
 import HomePageDemoCard from "../stateless/homePageDemoCard";
@@ -48,7 +48,7 @@ class HomePageComponent extends React.Component {
     });
 
     this.state = {
-      isCloudCV: false,
+      is_cloudcv: false,
       rootData: {},
       cloudCVDemos: [],
       demoBeingShown: {},
@@ -63,24 +63,24 @@ class HomePageComponent extends React.Component {
   componentWillMount() {
     document.body.scrollTop = (document.documentElement.scrollTop = 0);
 
-    isCloudCV().then(data => {
+    is_cloudcv().then(data => {
       const rootData = JSON.parse(data);
       this.setState({ rootData }, () => {
         this.setState({ showOutput: true });
       });
       if (Object.keys(rootData).length) {
-        if (rootData.isCloudCV) {
-          this.setState({ isCloudCV: true });
+        if (rootData.is_cloudcv) {
+          this.setState({ is_cloudcv: true });
           getAllPermalink().then(links => {
-            getAllDemosByCloudCV(rootData.rootUserGithubLoginId).then(demos => {
+            getAllDemosByCloudCV(rootData.root_user_github_login_id).then(demos => {
               const relevantLink = JSON.parse(links).filter(
-                x => parseInt(x.userId, 10) === rootData.rootUserGithubLoginId
+                x => parseInt(x.user_id, 10) === rootData.root_user_github_login_id
               );
               const allDemos = [];
               JSON.parse(demos).map((demo, index) => {
                 if (index < JSON.parse(demos).length) {
                   const demoToPut = Object.assign({}, demo, {
-                    permalink: `http://${rootData.appip}:${rootData.port}${relevantLink[index].shortRelativeURL}`
+                    permalink: `http://${rootData.app_ip}:${rootData.port}${relevantLink[index].short_relative_url}`
                   });
                   allDemos.push(demoToPut);
                 }

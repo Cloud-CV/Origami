@@ -40,13 +40,13 @@ export default (
       component={SelectOutputComponentsNonGHPageComponent}
     />
     <Route
-      path="ngh/user/:userid/:repoName/:repoId/demo"
+      path="ngh/user/:user_id/:repoName/:repoId/demo"
       component={NGHDemoPageComponent}
     />
 
     <Route path="initialsetup" component={InitialSetupComponent} />
     <Route path="p/:shorturl" component={URLShortenerComponent} />
-    <Route path="u/:username/:userid" component={ShareProfile} />
+    <Route path="u/:username/:user_id" component={ShareProfile} />
     <Route path="login*" component={LoginComponent} />
     <Route path="*" component={PageNotfoundHandler} />
   </Route>

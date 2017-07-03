@@ -2,8 +2,8 @@ import request from "superagent";
 const appConfig = require("../../../outCalls/config");
 import { baseURL } from "./baseURL";
 
-export function getComponentDeployed(userid, repoId, type) {
-  let URL = `${baseURL}/api/${type}component/${userid}`;
+export function getComponentDeployed(user_id, repoId, type) {
+  let URL = `${baseURL}/api/${type}component/${user_id}`;
   if (repoId) {
     URL += `/${repoId}`;
   }

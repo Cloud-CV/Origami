@@ -15,9 +15,9 @@ export function killNonGHDemoModelSuccess() {
 export function addToDBNonGHDemoModel(newModelData) {
   return function(dispatch) {
     return new Promise((resolve, reject) => {
-      getDeployed(newModelData.userid, newModelData.id).then(data => {
+      getDeployed(newModelData.user_id, newModelData.id).then(data => {
         if (JSON.parse(data).length > 0) {
-          modifyDeployed(newModelData.userid, newModelData)
+          modifyDeployed(newModelData.user_id, newModelData)
             .then(data => {
               resolve("dispatched nongh model update call");
             })
@@ -25,7 +25,7 @@ export function addToDBNonGHDemoModel(newModelData) {
               reject("cannot dispatch nongh model update call, DB failed");
             });
         } else {
-          addDeployed(newModelData.userid, newModelData)
+          addDeployed(newModelData.user_id, newModelData)
             .then(data => {
               resolve("dispatched nongh model update call");
             })
@@ -47,10 +47,10 @@ export function updateNonGHDemoModel(newModelData) {
   };
 }
 
-export function killNonGHDemoModel(userid, repoId) {
+export function killNonGHDemoModel(user_id, repoId) {
   return function(dispatch) {
     return new Promise((resolve, reject) => {
-      deleteDeployed(userid, repoId)
+      deleteDeployed(user_id, repoId)
         .then(() => {
           dispatch(killNonGHDemoModelSuccess());
           resolve("dispatched nongh demo kill call");
