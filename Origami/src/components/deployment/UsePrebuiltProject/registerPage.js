@@ -157,21 +157,21 @@ class RegisterPage extends React.Component {
         let socket = this.socket;
         socket.send(
           JSON.stringify({
-            event: "fetchcurrentport"
+            event: "fetchCurrentPort"
           })
         );
         socket.send(
           JSON.stringify({
-            event: "getpublicipaddress"
+            event: "getPublicIPaddress"
           })
         );
         socket.onmessage = function(response) {
           let data = JSON.parse(response.data);
           const event = data["event"];
           data = data["data"];
-          if (event === "fetchedcurrentport") {
+          if (event === "fetchedCurrentPort") {
             this.setState({ currentPort: data });
-          } else if (event === "gotpublicip") {
+          } else if (event === "gotPublicIP") {
             this.setState({ webappaddress: data }, () => {
               if (this.state.tempwebaddress.length === 0) {
                 this.setState({ tempwebaddress: this.state.webappaddress });

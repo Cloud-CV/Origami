@@ -15,23 +15,19 @@ def ws_message(message):
     if body["event"] == "ConnectionEstablished":
         Group(body["socketId"]).add(message.reply_channel)
 
-    elif body["event"] == "fetchcurrentport":
+    elif body["event"] == "fetchCurrentPort":
         text = json.dumps({
             "data": "8000",
-                    "event": "fetchedcurrentport"
+                    "event": "fetchedCurrentPort"
         })
         message.reply_channel.send({"text": text})
 
-    elif body["event"] == "getpublicipaddress":
+    elif body["event"] == "getPublicIPaddress":
         text = json.dumps({
             "data": "localhost",
-                    "event": "gotpublicip"
+                    "event": "gotPublicIP"
         })
         message.reply_channel.send({"text": text})
-
-
-def ws_disconnect(message):
-    print (message.content)
 
 
 @csrf_exempt
@@ -40,7 +36,7 @@ def inject(request):
         body = json.loads(request.body)
         text = json.dumps({
             "data": body,
-            "event": "injectoutputdata"
+            "event": "injectOutputData"
         })
         Group(body["socketId"]).send({"text": text})
         return HttpResponse(status=200)
