@@ -111,26 +111,15 @@ def redirect_login(req):
 @api_view(['GET'])
 def is_cloudcv(request):
     settings = RootSettings.objects.all().first()
-    send = {
-        "is_cloudcv": settings.is_cloudcv,
-        "root_user_github_login_id": settings.root_user_github_login_id,
-        "app_ip": settings.app_ip,
-        "port": settings.port
-    }
-    return Response(send, status=response_status.HTTP_200_OK)
+    serialize = RootSettingsSerializer(settings)
+    return Response(serialize.data, status=response_status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 def get_all_demos(request, id):
     demos = Demo.objects.filter(user_id=id)
-    response = []
-    for demo in demos:
-        d = {
-            "id": demo.id,
-            "user_id": demo.user_id
-        }
-        response.append(d)
-    return Response(response, status=response_status.HTTP_200_OK)
+    serialize = DemoSerializer(demos, many=True)
+    return Response(serialize.data, status=response_status.HTTP_200_OK)
 
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
@@ -290,13 +279,9 @@ def get_permalink(request, shorturl):
     except Exception as e:
         return Response({})
 
-    send = [{
-        "short_relative_url": shorturl,
-        "full_relative_url": permalink.full_relative_url,
-        "project_id": permalink.project_id,
-        "user_id": permalink.user_id
-    }]
-    return Response(send, status=response_status.HTTP_200_OK)
+    permalink.short_relative_url = permalink.short_relative_url.split('/')[-1]
+    serialize = PermalinkSerializer(permalink)
+    return Response([serialize.data], status=response_status.HTTP_200_OK)
 
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])

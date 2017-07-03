@@ -3,7 +3,7 @@ from api.models import *
 
 
 class DemoSerializer(serializers.ModelSerializer):
-    id = serializers.CharField(read_only=False)
+    id = serializers.IntegerField(read_only=False)
 
     class Meta:
         model = Demo

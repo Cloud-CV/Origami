@@ -50,7 +50,7 @@ class CustomDemoControllerViewTests(TestCase):
         # It returns a list containing a single demo object
         response = json.loads(responses.content.decode('utf-8'))[0]
         self.assertEqual(response["name"], payload["name"])
-        self.assertEqual(response["id"], str(payload["id"]))
+        self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["user_id"], payload["user_id"])
         self.assertEqual(response["address"], payload["address"])
         self.assertEqual(response["description"], payload["description"])
@@ -79,7 +79,7 @@ class CustomDemoControllerViewTests(TestCase):
                                     content_type="application/json")
         response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["name"], payload["name"])
-        self.assertEqual(response["id"], str(payload["id"]))
+        self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["user_id"], payload["user_id"])
         self.assertEqual(response["address"], payload["address"])
         self.assertEqual(response["description"], payload["description"])
@@ -97,7 +97,7 @@ class CustomDemoControllerViewTests(TestCase):
                                    content_type="application/json")
         response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["name"], payload["name"])
-        self.assertEqual(response["id"], str(payload["id"]))
+        self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["user_id"], payload["user_id"])
         self.assertEqual(response["address"], payload["address"])
         self.assertEqual(response["description"], payload["description"])
