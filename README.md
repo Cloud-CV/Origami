@@ -6,7 +6,7 @@
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 
-## Setup instructions
+## Development Setup instructions
 
 **This application requires node v5+ and Python 2.7/3.4+**
 
@@ -26,6 +26,8 @@
    `pip install -r requirements.txt` 
 4. Add all the javascript dependencies
    `yarn` (preferably) or `npm install`
+5. Setup redis 
+ `docker run -d -p 6379:6379 --name origami-redis redis:alpine`
 
 ### Setting up the database
 
@@ -42,7 +44,7 @@ python manage.py migrate
 1. Start the server by `python manage.py runserver --noworker`
 2. Start the worker by `python manage.py runworker`
 3. `node server.js`
-
+4. Go to [localhost:8000](http://localhost:8000/)
 Visit [Read the docs](http://cloudcv-origami.readthedocs.io/en/latest/) for further instructions on Getting started
 
 ## License
