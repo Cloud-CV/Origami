@@ -25,15 +25,17 @@
 3. Add all the python dependencies.
    `pip install -r requirements.txt` 
 4. Add all the javascript dependencies
-   `yarn add` (preferably) or `npm install`
+   `yarn` (preferably) or `npm install`
 
 ### Setting up the database
 
 
 #### Create all the tables
 
-    `python manage.py makemigrations`
-    `python manage.py migrate` 
+```
+python manage.py makemigrations
+python manage.py migrate
+```
 
 ### Start the server
 
