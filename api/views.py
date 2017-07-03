@@ -2,12 +2,16 @@ from django.template.response import TemplateResponse
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import detail_route
-from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from api.serializers import *
 from api.models import *
 from django.contrib.auth.models import User
 from allauth.socialaccount.models import SocialAccount, SocialToken, SocialApp
 from django.contrib.sites.models import Site
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import status as response_status
+
 import datetime
 
 
@@ -38,7 +42,7 @@ class InputComponentViewSet(ModelViewSet):
     def user_input_component(self, request, id, user_id):
         input = InputComponent.objects(id=id, user_id=user_id).first()
         serialize = InputComponentSerializer(input)
-        return JsonResponse(serialize.data)
+        return Response(serialize.data, status=response_status.HTTP_200_OK)
 
 user_input_component = InputComponentViewSet.as_view(
     {'get': 'user_input_component'})
@@ -59,7 +63,7 @@ class OutputComponentViewSet(ModelViewSet):
     def user_output_component(self, request, id, user_id):
         output = OutputComponent.objects(id=id, user_id=user_id).first()
         serialize = OutputComponentSerializer(output)
-        return JsonResponse(serialize.data)
+        return Response(serialize.data, status=response_status.HTTP_200_OK)
 
 user_output_component = OutputComponentViewSet.as_view(
     {'get': 'user_output_component'})
@@ -102,6 +106,7 @@ def redirect_login(req):
     return HttpResponseRedirect('/login?status=passed&token=' + token.token + '&username=' + tmp.username + '&user_id=' + str(tmp.id))
 
 
+@api_view(['GET'])
 def is_cloudcv(request):
     settings = RootSettings.objects.all().first()
     send = {
@@ -110,9 +115,10 @@ def is_cloudcv(request):
         "app_ip": settings.app_ip,
         "port": settings.port
     }
-    return JsonResponse(send)
+    return Response(send, status=response_status.HTTP_200_OK)
 
 
+@api_view(['GET'])
 def get_all_demos(request, id):
     demos = Demo.objects.filter(user_id=id)
     response = []
@@ -122,18 +128,18 @@ def get_all_demos(request, id):
             "user_id": demo.user_id
         }
         response.append(d)
-    return JsonResponse(response, safe=False)
+    return Response(response, status=response_status.HTTP_200_OK)
 
 
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def custom_component_controller(request, type_req, user_id, demoid):
     model = ""
-
     if type_req == "input":
         model = InputComponent
     elif type_req == "output":
         model = OutputComponent
     else:
-        return HttpResponse("Invalid URL")
+        return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
 
     if request.method == "POST":
         body = json.loads(request.body.decode('utf-8'))
@@ -151,7 +157,7 @@ def custom_component_controller(request, type_req, user_id, demoid):
 
         model.objects.create(demo=demo, base_component_id=base_comp_id,
                              props=props, user_id=user_id, id=demo_id)
-        return JsonResponse(body)
+        return Response(body, status=response_status.HTTP_201_CREATED)
     elif request.method == "GET":
         if user_id:
             if demoid:
@@ -159,7 +165,7 @@ def custom_component_controller(request, type_req, user_id, demoid):
                 try:
                     component = model.objects.get(user_id=user_id, demo=demo)
                 except Exception as e:
-                    return JsonResponse({})
+                    return Response({})
 
                 send = [{
                     "id": int(demoid),
@@ -167,7 +173,7 @@ def custom_component_controller(request, type_req, user_id, demoid):
                     "base_component_id": component.base_component_id,
                     "props": json.loads(component.props)
                 }]
-                return JsonResponse(send, safe=False)
+                return Response(send, status=response_status.HTTP_200_OK)
             else:
                 components = model.objects.filter(user_id=user_id)
                 response = []
@@ -179,9 +185,9 @@ def custom_component_controller(request, type_req, user_id, demoid):
                         "props": json.loads(component.props)
                     }
                     response.append(d)
-                return JsonResponse(response, safe=False)
+                return Response(response, status=response_status.HTTP_200_OK)
         else:
-            return HttpResponse("Invalid URL")
+            return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
     elif request.method == "PUT":
         body = json.loads(request.body.decode('utf-8'))
         if user_id and demoid:
@@ -196,35 +202,36 @@ def custom_component_controller(request, type_req, user_id, demoid):
                     props.append({})
             component.props = props
             component.save()
-            return JsonResponse(body)
+            return Response(body, status=response_status.HTTP_200_OK)
         else:
-            return HttpResponse("Invalid URL")
+            return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
     elif request.method == "DELETE":
         if user_id and demoid:
             model.objects.get(id=demoid, user_id=user_id).delete()
-            return JsonResponse({"removed": True})
+            return Response({"removed": True}, status=response_status.HTTP_200_OK)
         else:
-            return HttpResponse("Invalid URL")
-    return HttpResponse("Invalid URL")
+            return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
+    return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
 
 
 def alive(request):
     return HttpResponse(status=200)
 
 
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def custom_demo_controller(request, user_id, id):
     if request.method == "GET":
         if id:
             try:
                 demo = Demo.objects.get(id=id, user_id=user_id)
             except Exception as e:
-                return JsonResponse({})
+                return Response({})
             serialize = DemoSerializer(demo)
-            return JsonResponse([serialize.data], safe=False)
+            return Response([serialize.data], status=response_status.HTTP_200_OK)
         else:
             demos = Demo.objects.filter(user_id=user_id)
             serialize = DemoSerializer(demos, many=True)
-            return JsonResponse(serialize.data, safe=False)
+            return Response(serialize.data, status=response_status.HTTP_200_OK)
     elif request.method == "POST":
         body = json.loads(request.body.decode('utf-8'))
         name = body["name"]
@@ -243,7 +250,7 @@ def custom_demo_controller(request, user_id, id):
                                    cover_image=cover_image, terminal=terminal, timestamp=timestamp,
                                    token=token, status=status)
         serialize = DemoSerializer(demo)
-        return JsonResponse(serialize.data)
+        return Response(serialize.data, status=response_status.HTTP_201_CREATED)
 
     elif request.method == "PUT":
         if id and user_id:
@@ -255,31 +262,31 @@ def custom_demo_controller(request, user_id, id):
             demo.footer_message = body["footer_message"]
             demo.cover_image = body["cover_image"]
             demo.terminal = body["terminal"]
-            #demo.timestamp = body["timestamp"]
             demo.token = body["token"]
             demo.status = body["status"]
             demo.save()
             serialize = DemoSerializer(demo)
-            return JsonResponse(serialize.data, safe=False)
+            return Response(serialize.data, status=response_status.HTTP_200_OK)
         else:
-            return Http("Invalid URL")
+            return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
 
     elif request.method == "DELETE":
         if user_id and id:
             Demo.objects.get(id=id, user_id=user_id).delete()
-            return JsonResponse({"removed": True})
+            return Response({"removed": True}, status=response_status.HTTP_200_OK)
         else:
-            return HttpResponse("Invalid URL")
-    return HttpResponse("Invalid URL")
+            return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
+    return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
 
 
+@api_view(['GET'])
 def get_permalink(request, shorturl):
 
     try:
         permalink = Permalink.objects.get(short_relative_url='/p/' + shorturl)
 
     except Exception as e:
-        return JsonResponse({})
+        return Response({})
 
     send = [{
         "short_relative_url": shorturl,
@@ -287,9 +294,10 @@ def get_permalink(request, shorturl):
         "project_id": permalink.project_id,
         "user_id": permalink.user_id
     }]
-    return JsonResponse(send, safe=False)
+    return Response(send, status=response_status.HTTP_200_OK)
 
 
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def custom_permalink_controller(request, user_id, project_id):
 
     if request.method == "GET":
@@ -299,17 +307,17 @@ def custom_permalink_controller(request, user_id, project_id):
                     project_id=project_id, user_id=user_id)
 
             except Exception as e:
-                return JsonResponse({})
-
-            return JsonResponse(PermalinkSerializer(permalink).data)
+                return Response({})
+            serialize = PermalinkSerializer(permalink)
+            return Response(serialize.data, status=response_status.HTTP_200_OK)
         else:
             try:
                 permalinks = Permalink.objects.all()
 
             except Exception as e:
-                return JsonResponse({})
-
-            return JsonResponse(PermalinkSerializer(permalinks, many=True).data, safe=False)
+                return Response({})
+            serialize = PermalinkSerializer(permalinks, many=True)
+            return Response(serialize.data, status=response_status.HTTP_200_OK)
 
     elif request.method == "POST":
         body = json.loads(request.body.decode('utf-8'))
@@ -319,28 +327,34 @@ def custom_permalink_controller(request, user_id, project_id):
         user_id = body["user_id"]
         permalink = Permalink.objects.create(short_relative_url=short_relative_url,
                                              full_relative_url=full_relative_url, project_id=project_id, user_id=user_id)
-        return JsonResponse(PermalinkSerializer(permalink).data)
+        serialize = PermalinkSerializer(
+            permalink)
+        return Response(serialize.data, status=response_status.HTTP_201_CREATED)
 
     elif request.method == "PUT":
         if user_id and project_id:
             body = json.loads(request.body.decode('utf-8'))
-            perm = Permalink.objects.get(user_id=user_id, project_id=project_id)
+            perm = Permalink.objects.get(
+                user_id=user_id, project_id=project_id)
             perm.short_relative_url = body["short_relative_url"]
             perm.full_relative_url = body["full_relative_url"]
             perm.save()
-            return JsonResponse(PermalinkSerializer(perm).data)
+            serialize = PermalinkSerializer(perm)
+            return Response(serialize.data, status=response_status.HTTP_200_OK)
         else:
-            return HttpResponse("Invalid URL")
+            return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
 
     elif request.method == "DELETE":
         if user_id and project_id:
-            Permalink.objects.get(project_id=project_id, user_id=user_id).delete()
-            return JsonResponse({"removed": True})
+            Permalink.objects.get(project_id=project_id,
+                                  user_id=user_id).delete()
+            return Response({"removed": True}, status=response_status.HTTP_200_OK)
         else:
-            return HttpResponse("Invalid URL")
-    return HttpResponse("Invalid URL")
+            return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
+    return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
 
 
+@api_view(['GET'])
 def root_settings(request):
     body = json.loads(request.body.decode('utf-8'))
     root = RootSettings.objects.create(root_user_github_login_id=body["root_user_github_login_id"],
@@ -356,4 +370,4 @@ def root_settings(request):
     site = Site.objects.get(id=1)
     app.sites.add(site)
     app.save()
-    return JsonResponse(body)
+    return Response(body, status=response_status.HTTP_200_OK)
