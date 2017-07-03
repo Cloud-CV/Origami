@@ -1,4 +1,4 @@
-# Origami Webapp
+# Origami
 
 [![Build Status](https://travis-ci.org/Cloud-CV/Origami.svg?branch=master)](https://travis-ci.org/Cloud-CV/cvfy-frontend.svg?branch=master)
 [![Dependency Status](https://david-dm.org/Cloud-CV/Origami.svg)](https://david-dm.org/Cloud-CV/cvfy-frontend)
@@ -6,11 +6,11 @@
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 
-## Development Setup instructions
+## Development setup instructions
 
 **This application requires node v5+ and Python 2.7/3.4+**
 
-### Create a Virtual Environment:
+### Create a Virtual Environment
 
 1. `pip install virtualenv`
 2. `virtualenv venv` venv = Name of virtualenv
