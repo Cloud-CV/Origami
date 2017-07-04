@@ -16,6 +16,7 @@ import datetime
 import json
 from collections import OrderedDict
 
+
 class DemoViewSet(ModelViewSet):
     '''
     Contains information about inputs/outputs of a single program
@@ -106,7 +107,7 @@ def redirect_login(req):
         acc.user = tmp
         acc.save()
         return HttpResponseRedirect('/login?status=passed&token=' + token.token + '&username=' + tmp.username + '&user_id=' + str(tmp.id))
-    return HttpResponseRedirect('/login?status=passed&token=' + token.token + '&username=' + user.username + '&user_id=' + str(user.id))    
+    return HttpResponseRedirect('/login?status=passed&token=' + token.token + '&username=' + user.username + '&user_id=' + str(user.id))
 
 
 @api_view(['GET'])
@@ -150,7 +151,7 @@ def custom_component_controller(request, type_req, user_id, demoid):
                 props.append({})
         user_id = body["user_id"]
         component = model.objects.create(demo=demo, base_component_id=base_comp_id,
-                             props=json.dumps(props), user_id=user_id, id=demo_id)
+                                         props=json.dumps(props), user_id=user_id, id=demo_id)
         serialize = serializer(component)
         return Response(serialize.data, status=response_status.HTTP_201_CREATED)
     elif request.method == "GET":
@@ -174,7 +175,7 @@ def custom_component_controller(request, type_req, user_id, demoid):
                 data = serialize.data
                 for x in xrange(len(data)):
                     data[x]["props"] = json.loads(data[x]["props"].encode(
-                    "ascii", "ignore"))
+                        "ascii", "ignore"))
                     data[x]["demo"] = DemoSerializer(components[x].demo).data
                 return Response(serialize.data, status=response_status.HTTP_200_OK)
         else:
@@ -342,20 +343,37 @@ def custom_permalink_controller(request, user_id, project_id):
     return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def root_settings(request):
     body = json.loads(request.body.decode('utf-8'))
-    root = RootSettings.objects.create(root_user_github_login_id=body["root_user_github_login_id"],
-                                       root_user_github_login_name=body[
+    root = RootSettings.objects.all().first()
+    app = SocialApp.objects.all().first()
+    if root and app:
+        root.root_user_github_login_id = body["root_user_github_login_id"]
+        root.root_user_github_login_name = body["root_user_github_login_name"]
+        root.client_id = body["client_id"]
+        root.client_secret = body["client_secret"]
+        root.is_cloudcv = body["is_cloudcv"]
+        root.allow_new_logins = body["allow_new_logins"]
+        root.app_ip = body["app_ip"]
+        root.port = body["port"]
+        root.save()
+        app.client_id = body["client_id"]
+        app.secret = body["client_secret"]
+        app.save()
+    else:
+        root = RootSettings.objects.create(root_user_github_login_id=body["root_user_github_login_id"],
+                                           root_user_github_login_name=body[
                                            "root_user_github_login_name"],
-                                       client_id=body["client_id"], client_secret=body[
+                                           client_id=body["client_id"], client_secret=body[
                                            "client_secret"],
-                                       is_cloudcv=body["is_cloudcv"], allow_new_logins=body[
+                                           is_cloudcv=body["is_cloudcv"], allow_new_logins=body[
                                            "allow_new_logins"],
-                                       app_ip=body["app_ip"], port=body["port"])
-    app = SocialApp.objects.create(provider=u'github', name=str(datetime.datetime.now().isoformat()),
-                                   client_id=body["client_id"], secret=body["client_secret"])
+                                           app_ip=body["app_ip"], port=body["port"])
+        app = SocialApp.objects.create(provider=u'github', name=str(datetime.datetime.now().isoformat()),
+                                       client_id=body["client_id"], secret=body["client_secret"])
     site = Site.objects.get(id=1)
     app.sites.add(site)
     app.save()
-    return Response(body, status=response_status.HTTP_200_OK)
+    serialize = RootSettingsSerializer(root)
+    return Response(serialize.data, status=response_status.HTTP_200_OK)
