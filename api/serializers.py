@@ -11,7 +11,8 @@ class DemoSerializer(serializers.ModelSerializer):
 
 
 class InputComponentSerializer(serializers.ModelSerializer):
-    id = serializers.CharField(read_only=False)
+    id = serializers.IntegerField(read_only=False)
+    demo = DemoSerializer()
 
     class Meta:
         model = InputComponent
@@ -19,7 +20,7 @@ class InputComponentSerializer(serializers.ModelSerializer):
 
 
 class OutputComponentSerializer(serializers.ModelSerializer):
-    id = serializers.CharField(read_only=False)
+    id = serializers.IntegerField(read_only=False)
 
     class Meta:
         model = OutputComponent

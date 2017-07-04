@@ -13,7 +13,8 @@ from rest_framework.decorators import api_view
 from rest_framework import status as response_status
 
 import datetime
-
+import json
+from collections import OrderedDict
 
 class DemoViewSet(ModelViewSet):
     '''
@@ -125,10 +126,13 @@ def get_all_demos(request, id):
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def custom_component_controller(request, type_req, user_id, demoid):
     model = ""
+    serializer = ""
     if type_req == "input":
         model = InputComponent
+        serializer = InputComponentSerializer
     elif type_req == "output":
         model = OutputComponent
+        serializer = OutputComponentSerializer
     else:
         return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
 
@@ -145,10 +149,10 @@ def custom_component_controller(request, type_req, user_id, demoid):
             else:
                 props.append({})
         user_id = body["user_id"]
-
-        model.objects.create(demo=demo, base_component_id=base_comp_id,
-                             props=props, user_id=user_id, id=demo_id)
-        return Response(body, status=response_status.HTTP_201_CREATED)
+        component = model.objects.create(demo=demo, base_component_id=base_comp_id,
+                             props=json.dumps(props), user_id=user_id, id=demo_id)
+        serialize = serializer(component)
+        return Response(serialize.data, status=response_status.HTTP_201_CREATED)
     elif request.method == "GET":
         if user_id:
             if demoid:
@@ -158,25 +162,21 @@ def custom_component_controller(request, type_req, user_id, demoid):
                 except Exception as e:
                     return Response({})
 
-                send = [{
-                    "id": int(demoid),
-                    "user_id": int(user_id),
-                    "base_component_id": component.base_component_id,
-                    "props": json.loads(component.props)
-                }]
-                return Response(send, status=response_status.HTTP_200_OK)
+                serialize = serializer(component)
+                data = serialize.data
+                data["props"] = json.loads(data["props"].encode(
+                    "ascii", "ignore"))
+                data["demo"] = DemoSerializer(component.demo).data
+                return Response([data], status=response_status.HTTP_200_OK)
             else:
                 components = model.objects.filter(user_id=user_id)
-                response = []
-                for component in components:
-                    d = {
-                        "id": component.demo.id,
-                        "user_id": component.user_id,
-                        "base_component_id": component.base_component_id,
-                        "props": json.loads(component.props)
-                    }
-                    response.append(d)
-                return Response(response, status=response_status.HTTP_200_OK)
+                serialize = serializer(components, many=True)
+                data = serialize.data
+                for x in xrange(len(data)):
+                    data[x]["props"] = json.loads(data[x]["props"].encode(
+                    "ascii", "ignore"))
+                    data[x]["demo"] = DemoSerializer(components[x].demo).data
+                return Response(serialize.data, status=response_status.HTTP_200_OK)
         else:
             return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
     elif request.method == "PUT":
@@ -191,9 +191,10 @@ def custom_component_controller(request, type_req, user_id, demoid):
                         "ascii", "ignore"))
                 else:
                     props.append({})
-            component.props = props
+            component.props = json.dumps(props)
             component.save()
-            return Response(body, status=response_status.HTTP_200_OK)
+            serialize = serializer(component)
+            return Response(serialize.data, status=response_status.HTTP_200_OK)
         else:
             return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
     elif request.method == "DELETE":
