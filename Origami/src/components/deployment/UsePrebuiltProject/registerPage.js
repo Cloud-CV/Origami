@@ -149,7 +149,7 @@ class RegisterPage extends React.Component {
             this.state.user_id,
             this.props.params.repoId
           ).then(data => {
-            if (JSON.parse(data).length !== 0) {
+            if (JSON.parse(data).text !== "Not Found") {
               this.setState({ permalinkObject: JSON.parse(data)[0] });
             }
           });

@@ -24,7 +24,7 @@ export function updateInputComponentModel(newModelData) {
         newModelData.id,
         "input"
       ).then(data => {
-        if (JSON.parse(data).length > 0) {
+        if (JSON.parse(data).text !== "Not Found") {
           modifyComponentDeployed(newModelData.user_id, newModelData, "input")
             .then(() => {
               dispatch(updateInputComponentModelSuccess(newModelData));

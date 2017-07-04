@@ -146,7 +146,7 @@ def custom_component_controller(request, type_req, user_id, demoid):
         for prop in body["props"]:
             if prop:
                 props.append(prop.encode(
-                    "ascii", "ignore"))
+                    "ascii", "ignore").decode('utf-8'))
             else:
                 props.append({})
         user_id = body["user_id"]
@@ -161,7 +161,7 @@ def custom_component_controller(request, type_req, user_id, demoid):
                 try:
                     component = model.objects.get(user_id=user_id, demo=demo)
                 except Exception as e:
-                    return Response({})
+                    return Response({"text": "Not Found"})
 
                 serialize = serializer(component)
                 data = serialize.data
@@ -192,7 +192,7 @@ def custom_component_controller(request, type_req, user_id, demoid):
             for prop in body["props"]:
                 if prop:
                     props.append(prop.encode(
-                        "ascii", "ignore"))
+                        "ascii", "ignore").decode('utf-8'))
                 else:
                     props.append({})
             component.props = json.dumps(props)
@@ -221,7 +221,7 @@ def custom_demo_controller(request, user_id, id):
             try:
                 demo = Demo.objects.get(id=id, user_id=user_id)
             except Exception as e:
-                return Response({})
+                return Response({"text": "Not Found"})
             serialize = DemoSerializer(demo)
             return Response([serialize.data], status=response_status.HTTP_200_OK)
         else:
@@ -282,7 +282,7 @@ def get_permalink(request, shorturl):
         permalink = Permalink.objects.get(short_relative_url='/p/' + shorturl)
 
     except Exception as e:
-        return Response({})
+        return Response({"text": "Not Found"})
 
     permalink.short_relative_url = permalink.short_relative_url.split('/')[-1]
     serialize = PermalinkSerializer(permalink)
@@ -299,7 +299,7 @@ def custom_permalink_controller(request, user_id, project_id):
                     project_id=project_id, user_id=user_id)
 
             except Exception as e:
-                return Response({})
+                return Response({"text": "Not Found"})
             serialize = PermalinkSerializer(permalink)
             return Response(serialize.data, status=response_status.HTTP_200_OK)
         else:
@@ -307,7 +307,7 @@ def custom_permalink_controller(request, user_id, project_id):
                 permalinks = Permalink.objects.all()
 
             except Exception as e:
-                return Response({})
+                return Response({"text": "Not Found"})
             serialize = PermalinkSerializer(permalinks, many=True)
             return Response(serialize.data, status=response_status.HTTP_200_OK)
 
