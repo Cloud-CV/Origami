@@ -151,7 +151,7 @@ def custom_component_controller(request, type_req, user_id, demoid):
                 props.append({})
         user_id = body["user_id"]
         component = model.objects.create(demo=demo, base_component_id=base_comp_id,
-                                         props=json.dumps(props), user_id=user_id, id=demo_id)
+                                         props=json.dumps(props), user_id=user_id)
         serialize = serializer(component)
         return Response(serialize.data, status=response_status.HTTP_201_CREATED)
     elif request.method == "GET":
@@ -166,24 +166,27 @@ def custom_component_controller(request, type_req, user_id, demoid):
                 serialize = serializer(component)
                 data = serialize.data
                 data["props"] = json.loads(data["props"].encode(
-                    "ascii", "ignore"))
+                    "ascii", "ignore").decode('utf8'))
                 data["demo"] = DemoSerializer(component.demo).data
+                data["id"] = component.demo.id
                 return Response([data], status=response_status.HTTP_200_OK)
             else:
                 components = model.objects.filter(user_id=user_id)
                 serialize = serializer(components, many=True)
                 data = serialize.data
-                for x in xrange(len(data)):
+                for x in range(len(data)):
                     data[x]["props"] = json.loads(data[x]["props"].encode(
-                        "ascii", "ignore"))
+                        "ascii", "ignore").decode('utf8'))
                     data[x]["demo"] = DemoSerializer(components[x].demo).data
+                    data[x]["id"] = components[x].demo.id
                 return Response(serialize.data, status=response_status.HTTP_200_OK)
         else:
             return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
     elif request.method == "PUT":
         body = json.loads(request.body.decode('utf-8'))
         if user_id and demoid:
-            component = model.objects.get(id=demoid, user_id=user_id)
+            demo = Demo.objects.get(id=demoid)
+            component = model.objects.get(demo=demo, user_id=user_id)
             component.base_component_id = body["base_component_id"]
             props = []
             for prop in body["props"]:

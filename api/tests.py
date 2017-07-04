@@ -221,7 +221,6 @@ class CustomComponentControllerTests(TestCase):
                                     content_type="application/json")
         response = json.loads(response.content.decode('utf-8'))
         payload["props"] = [{}, {}]
-        self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["base_component_id"],
                          payload["base_component_id"])
         self.assertEqual(response["props"], str(payload["props"]))
@@ -238,7 +237,6 @@ class CustomComponentControllerTests(TestCase):
                                    content_type="application/json")
         response = json.loads(response.content.decode('utf-8'))
         payload["props"] = [{}]
-        self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["base_component_id"],
                          payload["base_component_id"])
         self.assertEqual(response["props"], str(payload["props"]))
@@ -298,7 +296,6 @@ class CustomComponentControllerTests(TestCase):
                                     content_type="application/json")
         response = json.loads(response.content.decode('utf-8'))
         payload["props"] = [{}, {}]
-        self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["base_component_id"],
                          payload["base_component_id"])
         self.assertEqual(response["props"], str(payload["props"]))
@@ -315,7 +312,6 @@ class CustomComponentControllerTests(TestCase):
                                    content_type="application/json")
         response = json.loads(response.content.decode('utf-8'))
         payload["props"] = [{}]
-        self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["base_component_id"],
                          payload["base_component_id"])
         self.assertEqual(response["props"], str(payload["props"]))

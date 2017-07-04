@@ -22,7 +22,6 @@ class Demo(models.Model):
 
 
 class InputComponent(models.Model):
-    id = models.IntegerField(primary_key=True)
     base_component_id = models.IntegerField()
     props = models.TextField()
     demo = models.OneToOneField(Demo)
@@ -36,7 +35,6 @@ class InputComponent(models.Model):
 
 
 class OutputComponent(models.Model):
-    id = models.IntegerField(primary_key=True)
     base_component_id = models.IntegerField()
     props = models.TextField()
     demo = models.OneToOneField(Demo)

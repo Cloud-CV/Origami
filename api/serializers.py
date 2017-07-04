@@ -11,20 +11,19 @@ class DemoSerializer(serializers.ModelSerializer):
 
 
 class InputComponentSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=False)
-    demo = DemoSerializer()
+    user_id = serializers.IntegerField(read_only=False)
 
     class Meta:
         model = InputComponent
-        fields = '__all__'
+        fields = ('base_component_id', 'user_id', 'props')
 
 
 class OutputComponentSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=False)
+    user_id = serializers.IntegerField(read_only=False)
 
     class Meta:
         model = OutputComponent
-        fields = '__all__'
+        fields = ('base_component_id', 'user_id', 'props')
 
 
 class PermalinkSerializer(serializers.ModelSerializer):
