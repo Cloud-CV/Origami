@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load render_bundle from webpack_loader %}
+
+{% block main %}
+{% csrf_token %}
+<div id="root"></div>
+{% render_bundle 'vendor' %}
+{% render_bundle 'main' %}
+{% endblock %}
