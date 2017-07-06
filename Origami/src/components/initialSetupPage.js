@@ -11,16 +11,16 @@ class InitialSetup extends React.Component {
     super(props, context);
     this.state = {
       root: "",
-      clientid: "",
-      clientsecret: "",
-      appip: window.location.hostname,
+      client_id: "",
+      client_secret: "",
+      app_ip: window.location.hostname,
       port: window.location.port,
       rootError: "",
-      clientidError: "",
-      clientsecretError: "",
-      appipError: "",
+      client_idError: "",
+      client_secretError: "",
+      app_ipError: "",
       allowNewUsers: false,
-      isCloudCV: false
+      is_cloudcv: false
     };
     this.updateFields = this.updateFields.bind(this);
     this.updateCheck = this.updateCheck.bind(this);
@@ -45,27 +45,27 @@ class InitialSetup extends React.Component {
     } else {
       this.setState({ rootError: "" });
     }
-    if (this.state.clientid.length === 0) {
-      this.setState({ clientidError: "Required" });
+    if (this.state.client_id.length === 0) {
+      this.setState({ client_idError: "Required" });
     } else {
-      this.setState({ clientidError: "" });
+      this.setState({ client_idError: "" });
     }
-    if (this.state.clientsecret.length === 0) {
-      this.setState({ clientsecretError: "Required" });
+    if (this.state.client_secret.length === 0) {
+      this.setState({ client_secretError: "Required" });
     } else {
-      this.setState({ clientsecretError: "" });
+      this.setState({ client_secretError: "" });
     }
-    if (this.state.appip.length === 0) {
-      this.setState({ appipError: "Required" });
+    if (this.state.app_ip.length === 0) {
+      this.setState({ app_ipError: "Required" });
     } else {
-      this.setState({ appipError: "" });
+      this.setState({ app_ipError: "" });
     }
 
     if (
       this.state.root.length !== 0 &&
-      this.state.clientid.length !== 0 &&
-      this.state.clientsecret.length !== 0 &&
-      this.state.appip.length !== 0
+      this.state.client_id.length !== 0 &&
+      this.state.client_secret.length !== 0 &&
+      this.state.app_ip.length !== 0
     ) {
       let timeout = "";
 
@@ -84,18 +84,18 @@ class InitialSetup extends React.Component {
       });
 
       const toPut = {
-        rootUserGithubLoginName: this.state.root,
-        clientid: this.state.clientid,
-        clientsecret: this.state.clientsecret,
-        allowNewLogins: this.state.allowNewUsers,
-        isCloudCV: this.state.isCloudCV,
-        appip: this.state.appip,
+        root_user_github_login_name: this.state.root,
+        client_id: this.state.client_id,
+        client_secret: this.state.client_secret,
+        allow_new_logins: this.state.allowNewUsers,
+        is_cloudcv: this.state.is_cloudcv,
+        app_ip: this.state.app_ip,
         port: this.state.port
       };
       rootApi
         .getIDByName(this.state.root)
         .then(data => {
-          toPut.rootUserGithubLoginId = JSON.parse(data).id;
+          toPut.root_user_github_login_id = JSON.parse(data).id;
         })
         .then(() => {
           rootApi
@@ -171,24 +171,24 @@ class InitialSetup extends React.Component {
             <TextField
               hintText="Github Client ID"
               floatingLabelText="Github Client ID"
-              errorText={this.state.clientidError}
-              onChange={e => this.updateFields("clientid", e.target.value)}
+              errorText={this.state.client_idError}
+              onChange={e => this.updateFields("client_id", e.target.value)}
             />
           </div>
           <div className="centered row">
             <TextField
               hintText="Github Client Secret"
               floatingLabelText="Github Client Secret"
-              errorText={this.state.clientsecretError}
-              onChange={e => this.updateFields("clientsecret", e.target.value)}
+              errorText={this.state.client_secretError}
+              onChange={e => this.updateFields("client_secret", e.target.value)}
             />
           </div>
           <div className="centered row">
             <TextField
-              defaultValue={this.state.appip}
+              defaultValue={this.state.app_ip}
               hintText="This deployment's IP/Domain"
               floatingLabelText="Application IP/domain"
-              errorText={this.state.appipError}
+              errorText={this.state.app_ipError}
               onChange={e => this.updateFields("clientip", e.target.value)}
             />
           </div>
@@ -205,8 +205,8 @@ class InitialSetup extends React.Component {
             <Checkbox
               label="Is this deployment by CloudCV?"
               style={{ maxWidth: 200 }}
-              checked={this.state.isCloudCV}
-              onCheck={() => this.updateCheck("isCloudCV")}
+              checked={this.state.is_cloudcv}
+              onCheck={() => this.updateCheck("is_cloudcv")}
             />
             <br />
           </div>

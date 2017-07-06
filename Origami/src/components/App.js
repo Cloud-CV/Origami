@@ -28,12 +28,21 @@ class App extends React.Component {
     this.readSessionToken = this.readSessionToken.bind(this);
     this.clearSessionFlag = this.clearSessionFlag.bind(this);
     this.setSessionFlag = this.setSessionFlag.bind(this);
-    this.socket = io();
+    this.getDocs = this.getDocs.bind(this);
+    let ws_scheme = "ws";
+    this.socket = new WebSocket(
+      ws_scheme + "://" + window.location.host + "/chat/"
+    );
+    let socket = this.socket;
     this.socketId = Math.random().toString(36);
-    this.socket.on("connect", () => {
-      console.log("Emitting");
-      this.socket.emit("savesessiontoken", this.socketId);
-    });
+    socket.onopen = function() {
+      socket.send(
+        JSON.stringify({
+          event: "ConnectionEstablished",
+          socketId: this.socketId
+        })
+      );
+    }.bind(this);
   }
 
   getChildContext() {
@@ -85,18 +94,25 @@ class App extends React.Component {
   }
 
   initiateLogin() {
-    window.location = "/auth/github/login";
+    window.location = "/auth/github/login/";
   }
 
   logout() {
     this.props.loginactions.Logout();
     this.clearSessionFlag();
-    window.location = "/auth/logout";
+    window.location = "/";
+  }
+
+  getDocs() {
+    window.location = "http://cloudcv-origami.readthedocs.io/en/latest/index.html";
   }
 
   handleClick(e) {
     if (!this.state.login && e.key === "2") {
       this.initiateLogin();
+    }
+    else if(e.key == "3") {
+      this.getDocs();
     }
   }
 

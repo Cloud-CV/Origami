@@ -1,6 +1,6 @@
 const appConfig = {
-  CLIENT_IP: "0.0.0.0",
-  CLIENT_PORT: 5001,
+  CLIENT_IP: "localhost",
+  CLIENT_PORT: 8000,
   DROPBOX_API_KEY: "API_KEY"
 };
 

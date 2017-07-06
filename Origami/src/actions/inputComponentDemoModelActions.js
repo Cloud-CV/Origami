@@ -20,12 +20,12 @@ export function updateInputComponentModel(newModelData) {
   return function(dispatch) {
     return new Promise((resolve, reject) => {
       getComponentDeployed(
-        newModelData.userid,
+        newModelData.user_id,
         newModelData.id,
         "input"
       ).then(data => {
-        if (JSON.parse(data).length > 0) {
-          modifyComponentDeployed(newModelData.userid, newModelData, "input")
+        if (JSON.parse(data).text !== "Not Found") {
+          modifyComponentDeployed(newModelData.user_id, newModelData, "input")
             .then(() => {
               dispatch(updateInputComponentModelSuccess(newModelData));
               resolve("dispatched input component model update call");
@@ -34,7 +34,7 @@ export function updateInputComponentModel(newModelData) {
               reject("cannot dispatch input component model update call");
             });
         } else {
-          addComponentDeployed(newModelData.userid, newModelData, "input")
+          addComponentDeployed(newModelData.user_id, newModelData, "input")
             .then(() => {
               dispatch(updateInputComponentModelSuccess(newModelData));
               resolve("dispatched input component model update call");
@@ -48,10 +48,10 @@ export function updateInputComponentModel(newModelData) {
   };
 }
 
-export function killInputComponentModel(userid, repoId) {
+export function killInputComponentModel(user_id, repoId) {
   return function(dispatch) {
     return new Promise((reject, resolve) => {
-      deleteComponentDeployed(userid, repoId, "input").then(() => {
+      deleteComponentDeployed(user_id, repoId, "input").then(() => {
         dispatch(killInputComponentModelSuccess());
       });
     });

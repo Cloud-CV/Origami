@@ -33,6 +33,9 @@ class PieChartOutputShowcaseModifyDialog extends React.Component {
     let tempText = [];
     allHeaders.map((header, index) => {
       let currentIndex = allHeaders.findIndex(x => x === header);
+      if (typeof header === "object") {
+        header = "";
+      }
       tempText[currentIndex] = (
         <div>
           <TextField

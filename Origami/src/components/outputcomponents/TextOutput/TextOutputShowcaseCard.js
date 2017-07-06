@@ -9,9 +9,9 @@ class TextOutputShowcaseCard extends React.Component {
   constructor(props) {
     super(props);
     let initHeaders = [];
-    if (props.demoProps.outputComponentDemoModel.baseComponentId === 1) {
+    if (props.demoProps.outputComponentDemoModel.base_component_id === 1) {
       initHeaders = props.demoProps.outputComponentDemoModel.props;
-      this.selected = props.demoProps.outputComponentDemoModel.baseComponentId ===
+      this.selected = props.demoProps.outputComponentDemoModel.base_component_id ===
         props.demoProps.selected;
     }
     this.state = {
@@ -65,8 +65,8 @@ class TextOutputShowcaseCard extends React.Component {
       this.outputComponentDemoModelActions
         .updateOutputComponentModel({
           id: this.demoModel.id,
-          userid: this.user.id,
-          baseComponentId: 1,
+          user_id: this.user.id,
+          base_component_id: 1,
           props: propsToStore
         })
         .then(() => {

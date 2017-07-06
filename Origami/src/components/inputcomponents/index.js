@@ -14,11 +14,18 @@ export function getInputComponentById(
   socketId,
   sendAddr
 ) {
+  let labels = [];
+  props.map((label, index) => {
+    if (typeof label === "object") {
+      label = "";
+    }
+    labels[index] = label;
+  });
   switch (id) {
     case 1:
       return (
         <TextInput
-          labels={props}
+          labels={labels}
           calling_context={calling_context}
           socketId={socketId}
           sendAddr={sendAddr}
@@ -27,7 +34,7 @@ export function getInputComponentById(
     case 2:
       return (
         <TextImageInput
-          labels={props}
+          labels={labels}
           calling_context={calling_context}
           socketId={socketId}
           sendAddr={sendAddr}
@@ -36,7 +43,7 @@ export function getInputComponentById(
     case 3:
       return (
         <ImageInput
-          labels={props}
+          labels={labels}
           calling_context={calling_context}
           socketId={socketId}
           sendAddr={sendAddr}

@@ -10,9 +10,9 @@ class TextImageInputShowcaseCard extends React.Component {
   constructor(props) {
     super(props);
     let initLabels = [];
-    if (props.demoProps.inputComponentDemoModel.baseComponentId === 2) {
+    if (props.demoProps.inputComponentDemoModel.base_component_id === 2) {
       initLabels = props.demoProps.inputComponentDemoModel.props;
-      this.selected = props.demoProps.inputComponentDemoModel.baseComponentId ===
+      this.selected = props.demoProps.inputComponentDemoModel.base_component_id ===
         props.demoProps.selected;
     }
     this.state = {
@@ -63,8 +63,8 @@ class TextImageInputShowcaseCard extends React.Component {
       this.inputComponentModelActions
         .updateInputComponentModel({
           id: this.demoModel.id,
-          userid: this.user.id,
-          baseComponentId: 2,
+          user_id: this.user.id,
+          base_component_id: 2,
           props: propsToStore
         })
         .then(() => {

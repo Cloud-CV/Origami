@@ -9,9 +9,9 @@ class ImageOutputShowcaseCard extends React.Component {
   constructor(props) {
     super(props);
     let initHeaders = [];
-    if (props.demoProps.outputComponentDemoModel.baseComponentId === 2) {
+    if (props.demoProps.outputComponentDemoModel.base_component_id === 2) {
       initHeaders = props.demoProps.outputComponentDemoModel.props;
-      this.selected = props.demoProps.outputComponentDemoModel.baseComponentId ===
+      this.selected = props.demoProps.outputComponentDemoModel.base_component_id ===
         props.demoProps.selected;
     }
     this.state = {
@@ -65,8 +65,8 @@ class ImageOutputShowcaseCard extends React.Component {
       this.outputComponentDemoModelActions
         .updateOutputComponentModel({
           id: this.demoModel.id,
-          userid: this.user.id,
-          baseComponentId: 2,
+          user_id: this.user.id,
+          base_component_id: 2,
           props: propsToStore
         })
         .then(() => {

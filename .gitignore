@@ -32,6 +32,8 @@ _templates
 
 # SQLite 
 db.sqlite3
+api/migrations/*
+!api/migrations/__init__.py
 
 # Bundle
 django_server/static/bundles/local/*.js

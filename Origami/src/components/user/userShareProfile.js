@@ -2,7 +2,7 @@ import React, { PropTypes } from "react";
 import HomePageDemoCard from "../stateless/homePageDemoCard";
 import { getAllPermalink } from "../../api/Nongh/permalink";
 import { getDeployed } from "../../api/Nongh/getDeployed";
-import { isCloudCV } from "../../api/Generic/getCloudCVDemos";
+import { is_cloudcv } from "../../api/Generic/getCloudCVDemos";
 import userApi from "../../api/Github/userApi";
 import RaisedButton from "material-ui/RaisedButton";
 import { indigo600, grey900, blue100 } from "material-ui/styles/colors";
@@ -43,23 +43,23 @@ class ShareProfile extends React.Component {
 
   componentWillMount() {
     if (this.props.params.username) {
-      isCloudCV().then(data => {
+      is_cloudcv().then(data => {
         const rootData = JSON.parse(data);
         userApi
           .userProfileFromName(this.props.params.username)
           .then(userData => {
             this.setState({ user: JSON.parse(userData) }, () => {
               getAllPermalink().then(links => {
-                getDeployed(this.props.params.userid)
+                getDeployed(this.props.params.user_id)
                   .then(alldeployedRepos => {
                     const relevantLink = JSON.parse(links).filter(
-                      x => parseInt(x.userId, 10) === this.state.user.id
+                      x => parseInt(x.user_id, 10) === this.state.user.id
                     );
                     const allDemos = [];
                     JSON.parse(alldeployedRepos).map((demo, index) => {
                       if (index < JSON.parse(alldeployedRepos).length) {
                         const demoToPut = Object.assign({}, demo, {
-                          permalink: `http://${rootData.appip}:${rootData.port}${relevantLink[index].shortRelativeURL}`
+                          permalink: `http://${rootData.app_ip}:${rootData.port}${relevantLink[index].short_relative_url}`
                         });
                         allDemos.push(demoToPut);
                       }
