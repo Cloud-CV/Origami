@@ -17,8 +17,9 @@ def ws_message(message):
         Group(body["socketId"]).add(message.reply_channel)
 
     elif body["event"] == "fetchCurrentPort":
+        print settings.PORT
         text = json.dumps({
-            "data": settings.HOST,
+            "data": settings.PORT,
                     "event": "fetchedCurrentPort"
         })
         message.reply_channel.send({"text": text})
