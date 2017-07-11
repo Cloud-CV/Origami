@@ -148,7 +148,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'django-server/static'),
+    os.path.join(BASE_DIR, 'django_server/static'),
 ]
 
 WEBPACK_LOADER = {
