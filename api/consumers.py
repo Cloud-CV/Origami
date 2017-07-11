@@ -3,6 +3,7 @@ from django.conf import settings
 from channels import Group
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
+from django.conf import settings
 import json
 
 
@@ -17,14 +18,14 @@ def ws_message(message):
 
     elif body["event"] == "fetchCurrentPort":
         text = json.dumps({
-            "data": "8000",
+            "data": settings.PORT,
                     "event": "fetchedCurrentPort"
         })
         message.reply_channel.send({"text": text})
 
     elif body["event"] == "getPublicIPaddress":
         text = json.dumps({
-            "data": "localhost",
+            "data": settings.HOST_NAME,
                     "event": "gotPublicIP"
         })
         message.reply_channel.send({"text": text})

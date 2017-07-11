@@ -169,3 +169,6 @@ CHANNEL_LAYERS = {
         "ROUTING": "django_server.routing.channel_routing",
     },
 }
+
+HOST_NAME = "127.0.0.1"
+PORT = "7000"
