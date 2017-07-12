@@ -1,23 +1,21 @@
 var path = require("path")
 var webpack = require('webpack')
 var BundleTracker = require('webpack-bundle-tracker')
-var path = require("path")
-var webpack = require('webpack')
+
+const GLOBALS = {
+  "process.env.NODE_ENV": JSON.stringify("production")
+};
 
 config = {
-  devtool: "cheap-module-eval-source-map",
-  entry: [
-    "./Origami/src/index"
-  ],
+  entry: "./Origami/src/index",
   target: "web",
   output: {
     path: path.resolve('./django_server/static/bundles/local/'),
     filename: "bundle.js"
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.js' }),
+    new webpack.DefinePlugin(GLOBALS),
+    new webpack.optimize.UglifyJsPlugin(),
     new BundleTracker({filename: './webpack-stats-local.json'})
   ],
   module: {
@@ -47,4 +45,4 @@ config = {
   }
 };
 
-module.exports = config
+module.exports = config;
