@@ -16,6 +16,7 @@ config = {
   plugins: [
     new webpack.DefinePlugin(GLOBALS),
     new webpack.optimize.UglifyJsPlugin(),
+    new webpack.optimize.AggressiveMergingPlugin(),
     new BundleTracker({filename: './webpack-stats-local.json'})
   ],
   module: {
@@ -45,4 +46,4 @@ config = {
   }
 };
 
-module.exports = config;
+module.exports = config
