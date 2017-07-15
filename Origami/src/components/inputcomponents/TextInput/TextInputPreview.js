@@ -4,9 +4,7 @@ import FlatButton from "material-ui/FlatButton";
 import TextInput from "./TextInput";
 import InputPreview from "../BaseInputComponent/InputPreview.js";
 
-
 class TextInputPreview extends InputPreview {
-
   render() {
     const actions = [
       <FlatButton

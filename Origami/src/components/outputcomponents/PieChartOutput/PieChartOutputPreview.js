@@ -5,7 +5,6 @@ import PieChartOutput from "./PieChartOutput";
 import OutputPreview from "../BaseOutputComponent/OutputPreview.js";
 
 class PieChartOutputPreview extends OutputPreview {
-  
   render() {
     const actions = [
       <FlatButton

@@ -1,7 +1,8 @@
 import React, { PropTypes } from "react";
 import { browserHistory } from "react-router";
 import CustomCard from "../../stateless/cards";
-import OutputShowcaseModifyDialog from "../BaseOutputComponent/OutputShowcaseModifyDialog";
+import OutputShowcaseModifyDialog
+  from "../BaseOutputComponent/OutputShowcaseModifyDialog";
 import OutputShowcaseCard from "../BaseOutputComponent/OutputShowcaseCard.js";
 import TextOutputPreview from "./TextOutputPreview";
 import toastr from "toastr";

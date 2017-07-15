@@ -65,11 +65,10 @@ class InputShowcaseCard extends React.Component {
     });
     return labels;
   }
-
 }
 
 InputShowcaseCard.propTypes = {
-  demoProps: PropTypes.object.isRequired,
+  demoProps: PropTypes.object.isRequired
 };
 
 export default InputShowcaseCard;

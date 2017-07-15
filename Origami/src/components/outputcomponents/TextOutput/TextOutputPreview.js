@@ -5,7 +5,6 @@ import TextOutput from "./TextOutput";
 import OutputPreview from "../BaseOutputComponent/OutputPreview.js";
 
 class TextOutputPreview extends OutputPreview {
-  
   render() {
     const actions = [
       <FlatButton

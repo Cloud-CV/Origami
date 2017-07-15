@@ -68,7 +68,6 @@ class OutputShowcaseCard extends React.Component {
     });
     return headers;
   }
-
 }
 
 OutputShowcaseCard.propTypes = {

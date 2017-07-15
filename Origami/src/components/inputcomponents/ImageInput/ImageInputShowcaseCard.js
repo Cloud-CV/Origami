@@ -1,7 +1,8 @@
 import React, { PropTypes } from "react";
 import { browserHistory } from "react-router";
 import CustomCard from "../../stateless/cards";
-import InputShowcaseModifyDialog from "../BaseInputComponent/InputShowcaseModifyDialog";
+import InputShowcaseModifyDialog
+  from "../BaseInputComponent/InputShowcaseModifyDialog";
 import ImageInputPreview from "./ImageInputPreview";
 import toastr from "toastr";
 import InputShowcaseCard from "../BaseInputComponent/InputShowcaseCard.js";

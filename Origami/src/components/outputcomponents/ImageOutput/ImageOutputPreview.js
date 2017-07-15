@@ -5,7 +5,6 @@ import ImageOutput from "./ImageOutput";
 import OutputPreview from "../BaseOutputComponent/OutputPreview.js";
 
 class ImageOutputPreview extends OutputPreview {
-  
   render() {
     const actions = [
       <FlatButton

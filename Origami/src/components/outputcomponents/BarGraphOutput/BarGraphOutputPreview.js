@@ -5,7 +5,6 @@ import BarGraphOutput from "./BarGraphOutput";
 import OutputPreview from "../BaseOutputComponent/OutputPreview.js";
 
 class BarGraphOutputPreview extends OutputPreview {
-
   render() {
     const actions = [
       <FlatButton

@@ -5,7 +5,6 @@ import AreaGraphOutput from "./AreaGraphOutput";
 import OutputPreview from "../BaseOutputComponent/OutputPreview.js";
 
 class AreaGraphOutputPreview extends OutputPreview {
-
   render() {
     const actions = [
       <FlatButton

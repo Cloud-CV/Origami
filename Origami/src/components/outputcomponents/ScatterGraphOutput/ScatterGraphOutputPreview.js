@@ -5,7 +5,6 @@ import ScatterGraphOutput from "./ScatterGraphOutput";
 import OutputPreview from "../BaseOutputComponent/OutputPreview.js";
 
 class ScatterGraphOutputPreview extends OutputPreview {
-
   render() {
     const actions = [
       <FlatButton

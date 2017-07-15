@@ -5,7 +5,6 @@ import ImageInput from "./ImageInput";
 import InputPreview from "../BaseInputComponent/InputPreview.js";
 
 class ImageInputPreview extends InputPreview {
-
   render() {
     const actions = [
       <FlatButton
