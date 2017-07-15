@@ -25,7 +25,7 @@ SECRET_KEY = ')3e&&#5kho$n++t_t6ux043(yic7#y7gw*^(j6db^_a&d2e#v#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', os.environ['HOST']]
 
 
 # Application definition
@@ -147,6 +147,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'django_server/static'),
 ]
@@ -170,5 +172,5 @@ CHANNEL_LAYERS = {
     },
 }
 
-HOST_NAME = "127.0.0.1"
-PORT = "7000"
+HOST_NAME = os.environ['HOST']
+PORT = os.environ['PORT']

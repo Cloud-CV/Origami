@@ -138,7 +138,7 @@ def custom_component_controller(request, type_req, user_id, demoid):
         return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
 
     if request.method == "POST":
-        body = json.loads(request.body.decode('utf-8'))
+        body = request.data
         demo_id = body["id"]
         demo = Demo.objects.get(id=demo_id)
         base_comp_id = body["base_component_id"]
@@ -183,7 +183,7 @@ def custom_component_controller(request, type_req, user_id, demoid):
         else:
             return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
     elif request.method == "PUT":
-        body = json.loads(request.body.decode('utf-8'))
+        body = request.data
         if user_id and demoid:
             demo = Demo.objects.get(id=demoid)
             component = model.objects.get(demo=demo, user_id=user_id)
@@ -229,7 +229,7 @@ def custom_demo_controller(request, user_id, id):
             serialize = DemoSerializer(demos, many=True)
             return Response(serialize.data, status=response_status.HTTP_200_OK)
     elif request.method == "POST":
-        body = json.loads(request.body.decode('utf-8'))
+        body = request.data
         name = body["name"]
         id = body["id"]
         user_id = body["user_id"]
@@ -250,7 +250,7 @@ def custom_demo_controller(request, user_id, id):
 
     elif request.method == "PUT":
         if id and user_id:
-            body = json.loads(request.body.decode('utf-8'))
+            body = request.data
             demo = Demo.objects.get(id=id, user_id=user_id)
             demo.name = body["name"]
             demo.address = body["address"]
@@ -312,7 +312,7 @@ def custom_permalink_controller(request, user_id, project_id):
             return Response(serialize.data, status=response_status.HTTP_200_OK)
 
     elif request.method == "POST":
-        body = json.loads(request.body.decode('utf-8'))
+        body = request.data
         short_relative_url = body["short_relative_url"]
         full_relative_url = body["full_relative_url"]
         project_id = body["project_id"]
@@ -325,7 +325,7 @@ def custom_permalink_controller(request, user_id, project_id):
 
     elif request.method == "PUT":
         if user_id and project_id:
-            body = json.loads(request.body.decode('utf-8'))
+            body = request.data
             perm = Permalink.objects.get(
                 user_id=user_id, project_id=project_id)
             perm.short_relative_url = body["short_relative_url"]
@@ -348,7 +348,7 @@ def custom_permalink_controller(request, user_id, project_id):
 
 @api_view(['POST'])
 def root_settings(request):
-    body = json.loads(request.body.decode('utf-8'))
+    body = request.data
     root = RootSettings.objects.all().first()
     app = SocialApp.objects.all().first()
     if root and app:

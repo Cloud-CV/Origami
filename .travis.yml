@@ -8,6 +8,8 @@ python:
 before_cache:
   - rm -f $HOME/.cache/pip/log/debug.log
 
+env:
+  - HOST=localhost PORT=8000
 
 before_install:
   - pip install -U pip
