@@ -10,6 +10,7 @@ import MenuItem from "material-ui/MenuItem";
 import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
 import FlatButton from "material-ui/FlatButton";
 import io from "socket.io-client";
+import userApi from "../api/Github/userApi";
 import { Layout, Menu, Icon, Button, Card, Row, Col, Input } from "antd";
 import "./index.css";
 const { Header, Content, Footer, Sider } = Layout;
@@ -118,6 +119,16 @@ class App extends React.Component {
   }
 
   handleClickAfterLogin(e) {
+    if (e.key === "1"){
+      userApi
+        .userProfileFromName(localStorage.getItem("username"))
+        .then(user => {
+          user = JSON.parse(user)
+          browserHistory.push(
+              `/u/${user.login}/${user.id}`
+          )
+        })
+    }
     if(e.key === "2") {
       browserHistory.push("/");
     }
