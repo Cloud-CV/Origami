@@ -132,6 +132,28 @@ class HomePageComponent extends React.Component {
     const styles = this.getStyles();
     return (
       <div>
+      {this.props.login && 
+        <Header id="layout-header">
+            <Row>
+              <Col span={3} offset={1}>
+                <h2 id="logo-title">
+                  Origami
+                </h2>
+              </Col>
+              <Col span={12} offset={3}>
+                <Input.Search
+                  id="search"
+                  placeholder="Search for demos, users"
+                />
+              </Col>
+              <Col span={2} offset={0}>
+                <Button style={{ marginLeft: 30, textAlign: "right" }}>
+                  Search By <Icon type="down" />
+                </Button>
+              </Col>
+            </Row>
+          </Header>
+      }
         <Content id="content" style={styles.content}>
           <div id="content-div" style={styles.contentDiv}>
             <Row>
