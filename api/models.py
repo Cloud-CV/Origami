@@ -61,5 +61,5 @@ class RootSettings(models.Model):
     client_secret = models.CharField(max_length=75)
     is_cloudcv = models.BooleanField(default=True)
     allow_new_logins = models.BooleanField(default=True)
-    app_ip = models.CharField(max_length=30)
+    app_ip = models.CharField(max_length=75)
     port = models.CharField(max_length=5)
