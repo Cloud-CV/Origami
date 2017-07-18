@@ -268,9 +268,6 @@ class NonGHUserProfile extends React.Component {
     <Footer style={{ textAlign: 'center', background: '#fefefe', color:'#455A64', 'font-size' : '14px', 'box-shadow': '0px -2px 5px #E0E0E0'  }}>
       Origami - Created by Team CloudCV
     </Footer>
-    <div className="ui relaxed stackable grid fluid">
-
-        <div className="ui thirteen wide column grid">
 
           <Dialog
             title="Modify Application"
@@ -331,9 +328,6 @@ class NonGHUserProfile extends React.Component {
           >
             Are you sure you want to delete this application?
           </Dialog>
-
-        </div>
-      </div>
   </Layout>
 
     );
