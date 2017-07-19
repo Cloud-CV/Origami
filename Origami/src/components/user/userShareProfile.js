@@ -1,4 +1,5 @@
 import React, { PropTypes } from "react";
+import { browserHistory } from "react-router";
 import { getAllPermalink } from "../../api/Nongh/permalink";
 import { getDeployed } from "../../api/Nongh/getDeployed";
 import { is_cloudcv } from "../../api/Generic/getCloudCVDemos";
@@ -43,6 +44,7 @@ class ShareProfileComponent extends React.Component {
     this.toggleShow = this.toggleShow.bind(this);
     this.handleShareModal = this.handleShareModal.bind(this);
     this.getStyles = this.getStyles.bind(this);
+    this.goToDemo = this.goToDemo.bind(this);
   }
 
   componentWillMount() {
@@ -126,6 +128,13 @@ class ShareProfileComponent extends React.Component {
     };
   }
 
+  goToDemo(demo) {
+    console.log(demo);
+    browserHistory.push(
+      `/ngh/user/${demo.user_id}/${demo.name}/${demo.id}/demo`
+    );
+  }
+
   render() {
     const styles = this.getStyles();
     return (
@@ -167,7 +176,11 @@ class ShareProfileComponent extends React.Component {
                           <br />
                           <Row>
                             <Col span={11} offset={1}>
-                              <Button type="primary" style={{ width: "100%" }}>
+                              <Button
+                                type="primary"
+                                style={{ width: "100%" }}
+                                onClick={() => this.goToDemo(demo)}
+                              >
                                 Launch<Icon type="rocket" />
                               </Button>
                             </Col>
