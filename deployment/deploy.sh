@@ -1,5 +1,8 @@
-export HOST="ENTER HOSTNAME"
+export HOST="HOST"
 export PORT="80"
+export DB_NAME="DATABASE NAME"
+export DB_USER="DATABASE USER"
+export DB_PASS="DATABASE PASSWORD"
 cd ~/Origami/
 sudo apt-get update
 sudo apt-get install redis-server

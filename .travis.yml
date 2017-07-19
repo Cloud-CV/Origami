@@ -5,11 +5,22 @@ python:
   - "2.7"
   - "3.4"
 
+addons:
+  postgresql: "9.5"
+
 before_cache:
   - rm -f $HOME/.cache/pip/log/debug.log
 
+before_script:
+  - psql -c "CREATE DATABASE origami" -U postgres
+  - psql -c "CREATE USER origamiuser WITH PASSWORD 'pass'" -U postgres
+  - psql -c "ALTER ROLE origamiuser SET client_encoding TO 'utf8'" -U postgres
+  - psql -c "ALTER ROLE origamiuser SET default_transaction_isolation TO 'read committed'" -U postgres
+  - psql -c "ALTER ROLE origamiuser SET timezone TO 'UTC'" -U postgres
+  - psql -c "ALTER USER origamiuser CREATEDB" -U postgres
+
 env:
-  - HOST=localhost PORT=8000
+  - HOST=localhost PORT=8000 DB_NAME="origami" DB_USER="origamiuser" DB_PASS="password"
 
 before_install:
   - pip install -U pip
