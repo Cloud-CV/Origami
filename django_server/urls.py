@@ -39,7 +39,7 @@ urlpatterns = [
     url(r'api/getpermalink/([A-Za-z0-9]+)/?$', get_permalink),
     url(r'api/demo/user/(\d+)', get_all_demos),
     url(r'api/(input|output)component/?(\d*)/?(\d*)', custom_component_controller),
-    url(r'^api/demo/(\d+)/?(\d*)', custom_demo_controller),
+    url(r'^api/demo/(\d*)/?(\d*)', custom_demo_controller),
     url(r'^api/permalink/?(\d*)/?(\d*)', custom_permalink_controller),
     url(r'^api/', include(router.urls, namespace='api')),
     url(r'^inject$', inject),
