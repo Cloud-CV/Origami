@@ -13,6 +13,7 @@ import {
   getAllDemosByCloudCV
 } from "../../api/Generic/getCloudCVDemos";
 import { getAllDeployed } from "../../api/Nongh/getAllDeployed";
+import { getSearchedDemos } from "../../api/Nongh/getSearchedDemos";
 import HomePageDemoCard from "../stateless/homePageDemoCard";
 import { getAllPermalink } from "../../api/Nongh/permalink";
 import RaisedButton from "material-ui/RaisedButton";
@@ -20,9 +21,19 @@ import Dialog from "material-ui/Dialog";
 import * as loginActions from "../../actions/loginActions";
 import { ShareButtons, ShareCounts, generateShareIcon } from "react-share";
 import Radium from "radium";
-import { Layout, Menu, Icon, Button, Card, Row, Col, Input } from "antd";
+import {
+  Layout,
+  Menu,
+  Icon,
+  Button,
+  Card,
+  Row,
+  Col,
+  Input,
+  Select
+} from "antd";
 const { Header, Content, Footer } = Layout;
-
+const Option = Select.Option;
 const {
   FacebookShareButton,
   GooglePlusShareButton,
@@ -55,12 +66,13 @@ class HomePageComponent extends React.Component {
       demoBeingShown: {},
       permalinkHolder: {},
       shareModalOpen: false,
-      showOutput: false
+      searchBy: "demo"
     };
 
     this.handleShareModal = this.handleShareModal.bind(this);
     this.getStyles = this.getStyles.bind(this);
     this.goToDemoPage = this.goToDemoPage.bind(this);
+    this.findDemo = this.findDemo.bind(this);
   }
 
   componentWillMount() {
@@ -105,6 +117,34 @@ class HomePageComponent extends React.Component {
     browserHistory.push(this.state.permalinkHolder[demo.id].short_relative_url);
   }
 
+  findDemo(search_term) {
+    getSearchedDemos(this.state.searchBy, search_term)
+      .then(allRepos => {
+        if (Object.keys(JSON.parse(allRepos)).length > 0) {
+          this.setState({ allDeployed: JSON.parse(allRepos) });
+        } else {
+          this.setState({ allDeployed: [] });
+        }
+      })
+      .then(() => {
+        const stateToPut = {};
+        getAllPermalink().then(data => {
+          JSON.parse(data).map(perma => {
+            if (!stateToPut[perma.user_id]) {
+              stateToPut[perma.user_id] = {};
+            }
+            stateToPut[perma.project_id] = perma;
+            this.setState({
+              permalinkHolder: Object.assign({}, stateToPut)
+            });
+          });
+        });
+      })
+      .catch(err => {
+        toastr.error(err);
+      });
+  }
+
   getStyles() {
     return {
       content: {
@@ -124,6 +164,7 @@ class HomePageComponent extends React.Component {
 
   render() {
     const styles = this.getStyles();
+
     return (
       <div>
         {this.props.login &&
@@ -138,44 +179,61 @@ class HomePageComponent extends React.Component {
                 <Input.Search
                   id="search"
                   placeholder="Search for demos, users"
+                  onSearch={value => this.findDemo(value)}
                 />
               </Col>
               <Col span={2} offset={0}>
-                <Button style={{ marginLeft: 30, textAlign: "right" }}>
-                  Search By <Icon type="down" />
-                </Button>
+                <Col span={2} offset={0}>
+                  <Select
+                    defaultValue="demo"
+                    style={{ width: 70 }}
+                    onChange={value => this.setState({ searchBy: value })}
+                  >
+                    <Option value="demo">demo</Option>
+                    <Option value="user">user</Option>
+                  </Select>
+                </Col>
               </Col>
             </Row>
           </Header>}
-        <Content id="content" style={styles.content}>
-          <div id="content-div" style={styles.contentDiv}>
+        <Content style={styles.content}>
+          <div style={styles.contentDiv}>
             <Row>
-              {this.state.allDeployed.map(demo => (
-                <Col span={5} offset={1} key={demo.id}>
-                  <Card style={{ width: "100%" }} bodyStyle={{ padding: 0 }}>
-                    <div className="custom-card">
-                      <br />
-                      <h3>{demo.name}</h3>
-                      <p />
-                    </div>
-                    <div className="custom-image">
-                      <img width="100%" src={demo.cover_image} />
-                    </div>
-                    <div className="custom-card">
-                      <p>{demo.description}</p>
-                      <br />
-                      <Button
-                        type="primary"
-                        id="launchButton"
-                        style={styles.launchButton}
-                        onClick={() => this.goToDemoPage(demo)}
+              {Object.keys(this.state.allDeployed).length > 0
+                ? this.state.allDeployed.map(demo => (
+                    <Col span={5} offset={1} key={demo.id}>
+                      <Card
+                        style={{ width: "100%" }}
+                        bodyStyle={{ padding: 0 }}
                       >
-                        Demo<Icon type="rocket" />
-                      </Button>
-                    </div>
-                  </Card>
-                </Col>
-              ))}
+                        <div className="custom-card">
+                          <br />
+                          <h3>{demo.name}</h3>
+                          <p />
+                        </div>
+                        <div className="custom-image">
+                          <img width="100%" src={demo.cover_image} />
+                        </div>
+                        <div className="custom-card">
+                          <p>{demo.description}</p>
+                          <br />
+                          <Button
+                            type="primary"
+                            id="launchButton"
+                            style={styles.launchButton}
+                            onClick={() => this.goToDemoPage(demo)}
+                          >
+                            Demo<Icon type="rocket" />
+                          </Button>
+                          <br />
+                        </div>
+                      </Card>
+                      <br />
+                    </Col>
+                  ))
+                : <Col span={24}>
+                    <h4> Demo not found. Try Searching for another demo </h4>
+                  </Col>}
             </Row>
           </div>
         </Content>
