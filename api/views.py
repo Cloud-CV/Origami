@@ -11,7 +11,7 @@ from django.contrib.sites.models import Site
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status as response_status
-from api.constant import DEFAULT_IMAGE
+from api.constants import DEFAULT_IMAGE
 import datetime
 import json
 from collections import OrderedDict
@@ -274,7 +274,10 @@ def custom_demo_controller(request, user_id, id):
             demo.address = body["address"]
             demo.description = body["description"]
             demo.footer_message = body["footer_message"]
-            demo.cover_image = body["cover_image"]
+            if not body["cover_image"]:
+                demo.cover_image = DEFAULT_IMAGE
+            else:
+                demo.cover_image = body["cover_image"]
             demo.terminal = body["terminal"]
             demo.token = body["token"]
             demo.status = body["status"]

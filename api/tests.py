@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.test import TestCase, Client
 import datetime
 import json
+from api.constants import DEFAULT_IMAGE
 from .models import *
 
 # Create your tests here.
@@ -84,7 +85,7 @@ class CustomDemoControllerViewTests(TestCase):
         self.assertEqual(response["address"], payload["address"])
         self.assertEqual(response["description"], payload["description"])
         self.assertEqual(response["footer_message"], payload["footer_message"])
-        self.assertEqual(response["cover_image"], payload["cover_image"])
+        self.assertEqual(response["cover_image"], DEFAULT_IMAGE)
         self.assertEqual(response["terminal"], payload["terminal"])
         self.assertEqual(response["token"], payload["token"])
         self.assertEqual(response["status"], payload["status"])
