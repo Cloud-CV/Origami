@@ -3,12 +3,6 @@ import { Link, browserHistory } from "react-router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
-  cyan500,
-  blue100,
-  grey900,
-  indigo600
-} from "material-ui/styles/colors";
-import {
   is_cloudcv,
   getAllDemosByCloudCV
 } from "../../api/Generic/getCloudCVDemos";
@@ -16,8 +10,6 @@ import { getAllDeployed } from "../../api/Nongh/getAllDeployed";
 import { getSearchedDemos } from "../../api/Nongh/getSearchedDemos";
 import HomePageDemoCard from "../stateless/homePageDemoCard";
 import { getAllPermalink } from "../../api/Nongh/permalink";
-import RaisedButton from "material-ui/RaisedButton";
-import Dialog from "material-ui/Dialog";
 import * as loginActions from "../../actions/loginActions";
 import { ShareButtons, ShareCounts, generateShareIcon } from "react-share";
 import Radium from "radium";
@@ -209,6 +201,8 @@ class HomePageComponent extends React.Component {
                         <div className="custom-card">
                           <br />
                           <h3>{demo.name}</h3>
+                          <h4> - {demo.username}</h4>
+                          <br />
                           <p />
                         </div>
                         <div className="custom-image">

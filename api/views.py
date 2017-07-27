@@ -134,7 +134,10 @@ def get_all_demos(request):
         user = User.objects.get(username=search_term)
         demos = Demo.objects.filter(user_id=user.id)
     serialize = DemoSerializer(demos, many=True)
-    return Response(serialize.data, status=response_status.HTTP_200_OK)
+    data = serialize.data
+    for x in range(len(demos)):
+        data[x]["username"] = User.objects.get(id=data[x]["user_id"]).username
+    return Response(data, status=response_status.HTTP_200_OK)
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def custom_component_controller(request, type_req, user_id, demoid):
@@ -243,7 +246,10 @@ def custom_demo_controller(request, user_id, id):
         else:
             demos = Demo.objects.all()
             serialize = DemoSerializer(demos, many=True)
-            return Response(serialize.data, status=response_status.HTTP_200_OK)
+            data = serialize.data
+            for x in range(len(demos)):
+                data[x]["username"] = User.objects.get(id=data[x]["user_id"]).username
+            return Response(data, status=response_status.HTTP_200_OK)
     elif request.method == "POST":
         body = request.data
         name = body["name"]
