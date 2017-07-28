@@ -1,14 +1,18 @@
 import React, { PropTypes } from "react";
-import HomePageDemoCard from "../stateless/homePageDemoCard";
+import { browserHistory } from "react-router";
 import { getAllPermalink } from "../../api/Nongh/permalink";
 import { getDeployed } from "../../api/Nongh/getDeployed";
 import { is_cloudcv } from "../../api/Generic/getCloudCVDemos";
 import userApi from "../../api/Github/userApi";
-import RaisedButton from "material-ui/RaisedButton";
-import { indigo600, grey900, blue100 } from "material-ui/styles/colors";
+import { indigo600 } from "material-ui/styles/colors";
 import Dialog from "material-ui/Dialog";
 import toastr from "toastr";
 import { ShareButtons, ShareCounts, generateShareIcon } from "react-share";
+import Radium from "radium";
+import { Layout, Menu, Icon, Dropdown, Button, Card, Row, Col } from "antd";
+const { Header, Content, Footer, Sider } = Layout;
+import { Input } from "antd";
+const Search = Input.Search;
 
 const {
   FacebookShareButton,
@@ -26,7 +30,7 @@ const TwitterIcon = generateShareIcon("twitter");
 const GooglePlusIcon = generateShareIcon("google");
 const LinkedinIcon = generateShareIcon("linkedin");
 
-class ShareProfile extends React.Component {
+class ShareProfileComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -39,6 +43,8 @@ class ShareProfile extends React.Component {
 
     this.toggleShow = this.toggleShow.bind(this);
     this.handleShareModal = this.handleShareModal.bind(this);
+    this.getStyles = this.getStyles.bind(this);
+    this.goToDemo = this.goToDemo.bind(this);
   }
 
   componentWillMount() {
@@ -94,186 +100,113 @@ class ShareProfile extends React.Component {
     });
   }
 
+  getStyles() {
+    return {
+      layout: {
+        background: "#FEFEFE"
+      },
+      content: {
+        margin: "24px 16px 0",
+        overflow: "initial"
+      },
+      contentDiv: {
+        padding: 12,
+        background: "#FEFEFE",
+        textAlign: "center"
+      },
+      card: {
+        width: "100%",
+        background: "#FAFAFA"
+      },
+      footer: {
+        textAlign: "center",
+        background: "#fefefe",
+        color: "#455A64",
+        fontSize: "14px",
+        boxShadow: "0px -2px 5px #E0E0E0"
+      }
+    };
+  }
+
+  goToDemo(demo) {
+    console.log(demo);
+    browserHistory.push(
+      `/ngh/user/${demo.user_id}/${demo.name}/${demo.id}/demo`
+    );
+  }
+
   render() {
+    const styles = this.getStyles();
     return (
-      <div
-        className="sixteen column stretched row"
-        style={{ visibility: this.state.showOutput }}
-      >
-
-        <div className="ui container row" style={{ height: "10vh" }} />
-
-        <div className="ui container row grid">
-          <div
-            className="ui four wide right aligned column"
-            style={{ minHeight: "15vh" }}
-          >
-            <div className="ui fluid bottom aligned medium rounded image">
-              <div className="ui medium ribbon black label">
-                @{this.state.user.login}
-              </div>
-              <img
-                className=""
-                onLoad={this.toggleShow}
-                src={this.state.user.avatar_url}
-              />
-            </div>
-          </div>
-
-          <div className="ui six wide column">
-            <div>
-              <div className="row" style={{}} />
-              <h1 className="row"><u>{this.state.user.name}</u></h1>
-              {this.state.user.company &&
-                <h3 className="row">{this.state.user.company}</h3>}
-              {this.state.user.blog &&
-                <a href={this.state.user.blog}>
-                  {" "}<h3 className="row">{this.state.user.blog}</h3>
-                </a>}
-              <h3 className="row">
-                Github Follower Count: {this.state.user.followers}
-              </h3>
-              <h3 className="row">
-                Number of Apps: {this.state.allDeployed.length}
-              </h3>
-            </div>
-          </div>
-        </div>
-
-        <span className="ui horizontal divider row"><hr /></span>
-
-        {this.state.allDeployed.length > 0 &&
-          <div
-            className="fifteen wide column stretched stackable centered container"
-          >
-            <div className="ui very padded stackable centered grid">
-              {this.state.allDeployed.map((demo, index) => (
-                <HomePageDemoCard
-                  key={index}
-                  {...demo}
-                  handleShareModal={this.handleShareModal}
-                />
-              ))}
-            </div>
-          </div>}
-
-        {this.state.allDeployed.length > 0 &&
-          <div className="ui centered row container grid">
-
-            <div
-              className="ui fluid row"
-              style={{ minHeight: "10vh", minWidth: "100vw" }}
-            />
-
-            <div
-              className="ui fluid row"
-              style={{
-                minHeight: "5vh",
-                backgroundColor: grey900,
-                color: "white",
-                minWidth: "100vw"
-              }}
-            />
-
-            <div
-              className="ui fluid container grid row"
-              style={{
-                minHeight: "20vh",
-                backgroundColor: grey900,
-                color: "white",
-                minWidth: "100vw"
-              }}
-            >
-              <div className="ui six wide column">
-                <h4 className="ui inverted header">Community</h4>
-                <div className="ui inverted link list">
-                  <a
-                    className="item"
-                    href="https://github.com/Cloud-CV/cvfy-frontend/issues"
-                    target="_blank"
-                  >
-                    Submit an Issue
-                  </a>
-                  <a
-                    className="item"
-                    href="https://gitter.im/batra-mlp-lab/CloudCV"
-                    target="_blank"
-                  >
-                    Join our Chat
-                  </a>
-                </div>
-              </div>
-              <div className="ui ten wide column grid">
-                <div className="ui row">
-
-                  <div className="eight wide right floated column">
-                    <h4
-                      className="ui inverted header"
-                      style={{ color: blue100 }}
-                    >
-                      Contribute to this project
-                    </h4>
-                    <p>We are looking for people to add features to CVFY.</p>
-                    <RaisedButton
-                      backgroundColor={blue100}
-                      label="Github"
-                      onClick={() =>
-                        location.href = "https://github.com/Cloud-CV/cvfy-frontend"}
-                    />
-                  </div>
-
-                  <div className="eight wide right floated column">
-                    <h4
-                      className="ui inverted header"
-                      style={{ color: blue100 }}
-                    >
-                      Know more about CloudCV
-                    </h4>
-                    <p>
-                      CloudCV provides large-scale distributed Computer Vision as a cloud service.
-                    </p>
-                    <RaisedButton
-                      backgroundColor={blue100}
-                      label="Visit cloudcv.org"
-                      onClick={() => location.href = "https://cloudcv.org"}
-                    />
-                  </div>
-
-                </div>
-              </div>
-            </div>
-
-            <div
-              className="ui fluid row"
-              style={{
-                minHeight: "5vh",
-                backgroundColor: grey900,
-                color: "white",
-                minWidth: "100vw"
-              }}
-            >
-              <div className="ui horizontal container divider">
-                -
-              </div>
-            </div>
-
-            <div
-              className="ui fluid row"
-              style={{
-                minHeight: "15vh",
-                backgroundColor: grey900,
-                color: "white",
-                minWidth: "100vw"
-              }}
-            >
-              Free Software (AGPL 3.0)
-              <br /><br />
-              Crafted with React, Redux, MaterialUI and &lt;3
-              <br /><br />
-              © CloudCV, 2016
-            </div>
-          </div>}
-
+      <Layout style={styles.layout}>
+        <Header id="layout-header">
+          <Row>
+            <Col span={4} offset={1}>
+              <h1 id="logo-title">
+                Public Profile
+              </h1>
+            </Col>
+            <Col span={11} offset={1}>
+              <Input.Search id="search" placeholder="Search for demos, users" />
+            </Col>
+            <Col span={6} offset={1}>
+              <Button style={{ marginLeft: 30, textAlign: "right" }}>
+                Search By <Icon type="down" />
+              </Button>
+            </Col>
+          </Row>
+        </Header>
+        <Content style={styles.content}>
+          {this.state.user &&
+            <div style={styles.contentDiv}>
+              {this.state.allDeployed.length > 0 &&
+                <Row>
+                  {this.state.allDeployed.map(demo => (
+                    <Col span={5} offset={1} key={demo.id}>
+                      <Card style={styles.card} bodyStyle={{ padding: 0 }}>
+                        <div className="custom-card">
+                          <br />
+                          <h3>{demo.name}</h3>
+                        </div>
+                        <div className="custom-image">
+                          <img width="100%" src={demo.cover_image} />
+                        </div>
+                        <div className="custom-card">
+                          <p>{demo.description}</p>
+                          <br />
+                          <Row>
+                            <Col span={11} offset={1}>
+                              <Button
+                                type="primary"
+                                style={{ width: "100%" }}
+                                onClick={() => this.goToDemo(demo)}
+                              >
+                                Launch<Icon type="rocket" />
+                              </Button>
+                            </Col>
+                            <Col span={10} offset={1}>
+                              <Button
+                                type="primary"
+                                style={{ width: "100%" }}
+                                onClick={() => this.handleShareModal(demo)}
+                              >
+                                Share<Icon type="share-alt" />
+                              </Button>
+                            </Col>
+                          </Row>
+                          <br />
+                        </div>
+                      </Card>
+                    </Col>
+                  ))}
+                  <br />
+                </Row>}
+              <br />
+            </div>}
+        </Content>
+        <Footer style={styles.footer}>
+          Origami - Created by Team CloudCV
+        </Footer>
         <Dialog
           title="Share This Demo"
           modal={false}
@@ -367,14 +300,15 @@ class ShareProfile extends React.Component {
           </div>
 
         </Dialog>
-
-      </div>
+      </Layout>
     );
   }
 }
 
-ShareProfile.propTypes = {
+ShareProfileComponent.propTypes = {
   params: PropTypes.object.isRequired
 };
+
+const ShareProfile = Radium(ShareProfileComponent);
 
 export default ShareProfile;
