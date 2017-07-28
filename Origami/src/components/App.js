@@ -10,9 +10,10 @@ import MenuItem from "material-ui/MenuItem";
 import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
 import FlatButton from "material-ui/FlatButton";
 import io from "socket.io-client";
+import userApi from "../api/Github/userApi";
 import { Layout, Menu, Icon, Button, Card, Row, Col, Input } from "antd";
 import "./index.css";
-const { Header } = Layout;
+const { Header, Content, Footer, Sider } = Layout;
 
 class App extends React.Component {
   constructor(props, context) {
@@ -23,6 +24,7 @@ class App extends React.Component {
       showTitle: true
     };
     this.handleClick = this.handleClick.bind(this);
+    this.handleClickAfterLogin = this.handleClickAfterLogin.bind(this);
     this.initiateLogin = this.initiateLogin.bind(this);
     this.logout = this.logout.bind(this);
     this.readSessionToken = this.readSessionToken.bind(this);
@@ -110,9 +112,30 @@ class App extends React.Component {
   handleClick(e) {
     if (!this.state.login && e.key === "2") {
       this.initiateLogin();
-    }
-    else if(e.key == "3") {
+    } else if (e.key == "3") {
       this.getDocs();
+    }
+  }
+
+  handleClickAfterLogin(e) {
+    if (e.key === "1") {
+      userApi
+        .userProfileFromName(localStorage.getItem("username"))
+        .then(user => {
+          user = JSON.parse(user);
+          browserHistory.push(`/u/${user.login}/${user.id}`);
+        });
+    }
+    if (e.key === "2") {
+      browserHistory.push("/");
+    } else if (e.key === "3") {
+      browserHistory.push("/ngh/user");
+    } else if (e.key === "4") {
+      browserHistory.push("/ngh/user/register");
+    } else if (e.key === "5") {
+      this.getDocs();
+    } else if (e.key === "6") {
+      this.logout();
     }
   }
 
@@ -127,48 +150,60 @@ class App extends React.Component {
     }
     if (this.state.login) {
       return (
-        <div>
-          <AppBar
-            zDepth={0}
-            title={
-              this.state.showTitle
-                ? <Link
-                    to="/"
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
-                    CVFY
-                  </Link>
-                : null
-            }
-            showMenuIconButton={false}
-            iconElementRight={
-              this.state.login
-                ? <IconMenu
-                    style={{ display: this.state.displayLogin }}
-                    iconButtonElement={
-                      <IconButton><MoreVertIcon /></IconButton>
-                    }
-                    targetOrigin={{ horizontal: "right", vertical: "top" }}
-                    anchorOrigin={{ horizontal: "right", vertical: "top" }}
-                  >
-                    <MenuItem onTouchTap={this.logout} primaryText="Sign out" />
-                  </IconMenu>
-                : <span
-                    className="loginButton"
-                    style={{ display: this.state.displayLogin }}
-                    onClick={this.initiateLogin}
-                  >
-                    <FlatButton
-                      label="Login"
-                      style={{ margin: "5%", color: "white" }}
-                    />
-                  </span>
-            }
-          />
-          <div className="ui fluid grid">
-            {this.props.children}
-          </div>
-        </div>
+        <Layout style={{ height: "100vh", background: "#FEFEFE" }}>
+          <Sider
+            style={{
+              overflow: "auto",
+              background: "#FEFEFE",
+              "box-shadow": "10px 0px 20px #E0E0E0"
+            }}
+            width="250"
+          >
+            <div
+              className="logo"
+              style={{
+                height: "31px",
+                "border-radius": "6px",
+                margin: "16px",
+                color: "black"
+              }}
+            >
+              {" "}Origami logo{" "}
+            </div>
+            <Menu
+              style={{ background: "#FEFEFE" }}
+              mode="inline"
+              defaultSelectedKeys={["3"]}
+              onClick={this.handleClickAfterLogin}
+            >
+              <Menu.Item key="1" style={{ "font-size": "16px" }}>
+                <Icon type="user" />
+                <span className="nav-text">Profile</span>
+              </Menu.Item>
+              <Menu.Item key="2" style={{ "font-size": "16px" }}>
+                <Icon type="video-camera" />
+                <span className="nav-text">Discover</span>
+              </Menu.Item>
+              <Menu.Item key="3" style={{ "font-size": "16px" }}>
+                <Icon type="cloud-o" />
+                <span className="nav-text">My demos</span>
+              </Menu.Item>
+              <Menu.Item key="4" style={{ "font-size": "16px" }}>
+                <Icon type="plus-circle-o" />
+                <span className="nav-text">Create Demo</span>
+              </Menu.Item>
+              <Menu.Item key="5" style={{ "font-size": "16px" }}>
+                <Icon type="question-circle-o" />
+                <span className="nav-text">Help / WebApp Docs</span>
+              </Menu.Item>
+              <Menu.Item key="6" style={{ "font-size": "16px" }}>
+                <Icon type="logout" />
+                <span className="nav-text">Logout</span>
+              </Menu.Item>
+            </Menu>
+          </Sider>
+          {this.props.children}
+        </Layout>
       );
     } else {
       return (

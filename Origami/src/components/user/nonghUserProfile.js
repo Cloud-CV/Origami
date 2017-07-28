@@ -10,22 +10,17 @@ import * as outputComponentDemoModelActions
   from "../../actions/outputComponentDemoModelActions";
 import { getDeployed } from "../../api/Nongh/getDeployed";
 import { getAllPermalink, deletePermalink } from "../../api/Nongh/permalink";
-import FloatingActionButton from "material-ui/FloatingActionButton";
-import ContentAdd from "material-ui/svg-icons/content/add";
-import CircularProgress from "material-ui/CircularProgress";
-import CustomCard from "../stateless/cards";
 import Dialog from "material-ui/Dialog";
 import RaisedButton from "material-ui/RaisedButton";
-import { List, ListItem } from "material-ui/List";
-import { grey900 } from "material-ui/styles/colors";
-import Divider from "material-ui/Divider";
-import DescriptionIcon from "material-ui/svg-icons/action/description";
-import PublicProfileIcon from "material-ui/svg-icons/action/face";
 import toastr from "toastr";
-
+import { Layout, Icon, Button, Card, Row, Col } from "antd";
+const { Header, Content, Footer, Sider } = Layout;
+import { Input } from "antd";
+import Radium from "radium";
+const Search = Input.Search;
 toastr.options.closeButton = true;
 
-class NonGHUserProfile extends React.Component {
+class NonGHUserProfileComponent extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -42,7 +37,6 @@ class NonGHUserProfile extends React.Component {
       projectBeingDeletedId: ""
     };
     this.socket = this.context.socket;
-    this.toggleShow = this.toggleShow.bind(this);
     this.deleteDemo = this.deleteDemo.bind(this);
     this.modifyProject = this.modifyProject.bind(this);
     this.getDisplayForDemoButton = this.getDisplayForDemoButton.bind(this);
@@ -53,6 +47,7 @@ class NonGHUserProfile extends React.Component {
       this
     );
     this.toggleShowDataDialog = this.toggleShowDataDialog.bind(this);
+    this.getStyles = this.getStyles.bind(this);
   }
 
   componentWillMount() {
@@ -111,7 +106,10 @@ class NonGHUserProfile extends React.Component {
         getDeployed(this.props.user.id)
           .then(alldeployedRepos => {
             this.setState({ allDeployed: JSON.parse(alldeployedRepos) }, () => {
-              deletePermalink({ user_id: this.props.user.id, project_id }).then();
+              deletePermalink({
+                user_id: this.props.user.id,
+                project_id
+              }).then();
             });
           })
           .catch(err => {
@@ -168,14 +166,33 @@ class NonGHUserProfile extends React.Component {
     browserHistory.push("/ngh/user/register");
   }
 
-  toggleShow() {
-    this.setState({
-      showOutput: this.state.showOutput === "visible" ? "hidden" : "visible"
-    });
+  getStyles() {
+    return {
+      layout: {
+        background: "#ECEFF1"
+      },
+      content: {
+        margin: "24px 16px 0",
+        overflow: "initial"
+      },
+      contentDiv: {
+        padding: 12,
+        background: "#ECEFF1",
+        textAlign: "center"
+      },
+      footer: {
+        textAlign: "center",
+        background: "#fefefe",
+        color: "#455A64",
+        fontSize: "14px",
+        boxShadow: "0px -2px 5px #E0E0E0"
+      }
+    };
   }
 
   render() {
     document.body.scrollTop = (document.documentElement.scrollTop = 0);
+    const styles = this.getStyles();
 
     const deletionActions = [
       <RaisedButton
@@ -194,236 +211,192 @@ class NonGHUserProfile extends React.Component {
     ];
 
     return (
-      <div className="ui relaxed stackable grid fluid">
+      <Layout style={styles.layout}>
+        <Header id="layout-header">
+          <Row>
+            <Col span={3} offset={1}>
+              <h1 id="logo-title">
+                My Demos
+              </h1>
+            </Col>
+            <Col span={12} offset={1}>
+              <Input.Search id="search" placeholder="Search for demos, users" />
+            </Col>
+            <Col span={6} offset={1}>
+              <Button style={{ marginLeft: 30, textAlign: "right" }}>
+                Search By <Icon type="down" />
+              </Button>
+            </Col>
+          </Row>
+        </Header>
+        <Content style={styles.content}>
+          {this.state.user &&
+            <div style={styles.contentDiv}>
+              <Row>
+                {this.state.allDeployed.map(project => (
+                  <Col span={5} offset={1} key={project.id}>
+                    <Card style={{ width: "100%" }} bodyStyle={{ padding: 0 }}>
+                      <div className="custom-card">
+                        <br />
+                        <h3>{project.name}</h3>
+                      </div>
+                      <div className="custom-image">
+                        <img width="100%" src={project.cover_image} />
+                      </div>
+                      <div className="custom-card">
+                        <p>{project.description}</p>
+                        <br />
+                        IP: {project.token.split(":")[1]} <br />
+                        Port: {project.token.split(":")[4]} <br />
+                        <br />
+                        <Row>
+                          <Col span={22} offset={1}>
+                            <Button
+                              type="primary"
+                              style={{ width: "100%" }}
+                              ghost
+                              onClick={() => this.goToDemoPage(project)}
+                            >
+                              Demo<Icon type="rocket" />
+                            </Button>
+                          </Col>
+                        </Row>
+                        <br />
+                        <Row>
+                          <Col span={11} offset={1}>
+                            <Button
+                              type="primary"
+                              style={{ width: "100%" }}
+                              ghost
+                              onClick={() => this.modifyProject(project)}
+                            >
+                              Modify<Icon type="edit" />
+                            </Button>
+                          </Col>
+                          <Col span={10} offset={1}>
+                            <Button
+                              type="primary"
+                              style={{ width: "100%" }}
+                              ghost
+                              onClick={() =>
+                                this.toggleShowDataDialog({
+                                  type: "token",
+                                  content: project.token
+                                })}
+                            >
+                              Token<Icon type="bars" />
+                            </Button>
+                          </Col>
+                        </Row>
+                        <br />
+                        <Row>
+                          <Col span={11} offset={1}>
+                            <Button
+                              type="primary"
+                              style={{ width: "100%" }}
+                              ghost
+                              onClick={() =>
+                                this.toggleShowDataDialog({
+                                  type: "permalink",
+                                  content: `${window.location.protocol}//${window.location.host}${this.state.permalinkHolder[this.state.user.id][project.id].short_relative_url}`
+                                })}
+                            >
+                              Permalink<Icon type="link" />
+                            </Button>
+                          </Col>
+                          <Col span={10} offset={1}>
+                            <Button
+                              type="danger"
+                              style={{ width: "100%" }}
+                              ghost
+                              onClick={() =>
+                                this.toggleDeleteConfirmationDialog(project.id)}
+                            >
+                              Delete <Icon type="delete" />
+                            </Button>
+                          </Col>
+                        </Row>
+                        <br />
+                      </div>
+                    </Card>
+                    <br />
+                  </Col>
+                ))}
+              </Row>
+              <br />
 
-        <div
-          className="ui three wide segment column"
-          style={{ minHeight: "100vh" }}
+              <br /><br /><br />
+            </div>}
+        </Content>
+        <Footer style={styles.footer}>
+          Origami - Created by Team CloudCV
+        </Footer>
+
+        <Dialog
+          title="Modify Application"
+          open={this.state.showModifyModal}
+          onRequestClose={this.toggleModifyDialog}
+          contentStyle={{ width: "30%" }}
         >
-          {this.state.user &&
-            <List>
-              <ListItem
-                primaryText="Docs"
-                leftIcon={<DescriptionIcon />}
-                onTouchTap={() => window.location = "http://cloudcv-origami.readthedocs.io/en/latest/web-app.html"}
-              />
-              <Divider />
-              <ListItem
-                primaryText="CVFY-Lib Docs"
-                leftIcon={<DescriptionIcon />}
-                onTouchTap={() => window.location = "http://cloudcv-origami.readthedocs.io/en/latest/library.html"}
-              />
-              <Divider />
-              <ListItem
-                primaryText="Public Profile"
-                leftIcon={<PublicProfileIcon />}
-                onTouchTap={() =>
-                  browserHistory.push(
-                    `/u/${this.state.user.login}/${this.state.user.id}`
-                  )}
-              />
-              <Divider />
-            </List>}
-        </div>
-
-        <div className="ui thirteen wide column grid">
-
-          {this.state.showOutput === "hidden" &&
-            <div className="centered row" style={{ marginTop: "30vh" }}>
-              <CircularProgress size={89.25} />
-            </div>}
-
-          {this.state.user &&
-            <div
-              className="sixteen column stretched row"
-              style={{ visibility: this.state.showOutput }}
-            >
-
-              <div
-                className="four wide column ui raised rounded"
-                style={{ minHeight: "15vh", marginTop: "1vh" }}
-              >
-                <div className="ui fluid bottom aligned medium rounded image">
-                  <div className="ui medium ribbon black label">
-                    @{this.state.user.login}
-                  </div>
-                  <img
-                    className=""
-                    onLoad={this.toggleShow}
-                    src={this.state.user.avatar_url}
-                  />
-                </div>
+          <div className="ui stackable grid">
+            <div className="ui stackable row">
+              <div className="center aligned six wide column">
+                <RaisedButton
+                  label="Metadata"
+                  primary
+                  onTouchTap={() =>
+                    browserHistory.push(
+                      `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/register/modify`
+                    )}
+                />
               </div>
-
-              <div className="seven wide column">
-                <div>
-                  <div className="row" style={{}} />
-                  <h1 className="row"><u>{this.state.user.name}</u></h1>
-                  {this.state.user.company &&
-                    <h3 className="row">{this.state.user.company}</h3>}
-                  {this.state.user.blog &&
-                    <a href={this.state.user.blog}>
-                      {" "}<h3 className="row">{this.state.user.blog}</h3>
-                    </a>}
-                  <h3 className="row">
-                    Github Follower Count: {this.state.user.followers}
-                  </h3>
-                  <h3 className="row">
-                    Number of Apps: {this.state.allDeployed.length}
-                  </h3>
-                </div>
+              <div className="center aligned five wide column">
+                <RaisedButton
+                  label="Input"
+                  primary
+                  onTouchTap={() =>
+                    browserHistory.push(
+                      `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/inputcomponent/modify`
+                    )}
+                />
               </div>
-
-              <span className="ui horizontal divider row"><hr /></span>
-
-              <div className="sixteen wide column">
-                <div>
-                  <div className="row" style={{}} />
-                  <FloatingActionButton
-                    style={{ float: "right" }}
-                    onMouseDown={this.goToRegisterPage}
-                  >
-                    <ContentAdd />
-                  </FloatingActionButton>
-                </div>
-              </div>
-
-              {this.state.allDeployed &&
-                <div
-                  className="fifteen wide column stretched stackable centered row"
-                >
-                  <div className="ui three padded column stackable grid">
-                    {this.state.allDeployed.map(project => (
-                      <CustomCard
-                        header={project.name}
-                        width="five"
-                        context="profile"
-                        centeredParent
-                        key={project.id}
-                        displayData={[
-                          `IP: ${project.token.split(":")[1]}`,
-                          `Port: ${project.token.split(":")[4]}`
-                        ]}
-                        buttonData={[
-                          {
-                            label: "Delete",
-                            onDeployClick: () =>
-                              this.toggleDeleteConfirmationDialog(project.id)
-                          },
-                          {
-                            label: "Modify",
-                            onDeployClick: () => this.modifyProject(project)
-                          },
-                          {
-                            label: "Get Permalink",
-                            onDeployClick: () => {
-                              this.toggleShowDataDialog({
-                                type: "permalink",
-                                content: `${window.location.protocol}//${window.location.host}${this.state.permalinkHolder[this.state.user.id][project.id].short_relative_url}`
-                              });
-                            }
-                          },
-                          {
-                            label: "Get Token",
-                            onDeployClick: () =>
-                              this.toggleShowDataDialog({
-                                type: "token",
-                                content: project.token
-                              })
-                          },
-                          {
-                            label: "Demo",
-                            onDeployClick: () => this.goToDemoPage(project),
-                            display: this.getDisplayForDemoButton(project)
-                          }
-                        ]}
-                      />
-                    ))}
-                  </div>
-                </div>}
-
-            </div>}
-
-          <Dialog
-            title="Modify Application"
-            open={this.state.showModifyModal}
-            onRequestClose={this.toggleModifyDialog}
-            contentStyle={{ width: "30%" }}
-          >
-            <div className="ui stackable grid">
-              <div className="ui stackable row">
-                <div className="center aligned six wide column">
-                  <RaisedButton
-                    label="Metadata"
-                    primary
-                    onTouchTap={() =>
-                      browserHistory.push(
-                        `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/register/modify`
-                      )}
-                  />
-                </div>
-                <div className="center aligned five wide column">
-                  <RaisedButton
-                    label="Input"
-                    primary
-                    onTouchTap={() =>
-                      browserHistory.push(
-                        `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/inputcomponent/modify`
-                      )}
-                  />
-                </div>
-                <div className="center aligned five wide column">
-                  <RaisedButton
-                    label="Output"
-                    primary
-                    onTouchTap={() =>
-                      browserHistory.push(
-                        `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/outputcomponent/modify`
-                      )}
-                  />
-                </div>
+              <div className="center aligned five wide column">
+                <RaisedButton
+                  label="Output"
+                  primary
+                  onTouchTap={() =>
+                    browserHistory.push(
+                      `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/outputcomponent/modify`
+                    )}
+                />
               </div>
             </div>
-          </Dialog>
+          </div>
+        </Dialog>
 
-          <Dialog
-            title={this.state.appData.type === "token" ? "Token" : "Permalink"}
-            open={this.state.showDataModal}
-            onRequestClose={this.toggleShowDataDialog}
-            contentStyle={{ width: "30%" }}
-          >
-            {this.state.appData.content}
-          </Dialog>
-
-          <Dialog
-            title="Confirm Deletion"
-            actions={deletionActions}
-            open={this.state.showDeleteConfirmationModal}
-            onRequestClose={this.toggleDeleteConfirmationDialog}
-          >
-            Are you sure you want to delete this application?
-          </Dialog>
-
-        </div>
-
-        <div
-          className="ui fluid centered row"
-          style={{
-            minHeight: "5vh",
-            backgroundColor: grey900,
-            color: "white",
-            minWidth: "100vw"
-          }}
+        <Dialog
+          title={this.state.appData.type === "token" ? "Token" : "Permalink"}
+          open={this.state.showDataModal}
+          onRequestClose={this.toggleShowDataDialog}
+          contentStyle={{ width: "30%" }}
         >
-          © CloudCV, 2016
-        </div>
+          {this.state.appData.content}
+        </Dialog>
 
-      </div>
+        <Dialog
+          title="Confirm Deletion"
+          actions={deletionActions}
+          open={this.state.showDeleteConfirmationModal}
+          onRequestClose={this.toggleDeleteConfirmationDialog}
+        >
+          Are you sure you want to delete this application?
+        </Dialog>
+      </Layout>
     );
   }
 }
 
-NonGHUserProfile.propTypes = {
+NonGHUserProfileComponent.propTypes = {
   login: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
   inputComponentDemoModel: PropTypes.object.isRequired,
@@ -434,7 +407,7 @@ NonGHUserProfile.propTypes = {
   outputComponentDemoModelActions: PropTypes.object.isRequired
 };
 
-NonGHUserProfile.contextTypes = {
+NonGHUserProfileComponent.contextTypes = {
   socket: PropTypes.object.isRequired
 };
 
@@ -462,5 +435,7 @@ function mapDispatchToProps(dispatch) {
     )
   };
 }
+
+const NonGHUserProfile = Radium(NonGHUserProfileComponent);
 
 export default connect(mapStateToProps, mapDispatchToProps)(NonGHUserProfile);

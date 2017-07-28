@@ -2,22 +2,9 @@ import React, { PropTypes } from "react";
 import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
 import TextInput from "./TextInput";
+import InputPreview from "../BaseInputComponent/InputPreview.js";
 
-class TextInputPreview extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      labels: props.functions.getLabels(),
-      open: true
-    };
-    this.hidePreviewDialog = props.functions.hidePreviewDialog;
-    this.handleOk = this.handleOk.bind(this);
-  }
-
-  handleOk() {
-    this.hidePreviewDialog();
-  }
-
+class TextInputPreview extends InputPreview {
   render() {
     const actions = [
       <FlatButton

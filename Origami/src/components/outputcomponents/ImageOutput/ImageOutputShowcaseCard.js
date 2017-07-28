@@ -1,11 +1,13 @@
 import React, { PropTypes } from "react";
 import { browserHistory } from "react-router";
 import CustomCard from "../../stateless/cards";
-import ImageOutputShowcaseModifyDialog from "./ImageOutputShowcaseModifyDialog";
+import OutputShowcaseModifyDialog
+  from "../BaseOutputComponent/OutputShowcaseModifyDialog";
+import OutputShowcaseCard from "../BaseOutputComponent/OutputShowcaseCard.js";
 import ImageOutputPreview from "./ImageOutputPreview";
 import toastr from "toastr";
 
-class ImageOutputShowcaseCard extends React.Component {
+class ImageOutputShowcaseCard extends OutputShowcaseCard {
   constructor(props) {
     super(props);
     let initHeaders = [];
@@ -19,38 +21,6 @@ class ImageOutputShowcaseCard extends React.Component {
       modifyDialogDisplay: false,
       previewDialogDisplay: false
     };
-    this.demoModel = props.demoProps.demoModel;
-    this.user = props.demoProps.user;
-    this.outputComponentDemoModel = props.demoProps.outputComponentDemoModel;
-    this.outputComponentDemoModelActions = props.demoProps.outputComponentDemoModelActions;
-    this.forwardAddress = props.demoProps.forwardAddress;
-    this.forwardAddressAlternate = props.demoProps.forwardAddressAlternate;
-    this.showModifyDialog = this.showModifyDialog.bind(this);
-    this.getHeaderRealLength = this.getHeaderRealLength.bind(this);
-    this.showPreviewDialog = this.showPreviewDialog.bind(this);
-    this.updateOutputComponentModel = this.updateOutputComponentModel.bind(
-      this
-    );
-    this.updateHeaders = this.updateHeaders.bind(this);
-    this.getHeaders = this.getHeaders.bind(this);
-    this.hideModifyDialog = this.hideModifyDialog.bind(this);
-    this.hidePreviewDialog = this.hidePreviewDialog.bind(this);
-  }
-
-  showModifyDialog() {
-    this.setState({ modifyDialogDisplay: true });
-  }
-
-  hideModifyDialog() {
-    this.setState({ modifyDialogDisplay: false });
-  }
-
-  showPreviewDialog() {
-    this.setState({ previewDialogDisplay: true });
-  }
-
-  hidePreviewDialog() {
-    this.setState({ previewDialogDisplay: false });
   }
 
   updateOutputComponentModel() {
@@ -87,26 +57,6 @@ class ImageOutputShowcaseCard extends React.Component {
     }
   }
 
-  updateHeaders(data) {
-    let dataToUpdate = [];
-    data.map(value => {
-      dataToUpdate.push(value);
-    });
-    this.setState({ headers: dataToUpdate });
-  }
-
-  getHeaderRealLength() {
-    let counter = 0;
-    this.state.headers.map(() => {
-      counter += 1;
-    });
-    return counter;
-  }
-
-  getHeaders() {
-    return this.state.headers;
-  }
-
   render() {
     return (
       <div>
@@ -134,12 +84,13 @@ class ImageOutputShowcaseCard extends React.Component {
           ]}
         />
         {this.state.modifyDialogDisplay &&
-          <ImageOutputShowcaseModifyDialog
+          <OutputShowcaseModifyDialog
             functions={{
               updateHeaders: this.updateHeaders,
               hideModifyDialog: this.hideModifyDialog,
               getHeaders: this.getHeaders
             }}
+            title="Modify Image Output Component"
           />}
 
         {this.state.previewDialogDisplay &&

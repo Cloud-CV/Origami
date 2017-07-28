@@ -1,11 +1,13 @@
 import React, { PropTypes } from "react";
 import { browserHistory } from "react-router";
 import CustomCard from "../../stateless/cards";
-import ImageInputShowcaseModifyDialog from "./ImageInputShowcaseModifyDialog";
+import InputShowcaseModifyDialog
+  from "../BaseInputComponent/InputShowcaseModifyDialog";
 import ImageInputPreview from "./ImageInputPreview";
 import toastr from "toastr";
+import InputShowcaseCard from "../BaseInputComponent/InputShowcaseCard.js";
 
-class ImageInputShowcaseCard extends React.Component {
+class ImageInputShowcaseCard extends InputShowcaseCard {
   constructor(props) {
     super(props);
     let initLabels = [];
@@ -19,35 +21,6 @@ class ImageInputShowcaseCard extends React.Component {
       modifyDialogDisplay: false,
       previewDialogDisplay: false
     };
-    this.demoModel = props.demoProps.demoModel;
-    this.user = props.demoProps.user;
-    this.inputComponentDemoModel = props.demoProps.inputComponentDemoModel;
-    this.inputComponentModelActions = props.demoProps.inputComponentModelActions;
-    this.forwardAddress = props.demoProps.forwardAddress;
-    this.showModifyDialog = this.showModifyDialog.bind(this);
-    this.getLabelRealLength = this.getLabelRealLength.bind(this);
-    this.showPreviewDialog = this.showPreviewDialog.bind(this);
-    this.updateInputComponentModel = this.updateInputComponentModel.bind(this);
-    this.updateLabels = this.updateLabels.bind(this);
-    this.getLabels = this.getLabels.bind(this);
-    this.hideModifyDialog = this.hideModifyDialog.bind(this);
-    this.hidePreviewDialog = this.hidePreviewDialog.bind(this);
-  }
-
-  showModifyDialog() {
-    this.setState({ modifyDialogDisplay: true });
-  }
-
-  hideModifyDialog() {
-    this.setState({ modifyDialogDisplay: false });
-  }
-
-  showPreviewDialog() {
-    this.setState({ previewDialogDisplay: true });
-  }
-
-  hidePreviewDialog() {
-    this.setState({ previewDialogDisplay: false });
   }
 
   updateInputComponentModel() {
@@ -74,26 +47,6 @@ class ImageInputShowcaseCard extends React.Component {
           }
         });
     }
-  }
-
-  updateLabels(data) {
-    let dataToUpdate = [];
-    data.map(value => {
-      dataToUpdate.push(value);
-    });
-    this.setState({ labels: dataToUpdate });
-  }
-
-  getLabelRealLength() {
-    let counter = 0;
-    this.state.labels.map(() => {
-      counter += 1;
-    });
-    return counter;
-  }
-
-  getLabels() {
-    return this.state.labels;
   }
 
   render() {
@@ -123,12 +76,13 @@ class ImageInputShowcaseCard extends React.Component {
           ]}
         />
         {this.state.modifyDialogDisplay &&
-          <ImageInputShowcaseModifyDialog
+          <InputShowcaseModifyDialog
             functions={{
               updateLabels: this.updateLabels,
               hideModifyDialog: this.hideModifyDialog,
               getLabels: this.getLabels
             }}
+            title="Modify Image Input Component"
           />}
 
         {this.state.previewDialogDisplay &&
