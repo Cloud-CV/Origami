@@ -2,7 +2,7 @@ import React, { PropTypes } from "react";
 import TextField from "material-ui/TextField";
 import RaisedButton from "material-ui/RaisedButton";
 
-class OverloadedTextField extends React.Component {
+class OverloadedField extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -41,8 +41,8 @@ class OverloadedTextField extends React.Component {
   }
 }
 
-OverloadedTextField.propTypes = {
+OverloadedField.propTypes = {
   data: PropTypes.object.isRequired
 };
 
-export default OverloadedTextField;
+export default OverloadedField;

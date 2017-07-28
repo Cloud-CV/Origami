@@ -3,52 +3,52 @@ import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
 import RaisedButton from "material-ui/RaisedButton";
 import TextField from "material-ui/TextField";
-import OverloadedPieChartHeader from "./OverloadedPieChartHeader";
+import OverloadedField from "./OverloadedField";
 
-class PieChartOutputShowcaseModifyDialog extends React.Component {
+class InputShowcaseModifyDialog extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      textFields: this.makeTextFieldsFromParentHeaders(
-        props.functions.getHeaders()
+      textFields: this.makeTextFieldsFromParentLabels(
+        props.functions.getLabels()
       ),
-      headers: props.functions.getHeaders(),
+      labels: props.functions.getLabels(),
       open: true
     };
-    this.updateHeadersInParent = props.functions.updateHeaders;
+    this.updateLabelsInParent = props.functions.updateLabels;
     this.getLabelsFromParent = props.functions.getLabels;
     this.hideModifyDialog = props.functions.hideModifyDialog;
-    this.makeTextFieldsFromParentHeaders = this.makeTextFieldsFromParentHeaders.bind(
+    this.makeTextFieldsFromParentLabels = this.makeTextFieldsFromParentLabels.bind(
       this
     );
-    this.addLocalHeaders = this.addLocalHeaders.bind(this);
-    this.deleteLocalHeaders = this.deleteLocalHeaders.bind(this);
+    this.addLocalLabels = this.addLocalLabels.bind(this);
+    this.deleteLocalLabels = this.deleteLocalLabels.bind(this);
     this.addMoreTextFields = this.addMoreTextFields.bind(this);
     this.getNewField = this.getNewField.bind(this);
     this.handleOk = this.handleOk.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
   }
 
-  makeTextFieldsFromParentHeaders(allHeaders) {
+  makeTextFieldsFromParentLabels(allLabels) {
     let tempText = [];
-    allHeaders.map((header, index) => {
-      let currentIndex = allHeaders.findIndex(x => x === header);
-      if (typeof header === "object") {
-        header = "";
+    allLabels.map((label, index) => {
+      let currentIndex = allLabels.findIndex(x => x === label);
+      if (typeof label === "object") {
+        label = "";
       }
       tempText[currentIndex] = (
         <div>
           <TextField
             key={Math.random()}
-            hintText="Header"
-            defaultValue={header}
-            onChange={e => this.addLocalHeaders(currentIndex, e.target.value)}
+            hintText="Label"
+            defaultValue={label}
+            onChange={e => this.addLocalLabels(currentIndex, e.target.value)}
           />
           &nbsp;&nbsp;&nbsp;
           <RaisedButton
             label="Delete"
             primary
-            onMouseDown={() => this.deleteLocalHeaders(currentIndex)}
+            onMouseDown={() => this.deleteLocalLabels(currentIndex)}
           />
         </div>
       );
@@ -56,28 +56,28 @@ class PieChartOutputShowcaseModifyDialog extends React.Component {
     return tempText;
   }
 
-  addLocalHeaders(index, data) {
-    let temptext = Object.assign([], this.state.headers);
-    temptext[index] = data;
-    this.setState({ headers: temptext });
+  addLocalLabels(index, data) {
+    let templabels = Object.assign([], this.state.labels);
+    templabels[index] = data;
+    this.setState({ labels: templabels });
   }
 
-  deleteLocalHeaders(elementId) {
-    let temptext = Object.assign([], this.state.headers);
+  deleteLocalLabels(elementId) {
+    let templabels = Object.assign([], this.state.labels);
     let temptextfield = Object.assign([], this.state.textFields);
-    delete temptext[elementId];
+    delete templabels[elementId];
     delete temptextfield[elementId];
-    this.setState({ headers: temptext });
+    this.setState({ labels: templabels });
     this.setState({ textFields: temptextfield });
   }
 
   getNewField() {
     return (
-      <OverloadedPieChartHeader
+      <OverloadedField
         data={{
-          headerLength: this.state.headers.length,
-          addLocalHeaders: this.addLocalHeaders,
-          deleteLocalHeaders: this.deleteLocalHeaders
+          labelLength: this.state.labels.length,
+          addLocalLabels: this.addLocalLabels,
+          deleteLocalLabels: this.deleteLocalLabels
         }}
       />
     );
@@ -91,7 +91,7 @@ class PieChartOutputShowcaseModifyDialog extends React.Component {
 
   handleOk() {
     this.hideModifyDialog();
-    this.updateHeadersInParent(this.state.headers);
+    this.updateLabelsInParent(this.state.labels);
   }
 
   handleCancel() {
@@ -116,7 +116,7 @@ class PieChartOutputShowcaseModifyDialog extends React.Component {
     ];
     return (
       <Dialog
-        title="Modify Pie Chart Output Component"
+        title={this.props.title}
         actions={actions}
         modal
         autoScrollBodyContent
@@ -128,7 +128,7 @@ class PieChartOutputShowcaseModifyDialog extends React.Component {
         ])}
         <RaisedButton
           key={Math.random()}
-          label="Add Output Field"
+          label="Add Field"
           primary
           onClick={() => this.addMoreTextFields()}
           style={{ marginTop: "2%" }}
@@ -138,8 +138,9 @@ class PieChartOutputShowcaseModifyDialog extends React.Component {
   }
 }
 
-PieChartOutputShowcaseModifyDialog.propTypes = {
-  functions: PropTypes.object.isRequired
+InputShowcaseModifyDialog.propTypes = {
+  functions: PropTypes.object.isRequired,
+  title: PropTypes.string.isRequired
 };
 
-export default PieChartOutputShowcaseModifyDialog;
+export default InputShowcaseModifyDialog;

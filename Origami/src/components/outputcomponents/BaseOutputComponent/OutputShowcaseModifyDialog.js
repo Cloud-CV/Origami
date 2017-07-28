@@ -3,9 +3,9 @@ import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
 import RaisedButton from "material-ui/RaisedButton";
 import TextField from "material-ui/TextField";
-import OverloadedTextOutput from "./OverloadedTextHeader";
+import OverloadedOutput from "./OverloadedHeader";
 
-class TextOutputShowcaseModifyDialog extends React.Component {
+class OutputShowcaseModifyDialog extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -73,7 +73,7 @@ class TextOutputShowcaseModifyDialog extends React.Component {
 
   getNewField() {
     return (
-      <OverloadedTextOutput
+      <OverloadedOutput
         data={{
           headerLength: this.state.headers.length,
           addLocalHeaders: this.addLocalHeaders,
@@ -116,7 +116,7 @@ class TextOutputShowcaseModifyDialog extends React.Component {
     ];
     return (
       <Dialog
-        title="Modify Text Output Component"
+        title={this.props.title}
         actions={actions}
         modal
         autoScrollBodyContent
@@ -138,8 +138,9 @@ class TextOutputShowcaseModifyDialog extends React.Component {
   }
 }
 
-TextOutputShowcaseModifyDialog.propTypes = {
-  functions: PropTypes.object.isRequired
+OutputShowcaseModifyDialog.propTypes = {
+  functions: PropTypes.object.isRequired,
+  title: PropTypes.string.isRequired
 };
 
-export default TextOutputShowcaseModifyDialog;
+export default OutputShowcaseModifyDialog;

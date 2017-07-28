@@ -2,22 +2,9 @@ import React, { PropTypes } from "react";
 import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
 import PieChartOutput from "./PieChartOutput";
+import OutputPreview from "../BaseOutputComponent/OutputPreview.js";
 
-class PieChartOutputPreview extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      headers: props.functions.getHeaders(),
-      open: true
-    };
-    this.hidePreviewDialog = props.functions.hidePreviewDialog;
-    this.handleOk = this.handleOk.bind(this);
-  }
-
-  handleOk() {
-    this.hidePreviewDialog();
-  }
-
+class PieChartOutputPreview extends OutputPreview {
   render() {
     const actions = [
       <FlatButton
