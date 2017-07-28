@@ -11,7 +11,7 @@ from django.contrib.sites.models import Site
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status as response_status
-
+from api.constants import DEFAULT_IMAGE
 import datetime
 import json
 from collections import OrderedDict
@@ -118,11 +118,26 @@ def is_cloudcv(request):
 
 
 @api_view(['GET'])
-def get_all_demos(request, id):
+def get_all_user_demos(request, id):
     demos = Demo.objects.filter(user_id=id)
     serialize = DemoSerializer(demos, many=True)
     return Response(serialize.data, status=response_status.HTTP_200_OK)
 
+@api_view(['GET'])
+def get_all_demos(request):
+    search_by = request.query_params.get('search_by', None)
+    search_term = request.query_params.get('search_term', None)
+    demos = []
+    if search_by == "demo":
+        demos = Demo.objects.filter(name__icontains=search_term)
+    else:
+        user = User.objects.get(username=search_term)
+        demos = Demo.objects.filter(user_id=user.id)
+    serialize = DemoSerializer(demos, many=True)
+    data = serialize.data
+    for x in range(len(demos)):
+        data[x]["username"] = User.objects.get(id=data[x]["user_id"]).username
+    return Response(data, status=response_status.HTTP_200_OK)
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def custom_component_controller(request, type_req, user_id, demoid):
@@ -217,17 +232,24 @@ def alive(request):
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def custom_demo_controller(request, user_id, id):
     if request.method == "GET":
-        if id:
+        if id and user_id:
             try:
                 demo = Demo.objects.get(id=id, user_id=user_id)
             except Exception as e:
                 return Response({"text": "Not Found"})
             serialize = DemoSerializer(demo)
             return Response([serialize.data], status=response_status.HTTP_200_OK)
-        else:
+        elif user_id and not id:
             demos = Demo.objects.filter(user_id=user_id)
             serialize = DemoSerializer(demos, many=True)
             return Response(serialize.data, status=response_status.HTTP_200_OK)
+        else:
+            demos = Demo.objects.all()
+            serialize = DemoSerializer(demos, many=True)
+            data = serialize.data
+            for x in range(len(demos)):
+                data[x]["username"] = User.objects.get(id=data[x]["user_id"]).username
+            return Response(data, status=response_status.HTTP_200_OK)
     elif request.method == "POST":
         body = request.data
         name = body["name"]
@@ -237,6 +259,8 @@ def custom_demo_controller(request, user_id, id):
         description = body["description"]
         footer_message = body["footer_message"]
         cover_image = body["cover_image"]
+        if not cover_image:
+            cover_image = DEFAULT_IMAGE
         terminal = body["terminal"]
         timestamp = body["timestamp"]
         token = body["token"]
@@ -256,7 +280,10 @@ def custom_demo_controller(request, user_id, id):
             demo.address = body["address"]
             demo.description = body["description"]
             demo.footer_message = body["footer_message"]
-            demo.cover_image = body["cover_image"]
+            if not body["cover_image"]:
+                demo.cover_image = DEFAULT_IMAGE
+            else:
+                demo.cover_image = body["cover_image"]
             demo.terminal = body["terminal"]
             demo.token = body["token"]
             demo.status = body["status"]

@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 from django.db import models
 import json
-
 # Create your models here.
 
 
@@ -11,7 +10,7 @@ class Demo(models.Model):
     name = models.CharField(max_length=100)
     id = models.IntegerField(primary_key=True)
     user_id = models.IntegerField()
-    cover_image = models.CharField(max_length=300)
+    cover_image = models.TextField(blank=False, null=False)
     footer_message = models.CharField(max_length=400)
     address = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
