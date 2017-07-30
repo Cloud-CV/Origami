@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+    nginx:        
+        image: nginx:1.11.6-alpine
+    postgres:       
+        image: postgres:9.4
+        expose:
+            - 5432
+        volumes:
+          - ./docker/postgres/data:/var/lib/postgresql
+    django_app:
+        build:
+            context: .
+            dockerfile: ./docker/django/Dockerfile
+        volumes:
+            - .:/app
+    redis:
+        image: redis:3.0-alpine
+        expose:
+            - 6379

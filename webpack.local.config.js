@@ -24,7 +24,6 @@ config = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.js' }),
     new BundleTracker({filename: './webpack-stats-local.json'})
   ],
   module: {
