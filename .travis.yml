@@ -20,7 +20,7 @@ before_script:
   - psql -c "ALTER USER origamiuser CREATEDB" -U postgres
 
 env:
-  - HOST=localhost PORT=8000 DB_NAME="origami" DB_USER="origamiuser" DB_PASS="password"
+  - HOST=localhost PORT=8000 DB_NAME="origami" DB_USER="origamiuser" DB_PASS="password" DB_USER_EMAIL="test@test.com" DB_HOST="localhost" REDIS_HOST="redis"
 
 before_install:
   - pip install -U pip
