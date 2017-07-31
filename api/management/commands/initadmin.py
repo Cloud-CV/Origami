@@ -11,7 +11,8 @@ class Command(BaseCommand):
         email = os.environ.get('DJANGO_EMAIL', os.environ['DB_USER_EMAIL'])
         password = os.environ.get('DJANGO_PASSWORD', os.environ['DB_PASS'])
         try:
-            User.objects.filter(username=username).exists() or User.objects.create_superuser(username, email, password)
+            User.objects.filter(username=username).exists(
+            ) or User.objects.create_superuser(username, email, password)
         except:
             raise CommandError('DB is not connected properly')
 

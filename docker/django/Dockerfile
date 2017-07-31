@@ -1,5 +1,5 @@
 FROM python:2.7
-MAINTAINER Avais Pagarkar <avaispagarkar@gmail.com>
+MAINTAINER CloudCV Team <team@cloudcv.org>
 
 WORKDIR /app
 ENV PYTHONUNBUFFERED 1
