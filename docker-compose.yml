@@ -17,6 +17,8 @@ services:
             service: postgres
         ports:
             - 5432:5432
+        env_file:
+            - ./origami.env
         volumes:
             - ./docker/postgres/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
     django_app:
