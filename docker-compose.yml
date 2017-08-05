@@ -1,0 +1,42 @@
+version: '2'
+
+services:
+    nginx:
+        extends:
+            file: docker-common.yml
+            service: nginx
+        ports:
+            - 8000:80
+        volumes:
+            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+        volumes_from:
+            - django_app
+    postgres:
+        extends:
+            file: docker-common.yml
+            service: postgres
+        ports:
+            - 5432:5432
+        env_file:
+            - ./origami.env
+        volumes:
+            - ./docker/postgres/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
+    django_app:
+        extends:
+            file: docker-common.yml
+            service: django_app
+        links:
+            - postgres
+            - redis
+        entrypoint:
+            - ./docker/django/django-entrypoint.sh
+        env_file:
+            - ./origami.env
+        expose:
+            - 8000
+    redis:
+        extends:
+            file: docker-common.yml
+            service: redis
+        ports:
+            - 6379:6379
