@@ -10,14 +10,22 @@ import InputShowcaseCard from "../BaseInputComponent/InputShowcaseCard.js";
 class TextInputShowcaseCard extends InputShowcaseCard {
   constructor(props) {
     super(props);
-    let initLabels = [];
-    if (props.demoProps.inputComponentDemoModel.base_component_id === 1) {
-      initLabels = props.demoProps.inputComponentDemoModel.props;
-      this.selected = props.demoProps.inputComponentDemoModel.base_component_id ===
-        props.demoProps.selected;
+    this.init = props.demoProps.inputComponentDemoModel.props;
+    let labels = [];
+    this.others = [];
+    try {
+      this.init.map((prop, index) => {
+        if (prop["id"] === "1") {
+          labels.push(prop["label"]);
+        } else {
+          this.others.push(prop);
+        }
+      });
+    } catch (err) {
+      console.log(err);
     }
     this.state = {
-      labels: initLabels,
+      labels: labels,
       modifyDialogDisplay: false,
       previewDialogDisplay: false
     };
@@ -28,9 +36,9 @@ class TextInputShowcaseCard extends InputShowcaseCard {
       toastr.error("Registration info not found! Register again");
       browserHistory.push("/");
     } else {
-      let propsToStore = [];
+      let propsToStore = this.others;
       this.state.labels.map(label => {
-        propsToStore.push(label);
+        propsToStore.push({ id: "1", label: label });
       });
       this.inputComponentModelActions
         .updateInputComponentModel({
@@ -56,7 +64,6 @@ class TextInputShowcaseCard extends InputShowcaseCard {
           header="Text Input"
           width="five"
           context="selection"
-          selected={this.selected}
           centeredParent
           centeredSegment
           displayData={[`Number of inputs: ${this.getLabelRealLength()}`]}
@@ -84,7 +91,6 @@ class TextInputShowcaseCard extends InputShowcaseCard {
             }}
             title="Modify Text Input Component"
           />}
-
         {this.state.previewDialogDisplay &&
           <TextInputPreview
             functions={{

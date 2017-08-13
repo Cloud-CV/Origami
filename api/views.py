@@ -46,6 +46,7 @@ class InputComponentViewSet(ModelViewSet):
         serialize = InputComponentSerializer(input)
         return Response(serialize.data, status=response_status.HTTP_200_OK)
 
+
 user_input_component = InputComponentViewSet.as_view(
     {'get': 'user_input_component'})
 
@@ -66,6 +67,7 @@ class OutputComponentViewSet(ModelViewSet):
         output = OutputComponent.objects(id=id, user_id=user_id).first()
         serialize = OutputComponentSerializer(output)
         return Response(serialize.data, status=response_status.HTTP_200_OK)
+
 
 user_output_component = OutputComponentViewSet.as_view(
     {'get': 'user_output_component'})
@@ -123,6 +125,7 @@ def get_all_user_demos(request, id):
     serialize = DemoSerializer(demos, many=True)
     return Response(serialize.data, status=response_status.HTTP_200_OK)
 
+
 @api_view(['GET'])
 def get_all_demos(request):
     search_by = request.query_params.get('search_by', None)
@@ -138,6 +141,7 @@ def get_all_demos(request):
     for x in range(len(demos)):
         data[x]["username"] = User.objects.get(id=data[x]["user_id"]).username
     return Response(data, status=response_status.HTTP_200_OK)
+
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def custom_component_controller(request, type_req, user_id, demoid):
@@ -160,8 +164,10 @@ def custom_component_controller(request, type_req, user_id, demoid):
         props = []
         for prop in body["props"]:
             if prop:
-                props.append(prop.encode(
-                    "ascii", "ignore").decode('utf-8'))
+                props.append({"id": prop["id"].encode(
+                    "ascii", "ignore").decode('utf-8'),
+                    "label": prop["label"].encode(
+                        "ascii", "ignore").decode('utf-8')})
             else:
                 props.append({})
         user_id = body["user_id"]
@@ -206,8 +212,10 @@ def custom_component_controller(request, type_req, user_id, demoid):
             props = []
             for prop in body["props"]:
                 if prop:
-                    props.append(prop.encode(
-                        "ascii", "ignore").decode('utf-8'))
+                    props.append({"id": prop["id"].encode(
+                        "ascii", "ignore").decode('utf-8'),
+                        "label": prop["label"].encode(
+                        "ascii", "ignore").decode('utf-8')})
                 else:
                     props.append({})
             component.props = json.dumps(props)
@@ -248,7 +256,8 @@ def custom_demo_controller(request, user_id, id):
             serialize = DemoSerializer(demos, many=True)
             data = serialize.data
             for x in range(len(demos)):
-                data[x]["username"] = User.objects.get(id=data[x]["user_id"]).username
+                data[x]["username"] = User.objects.get(
+                    id=data[x]["user_id"]).username
             return Response(data, status=response_status.HTTP_200_OK)
     elif request.method == "POST":
         body = request.data
