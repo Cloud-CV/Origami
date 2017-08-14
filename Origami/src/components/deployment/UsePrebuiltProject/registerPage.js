@@ -45,9 +45,9 @@ class RegisterPage extends React.Component {
       portErrorText: "",
       address: "",
       port: "",
-      currentPort: "8000",
-      webappaddress: "127.0.0.1",
-      tempwebaddress: "127.0.0.1",
+      currentPort: "",
+      webappaddress: "",
+      tempwebaddress: "",
       footer_message: "",
       cover_image: "",
       deploymentBoxSelectedStatus: false,
@@ -109,7 +109,9 @@ class RegisterPage extends React.Component {
             this.setState({
               footer_message: JSON.parse(singleRepo)[0].footer_message
             });
-            this.setState({ cover_image: JSON.parse(singleRepo)[0].cover_image });
+            this.setState({
+              cover_image: JSON.parse(singleRepo)[0].cover_image
+            });
             this.setState({ showTerminal: JSON.parse(singleRepo)[0].terminal });
             if (JSON.parse(singleRepo)[0].token.split(":")[5] === "0.0.0.0") {
               this.setState({ deploymentBoxSelectedStatus: true });

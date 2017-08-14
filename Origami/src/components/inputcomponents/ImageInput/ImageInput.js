@@ -1,5 +1,5 @@
 import React, { PropTypes } from "react";
-import SingleInput from "./SingleInput";
+import SingleInput from "./ImageSingleInput";
 import RaisedButton from "material-ui/RaisedButton";
 import toastr from "toastr";
 

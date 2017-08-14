@@ -1,12 +1,17 @@
 import React, { PropTypes } from "react";
-import SingleInput from "./TextSingleInput";
+import TextSingleInput from "../TextInput/TextSingleInput";
+import ImageSingleInput from "../ImageInput/ImageSingleInput";
 import RaisedButton from "material-ui/RaisedButton";
 import toastr from "toastr";
 
-class TextInput extends React.Component {
+class TypeInput extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      files: []
+    };
     this.sendRequest = this.sendRequest.bind(this);
+    this.updateFormData = this.updateFormData.bind(this);
   }
 
   shouldComponentUpdate() {
@@ -21,7 +26,10 @@ class TextInput extends React.Component {
       1000
     );
 
-    const form_data = new FormData($("#send-text")[0]);
+    let formData = new FormData($("#send-text")[0]);
+    this.state.files.map(file => {
+      formData.set(file.newfilename, file.newfile, file.newfilename);
+    });
 
     if (calling_context === "demo") {
       let timeout1 = "";
@@ -59,7 +67,7 @@ class TextInput extends React.Component {
       $.ajax({
         type: "POST",
         url: sendAddr,
-        data: form_data,
+        data: formData,
         contentType: false,
         cache: false,
         processData: false,
@@ -92,16 +100,33 @@ class TextInput extends React.Component {
     }
   }
 
+  updateFormData(newfile, newfilename) {
+    this.setState({
+      files: [...this.state.files, { newfilename, newfile }]
+    });
+  }
+
   render() {
     return (
       <div className="ui centered center aligned grid">
         <form id="send-text" className="six wide stackable stretched ui input">
           <div key={Math.random()}>
             <br /><br />
-            {this.props.labels.map((label, index) => [
-              <SingleInput
+            {this.props.textLabels.map((label, index) => [
+              <TextSingleInput
                 key={Math.random()}
                 index={index}
+                calling_context={this.props.calling_context}
+                label={label}
+              />,
+              <br key={Math.random()} />,
+              <br key={Math.random()} />
+            ])}
+            {this.props.imageLabels.map((label, index) => [
+              <ImageSingleInput
+                key={Math.random()}
+                index={index}
+                updateFormData={this.updateFormData}
                 calling_context={this.props.calling_context}
                 label={label}
               />,
@@ -132,11 +157,12 @@ class TextInput extends React.Component {
   }
 }
 
-TextInput.propTypes = {
-  labels: PropTypes.array.isRequired,
+TypeInput.propTypes = {
+  textLabels: PropTypes.array.isRequired,
+  imageLabels: PropTypes.array.isRequired,
   calling_context: PropTypes.string.isRequired,
   sendAddr: PropTypes.string.isRequired,
   socketId: PropTypes.string
 };
 
-export default TextInput;
+export default TypeInput;

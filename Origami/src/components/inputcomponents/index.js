@@ -1,10 +1,6 @@
 import React, { PropTypes } from "react";
-import TextInput from "./TextInput/TextInput";
 import TextInputShowcaseCard from "./TextInput/TextInputShowcaseCard";
-import TextImageInput from "./TextImageInput/TextImageInput";
-import TextImageInputShowcaseCard
-  from "./TextImageInput/TextImageInputShowcaseCard";
-import ImageInput from "./ImageInput/ImageInput";
+import TypeInput from "./BaseInputComponent/TypeInput";
 import ImageInputShowcaseCard from "./ImageInput/ImageInputShowcaseCard";
 
 export function getInputComponentById(
@@ -15,49 +11,32 @@ export function getInputComponentById(
   sendAddr
 ) {
   let labels = [];
-  props.map((label, index) => {
-    if (typeof label === "object") {
-      label = "";
+  console.log(props);
+  let textLabels = [];
+  let imageLabels = [];
+  props.map((prop, index) => {
+    if (prop["id"] === "1") {
+      textLabels.push(prop["label"]);
+    } else if (prop["id"] === "3") {
+      imageLabels.push(prop["label"]);
     }
-    labels[index] = label;
   });
-  switch (id) {
-    case 1:
-      return (
-        <TextInput
-          labels={labels}
-          calling_context={calling_context}
-          socketId={socketId}
-          sendAddr={sendAddr}
-        />
-      );
-    case 2:
-      return (
-        <TextImageInput
-          labels={labels}
-          calling_context={calling_context}
-          socketId={socketId}
-          sendAddr={sendAddr}
-        />
-      );
-    case 3:
-      return (
-        <ImageInput
-          labels={labels}
-          calling_context={calling_context}
-          socketId={socketId}
-          sendAddr={sendAddr}
-        />
-      );
-    default:
-      return <div>Null</div>;
-  }
+  return (
+    <div>
+      <TypeInput
+        textLabels={textLabels}
+        imageLabels={imageLabels}
+        calling_context={calling_context}
+        socketId={socketId}
+        sendAddr={sendAddr}
+      />
+    </div>
+  );
 }
 
 export function getAllInputComponentsForShowcase(data) {
   return [
     <TextInputShowcaseCard key={Math.random()} demoProps={data} />,
-    <TextImageInputShowcaseCard key={Math.random()} demoProps={data} />,
     <ImageInputShowcaseCard key={Math.random()} demoProps={data} />
   ];
 }
