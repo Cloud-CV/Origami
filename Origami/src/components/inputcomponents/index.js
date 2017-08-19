@@ -11,7 +11,6 @@ export function getInputComponentById(
   sendAddr
 ) {
   let labels = [];
-  console.log(props);
   let textLabels = [];
   let imageLabels = [];
   props.map((prop, index) => {

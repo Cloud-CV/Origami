@@ -119,12 +119,9 @@ class App extends React.Component {
 
   handleClickAfterLogin(e) {
     if (e.key === "1") {
-      userApi
-        .userProfileFromName(localStorage.getItem("username"))
-        .then(user => {
-          user = JSON.parse(user);
-          browserHistory.push(`/u/${user.login}/${user.id}`);
-        });
+      browserHistory.push(
+        `/u/${localStorage.getItem("username")}/${localStorage.getItem("user_id")}`
+      );
     }
     if (e.key === "2") {
       browserHistory.push("/");
@@ -150,14 +147,14 @@ class App extends React.Component {
     }
     if (this.state.login) {
       return (
-        <Layout style={{ height: "100vh", background: "#FEFEFE" }}>
+        <Layout style={{ height: "110vh", background: "#FEFEFE" }}>
           <Sider
             style={{
               overflow: "auto",
               background: "#FEFEFE",
               "box-shadow": "10px 0px 20px #E0E0E0"
             }}
-            width="250"
+            width="200"
           >
             <div
               className="logo"
@@ -194,7 +191,7 @@ class App extends React.Component {
               </Menu.Item>
               <Menu.Item key="5" style={{ "font-size": "16px" }}>
                 <Icon type="question-circle-o" />
-                <span className="nav-text">Help / WebApp Docs</span>
+                <span className="nav-text">Help</span>
               </Menu.Item>
               <Menu.Item key="6" style={{ "font-size": "16px" }}>
                 <Icon type="logout" />

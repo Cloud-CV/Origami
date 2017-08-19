@@ -129,7 +129,6 @@ class ShareProfileComponent extends React.Component {
   }
 
   goToDemo(demo) {
-    console.log(demo);
     browserHistory.push(
       `/ngh/user/${demo.user_id}/${demo.name}/${demo.id}/demo`
     );
