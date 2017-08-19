@@ -434,7 +434,6 @@ def root_settings(request):
 def upload_sample_input(request):
     data = request.data
     demo_id = data["demo_id"]
-    print demo_id
     demo = Demo.objects.get(id=demo_id)
     for key, value in data.iteritems():
         if key.startswith("sample-image"):
