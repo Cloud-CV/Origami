@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import Demo, InputComponent, OutputComponent, Permalink, RootSettings
+from api.models import Demo, InputComponent, OutputComponent, Permalink, RootSettings, SampleInput
 
 
 class DemoSerializer(serializers.ModelSerializer):
@@ -40,3 +40,11 @@ class RootSettingsSerializer(serializers.ModelSerializer):
     class Meta:
         model = RootSettings
         fields = '__all__'
+
+
+class SampleInputSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=False)
+
+    class Meta:
+        model = SampleInput
+        fields = ('id', 'type_of_input', 'value')

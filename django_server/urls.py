@@ -14,6 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import include, url
+from django.conf.urls.static import static
+from django.conf import settings
 from django.contrib import admin
 from django.views import generic
 from api.consumers import inject
@@ -34,6 +36,7 @@ urlpatterns = [
     url(r'alive', alive),
     url(r'^accounts/profile', redirect_login),
     url(r'^auth/', include('allauth.urls')),
+    url(r'^upload_sample_input$', upload_sample_input),
     url(r'api/is_cloudcv', is_cloudcv),
     url(r'api/rootsettings', root_settings),
     url(r'api/getpermalink/([A-Za-z0-9]+)/?$', get_permalink),
@@ -46,6 +49,10 @@ urlpatterns = [
     url(r'^inject$', inject),
     url(r'^$',
         generic.TemplateView.as_view(template_name='view1.html')),
-    url(r'^(?:.*)/?$',
-        generic.TemplateView.as_view(template_name='view1.html')),
 ]
+
+if settings.DEBUG is True:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += url(r'^(?:.*)/?$',
+        generic.TemplateView.as_view(template_name='view1.html')),
