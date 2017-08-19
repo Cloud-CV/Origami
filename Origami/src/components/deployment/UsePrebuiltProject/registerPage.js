@@ -510,7 +510,7 @@ class RegisterPage extends React.Component {
                               className="ui fluid medium bordered image"
                               src={
                                 this.state.cover_image ||
-                                  require("../../assets/wireframe.png")
+                                  "/static/img/wireframe.png"
                               }
                               id={"input-image-preview"}
                             />

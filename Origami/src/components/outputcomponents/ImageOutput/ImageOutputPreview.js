@@ -27,7 +27,7 @@ class ImageOutputPreview extends OutputPreview {
           headers={this.state.headers}
           calling_context="demo"
           data={new Array(this.state.headers.length).fill(
-            require("../../assets/wireframe.png")
+            "/static/img/wireframe.png"
           )}
         />
       </Dialog>

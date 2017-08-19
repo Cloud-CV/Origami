@@ -155,7 +155,7 @@ class SampleInput extends React.Component {
                 <div className="custom-image">
                   <img
                     className="ui fluid medium bordered image"
-                    src={require("../assets/wireframe.png")}
+                    src="/static/img/wireframe.png"
                     id={`sample-image-preview`}
                   />
                 </div>
