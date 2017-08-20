@@ -152,7 +152,7 @@ class RegisterPage extends React.Component {
             this.props.params.repoId
           ).then(data => {
             if (JSON.parse(data).text !== "Not Found") {
-              this.setState({ permalinkObject: JSON.parse(data)[0] });
+              this.setState({ permalinkObject: JSON.parse(data) });
             }
           });
         }
@@ -510,7 +510,7 @@ class RegisterPage extends React.Component {
                               className="ui fluid medium bordered image"
                               src={
                                 this.state.cover_image ||
-                                  require("../../assets/wireframe.png")
+                                  "/static/img/wireframe.png"
                               }
                               id={"input-image-preview"}
                             />

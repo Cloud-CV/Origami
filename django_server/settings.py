@@ -151,6 +151,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'django_server/static'),
 ]
 
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
+
 WEBPACK_LOADER = {
     'DEFAULT': {
         'BUNDLE_DIR_NAME': 'bundles/local/',  # end with slash

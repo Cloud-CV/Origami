@@ -62,3 +62,9 @@ class RootSettings(models.Model):
     allow_new_logins = models.BooleanField(default=True)
     app_ip = models.CharField(max_length=75)
     port = models.CharField(max_length=5)
+
+
+class SampleInput(models.Model):
+    demo = models.ForeignKey(Demo)
+    type_of_input = models.IntegerField()
+    value = models.CharField(max_length=300)

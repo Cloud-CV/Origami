@@ -51,7 +51,7 @@ const singleInput = props => {
               <div className="ui fluid image">
                 <img
                   className="ui fluid medium bordered image"
-                  src={require("../../assets/wireframe.png")}
+                  src="/static/img/wireframe.png"
                   id={`input-image-preview-${props.index}`}
                 />
               </div>

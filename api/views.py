@@ -8,6 +8,10 @@ from api.models import *
 from django.contrib.auth.models import User
 from allauth.socialaccount.models import SocialAccount, SocialToken, SocialApp
 from django.contrib.sites.models import Site
+import os
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+from django.conf import settings
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status as response_status
@@ -245,8 +249,16 @@ def custom_demo_controller(request, user_id, id):
                 demo = Demo.objects.get(id=id, user_id=user_id)
             except Exception as e:
                 return Response({"text": "Not Found"})
-            serialize = DemoSerializer(demo)
-            return Response([serialize.data], status=response_status.HTTP_200_OK)
+            serialize = DemoSerializer(demo).data
+            try:
+                sample_inputs = SampleInput.objects.filter(demo=demo)
+            except Exception as e:
+                sample_inputs = None
+            if sample_inputs:
+                sample_inputs_serialize = SampleInputSerializer(
+                    sample_inputs, many=True).data
+                serialize["sampleinput"] = sample_inputs_serialize
+            return Response([serialize], status=response_status.HTTP_200_OK)
         elif user_id and not id:
             demos = Demo.objects.filter(user_id=user_id)
             serialize = DemoSerializer(demos, many=True)
@@ -415,4 +427,23 @@ def root_settings(request):
     app.sites.add(site)
     app.save()
     serialize = RootSettingsSerializer(root)
+    return Response(serialize.data, status=response_status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def upload_sample_input(request):
+    data = request.data
+    demo_id = data["demo_id"]
+    demo = Demo.objects.get(id=demo_id)
+    for key, value in data.iteritems():
+        if key.startswith("sample-image"):
+            img = request.FILES[key]
+            absolute_path = default_storage.save(
+                settings.MEDIA_ROOT, ContentFile(img.read()))
+            relative_path = '/media/' + absolute_path.split('media/')[-1]
+            sample_input = SampleInput.objects.create(
+                demo=demo, type_of_input=3, value=relative_path)
+            serialize = SampleInputSerializer(sample_input)
+    sample_inputs = SampleInput.objects.filter(demo=demo)
+    serialize = SampleInputSerializer(sample_inputs, many=True)
     return Response(serialize.data, status=response_status.HTTP_200_OK)
