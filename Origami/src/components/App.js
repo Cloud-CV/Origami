@@ -12,6 +12,7 @@ import FlatButton from "material-ui/FlatButton";
 import io from "socket.io-client";
 import userApi from "../api/Github/userApi";
 import { Layout, Menu, Icon, Button, Card, Row, Col, Input } from "antd";
+import * as rootApi from "../api/CommonLocal/rootSettingsApi";
 import "./index.css";
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -63,6 +64,28 @@ class App extends React.Component {
     } else {
       this.setState({ displayLogin: "" });
     }
+    rootApi
+      .checkRootSettings()
+      .then(data => {
+        if (
+          window.location.pathname !== "/initialsetup" &&
+          JSON.parse(data).root_user_github_login_id === null
+        ) {
+          window.location = "/initialsetup";
+        }
+      })
+      .catch(err => {
+        toastr.error("Unauthorized");
+        setTimeout(
+          () => {
+            $("#appbar-progress").css("visibility", "hidden");
+            $("#appbar-progress").progress({
+              percent: "0%"
+            });
+          },
+          600
+        );
+      });
   }
 
   componentDidMount() {

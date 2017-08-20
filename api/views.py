@@ -394,38 +394,39 @@ def custom_permalink_controller(request, user_id, project_id):
     return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
 
 
-@api_view(['POST'])
+@api_view(['GET', 'POST'])
 def root_settings(request):
     body = request.data
     root = RootSettings.objects.all().first()
     app = SocialApp.objects.all().first()
-    if root and app:
-        root.root_user_github_login_id = body["root_user_github_login_id"]
-        root.root_user_github_login_name = body["root_user_github_login_name"]
-        root.client_id = body["client_id"]
-        root.client_secret = body["client_secret"]
-        root.is_cloudcv = body["is_cloudcv"]
-        root.allow_new_logins = body["allow_new_logins"]
-        root.app_ip = body["app_ip"]
-        root.port = body["port"]
-        root.save()
-        app.client_id = body["client_id"]
-        app.secret = body["client_secret"]
+    if request.method == "POST":
+        if root and app:
+            root.root_user_github_login_id = body["root_user_github_login_id"]
+            root.root_user_github_login_name = body["root_user_github_login_name"]
+            root.client_id = body["client_id"]
+            root.client_secret = body["client_secret"]
+            root.is_cloudcv = body["is_cloudcv"]
+            root.allow_new_logins = body["allow_new_logins"]
+            root.app_ip = body["app_ip"]
+            root.port = body["port"]
+            root.save()
+            app.client_id = body["client_id"]
+            app.secret = body["client_secret"]
+            app.save()
+        else:
+            root = RootSettings.objects.create(root_user_github_login_id=body["root_user_github_login_id"],
+                                               root_user_github_login_name=body[
+                                               "root_user_github_login_name"],
+                                               client_id=body["client_id"], client_secret=body[
+                                               "client_secret"],
+                                               is_cloudcv=body["is_cloudcv"], allow_new_logins=body[
+                                               "allow_new_logins"],
+                                               app_ip=body["app_ip"], port=body["port"])
+            app = SocialApp.objects.create(provider=u'github', name=str(datetime.datetime.now().isoformat()),
+                                           client_id=body["client_id"], secret=body["client_secret"])
+        site = Site.objects.get(id=1)
+        app.sites.add(site)
         app.save()
-    else:
-        root = RootSettings.objects.create(root_user_github_login_id=body["root_user_github_login_id"],
-                                           root_user_github_login_name=body[
-                                           "root_user_github_login_name"],
-                                           client_id=body["client_id"], client_secret=body[
-                                           "client_secret"],
-                                           is_cloudcv=body["is_cloudcv"], allow_new_logins=body[
-                                           "allow_new_logins"],
-                                           app_ip=body["app_ip"], port=body["port"])
-        app = SocialApp.objects.create(provider=u'github', name=str(datetime.datetime.now().isoformat()),
-                                       client_id=body["client_id"], secret=body["client_secret"])
-    site = Site.objects.get(id=1)
-    app.sites.add(site)
-    app.save()
     serialize = RootSettingsSerializer(root)
     return Response(serialize.data, status=response_status.HTTP_200_OK)
 
