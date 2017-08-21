@@ -70,7 +70,12 @@ class HomePageComponent extends React.Component {
   componentWillMount() {
     getAllDeployed()
       .then(alldeployedRepos => {
-        this.setState({ allDeployed: JSON.parse(alldeployedRepos) });
+        let tmp = JSON.parse(alldeployedRepos);
+        let allDeployed = [];
+        while (tmp.length) {
+          allDeployed.push(tmp.splice(0, 4));
+        }
+        this.setState({ allDeployed: allDeployed });
       })
       .then(() => {
         const stateToPut = {};
@@ -113,7 +118,14 @@ class HomePageComponent extends React.Component {
     getSearchedDemos(this.state.searchBy, search_term)
       .then(allRepos => {
         if (Object.keys(JSON.parse(allRepos)).length > 0) {
-          this.setState({ allDeployed: JSON.parse(allRepos) });
+          let tmp = JSON.parse(allRepos);
+          let allDeployed = [];
+          while (tmp.length) {
+            allDeployed.push(tmp.splice(0, 4));
+          }
+          this.setState({
+            allDeployed: allDeployed
+          });
         } else {
           this.setState({ allDeployed: [] });
         }
@@ -139,6 +151,9 @@ class HomePageComponent extends React.Component {
 
   getStyles() {
     return {
+      layout: {
+        background: "#FEFEFE"
+      },
       content: {
         margin: "24px 16px 0",
         overflow: "initial"
@@ -158,7 +173,7 @@ class HomePageComponent extends React.Component {
     const styles = this.getStyles();
 
     return (
-      <div>
+      <Layout style={styles.layout}>
         {this.props.login &&
           <Header id="layout-header">
             <Row>
@@ -192,41 +207,47 @@ class HomePageComponent extends React.Component {
           <div style={styles.contentDiv}>
             <Row>
               {Object.keys(this.state.allDeployed).length > 0
-                ? this.state.allDeployed.map(demo => (
-                    <Col span={5} offset={1} key={demo.id}>
-                      <Card
-                        style={{ width: "100%" }}
-                        bodyStyle={{ padding: 0 }}
-                      >
-                        <div className="custom-card">
-                          <br />
-                          <h3>{demo.name}</h3>
-                          <h4> - {demo.username}</h4>
-                          <br />
-                          <p />
-                        </div>
-                        <div className="custom-image">
-                          <img width="100%" src={demo.cover_image} />
-                        </div>
-                        <div className="custom-card">
-                          <p>{demo.description}</p>
-                          <br />
-                          <Button
-                            type="primary"
-                            id="launchButton"
-                            style={styles.launchButton}
-                            onClick={() => this.goToDemoPage(demo)}
-                          >
-                            Demo<Icon type="rocket" />
-                          </Button>
-                          <br />
-                        </div>
-                      </Card>
+                ? this.state.allDeployed.map(row => (
+                    <div key={Math.random()}>
+                      <Row>
+                        {row.map(demo => (
+                          <Col span={5} offset={1} key={demo.id}>
+                            <Card
+                              style={{ width: "100%" }}
+                              bodyStyle={{ padding: 0 }}
+                            >
+                              <div className="custom-card">
+                                <br />
+                                <h3>{demo.name}</h3>
+                                <h4> - {demo.username}</h4>
+                                <br />
+                                <p />
+                              </div>
+                              <div className="custom-image">
+                                <img width="100%" src={demo.cover_image} />
+                              </div>
+                              <div className="custom-card">
+                                <p>{demo.description}</p>
+                                <br />
+                                <Button
+                                  type="primary"
+                                  id="launchButton"
+                                  style={styles.launchButton}
+                                  onClick={() => this.goToDemoPage(demo)}
+                                >
+                                  Demo<Icon type="rocket" />
+                                </Button>
+                                <br />
+                              </div>
+                            </Card>
+                          </Col>
+                        ))}
+                      </Row>
                       <br />
-                    </Col>
+                    </div>
                   ))
-                : <Col span={24}>
-                    <h4> Demo not found. Try Searching for another demo </h4>
+                : <Col span={24} style={{ width: "100%" }}>
+                    <h4> Demo not found. Try Searching for another demo</h4>
                   </Col>}
             </Row>
           </div>
@@ -246,7 +267,7 @@ class HomePageComponent extends React.Component {
           {" "}
           <a href="http://cloudcv.org/">Team CloudCV</a>
         </Footer>
-      </div>
+      </Layout>
     );
   }
 }

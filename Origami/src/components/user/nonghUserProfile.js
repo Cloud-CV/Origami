@@ -57,7 +57,12 @@ class NonGHUserProfileComponent extends React.Component {
       .then(() => {
         getDeployed(this.props.user.id)
           .then(alldeployedRepos => {
-            this.setState({ allDeployed: JSON.parse(alldeployedRepos) });
+            let tmp = JSON.parse(alldeployedRepos);
+            let allDeployed = [];
+            while (tmp.length) {
+              allDeployed.push(tmp.splice(0, 4));
+            }
+            this.setState({ allDeployed: allDeployed });
           })
           .then(() => {
             const stateToPut = {};
@@ -233,94 +238,105 @@ class NonGHUserProfileComponent extends React.Component {
           {this.state.user &&
             <div style={styles.contentDiv}>
               <Row>
-                {this.state.allDeployed.map(project => (
-                  <Col span={5} offset={1} key={project.id}>
-                    <Card style={{ width: "100%" }} bodyStyle={{ padding: 0 }}>
-                      <div className="custom-card">
-                        <br />
-                        <h3>{project.name}</h3>
-                      </div>
-                      <div className="custom-image">
-                        <img width="100%" src={project.cover_image} />
-                      </div>
-                      <div className="custom-card">
-                        <p>{project.description}</p>
-                        <br />
-                        IP: {project.token.split(":")[1]} <br />
-                        Port: {project.token.split(":")[4]} <br />
-                        <br />
-                        <Row>
-                          <Col span={22} offset={1}>
-                            <Button
-                              type="primary"
-                              style={{ width: "100%" }}
-                              ghost
-                              onClick={() => this.goToDemoPage(project)}
-                            >
-                              Demo<Icon type="rocket" />
-                            </Button>
-                          </Col>
-                        </Row>
-                        <br />
-                        <Row>
-                          <Col span={11} offset={1}>
-                            <Button
-                              type="primary"
-                              style={{ width: "100%" }}
-                              ghost
-                              onClick={() => this.modifyProject(project)}
-                            >
-                              Modify<Icon type="edit" />
-                            </Button>
-                          </Col>
-                          <Col span={10} offset={1}>
-                            <Button
-                              type="primary"
-                              style={{ width: "100%" }}
-                              ghost
-                              onClick={() =>
-                                this.toggleShowDataDialog({
-                                  type: "token",
-                                  content: project.token
-                                })}
-                            >
-                              Token<Icon type="bars" />
-                            </Button>
-                          </Col>
-                        </Row>
-                        <br />
-                        <Row>
-                          <Col span={11} offset={1}>
-                            <Button
-                              type="primary"
-                              style={{ width: "100%" }}
-                              ghost
-                              onClick={() =>
-                                this.toggleShowDataDialog({
-                                  type: "permalink",
-                                  content: `${window.location.protocol}//${window.location.host}${this.state.permalinkHolder[this.state.user.id][project.id].short_relative_url}`
-                                })}
-                            >
-                              Permalink<Icon type="link" />
-                            </Button>
-                          </Col>
-                          <Col span={10} offset={1}>
-                            <Button
-                              type="danger"
-                              style={{ width: "100%" }}
-                              ghost
-                              onClick={() =>
-                                this.toggleDeleteConfirmationDialog(project.id)}
-                            >
-                              Delete <Icon type="delete" />
-                            </Button>
-                          </Col>
-                        </Row>
-                        <br />
-                      </div>
-                    </Card>
+                {this.state.allDeployed.map(row => (
+                  <div key={Math.random()}>
+                    <Row>
+                      {row.map(project => (
+                        <Col span={5} offset={1} key={project.id}>
+                          <Card
+                            style={{ width: "100%" }}
+                            bodyStyle={{ padding: 0 }}
+                          >
+                            <div className="custom-card">
+                              <br />
+                              <h3>{project.name}</h3>
+                            </div>
+                            <div className="custom-image">
+                              <img width="100%" src={project.cover_image} />
+                            </div>
+                            <div className="custom-card">
+                              <p>{project.description}</p>
+                              <br />
+                              IP: {project.token.split(":")[1]} <br />
+                              Port: {project.token.split(":")[4]} <br />
+                              <br />
+                              <Row>
+                                <Col span={22} offset={1}>
+                                  <Button
+                                    type="primary"
+                                    style={{ width: "100%" }}
+                                    ghost
+                                    onClick={() => this.goToDemoPage(project)}
+                                  >
+                                    Demo<Icon type="rocket" />
+                                  </Button>
+                                </Col>
+                              </Row>
+                              <br />
+                              <Row>
+                                <Col span={11} offset={1}>
+                                  <Button
+                                    type="primary"
+                                    style={{ width: "100%" }}
+                                    ghost
+                                    onClick={() => this.modifyProject(project)}
+                                  >
+                                    Modify<Icon type="edit" />
+                                  </Button>
+                                </Col>
+                                <Col span={10} offset={1}>
+                                  <Button
+                                    type="primary"
+                                    style={{ width: "100%" }}
+                                    ghost
+                                    onClick={() =>
+                                      this.toggleShowDataDialog({
+                                        type: "token",
+                                        content: project.token
+                                      })}
+                                  >
+                                    Token<Icon type="bars" />
+                                  </Button>
+                                </Col>
+                              </Row>
+                              <br />
+                              <Row>
+                                <Col span={11} offset={1}>
+                                  <Button
+                                    type="primary"
+                                    style={{ width: "100%" }}
+                                    ghost
+                                    onClick={() =>
+                                      this.toggleShowDataDialog({
+                                        type: "permalink",
+                                        content: `${window.location.protocol}//${window.location.host}${this.state.permalinkHolder[this.state.user.id][project.id].short_relative_url}`
+                                      })}
+                                  >
+                                    Permalink<Icon type="link" />
+                                  </Button>
+                                </Col>
+                                <Col span={10} offset={1}>
+                                  <Button
+                                    type="danger"
+                                    style={{ width: "100%" }}
+                                    ghost
+                                    onClick={() =>
+                                      this.toggleDeleteConfirmationDialog(
+                                        project.id
+                                      )}
+                                  >
+                                    Delete <Icon type="delete" />
+                                  </Button>
+                                </Col>
+                              </Row>
+                              <br />
+                            </div>
+                          </Card>
+                        </Col>
+                      ))}
+                    </Row>
                     <br />
-                  </Col>
+                  </div>
                 ))}
               </Row>
               <br />
