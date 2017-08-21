@@ -110,18 +110,20 @@ class TypeInput extends React.Component {
     return (
       <div className="ui centered center aligned grid">
         <form id="send-text" className="six wide stackable stretched ui input">
-          <div key={Math.random()}>
+          <div className="origami-demo-input-components" key={Math.random()}>
             <br /><br />
-            {this.props.textLabels.map((label, index) => [
-              <TextSingleInput
-                key={Math.random()}
-                index={index}
-                calling_context={this.props.calling_context}
-                label={label}
-              />,
-              <br key={Math.random()} />,
-              <br key={Math.random()} />
-            ])}
+            <div className="origami-demo-input-text-components">  
+              {this.props.textLabels.map((label, index) => [
+                <TextSingleInput
+                  key={Math.random()}
+                  index={index}
+                  calling_context={this.props.calling_context}
+                  label={label}
+                />,
+                <br key={Math.random()} />,
+                <br key={Math.random()} />
+              ])}
+            </div>  
             {this.props.imageLabels.map((label, index) => [
               <ImageSingleInput
                 key={Math.random()}
@@ -132,12 +134,12 @@ class TypeInput extends React.Component {
               />,
               <br key={Math.random()} />,
               <br key={Math.random()} />
-            ])}
+            ])}  
             <input type="hidden" name="socket-id" value={this.props.socketId} />
           </div>
         </form>
         <div className="ui row">
-          <pre className="ui centered center aligned">
+          <pre className="ui centered center aligned origami-demo-send-button">
             <br />
             <RaisedButton
               label="Send"

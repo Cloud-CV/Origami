@@ -34,9 +34,9 @@ const singleInput = props => {
   }
 
   return (
-    <div className="ui container grid">
-      <div className="centered center aligned stretched row">
-        <div className="ui blue segment">
+    <div className="ui container grid origami-demo-input-image-component">
+      <div className="centered center aligned stretched row origami-demo-input-image-label-container">
+        <div className="ui blue segment origami-demo-input-image-label">
           {props.label}
         </div>
       </div>
@@ -53,9 +53,10 @@ const singleInput = props => {
                   className="ui fluid medium bordered image"
                   src="/static/img/wireframe.png"
                   id={`input-image-preview-${props.index}`}
+                  style={{ width: "100%" }}
                 />
               </div>
-              <div className="content">
+              <div className="content origami-demo-input-image-component-desc">
                 Drag and Drop or Click to upload
               </div>
             </div>

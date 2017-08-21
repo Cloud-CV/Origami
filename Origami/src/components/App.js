@@ -22,7 +22,8 @@ class App extends React.Component {
     this.state = {
       login: false,
       displayLogin: "",
-      showTitle: true
+      showTitle: true,
+      isFrame: window.location.pathname.split("/")[1] == "frame"
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleClickAfterLogin = this.handleClickAfterLogin.bind(this);
@@ -167,6 +168,13 @@ class App extends React.Component {
     }
     if (this.readSessionToken()) {
       this.props.loginactions.Login();
+    }
+    if (this.state.isFrame) {
+      return (
+        <Layout style={{ background: "#FEFEFE" }}>
+          {this.props.children}
+        </Layout>
+      );
     }
     if (this.state.login) {
       return (
