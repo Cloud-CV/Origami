@@ -11,11 +11,21 @@ class TypeInput extends React.Component {
       files: []
     };
     this.sendRequest = this.sendRequest.bind(this);
+    this.inputSubmitted = this.inputSubmitted.bind(this);
     this.updateFormData = this.updateFormData.bind(this);
   }
 
   shouldComponentUpdate() {
     return false;
+  }
+
+  inputSubmitted(data) {
+    let inputSubmitData = {
+      action: "INPUT_SUBMITTED",
+      payload: data
+    };
+    this.parentWindow = window.parent;
+    this.parentWindow.postMessage(inputSubmitData, '*');
   }
 
   sendRequest(sendAddr, calling_context) {
@@ -31,7 +41,11 @@ class TypeInput extends React.Component {
       formData.set(file.newfilename, file.newfile, file.newfilename);
     });
 
-    if (calling_context === "demo") {
+    if (calling_context === "demoiframe") {
+      this.inputSubmitted(formData);
+    }
+
+    if (calling_context === "demo" || calling_context === "demoiframe") {
       let timeout1 = "";
       let timeout2 = "";
       let timeout3 = "";
@@ -112,6 +126,7 @@ class TypeInput extends React.Component {
         <form id="send-text" className="six wide stackable stretched ui input">
           <div className="origami-demo-input-components" key={Math.random()}>
             <br /><br />
+            {this.props.textLabels.length > 0 &&
             <div className="origami-demo-input-text-components">  
               {this.props.textLabels.map((label, index) => [
                 <TextSingleInput
@@ -123,7 +138,7 @@ class TypeInput extends React.Component {
                 <br key={Math.random()} />,
                 <br key={Math.random()} />
               ])}
-            </div>  
+            </div>}
             {this.props.imageLabels.map((label, index) => [
               <ImageSingleInput
                 key={Math.random()}

@@ -60,6 +60,7 @@ class singleOutput extends React.Component {
             <img
               className="ui centered center aligned fluid large image"
               src={this.props.data}
+              style={{ width: "100%" }}
             />
           </div>
         </Dialog>
