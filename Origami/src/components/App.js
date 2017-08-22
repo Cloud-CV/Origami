@@ -228,7 +228,7 @@ class App extends React.Component {
     } else {
       return (
         <Layout id="layout">
-          <Header id="layout-header">
+          <Header id="layout-header-no-login">
             <Row>
               <Col span={3} offset={1}>
                 <h2 id="logo-title">

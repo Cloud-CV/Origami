@@ -16,3 +16,9 @@
 #search{
   width: 100%; 
 }
+
+#layout-header-no-login {
+  background: #FEFEFE; 
+  padding: 0; 
+  border-bottom: 1px solid #E0E0E0;
+}
