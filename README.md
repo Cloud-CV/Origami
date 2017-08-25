@@ -7,19 +7,20 @@
 
 ## Setting the environment variables
 
-1. Open origami.env
-2. Set HOST to the hostname of the server
-3. Set PORT to the port you want the server to listen on. (Generally 80)
-4. DB_NAME sets the name you want your postgres database to have
-5. DB_PASS will be used to set the password for the database user. This is also the admin password
-6. DB_USER is the username for a user who can modify the database. This is also the admin username
-7. DB_USER_EMAIL stores the email for the admin
-8. DB_HOST should be set to postgres in production and localhost in development
-9. REDIS_HOST should be set to redis and localhost in development
+`origami.env` stores all the environment variables necessary to run Origami.
+
+1. `HOST` should be set to the hostname of the server
+2. `PORT` should be set to the port you want the server to listen on. (Generally 80)
+3. `DB_NAME` will be used to set the name for your postgres database
+4. `DB_PASS` will be used to set the password for the database user. This is also the admin password
+5. `DB_USER` is the username for a user who can modify the database. This is also the admin username
+6. `DB_USER_EMAIL` stores the email for the admin
+7. `DB_HOST `should be set to postgres in production and localhost in development
+8. `REDIS_HOST` should be set to redis and localhost in development
 
 ## Production setup instructions 
 
-**Use docker to setup Origami on production. **
+**Use docker to setup Origami on production**
 
 ### Running the server
 
