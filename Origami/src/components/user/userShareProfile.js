@@ -150,14 +150,6 @@ class ShareProfileComponent extends React.Component {
                 Public Profile
               </h1>
             </Col>
-            <Col span={11} offset={1}>
-              <Input.Search id="search" placeholder="Search for demos, users" />
-            </Col>
-            <Col span={6} offset={1}>
-              <Button style={{ marginLeft: 30, textAlign: "right" }}>
-                Search By <Icon type="down" />
-              </Button>
-            </Col>
           </Row>
         </Header>
         <Content style={styles.content}>
