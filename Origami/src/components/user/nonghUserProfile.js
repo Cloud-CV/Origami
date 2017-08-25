@@ -110,7 +110,12 @@ class NonGHUserProfileComponent extends React.Component {
       .then(() => {
         getDeployed(this.props.user.id)
           .then(alldeployedRepos => {
-            this.setState({ allDeployed: JSON.parse(alldeployedRepos) }, () => {
+            let tmp = JSON.parse(alldeployedRepos);
+            let allDeployed = [];
+            while (tmp.length) {
+              allDeployed.push(tmp.splice(0, 4));
+            }
+            this.setState({ allDeployed: allDeployed }, () => {
               deletePermalink({
                 user_id: this.props.user.id,
                 project_id
