@@ -7,10 +7,8 @@ The web app provides an interface to interact with demos created by using the li
 Configuration
 #############
 
-A root user is created for an installation of CVFY.
-CVFY requires some configuration before it can connect to Github.
-
-A video guide for this can be found here.
+A root user is created for an installation of Origami.
+Origami requires some configuration before it can connect to Github.
 
 * **Step 1: Create a Github developer application**
 
@@ -20,29 +18,28 @@ Go to Github Developer Applications page and "Register a new application" and en
 Choose a suitable name for your application.
 
 **Homepage URL**
-This is the base-URL of CVFY application. This is the URL where this webapp is running.
-For *local deployments* on default port, it is "http://0.0.0.0:5001/".
-For the current CVFY installation, it is "http://0.0.0.0:5001/".
+This is the base-URL of Origami application. This is the URL where this webapp is running.
+For *local deployments* on default port, it is "http://localhost:8000/".
+For the current Origami installation, it is "http://origami.cloudcv.org/".
 
 **Application description**
 Choose a suitable description for your application.
 
 **Authorization callback URL**
-This URL is Homepage URL + "/auth/github/callback".
-For *local deployments* on default port, it is "http://0.0.0.0:5001/auth/github/callback".
-For the current CVFY installation, it is "http://0.0.0.0:5001/auth/github/callback".
+This URL is Homepage URL + "/auth/github/login/callback".
+For *local deployments* on default port, it is "http://localhost:8000/auth/github/login/callback".
+For the current Origami installation, it is "http://origami.cloudcv.org/auth/github/login/callback".
 
 Now click on the "Register application" button to register this application.
 On the subsequent page, note down the Client ID and Client Secret.
 
 * **Step 2: Input details of Github application on initial setup page.**
 
-This page is visible when the owner of this CVFY installation runs this application for the first time
-and then tries to Login or clicks on "Create a Demo".
+This page is visible when the owner of this Origami installation runs this application for the first time.
 Following inputs are required:
 
 **Root user's Github username**
-This is the Github username of the person who is the owner of this CVFY installation.
+This is the Github username of the person who is the owner of this Origami installation.
 
 **Github Client ID**
 This is the "Client ID" noted down in Step 1.
@@ -51,8 +48,8 @@ This is the "Client ID" noted down in Step 1.
 This is the "Client Secret" noted down in Step 1.
 
 **Application IP address**
-This is the IP address (or domain name) where the CVFY webapp is running.
-It is pre-filled with the value for current installation ie "0.0.0.0".
+This is the IP address (or domain name) where the Origami webapp is running.
+It is pre-filled with "0.0.0.0".
 
 **Allow new users**
 A root user can forbid other users (those who want to make demos) of this application from using it.
@@ -60,7 +57,8 @@ In that case, only the root user can login and create demos.
 
 **Is this deployment by CloudCV**
 Check this option if the deployment is by CloudCV. This adds some customizations.
-CVFY requires a Dropbox App key if you intend to allow users to download/upload from Dropbox
+
+Origami requires a Dropbox App key if you intend to allow users to download/upload from Dropbox
 
 * **Step 3: Create a Dropbox developer application (optional)**
 
@@ -78,7 +76,7 @@ Once the app is created, Dropbox redirects you to its configuration page. Note d
 Also, find *Chooser/Saver domains* and add the domains
 0.0.0.0
 localhost
-cvfy.cloudcv.org
+origami.cloudcv.org
 
 Paste the App Key into *outCalls/config.js*.
 
@@ -101,26 +99,26 @@ Following inputs are required:
 This is the name of your application. This appears on the top of demo page.
 
 **IP of service**
-This is the IP address of the system that will be running your machine learning code using CVFY-lib.
+This is the IP address of the system that will be running your machine learning code using Origami-lib.
 For local deployments, it is 0.0.0.0.
 
 **Port for service**
 This is the preferred port for the service (machine learning code).
-This port must be free for CVFY-lib to work.
+This port must be free for Origami-lib to work.
 
 **Description (optional)**
 Description for your application. This will be displayed below the application name of demo page.
 
 **Show Terminal on demo page**
 This displays a Terminal style text box below the I/O components on the demo page.
-Additional data can be sent to this terminal using CVFY-lib.
+Additional data can be sent to this terminal using Origami-lib.
 
 If an *error box* says "This webapp cannot be reached on it's public IP",
 you need to check the "Webapp is running locally" checkbox.
 Checking this checkbox will make the webapp check local connectivity to itself.
 
 If you see a *green tick* symbol next to the token, your app is configured correctly.
-Copy this token for use in CVFY-lib and click on "Save" button.
+Copy this token for use in Origami-lib and click on "Save" button.
 
 If you see a *red hand* symbol next to the token, your app is configured incorrectly.
 You may not be able to connect to your app.
