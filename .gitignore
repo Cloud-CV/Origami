@@ -40,3 +40,4 @@ django_server/static/bundles/local/*.js
 
 # Python
 *.pyc
+venv/

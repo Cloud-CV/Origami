@@ -20,6 +20,7 @@ import SelectOutputComponentsNonGHPageComponent
   from "./components/deployment/UsePrebuiltProject/selectOutputComponentPage";
 import NGHDemoPageComponent
   from "./components/deployment/UsePrebuiltProject/nghDemoPage";
+import NGHDemoFrameComponent from "./components/deployment/UsePrebuiltProject/nghDemoFrame";
 
 export default (
   <Route path="/" component={App}>
@@ -42,6 +43,10 @@ export default (
     <Route
       path="ngh/user/:user_id/:repoName/:repoId/demo"
       component={NGHDemoPageComponent}
+    />
+    <Route
+      path="frame/ngh/user/:user_id/:repoName/:repoId/demo"
+      component={NGHDemoFrameComponent}
     />
 
     <Route path="initialsetup" component={InitialSetupComponent} />

@@ -29,13 +29,14 @@ class SampleImage extends React.Component {
           ? <img
               key={Math.random()}
               className="ui fluid medium bordered image"
-              style={{ border: "2px solid black" }}
+              style={{ border: "2px solid black", width: "100%"}}
               src={this.props.value}
               onClick={() => this.onSelect(this.props.value)}
             />
           : <img
               key={Math.random()}
               className="ui fluid medium bordered image"
+              style={{width: "100%"}}
               src={this.props.value}
               onClick={() => this.onSelect(this.props.value)}
             />}

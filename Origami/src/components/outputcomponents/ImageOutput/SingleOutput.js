@@ -24,7 +24,7 @@ class singleOutput extends React.Component {
   render() {
     return (
       <div
-        className="ui card centered"
+        className="ui card centered origami-demo-output-image-component"
         style={{ height: "100%", width: "75%" }}
         id={`output-text-${this.props.index}`}
       >
@@ -39,7 +39,7 @@ class singleOutput extends React.Component {
                   {this.props.data
                     ? <img
                         className="ui centered center aligned fluid large image"
-                        style={{ cursor: "pointer" }}
+                        style={{ cursor: "pointer", width: "100%" }}
                         src={this.props.data}
                         onClick={this.showImageFull}
                       />
@@ -60,6 +60,7 @@ class singleOutput extends React.Component {
             <img
               className="ui centered center aligned fluid large image"
               src={this.props.data}
+              style={{ width: "100%" }}
             />
           </div>
         </Dialog>

@@ -176,3 +176,5 @@ CHANNEL_LAYERS = {
 
 HOST_NAME = os.environ['HOST']
 PORT = os.environ['PORT']
+
+X_FRAME_OPTIONS = 'EXEMPT'

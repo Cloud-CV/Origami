@@ -3,6 +3,7 @@ import React, { PropTypes } from "react";
 const singleInput = props => {
   return (
     <input
+      className="origami-demo-input-text-component"
       placeholder={props.label}
       name={`input-text-${props.index}`}
       type="text"
