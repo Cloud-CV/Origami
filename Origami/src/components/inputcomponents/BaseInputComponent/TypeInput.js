@@ -19,7 +19,11 @@ class TypeInput extends React.Component {
     return false;
   }
 
-  inputSubmitted(data) {
+  inputSubmitted(formData) {
+    var data = {};
+    for(var pair of formData.entries()) {
+      data[pair[0]] = pair[1]; 
+    }
     let inputSubmitData = {
       action: "INPUT_SUBMITTED",
       payload: data
