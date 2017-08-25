@@ -7,7 +7,7 @@
 
 ## Setting the environment variables
 
-`origami.env` stores all the environment variables necessary to run Origami.
+* `origami.env` stores all the environment variables necessary to run Origami.
 
 1. `HOST` should be set to the hostname of the server
 2. `PORT` should be set to the port you want the server to listen on. (Generally 80)
@@ -17,6 +17,12 @@
 6. `DB_USER_EMAIL` stores the email for the admin
 7. `DB_HOST `should be set to postgres in production and localhost in development
 8. `REDIS_HOST` should be set to redis and localhost in development
+
+* `Origami/outCalls/config.js` stores config variables needed by the UI.
+
+1. `CLIENT_IP` should be set to the same value as `HOST` in `origami.env`
+2. `CLIENT_PORT` should be set to the same value as `PORT` in `origami.env`
+3. For `DROPBOX_API_KEY` , check step 3 of [configuring Origami](http://cloudcv-origami.readthedocs.io/en/latest/web-app.html#configuration) 
 
 ## Production setup instructions 
 
