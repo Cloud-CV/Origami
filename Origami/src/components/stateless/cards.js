@@ -1,4 +1,5 @@
-import React, { PropTypes } from "react";
+import React from "react";
+import { PropTypes } from "prop-types";
 import { grey700, cyan100 } from "material-ui/styles/colors";
 
 const CustomCard = (

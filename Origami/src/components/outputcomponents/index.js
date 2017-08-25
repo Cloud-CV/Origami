@@ -1,4 +1,5 @@
-import React, { PropTypes } from "react";
+import React from "react";
+import { PropTypes } from "prop-types";
 
 import TextOutput from "./TextOutput/TextOutput";
 import ImageOutput from "./ImageOutput/ImageOutput";
