@@ -18,6 +18,14 @@ body {
   
 }
 
+#logo{
+	margin-top: -10px;
+}
+
+#logo-login{
+	margin-top: 5px;
+}
+
 #search{
   width: 100%; 
 }
