@@ -26,14 +26,12 @@ class App extends React.Component {
       showTitle: true,
       isFrame: window.location.pathname.split("/")[1] == "frame"
     };
-    this.handleClick = this.handleClick.bind(this);
     this.handleClickAfterLogin = this.handleClickAfterLogin.bind(this);
     this.initiateLogin = this.initiateLogin.bind(this);
     this.logout = this.logout.bind(this);
     this.readSessionToken = this.readSessionToken.bind(this);
     this.clearSessionFlag = this.clearSessionFlag.bind(this);
     this.setSessionFlag = this.setSessionFlag.bind(this);
-    this.getDocs = this.getDocs.bind(this);
     let ws_scheme = "ws";
     this.socket = new WebSocket(
       ws_scheme + "://" + window.location.host + "/chat/"
@@ -134,14 +132,6 @@ class App extends React.Component {
     window.location = "http://cloudcv-origami.readthedocs.io/en/latest/index.html";
   }
 
-  handleClick(e) {
-    if (!this.state.login && e.key === "2") {
-      this.initiateLogin();
-    } else if (e.key == "3") {
-      this.getDocs();
-    }
-  }
-
   handleClickAfterLogin(e) {
     if (e.key === "1") {
       browserHistory.push(
@@ -229,45 +219,7 @@ class App extends React.Component {
     } else {
       return (
         <Layout id="layout">
-          <Header id="layout-header-no-login">
-            <Row>
-              <Col span={3} offset={1}>
-                <h2 id="logo">
-                  <img src="/static/img/origami.png" width="180" />
-                </h2>
-              </Col>
-              <Col span={10} offset={1}>
-                <Input.Search
-                  id="search"
-                  placeholder="Search for demos, users"
-                />
-              </Col>
-              <Col span={2} offset={0}>
-                <Button style={{ marginLeft: 30, textAlign: "right" }}>
-                  Search By <Icon type="down" />
-                </Button>
-              </Col>
-              <Col span={6} offset={1}>
-                <Menu
-                  mode="horizontal"
-                  defaultSelectedKeys={["1"]}
-                  style={{ lineHeight: "64px" }}
-                  onClick={this.handleClick}
-                >
-                  <Menu.Item key="1">Home</Menu.Item>
-                  <Menu.Item key="2">
-
-                    Login
-
-                  </Menu.Item>
-                  <Menu.Item key="3">Docs</Menu.Item>
-                </Menu>
-              </Col>
-            </Row>
-          </Header>
-          <div>
-            {this.props.children}
-          </div>
+          {this.props.children}
         </Layout>
       );
     }
