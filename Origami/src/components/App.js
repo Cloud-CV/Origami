@@ -187,16 +187,8 @@ class App extends React.Component {
             }}
             width="200"
           >
-            <div
-              className="logo"
-              style={{
-                height: "31px",
-                "border-radius": "6px",
-                margin: "16px",
-                color: "black"
-              }}
-            >
-              {" "}Origami logo{" "}
+            <div id="logo-login">
+              <img src="/static/img/origami.png" width="180" />
             </div>
             <Menu
               style={{ background: "#FEFEFE" }}
@@ -239,8 +231,8 @@ class App extends React.Component {
           <Header id="layout-header-no-login">
             <Row>
               <Col span={3} offset={1}>
-                <h2 id="logo-title">
-                  Origami
+                <h2 id="logo">
+                  <img src="/static/img/origami.png" width="180" />
                 </h2>
               </Col>
               <Col span={10} offset={1}>
