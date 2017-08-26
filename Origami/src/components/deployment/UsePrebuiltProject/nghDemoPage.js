@@ -284,6 +284,18 @@ class NGHDemoPage extends React.Component {
               className={mainClassName}
               style={{ visibility: this.state.showOutput }}
             >
+              {" "}{!this.props.login &&
+                <Header id="layout-header">
+                  <Row>
+                    <Col span={3} offset={1}>
+                      <h2 id="logo">
+                        <a href="/">
+                          <img src="/static/img/origami.png" width="180" />
+                        </a>
+                      </h2>
+                    </Col>
+                  </Row>
+                </Header>}
               <div
                 className="sixteen wide column stretched centered row"
                 id="output-outer"
@@ -297,12 +309,15 @@ class NGHDemoPage extends React.Component {
                 {!this.state.showTerminal &&
                   this.state.demoModel.terminal &&
                   <div className="row">
-                    <i
-                      className="large browser icon"
-                      style={{ cursor: "pointer", float: "right" }}
+                    <Button
+                      type="primary"
+                      shape="circle"
+                      icon="arrow-left"
+                      size="large"
+                      style={{ float: "right", marginRight: "15px" }}
+                      ghost
                       onClick={() => this.toggleShowTerminal()}
                     />
-                    1
                     <br />
                     <br />
                   </div>}
@@ -423,9 +438,12 @@ class NGHDemoPage extends React.Component {
                   </div>
                 </div>
                 <div className="ui four wide column">
-                  <i
-                    className="circular small remove icon"
-                    style={{ cursor: "pointer" }}
+                  <Button
+                    type="danger"
+                    shape="circle"
+                    icon="close"
+                    size="large"
+                    ghost
                     onClick={() => this.toggleShowTerminal()}
                   />
                 </div>
