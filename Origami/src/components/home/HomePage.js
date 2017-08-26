@@ -13,7 +13,6 @@ import HomePageDemoCard from "../stateless/homePageDemoCard";
 import { getAllPermalink } from "../../api/Nongh/permalink";
 import * as loginActions from "../../actions/loginActions";
 import { ShareButtons, ShareCounts, generateShareIcon } from "react-share";
-import Radium from "radium";
 import {
   Layout,
   Menu,
@@ -43,7 +42,7 @@ const TwitterIcon = generateShareIcon("twitter");
 const GooglePlusIcon = generateShareIcon("google");
 const LinkedinIcon = generateShareIcon("linkedin");
 
-class HomePageComponent extends React.Component {
+class HomePage extends React.Component {
   constructor(props, context) {
     super(props, context);
     // this.buildFromGithubLogin = this.buildFromGithubLogin.bind(this);
@@ -63,9 +62,11 @@ class HomePageComponent extends React.Component {
     };
 
     this.handleShareModal = this.handleShareModal.bind(this);
-    this.getStyles = this.getStyles.bind(this);
     this.goToDemoPage = this.goToDemoPage.bind(this);
     this.findDemo = this.findDemo.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.initiateLogin = this.initiateLogin.bind(this);
+    this.getDocs = this.getDocs.bind(this);
   }
 
   componentWillMount() {
@@ -150,62 +151,102 @@ class HomePageComponent extends React.Component {
       });
   }
 
-  getStyles() {
-    return {
-      layout: {
-        background: "#FEFEFE"
-      },
-      content: {
-        margin: "24px 16px 0",
-        overflow: "initial"
-      },
-      contentDiv: {
-        padding: 12,
-        background: "#FEFEFE",
-        textAlign: "center"
-      },
-      launchButton: {
-        "margin-bottom": "5%"
-      }
-    };
+  handleClick(e) {
+    if (!this.state.login && e.key === "2") {
+      this.initiateLogin();
+    } else if (e.key == "3") {
+      this.getDocs();
+    }
+  }
+
+  initiateLogin() {
+    window.location = "/auth/github/login/";
+  }
+
+  getDocs() {
+    window.location = "http://cloudcv-origami.readthedocs.io/en/latest/index.html";
   }
 
   render() {
-    const styles = this.getStyles();
-
     return (
-      <Layout style={styles.layout}>
-        {this.props.login &&
-          <Header id="layout-header">
-            <Row>
-              <Col span={3} offset={1}>
-                <h2 id="logo-title">
-                  Origami
-                </h2>
-              </Col>
-              <Col span={12} offset={3}>
-                <Input.Search
-                  id="search"
-                  placeholder="Search for demos, users"
-                  onSearch={value => this.findDemo(value)}
-                />
-              </Col>
-              <Col span={2} offset={0}>
-                <Col span={2} offset={0}>
-                  <Select
-                    defaultValue="demo"
-                    style={{ width: 70 }}
-                    onChange={value => this.setState({ searchBy: value })}
-                  >
-                    <Option value="demo">demo</Option>
-                    <Option value="user">user</Option>
-                  </Select>
+      <Layout style={{ background: "#FEFEFE" }}>
+        {this.props.login
+          ? <Header id="layout-header">
+              <Row>
+                <Col span={3} offset={1}>
+                  <h2 id="logo-title">
+                    Origami
+                  </h2>
                 </Col>
-              </Col>
-            </Row>
-          </Header>}
-        <Content style={styles.content}>
-          <div style={styles.contentDiv}>
+                <Col span={12} offset={3}>
+                  <Input.Search
+                    id="search"
+                    placeholder="Search for demos, users"
+                    onSearch={value => this.findDemo(value)}
+                  />
+                </Col>
+                <Col span={2} offset={0}>
+                  <Col span={2} offset={0}>
+                    <Select
+                      defaultValue="demo"
+                      style={{ width: 70 }}
+                      onChange={value => this.setState({ searchBy: value })}
+                    >
+                      <Option value="demo">demo</Option>
+                      <Option value="user">user</Option>
+                    </Select>
+                  </Col>
+                </Col>
+              </Row>
+            </Header>
+          : <Header id="layout-header-no-login">
+              <Row>
+                <Col span={3} offset={1}>
+                  <h2 id="logo">
+                    <img src="/static/img/origami.png" width="180" />
+                  </h2>
+                </Col>
+                <Col span={10} offset={1}>
+                  <Input.Search
+                    id="search"
+                    placeholder="Search for demos, users"
+                    onSearch={value => this.findDemo(value)}
+                  />
+                </Col>
+                <Col span={2} offset={0}>
+                  <Col span={2} offset={0}>
+                    <Select
+                      defaultValue="demo"
+                      style={{ width: 70 }}
+                      onChange={value => this.setState({ searchBy: value })}
+                    >
+                      <Option value="demo">demo</Option>
+                      <Option value="user">user</Option>
+                    </Select>
+                  </Col>
+                </Col>
+                <Col span={6} offset={1}>
+                  <Menu
+                    mode="horizontal"
+                    defaultSelectedKeys={["1"]}
+                    style={{ lineHeight: "64px" }}
+                    onClick={this.handleClick}
+                  >
+                    <Menu.Item key="1">Home</Menu.Item>
+                    <Menu.Item key="2">
+
+                      Login
+
+                    </Menu.Item>
+                    <Menu.Item key="3">Docs</Menu.Item>
+                  </Menu>
+                </Col>
+              </Row>
+            </Header>}
+        <Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
+          <div
+            style={{ padding: 12, background: "#FEFEFE", textAlign: "center" }}
+          >
             <Row>
               {Object.keys(this.state.allDeployed).length > 0
                 ? this.state.allDeployed.map(row => (
@@ -233,7 +274,7 @@ class HomePageComponent extends React.Component {
                                 <Button
                                   type="primary"
                                   id="launchButton"
-                                  style={styles.launchButton}
+                                  style={{ "margin-bottom": "5%" }}
                                   onClick={() => this.goToDemoPage(demo)}
                                 >
                                   Demo<Icon type="rocket" />
@@ -273,7 +314,7 @@ class HomePageComponent extends React.Component {
   }
 }
 
-HomePageComponent.propTypes = {
+HomePage.propTypes = {
   loginactions: PropTypes.object.isRequired,
   login: PropTypes.bool.isRequired
 };
@@ -289,7 +330,5 @@ function mapDispatchToProps(dispatch) {
     loginactions: bindActionCreators(loginActions, dispatch)
   };
 }
-
-const HomePage = Radium(HomePageComponent);
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
