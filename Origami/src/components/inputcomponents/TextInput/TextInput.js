@@ -1,4 +1,5 @@
-import React, { PropTypes } from "react";
+import React from "react";
+import { PropTypes } from "prop-types";
 import SingleInput from "./TextSingleInput";
 import RaisedButton from "material-ui/RaisedButton";
 import toastr from "toastr";

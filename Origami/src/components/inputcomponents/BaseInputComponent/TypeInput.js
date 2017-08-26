@@ -1,4 +1,5 @@
-import React, { PropTypes } from "react";
+import React from "react";
+import { PropTypes } from "prop-types";
 import TextSingleInput from "../TextInput/TextSingleInput";
 import ImageSingleInput from "../ImageInput/ImageSingleInput";
 import RaisedButton from "material-ui/RaisedButton";

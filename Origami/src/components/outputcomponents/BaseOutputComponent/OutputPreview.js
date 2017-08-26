@@ -1,4 +1,5 @@
-import React, { PropTypes } from "react";
+import React from "react";
+import { PropTypes } from "prop-types";
 
 class OutputPreview extends React.Component {
   constructor(props, context) {
