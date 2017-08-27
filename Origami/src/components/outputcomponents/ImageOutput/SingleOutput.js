@@ -39,8 +39,8 @@ class singleOutput extends React.Component {
                 <div className="center aligned summary">
                   {this.props.data
                     ? <img
-                        className="ui centered center aligned fluid large image"
-                        style={{ cursor: "pointer", width: "100%" }}
+                        className="ui centered center aligned fluid large image origami-demo-output-image"
+                        style={{ cursor: "pointer" }}
                         src={this.props.data}
                         onClick={this.showImageFull}
                       />
