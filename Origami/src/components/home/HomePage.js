@@ -24,6 +24,7 @@ import {
   Input,
   Select
 } from "antd";
+import { Modal } from "antd";
 const { Header, Content, Footer } = Layout;
 const Option = Select.Option;
 const {
@@ -67,6 +68,7 @@ class HomePage extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.initiateLogin = this.initiateLogin.bind(this);
     this.getDocs = this.getDocs.bind(this);
+    this.success = this.success.bind(this);
   }
 
   componentWillMount() {
@@ -102,6 +104,13 @@ class HomePage extends React.Component {
     this.setState({ demoBeingShown }, () => {
       this.setState({ shareModalOpen: !this.state.shareModalOpen });
     });
+  }
+
+  success() {
+    const modal = Modal.info({
+      title: "Logging you in"
+    });
+    setTimeout(() => modal.destroy(), 2000);
   }
 
   useLocalDeploymentLogin() {
@@ -160,6 +169,7 @@ class HomePage extends React.Component {
   }
 
   initiateLogin() {
+    this.success();
     window.location = "/auth/github/login/";
   }
 

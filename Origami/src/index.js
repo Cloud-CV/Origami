@@ -14,7 +14,8 @@ import getMuiTheme from "material-ui/styles/getMuiTheme";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import "../../node_modules/toastr/build/toastr.min.css";
 import "../../node_modules/antd/dist/antd.css";
-
+import { LocaleProvider } from "antd";
+import enUS from "antd/lib/locale-provider/en_US";
 const store = configureStore();
 injectTapEventPlugin();
 
@@ -25,10 +26,12 @@ const muiTheme = getMuiTheme({
 });
 
 render(
-  <Provider store={store}>
-    <MuiThemeProvider muiTheme={getMuiTheme(muiTheme)}>
-      <Router history={browserHistory} routes={routes} />
-    </MuiThemeProvider>
-  </Provider>,
+  <LocaleProvider locale={enUS}>
+    <Provider store={store}>
+      <MuiThemeProvider muiTheme={getMuiTheme(muiTheme)}>
+        <Router history={browserHistory} routes={routes} />
+      </MuiThemeProvider>
+    </Provider>
+  </LocaleProvider>,
   document.getElementById("root")
 );
