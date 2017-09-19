@@ -225,9 +225,9 @@ class NonGHUserProfileComponent extends React.Component {
       <Layout style={styles.layout}>
         <Header id="layout-header">
           <Row>
-            <Col span={3} offset={1}>
+            <Col span={18} offset={1}>
               <h1 id="logo-title">
-                My Demos
+                My Demos - {localStorage.getItem("username")}
               </h1>
             </Col>
           </Row>
@@ -333,17 +333,17 @@ class NonGHUserProfileComponent extends React.Component {
                         </Col>
                       ))}
                     </Row>
-                    <br />
                   </div>
                 ))}
               </Row>
-              <br />
-
-              <br /><br /><br />
             </div>}
         </Content>
         <Footer style={styles.footer}>
-          Origami - Created by Team CloudCV
+          <strong>Origami</strong>
+          {" "}
+          - Created by
+          {" "}
+          <a href="http://cloudcv.org/">Team CloudCV</a>
         </Footer>
 
         <Dialog

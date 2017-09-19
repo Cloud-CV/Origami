@@ -40,7 +40,7 @@ class singleOutput extends React.Component {
                   {this.props.data
                     ? <img
                         className="ui centered center aligned fluid large image"
-                        style={{ cursor: "pointer", width: "100%" }}
+                        style={{ cursor: "pointer" }}
                         src={this.props.data}
                         onClick={this.showImageFull}
                       />
