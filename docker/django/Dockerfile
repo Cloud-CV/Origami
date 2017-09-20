@@ -17,8 +17,6 @@ RUN pip install uwsgi channels
 RUN npm install -g n 
 RUN npm install -g npm@latest
 RUN n lts
-RUN npm install -g yarn
-RUN yarn
 
 RUN pip install -r requirements.txt
 

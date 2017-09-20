@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+npm install -g yarn
+yarn
 env NODE_ENV="production" node_modules/.bin/webpack --config /app/webpack.prod.config.js
 python manage.py makemigrations
 until python manage.py migrate --noinput 
