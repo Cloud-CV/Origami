@@ -451,8 +451,9 @@ class CustomRootSettingsControllerClass(TestCase):
             port=self.rootsettings["port"])
 
     def test_pass(self):
-        self.assertNotEqual(self.rootSettings, None)
+        self.assertIsNotNone(self.rootSettings)
 
     def test_is_cloudcv(self):
         response = self.client.get('api/is_cloudcv')
-        self.assertEqual(response.status, 200, str(response))
+        self.assertContains(response, None, None, status_code=200)
+        # self.assertEqual(response.status, 200, str(response))
