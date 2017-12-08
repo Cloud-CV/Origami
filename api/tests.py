@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
+from django.contrib.auth.models import User
 from django.test import TestCase, Client
 import datetime
 import json
@@ -17,7 +17,7 @@ class CustomDemoControllerViewTests(TestCase):
         self.demo = {
             "name": "test",
             "id": 99,
-            "user_id": 99,
+            "user_id": None,
             "address": "address",
             "description": "description",
             "footer_message": "footer_message",
@@ -25,8 +25,14 @@ class CustomDemoControllerViewTests(TestCase):
             "terminal": True,
             "timestamp": datetime.datetime.now().isoformat(),
             "token": "token",
-            "status": "input"
+            "status": "input", 
+            "username": "testname"
         }
+        self.test_user = User.objects.create_user(username=self.demo["username"], 
+                                 email="email@email.com",
+                                 password="password")
+        # use the id assigned to test_user
+        self.demo["user_id"] = self.test_user.id
         Demo.objects.create(name=self.demo["name"], id=self.demo["id"],
                             user_id=self.demo[
                                 "user_id"], address=self.demo["address"],
@@ -36,13 +42,34 @@ class CustomDemoControllerViewTests(TestCase):
                             terminal=self.demo[
                                 "terminal"], timestamp=self.demo["timestamp"],
                             token=self.demo["token"], status=self.demo["status"])
+        
 
-    def test_get_all_demos(self):
-        response = self.client.get('/api/demo/user/99')
+    def test_get_all_user_demos(self):
+        response = self.client.get('/api/demo/user/%d'%(self.demo["user_id"]))
         responses = json.loads(response.content.decode('utf-8'))
         response = responses[0]
         self.assertEqual(response["id"], self.demo["id"])
         self.assertEqual(response["user_id"], self.demo["user_id"])
+
+    def test_get_all_demos_by_name(self):
+        response = self.client.get('/api/demos/', {'search_by': 'demo', 'search_term': self.demo["name"]})
+        responses = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(len(responses), 1)
+        response = responses[0]
+        self.assertEqual(response["id"], self.demo["id"])
+        self.assertEqual(response["user_id"], self.demo["user_id"])
+
+    def test_get_all_demos_by_id(self):
+        response = self.client.get('/api/demos/', {'search_term': self.demo["username"]})
+        responses = json.loads(response.content.decode('utf-8'))
+        response = responses[0]
+        self.assertEqual(response["id"], self.demo["id"])
+        self.assertEqual(response["user_id"], self.demo["user_id"])
+
+    def test_get_all_demos_none(self):
+        response = self.client.get('/api/demos/', {'search_by': 'demo', 'search_term': 'not_exist'})
+        responses = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(len(responses), 0)
 
     def test_get_one_demo(self):
         payload = self.demo
@@ -62,7 +89,6 @@ class CustomDemoControllerViewTests(TestCase):
         self.assertEqual(response["status"], payload["status"])
 
     def test_create_demo(self):
-
         payload = {
             "name": "1",
             "id": 1,
@@ -422,3 +448,37 @@ class CustomPermalinkControllerTests(TestCase):
         response = self.client.delete(url)
         response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["removed"], True)
+
+
+class CustomRootSettingsControllerClass(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.rootsettings = {
+            "root_user_github_login_id": 101,
+            "root_user_github_login_name": "name",
+            "client_id": "clientID",
+            "client_secret": "randomstring_sdfdsfdsfdsf",
+            "is_cloudcv": True,
+            "allow_new_logins": True,
+            "app_ip": "0.0.0.0",
+            "port": "80"
+        }
+        RootSettings.objects.create(
+                root_user_github_login_id=self.rootsettings[
+                    "root_user_github_login_id"],
+                root_user_github_login_name=self.rootsettings[
+                    "root_user_github_login_name"],
+                client_id=self.rootsettings["client_id"],
+                client_secret=self.rootsettings["client_secret"],
+                is_cloudcv=self.rootsettings["is_cloudcv"],
+                allow_new_logins=self.rootsettings["allow_new_logins"],
+                app_ip=self.rootsettings["app_ip"],
+                port=self.rootsettings["port"])
+
+    def test_pass(self):
+        pass
+
+    def test_is_cloudcv(self):
+        response = self.client.get('api/is_cloudcv')
+        self.assertEqual(response.status, 200)
