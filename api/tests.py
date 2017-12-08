@@ -28,6 +28,10 @@ class CustomDemoControllerViewTests(TestCase):
             "status": "input", 
             "username": "testname"
         }
+        self.test_user = User.objects.create_user(username=self.demo["username"], 
+                                 email="email@email.com",
+                                 password="password")
+        self.demo["user_id"] = self.test_user.id
         Demo.objects.create(name=self.demo["name"], id=self.demo["id"],
                             user_id=self.demo[
                                 "user_id"], address=self.demo["address"],
@@ -37,9 +41,7 @@ class CustomDemoControllerViewTests(TestCase):
                             terminal=self.demo[
                                 "terminal"], timestamp=self.demo["timestamp"],
                             token=self.demo["token"], status=self.demo["status"])
-        User.objects.create_user(username=self.demo["user_id"], 
-                                 email="email@email.com",
-                                 password="password")
+        
 
     def test_get_all_user_demos(self):
         response = self.client.get('/api/demo/user/99')
