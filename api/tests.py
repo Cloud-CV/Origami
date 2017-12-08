@@ -453,7 +453,11 @@ class CustomRootSettingsControllerClass(TestCase):
     def test_pass(self):
         self.assertIsNotNone(self.rootSettings)
 
+    def test_create_rootsettings(self):
+        response = self.client.post('api/rootsettings', self.rootsettings)
+        assertContains(response, None, None, 200)
+
     def test_is_cloudcv(self):
-        response = self.client.get('api/is_cloudcv')
+        response = self.client.get('api/is_cloudcv/')
         self.assertContains(response, None, None, status_code=200)
         # self.assertEqual(response.status, 200, str(response))
