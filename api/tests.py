@@ -438,7 +438,7 @@ class CustomRootSettingsControllerClass(TestCase):
             "app_ip": "0.0.0.0",
             "port": "80"
         }
-        rootSettings = RootSettings.objects.create(
+        self.rootSettings = RootSettings.objects.create(
             root_user_github_login_id=self.rootsettings[
                 "root_user_github_login_id"],
             root_user_github_login_name=self.rootsettings[
@@ -451,8 +451,8 @@ class CustomRootSettingsControllerClass(TestCase):
             port=self.rootsettings["port"])
 
     def test_pass(self):
-        self.assertNotEqual(rootSettings, None)
+        self.assertNotEqual(self.rootSettings, None)
 
     def test_is_cloudcv(self):
         response = self.client.get('api/is_cloudcv')
-        self.assertEqual(response.status, 200)
+        self.assertEqual(response.status, 200, str(response))
