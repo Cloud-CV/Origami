@@ -481,5 +481,4 @@ class CustomRootSettingsControllerClass(TestCase):
 
     def test_is_cloudcv(self):
         response = self.client.get('api/is_cloudcv')
-        response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response.status, 200)
