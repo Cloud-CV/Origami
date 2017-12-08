@@ -240,16 +240,16 @@ class CustomComponentControllerTests(TestCase):
             "props": [{"id": "1", "label": "label"}],
             "user_id": 100,
         }
-        # demo = Demo.objects.create(name=self.demo["name"], id="500",
-        #                            user_id=self.demo["user_id"],
-        #                            address=self.demo["address"],
-        #                            description=self.demo["description"],
-        #                            footer_message=self.demo["footer_message"],
-        #                            cover_image=self.demo["cover_image"],
-        #                            terminal=self.demo["terminal"],
-        #                            timestamp=self.demo["timestamp"],
-        #                            token=self.demo["token"],
-        #                            status=self.demo["status"])
+        Demo.objects.create(name=self.demo["name"], id="500",
+                            user_id=self.demo["user_id"],
+                            address=self.demo["address"],
+                            description=self.demo["description"],
+                            footer_message=self.demo["footer_message"],
+                            cover_image=self.demo["cover_image"],
+                            terminal=self.demo["terminal"],
+                            timestamp=self.demo["timestamp"],
+                            token=self.demo["token"],
+                            status=self.demo["status"])
         url = '/api/inputcomponent/'
         response = self.client.post(url, json.dumps(payload),
                                     content_type="application/json")
@@ -316,16 +316,16 @@ class CustomComponentControllerTests(TestCase):
             "props": [{"id": "1", "label": "label"}],
             "user_id": 100,
         }
-        # demo = Demo.objects.create(name=self.demo["name"], id="500",
-        #                            user_id=self.demo["user_id"],
-        #                            address=self.demo["address"],
-        #                            description=self.demo["description"],
-        #                            footer_message=self.demo["footer_message"],
-        #                            cover_image=self.demo["cover_image"],
-        #                            terminal=self.demo["terminal"],
-        #                            timestamp=self.demo["timestamp"],
-        #                            token=self.demo["token"],
-        #                            status=self.demo["status"])
+        Demo.objects.create(name=self.demo["name"], id="500",
+                            user_id=self.demo["user_id"],
+                            address=self.demo["address"],
+                            description=self.demo["description"],
+                            footer_message=self.demo["footer_message"],
+                            cover_image=self.demo["cover_image"],
+                            terminal=self.demo["terminal"],
+                            timestamp=self.demo["timestamp"],
+                            token=self.demo["token"],
+                            status=self.demo["status"])
         url = '/api/outputcomponent/'
         response = self.client.post(url, json.dumps(payload),
                                     content_type="application/json")
