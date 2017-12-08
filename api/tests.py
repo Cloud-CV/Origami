@@ -44,8 +44,8 @@ class CustomDemoControllerViewTests(TestCase):
         self.assertEqual(response["id"], self.demo["id"])
         self.assertEqual(response["user_id"], self.demo["user_id"])
 
-    def test_get_all_demos(self):
-        response = self.client.get('/api/demos/')
+    def test_get_all_demos_by_name(self):
+        response = self.client.get('/api/demos/', {'search_by': 'demo', 'search_term': 'test'})
         responses = json.loads(response.content.decode('utf-8'))
         # assuming that Demo.objects.create is only called once above
         self.assertEqual(len(responses), 1)
@@ -53,10 +53,16 @@ class CustomDemoControllerViewTests(TestCase):
         self.assertEqual(response["id"], self.demo["id"])
         self.assertEqual(response["user_id"], self.demo["user_id"])
 
-    def test_get_all_demos_none(self):
-        response = self.client.get('/api/demos/', {'search_by': 'demo', 'search_term': '98'})
+    def test_get_all_demos_by_id(self):
+        response = self.client.get('/api/demos/', {'search_term': self.demo["id"]})
         responses = json.loads(response.content.decode('utf-8'))
-        # assuming that Demo.objects.create is only called once above
+        response = responses[0]
+        self.assertEqual(response["id"], self.demo["id"])
+        self.assertEqual(response["user_id"], self.demo["user_id"])
+
+    def test_get_all_demos_none(self):
+        response = self.client.get('/api/demos/', {'search_by': 'demo', 'search_term': 'not_exist'})
+        responses = json.loads(response.content.decode('utf-8'))
         self.assertEqual(len(responses), 0)
 
     def test_get_one_demo(self):
