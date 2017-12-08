@@ -37,12 +37,27 @@ class CustomDemoControllerViewTests(TestCase):
                                 "terminal"], timestamp=self.demo["timestamp"],
                             token=self.demo["token"], status=self.demo["status"])
 
-    def test_get_all_demos(self):
+    def test_get_all_user_demos(self):
         response = self.client.get('/api/demo/user/99')
         responses = json.loads(response.content.decode('utf-8'))
         response = responses[0]
         self.assertEqual(response["id"], self.demo["id"])
         self.assertEqual(response["user_id"], self.demo["user_id"])
+
+    def test_get_all_demos(self):
+        response = self.client.get('/api/demos/')
+        responses = json.loads(response.content.decode('utf-8'))
+        # assuming that Demo.objects.create is only called once above
+        self.assertEqual(len(responses), 1)
+        response = responses[0]
+        self.assertEqual(response["id"], self.demo["id"])
+        self.assertEqual(response["user_id"], self.demo["user_id"])
+
+    def test_get_all_demos_none(self):
+        response = self.client.get('/api/demos/', {'search_by': 'demo', 'search_term': '98'})
+        responses = json.loads(response.content.decode('utf-8'))
+        # assuming that Demo.objects.create is only called once above
+        self.assertEqual(len(responses), 0)
 
     def test_get_one_demo(self):
         payload = self.demo
@@ -62,7 +77,6 @@ class CustomDemoControllerViewTests(TestCase):
         self.assertEqual(response["status"], payload["status"])
 
     def test_create_demo(self):
-
         payload = {
             "name": "1",
             "id": 1,
