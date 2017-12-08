@@ -25,7 +25,8 @@ class CustomDemoControllerViewTests(TestCase):
             "terminal": True,
             "timestamp": datetime.datetime.now().isoformat(),
             "token": "token",
-            "status": "input"
+            "status": "input", 
+            "username": "testname"
         }
         Demo.objects.create(name=self.demo["name"], id=self.demo["id"],
                             user_id=self.demo[
@@ -36,6 +37,8 @@ class CustomDemoControllerViewTests(TestCase):
                             terminal=self.demo[
                                 "terminal"], timestamp=self.demo["timestamp"],
                             token=self.demo["token"], status=self.demo["status"])
+        User.objects.create_user(username=self.demo["username"], 
+                                 user_id=self.demo["user_id"])
 
     def test_get_all_user_demos(self):
         response = self.client.get('/api/demo/user/99')
@@ -54,7 +57,7 @@ class CustomDemoControllerViewTests(TestCase):
         self.assertEqual(response["user_id"], self.demo["user_id"])
 
     def test_get_all_demos_by_id(self):
-        response = self.client.get('/api/demos/', {'search_term': self.demo["id"]})
+        response = self.client.get('/api/demos/', {'search_term': self.demo["username"]})
         responses = json.loads(response.content.decode('utf-8'))
         response = responses[0]
         self.assertEqual(response["id"], self.demo["id"])
