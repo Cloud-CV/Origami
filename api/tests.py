@@ -448,3 +448,38 @@ class CustomPermalinkControllerTests(TestCase):
         response = self.client.delete(url)
         response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["removed"], True)
+
+
+class CustomRootSettingsControllerClass(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.rootsettings = {
+            "root_user_github_login_id": 101,
+            "root_user_github_login_name": "name",
+            "client_id": "clientID",
+            "client_secret": "randomstring_sdfdsfdsfdsf",
+            "is_cloudcv": True,
+            "allow_new_logins": True,
+            "app_ip": "0.0.0.0",
+            "port": "80"
+        }
+        RootSettings.objects.create(
+                root_user_github_login_id=self.rootsettings[
+                    "root_user_github_login_id"],
+                root_user_github_login_name=self.rootsettings[
+                    "root_user_github_login_name"],
+                client_id=self.rootsettings["client_id"],
+                client_secret=self.rootsettings["client_secret"],
+                is_cloudcv=self.rootsettings["is_cloudcv"],
+                allow_new_logins=self.rootsettings["allow_new_logins"],
+                app_ip=self.rootsettings["app_ip"],
+                port=self.rootsettings["port"])
+
+    def test_pass(self):
+        pass
+
+    def test_is_cloudcv(self):
+        response = self.client.get('api/is_cloudcv')
+        response = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(response.status, 200)
