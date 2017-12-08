@@ -453,6 +453,12 @@ class CustomRootSettingsControllerClass(TestCase):
     def test_pass(self):
         self.assertIsNotNone(self.rootSettings)
 
+    def test_get_root_settings(self):
+        response = self.client.get('api/rootsettings')
+        self.assertContains(response, None, None, 200)
+        response = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(response["client_id"], self.rootsettings["client_id"])
+
     def test_create_rootsettings(self):
         response = self.client.post('api/rootsettings', self.rootsettings)
         self.assertContains(response, None, None, 200)
