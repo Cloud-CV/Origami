@@ -17,7 +17,7 @@ class CustomDemoControllerViewTests(TestCase):
         self.demo = {
             "name": "test",
             "id": 99,
-            "user_id": 99,
+            #"user_id": 99,
             "address": "address",
             "description": "description",
             "footer_message": "footer_message",
@@ -44,7 +44,7 @@ class CustomDemoControllerViewTests(TestCase):
         
 
     def test_get_all_user_demos(self):
-        response = self.client.get('/api/demo/user/99')
+        response = self.client.get('/api/demo/user/%d'%(self.demo["user_id"]))
         responses = json.loads(response.content.decode('utf-8'))
         response = responses[0]
         self.assertEqual(response["id"], self.demo["id"])
