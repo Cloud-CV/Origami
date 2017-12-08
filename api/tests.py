@@ -463,7 +463,52 @@ class CustomRootSettingsControllerClass(TestCase):
         response = self.client.post('api/rootsettings', self.rootsettings)
         self.assertContains(response, None, None, 200)
 
-    # def test_is_cloudcv(self):
-    #     response = self.client.get('api/is_cloudcv/')
-    #     self.assertContains(response, None, None, status_code=200)
-    #     self.assertEqual(response.status, 200, str(response))
+    def test_is_cloudcv(self):
+        response = self.client.get('api/is_cloudcv/')
+        self.assertContains(response, None, None, status_code=200)
+        self.assertEqual(response.status, 200, str(response))
+
+
+class CustomSampleInputControllerTests(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.demo = {
+            "name": "test",
+            "id": 99,
+            "user_id": 99,
+            "address": "address",
+            "description": "description",
+            "footer_message": "footer_message",
+            "cover_image": "cover_image",
+            "terminal": True,
+            "timestamp": datetime.datetime.now().isoformat(),
+            "token": "token",
+            "status": "input"
+        }
+        demo = Demo.objects.create(name=self.demo["name"], id=self.demo["id"],
+                            user_id=self.demo[
+                                "user_id"], address=self.demo["address"],
+                            description=self.demo["description"],
+                            footer_message=self.demo["footer_message"],
+                            cover_image=self.demo["cover_image"],
+                            terminal=self.demo[
+                                "terminal"], timestamp=self.demo["timestamp"],
+                            token=self.demo["token"], status=self.demo["status"])
+        # self.sampleinput = {
+        #     "demo": demo,
+        #     "type_of_input": 3,
+        #     "value": "hello"
+        # }
+        # SampleInput.objects.create(demo=self.sampleinput["demo"], 
+        #                            type_of_input=self.sampleinput["type_of_input"],
+        #                            value=self.sampleinput["value"])
+
+    def test_sample_input(self):
+        response = self.client.post("upload_sample_input", 
+                                    {"demo_id": self.demo["id"], 
+                                     "sample_image": DEFAULT_IMAGE})
+        response = json.loads(response.content.decode('utf-8'))
+        assertEqual(response["demo"]["id"], self.demo["id"])
+        assertEqual(response["type_of_input"], 3)
+
