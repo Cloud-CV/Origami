@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
+from django.contrib.auth.models import User
 from django.test import TestCase, Client
 import datetime
 import json
@@ -17,7 +17,7 @@ class CustomDemoControllerViewTests(TestCase):
         self.demo = {
             "name": "test",
             "id": 99,
-            "user_id": 99,
+            "user_id": None,
             "address": "address",
             "description": "description",
             "footer_message": "footer_message",
@@ -25,8 +25,15 @@ class CustomDemoControllerViewTests(TestCase):
             "terminal": True,
             "timestamp": datetime.datetime.now().isoformat(),
             "token": "token",
-            "status": "input"
+            "status": "input",
+            "username": "testname"
         }
+        self.test_user = User.objects.create_user(
+            username=self.demo["username"],
+            email="email@email.com",
+            password="password")
+        # use the id assigned to test_user
+        self.demo["user_id"] = self.test_user.id
         Demo.objects.create(name=self.demo["name"], id=self.demo["id"],
                             user_id=self.demo[
                                 "user_id"], address=self.demo["address"],
@@ -35,14 +42,40 @@ class CustomDemoControllerViewTests(TestCase):
                             cover_image=self.demo["cover_image"],
                             terminal=self.demo[
                                 "terminal"], timestamp=self.demo["timestamp"],
-                            token=self.demo["token"], status=self.demo["status"])
+                            token=self.demo["token"],
+                            status=self.demo["status"])
 
-    def test_get_all_demos(self):
-        response = self.client.get('/api/demo/user/99')
+    def test_get_all_user_demos(self):
+        response = self.client.get('/api/demo/user/%d' %
+                                   (self.demo["user_id"]))
         responses = json.loads(response.content.decode('utf-8'))
         response = responses[0]
         self.assertEqual(response["id"], self.demo["id"])
         self.assertEqual(response["user_id"], self.demo["user_id"])
+
+    def test_get_all_demos_by_name(self):
+        response = self.client.get('/api/demos/',
+                                   {'search_by': 'demo',
+                                    'search_term': self.demo["name"]})
+        responses = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(len(responses), 1)
+        response = responses[0]
+        self.assertEqual(response["id"], self.demo["id"])
+        self.assertEqual(response["user_id"], self.demo["user_id"])
+
+    def test_get_all_demos_by_id(self):
+        response = self.client.get('/api/demos/',
+                                   {'search_term': self.demo["username"]})
+        responses = json.loads(response.content.decode('utf-8'))
+        response = responses[0]
+        self.assertEqual(response["id"], self.demo["id"])
+        self.assertEqual(response["user_id"], self.demo["user_id"])
+
+    def test_get_all_demos_none(self):
+        response = self.client.get('/api/demos/', {'search_by': 'demo',
+                                                   'search_term': 'not_exist'})
+        responses = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(len(responses), 0)
 
     def test_get_one_demo(self):
         payload = self.demo
@@ -62,7 +95,6 @@ class CustomDemoControllerViewTests(TestCase):
         self.assertEqual(response["status"], payload["status"])
 
     def test_create_demo(self):
-
         payload = {
             "name": "1",
             "id": 1,
@@ -133,18 +165,18 @@ class CustomComponentControllerTests(TestCase):
             "token": "token",
             "status": "input"
         }
-        self.demo_object = Demo.objects.create(name=self.demo["name"], id=self.demo["id"],
-                                               user_id=self.demo[
-                                                   "user_id"], address=self.demo["address"],
-                                               description=self.demo[
-                                                   "description"],
-                                               footer_message=self.demo[
-                                                   "footer_message"],
-                                               cover_image=self.demo[
-                                                   "cover_image"],
-                                               terminal=self.demo[
-                                                   "terminal"], timestamp=self.demo["timestamp"],
-                                               token=self.demo["token"], status=self.demo["status"])
+        self.demo_object = Demo.objects.create(
+            name=self.demo["name"],
+            id=self.demo["id"],
+            user_id=self.demo["user_id"],
+            address=self.demo["address"],
+            description=self.demo["description"],
+            footer_message=self.demo["footer_message"],
+            cover_image=self.demo["cover_image"],
+            terminal=self.demo["terminal"],
+            timestamp=self.demo["timestamp"],
+            token=self.demo["token"],
+            status=self.demo["status"])
 
         self.input_component = {
             "id": self.demo_object.id,
@@ -154,12 +186,12 @@ class CustomComponentControllerTests(TestCase):
             "demo": self.demo_object
         }
 
-        self.input_component_object = InputComponent.objects.create(id=self.input_component["id"],
-                                                                    base_component_id=self.input_component[
-                                                                        "base_component_id"],
-                                                                    props=self.input_component[
-                                                                        "props"], user_id=self.input_component["user_id"],
-                                                                    demo=self.input_component["demo"])
+        self.input_component_object = InputComponent.objects.create(
+            id=self.input_component["id"],
+            base_component_id=self.input_component["base_component_id"],
+            props=self.input_component["props"],
+            user_id=self.input_component["user_id"],
+            demo=self.input_component["demo"])
 
         self.output_component = {
             "id": self.demo_object.id,
@@ -169,12 +201,12 @@ class CustomComponentControllerTests(TestCase):
             "demo": self.demo_object
         }
 
-        self.output_component_object = OutputComponent.objects.create(id=self.input_component["id"],
-                                                                      base_component_id=self.input_component[
-                                                                          "base_component_id"],
-                                                                      props=self.input_component[
-                                                                          "props"], user_id=self.input_component["user_id"],
-                                                                      demo=self.input_component["demo"])
+        self.output_component_object = OutputComponent.objects.create(
+            id=self.input_component["id"],
+            base_component_id=self.input_component["base_component_id"],
+            props=self.input_component["props"],
+            user_id=self.input_component["user_id"],
+            demo=self.input_component["demo"])
 
     def test_get_one_input_component(self):
         payload = self.input_component
@@ -205,18 +237,19 @@ class CustomComponentControllerTests(TestCase):
         payload = {
             "id": 500,
             "base_component_id": 2,
-            "props": [{ "id": "1", "label": "label" }],
+            "props": [{"id": "1", "label": "label"}],
             "user_id": 100,
         }
-        demo = Demo.objects.create(name=self.demo["name"], id="500",
-                                   user_id=self.demo[
-                                       "user_id"], address=self.demo["address"],
-                                   description=self.demo["description"],
-                                   footer_message=self.demo["footer_message"],
-                                   cover_image=self.demo["cover_image"],
-                                   terminal=self.demo[
-                                       "terminal"], timestamp=self.demo["timestamp"],
-                                   token=self.demo["token"], status=self.demo["status"])
+        Demo.objects.create(name=self.demo["name"], id="500",
+                            user_id=self.demo["user_id"],
+                            address=self.demo["address"],
+                            description=self.demo["description"],
+                            footer_message=self.demo["footer_message"],
+                            cover_image=self.demo["cover_image"],
+                            terminal=self.demo["terminal"],
+                            timestamp=self.demo["timestamp"],
+                            token=self.demo["token"],
+                            status=self.demo["status"])
         url = '/api/inputcomponent/'
         response = self.client.post(url, json.dumps(payload),
                                     content_type="application/json")
@@ -230,7 +263,7 @@ class CustomComponentControllerTests(TestCase):
     def test_modify_input_component(self):
         payload = self.input_component
         payload["base_component_id"] = 3
-        payload["props"] = [{ "id": "1", "label": "" }]
+        payload["props"] = [{"id": "1", "label": ""}]
         payload.pop("demo", None)
         url = '/api/inputcomponent/' + \
             str(payload["user_id"]) + '/' + str(payload["id"])
@@ -283,15 +316,16 @@ class CustomComponentControllerTests(TestCase):
             "props": [{"id": "1", "label": "label"}],
             "user_id": 100,
         }
-        demo = Demo.objects.create(name=self.demo["name"], id="500",
-                                   user_id=self.demo[
-                                       "user_id"], address=self.demo["address"],
-                                   description=self.demo["description"],
-                                   footer_message=self.demo["footer_message"],
-                                   cover_image=self.demo["cover_image"],
-                                   terminal=self.demo[
-                                       "terminal"], timestamp=self.demo["timestamp"],
-                                   token=self.demo["token"], status=self.demo["status"])
+        Demo.objects.create(name=self.demo["name"], id="500",
+                            user_id=self.demo["user_id"],
+                            address=self.demo["address"],
+                            description=self.demo["description"],
+                            footer_message=self.demo["footer_message"],
+                            cover_image=self.demo["cover_image"],
+                            terminal=self.demo["terminal"],
+                            timestamp=self.demo["timestamp"],
+                            token=self.demo["token"],
+                            status=self.demo["status"])
         url = '/api/outputcomponent/'
         response = self.client.post(url, json.dumps(payload),
                                     content_type="application/json")
@@ -336,11 +370,11 @@ class CustomPermalinkControllerTests(TestCase):
             "project_id": 20,
             "user_id": 20
         }
-        Permalink.objects.create(short_relative_url=self.permalink["short_relative_url"],
-                                 full_relative_url=self.permalink[
-                                     "full_relative_url"],
-                                 project_id=self.permalink["project_id"],
-                                 user_id=self.permalink["user_id"])
+        Permalink.objects.create(
+            short_relative_url=self.permalink["short_relative_url"],
+            full_relative_url=self.permalink["full_relative_url"],
+            project_id=self.permalink["project_id"],
+            user_id=self.permalink["user_id"])
 
     def test_getpermalink_fn(self):
         payload = self.permalink
