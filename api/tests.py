@@ -37,8 +37,9 @@ class CustomDemoControllerViewTests(TestCase):
                             terminal=self.demo[
                                 "terminal"], timestamp=self.demo["timestamp"],
                             token=self.demo["token"], status=self.demo["status"])
-        User.objects.create_user(username=self.demo["username"], 
-                                 user_id=self.demo["user_id"])
+        User.objects.create_user(username=self.demo["user_id"], 
+                                 email="email@email.com",
+                                 password="password")
 
     def test_get_all_user_demos(self):
         response = self.client.get('/api/demo/user/99')
