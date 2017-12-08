@@ -17,7 +17,7 @@ class CustomDemoControllerViewTests(TestCase):
         self.demo = {
             "name": "test",
             "id": 99,
-            #"user_id": 99,
+            "user_id": None,
             "address": "address",
             "description": "description",
             "footer_message": "footer_message",
@@ -31,6 +31,7 @@ class CustomDemoControllerViewTests(TestCase):
         self.test_user = User.objects.create_user(username=self.demo["username"], 
                                  email="email@email.com",
                                  password="password")
+        # use the id assigned to test_user
         self.demo["user_id"] = self.test_user.id
         Demo.objects.create(name=self.demo["name"], id=self.demo["id"],
                             user_id=self.demo[
@@ -51,9 +52,8 @@ class CustomDemoControllerViewTests(TestCase):
         self.assertEqual(response["user_id"], self.demo["user_id"])
 
     def test_get_all_demos_by_name(self):
-        response = self.client.get('/api/demos/', {'search_by': 'demo', 'search_term': 'test'})
+        response = self.client.get('/api/demos/', {'search_by': 'demo', 'search_term': self.demo["name"]})
         responses = json.loads(response.content.decode('utf-8'))
-        # assuming that Demo.objects.create is only called once above
         self.assertEqual(len(responses), 1)
         response = responses[0]
         self.assertEqual(response["id"], self.demo["id"])
