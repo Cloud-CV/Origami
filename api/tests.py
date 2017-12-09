@@ -455,8 +455,8 @@ class CustomRootSettingsControllerClass(TestCase):
         self.assertIsNotNone(RootSettings.objects.all().first())
 
     def test_get_root_settings(self):
-        response = self.client.get('api/rootsettings/')
-        self.assertContains(response, None, None, 200)
+        response = self.client.get('api/rootsettings')
+        self.assertContains(response, '', None, 200)
         response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["client_id"], self.rootsettings["client_id"])
 
@@ -509,10 +509,9 @@ class CustomSampleInputControllerTests(TestCase):
 
     def test_sample_input(self):
         with open('api/sampleimg.png', 'rb') as f:
-            response = self.client.post("upload_sample_input/", 
+            response = self.client.post("upload_sample_input", 
                                     {"demo_id": self.demo["id"], 
                                      "sample_image": f})
         self.assertContains(response, None, None, 200)
-        # response = json.loads(response.content.decode('utf-8'))
-        # self.assertEqual(response["demo"]["id"], self.demo["id"])
+        response = json.loads(response.content.decode('utf-8'))[0]
         self.assertEqual(response["type_of_input"], 3, str(dir(response)))
