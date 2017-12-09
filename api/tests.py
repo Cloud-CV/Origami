@@ -497,32 +497,15 @@ class CustomSampleInputControllerTests(TestCase):
                             terminal=self.demo[
                                 "terminal"], timestamp=self.demo["timestamp"],
                             token=self.demo["token"], status=self.demo["status"])
-        # self.sampleinput = {
-        #     "demo": demo,
-        #     "type_of_input": 3,
-        #     "value": "hello"
-        # }
-        # SampleInput.objects.create(demo=self.sampleinput["demo"], 
-        #                            type_of_input=self.sampleinput["type_of_input"],
-        #                            value=self.sampleinput["value"])
 
     def test_sample_input_nofile(self):
         response = self.client.post("/upload_sample_input",
                                     {"demo_id": self.demo["id"]})
-        self.assertContains(response, None, None, 200)
-        response = json.loads(response.content.decode('utf-8'))[0]
-        # self.assertEqual(response["type_of_input"], 3, str(dir(response)))
-
-    def test_sample_input_nofile2(self):
-        response = self.client.post("upload_sample_input",
-                                    {"demo_id": self.demo["id"]})
-        self.assertContains(response, None, None, 200)
-        response = json.loads(response.content.decode('utf-8'))[0]
-        # self.assertEqual(response["type_of_input"], 3, str(dir(response)))
+        self.assertContains(response, '', None, 200)
 
     def test_sample_input(self):
         with open('api/sampleimg.png', 'rb') as f:
-            response = self.client.post("upload_sample_input", 
+            response = self.client.post("/upload_sample_input", 
                                     {"demo_id": self.demo["id"], 
                                      "sample_image": f})
             self.assertContains(response, None, None, 200)
