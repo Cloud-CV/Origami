@@ -473,16 +473,16 @@ class CustomRootSettingsControllerClass(TestCase):
             "port": "80"
         }
         RootSettings.objects.create(
-            root_user_github_login_id=self.rootsettings[
+            root_user_github_login_id=self.root_settings[
                 "root_user_github_login_id"],
-            root_user_github_login_name=self.rootsettings[
+            root_user_github_login_name=self.root_settings[
                 "root_user_github_login_name"],
-            client_id=self.rootsettings["client_id"],
-            client_secret=self.rootsettings["client_secret"],
-            is_cloudcv=self.rootsettings["is_cloudcv"],
-            allow_new_logins=self.rootsettings["allow_new_logins"],
-            app_ip=self.rootsettings["app_ip"],
-            port=self.rootsettings["port"])
+            client_id=self.root_settings["client_id"],
+            client_secret=self.root_settings["client_secret"],
+            is_cloudcv=self.root_settings["is_cloudcv"],
+            allow_new_logins=self.root_settings["allow_new_logins"],
+            app_ip=self.root_settings["app_ip"],
+            port=self.root_settings["port"])
 
     def test_get_root_settings(self):
         response = self.client.get('/api/rootsettings')
