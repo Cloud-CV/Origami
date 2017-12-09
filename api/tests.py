@@ -450,10 +450,6 @@ class CustomRootSettingsControllerClass(TestCase):
             app_ip=self.rootsettings["app_ip"],
             port=self.rootsettings["port"])
 
-    def test_pass(self):
-        self.assertIsNotNone(self.rootSettings)
-        self.assertIsNotNone(RootSettings.objects.all().first())
-
     def test_get_root_settings(self):
         response = self.client.get('/api/rootsettings')
         self.assertContains(response, '', None, 200)
@@ -468,7 +464,6 @@ class CustomRootSettingsControllerClass(TestCase):
     def test_is_cloudcv(self):
         response = self.client.get('/api/is_cloudcv/')
         self.assertContains(response, '', None, status_code=200)
-        self.assertEqual(response.status, 200, str(response))
 
 
 class CustomSampleInputControllerTests(TestCase):
@@ -509,5 +504,5 @@ class CustomSampleInputControllerTests(TestCase):
                                     {"demo_id": self.demo["id"], 
                                      "sample_image": f})
             self.assertContains(response, '', None, 200)
-            response = json.loads(response.content.decode('utf-8'))[0]
+            response = json.loads(response.content.decode('utf-8'))
             self.assertEqual(response["type_of_input"], 3, str(dir(response)))
