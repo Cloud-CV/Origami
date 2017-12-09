@@ -36,7 +36,7 @@ urlpatterns = [
     url(r'alive', alive),
     url(r'^accounts/profile', redirect_login),
     url(r'^auth/', include('allauth.urls')),
-    url(r'^upload_sample_input$', upload_sample_input),
+    url(r'^upload_sample_input', upload_sample_input),
     url(r'api/is_cloudcv', is_cloudcv),
     url(r'api/rootsettings', root_settings),
     url(r'api/getpermalink/([A-Za-z0-9]+)/?$', get_permalink),

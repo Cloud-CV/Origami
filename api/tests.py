@@ -456,3 +456,88 @@ class CustomPermalinkControllerTests(TestCase):
         response = self.client.delete(url)
         response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["removed"], True)
+
+
+class CustomRootSettingsControllerClass(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.rootsettings = {
+            "root_user_github_login_id": 101,
+            "root_user_github_login_name": "name",
+            "client_id": "clientID",
+            "client_secret": "randomstring_sdfdsfdsfdsf",
+            "is_cloudcv": True,
+            "allow_new_logins": True,
+            "app_ip": "0.0.0.0",
+            "port": "80"
+        }
+        self.rootSettings = RootSettings.objects.create(
+            root_user_github_login_id=self.rootsettings[
+                "root_user_github_login_id"],
+            root_user_github_login_name=self.rootsettings[
+                "root_user_github_login_name"],
+            client_id=self.rootsettings["client_id"],
+            client_secret=self.rootsettings["client_secret"],
+            is_cloudcv=self.rootsettings["is_cloudcv"],
+            allow_new_logins=self.rootsettings["allow_new_logins"],
+            app_ip=self.rootsettings["app_ip"],
+            port=self.rootsettings["port"])
+
+    def test_get_root_settings(self):
+        response = self.client.get('/api/rootsettings')
+        self.assertContains(response, '', None, 200)
+        response = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(response["client_id"], self.rootsettings["client_id"])
+
+    def test_create_root_settings(self):
+        response = self.client.post('/api/rootsettings', 
+                                     self.rootsettings)
+        self.assertContains(response, '', None, 200)
+
+    def test_is_cloudcv(self):
+        response = self.client.get('/api/is_cloudcv/')
+        self.assertContains(response, '', None, status_code=200)
+
+
+class CustomSampleInputControllerTests(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.demo = {
+            "name": "test",
+            "id": 99,
+            "user_id": 99,
+            "address": "address",
+            "description": "description",
+            "footer_message": "footer_message",
+            "cover_image": "cover_image",
+            "terminal": True,
+            "timestamp": datetime.datetime.now().isoformat(),
+            "token": "token",
+            "status": "input"
+        }
+        demo = Demo.objects.create(name=self.demo["name"], id=self.demo["id"],
+                            user_id=self.demo[
+                                "user_id"], address=self.demo["address"],
+                            description=self.demo["description"],
+                            footer_message=self.demo["footer_message"],
+                            cover_image=self.demo["cover_image"],
+                            terminal=self.demo[
+                                "terminal"], timestamp=self.demo["timestamp"],
+                            token=self.demo["token"], status=self.demo["status"])
+
+    def test_sample_input_nofile(self):
+        response = self.client.post("/upload_sample_input",
+                                    {"demo_id": self.demo["id"]})
+        self.assertContains(response, '', None, 200)
+
+    def test_sample_input(self):
+        with open('api/sampleimg.png', 'rb') as f:
+            response = self.client.post("/upload_sample_input", 
+                                    {"demo_id": self.demo["id"], 
+                                     "sample_image": f})
+            self.assertContains(response, '', None, 200)
+            response = json.loads(response.content.decode('utf-8'))
+            response = response[0]
+            self.assertEqual(int(response["type_of_input"]), 3, str(dir(response)))
