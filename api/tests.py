@@ -456,3 +456,49 @@ class CustomPermalinkControllerTests(TestCase):
         response = self.client.delete(url)
         response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["removed"], True)
+
+
+class CustomRootSettingsControllerClass(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.root_settings = {
+            "root_user_github_login_id": 101,
+            "root_user_github_login_name": "name",
+            "client_id": "clientID",
+            "client_secret": "randomstring_sdfdsfdsfdsf",
+            "is_cloudcv": True,
+            "allow_new_logins": True,
+            "app_ip": "0.0.0.0",
+            "port": "80"
+        }
+        RootSettings.objects.create(
+            root_user_github_login_id=self.root_settings[
+                "root_user_github_login_id"],
+            root_user_github_login_name=self.root_settings[
+                "root_user_github_login_name"],
+            client_id=self.root_settings["client_id"],
+            client_secret=self.root_settings["client_secret"],
+            is_cloudcv=self.root_settings["is_cloudcv"],
+            allow_new_logins=self.root_settings["allow_new_logins"],
+            app_ip=self.root_settings["app_ip"],
+            port=self.root_settings["port"])
+
+    def test_get_root_settings(self):
+        response = self.client.get('/api/rootsettings')
+        response = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(response["client_id"],
+                         self.root_settings["client_id"])
+        self.assertEqual(
+            response["root_user_github_login_id"],
+            self.root_settings["root_user_github_login_id"])
+
+    def test_create_root_settings(self):
+        response = self.client.post('/api/rootsettings', self.root_settings)
+        self.assertContains(response, '', None, 200)
+
+    def test_is_cloudcv(self):
+        response = self.client.get('/api/is_cloudcv/')
+        response = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(response["is_cloudcv"],
+                         self.root_settings["is_cloudcv"])
