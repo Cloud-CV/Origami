@@ -505,4 +505,5 @@ class CustomSampleInputControllerTests(TestCase):
                                      "sample_image": f})
             self.assertContains(response, '', None, 200)
             response = json.loads(response.content.decode('utf-8'))
-            self.assertEqual(response["type_of_input"], 3, str(dir(response)))
+            response = response[0]
+            self.assertEqual(int(response["type_of_input"]), 3, str(dir(response)))
