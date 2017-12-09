@@ -505,9 +505,10 @@ class CustomSampleInputControllerTests(TestCase):
         #                            value=self.sampleinput["value"])
 
     def test_sample_input(self):
-        response = self.client.post("upload_sample_input/", 
+        with open('sampleimg.png', 'rb') as f:
+            response = self.client.post("upload_sample_input/", 
                                     {"demo_id": self.demo["id"], 
-                                     "sample_image": DEFAULT_IMAGE})
+                                     "sample_image": f})
         self.assertContains(response, None, None, 200)
         # response = json.loads(response.content.decode('utf-8'))
         # self.assertEqual(response["demo"]["id"], self.demo["id"])
