@@ -458,6 +458,52 @@ class CustomPermalinkControllerTests(TestCase):
         self.assertEqual(response["removed"], True)
 
 
+class CustomUploadSampleInputControllerTests(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.demo = {
+            "name": "test",
+            "id": 99,
+            "user_id": 99,
+            "address": "address",
+            "description": "description",
+            "footer_message": "footer_message",
+            "cover_image": "cover_image",
+            "terminal": True,
+            "timestamp": datetime.datetime.now().isoformat(),
+            "token": "token",
+            "status": "input"
+        }
+        Demo.objects.create(name=self.demo["name"],
+                            id=self.demo["id"],
+                            user_id=self.demo["user_id"],
+                            address=self.demo["address"],
+                            description=self.demo["description"],
+                            footer_message=self.demo["footer_message"],
+                            cover_image=self.demo["cover_image"],
+                            terminal=self.demo["terminal"],
+                            timestamp=self.demo["timestamp"],
+                            token=self.demo["token"],
+                            status=self.demo["status"])
+
+    def test_upload_sample_input_nofile(self):
+        response = self.client.post("/upload_sample_input",
+                                    {"demo_id": self.demo["id"]})
+        self.assertContains(response, '', None, 200)
+
+    def test_upload_sample_input(self):
+        with open('api/sample_image.png', 'rb') as f:
+            response = self.client.post(
+                "/upload_sample_input",
+                {"demo_id": self.demo["id"], "sample-image": f})
+            self.assertContains(response, '', None, 200)
+            response = json.loads(response.content.decode('utf-8'))
+            response = response[0]
+            self.assertEqual(int(response["type_of_input"]),
+                             3, str(dir(response)))
+
+            
 class CustomRootSettingsControllerClass(TestCase):
 
     def setUp(self):

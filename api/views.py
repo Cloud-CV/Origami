@@ -439,7 +439,7 @@ def upload_sample_input(request):
     data = request.data
     demo_id = data["demo_id"]
     demo = Demo.objects.get(id=demo_id)
-    for key, value in data.iteritems():
+    for key, value in data.items():
         if key.startswith("sample-image"):
             img = request.FILES[key]
             absolute_path = default_storage.save(
