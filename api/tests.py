@@ -505,7 +505,7 @@ class CustomSampleInputControllerTests(TestCase):
         #                            value=self.sampleinput["value"])
 
     def test_sample_input(self):
-        with open('sampleimg.png', 'rb') as f:
+        with open('api/sampleimg.png', 'rb') as f:
             response = self.client.post("upload_sample_input/", 
                                     {"demo_id": self.demo["id"], 
                                      "sample_image": f})
