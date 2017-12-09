@@ -458,47 +458,47 @@ class CustomPermalinkControllerTests(TestCase):
         self.assertEqual(response["removed"], True)
 
 
-class CustomRootSettingsControllerClass(TestCase):
+class CustomUploadSampleInputControllerTests(TestCase):
 
     def setUp(self):
         self.client = Client()
-        self.root_settings = {
-            "root_user_github_login_id": 101,
-            "root_user_github_login_name": "name",
-            "client_id": "clientID",
-            "client_secret": "randomstring_sdfdsfdsfdsf",
-            "is_cloudcv": True,
-            "allow_new_logins": True,
-            "app_ip": "0.0.0.0",
-            "port": "80"
+        self.demo = {
+            "name": "test",
+            "id": 99,
+            "user_id": 99,
+            "address": "address",
+            "description": "description",
+            "footer_message": "footer_message",
+            "cover_image": "cover_image",
+            "terminal": True,
+            "timestamp": datetime.datetime.now().isoformat(),
+            "token": "token",
+            "status": "input"
         }
-        RootSettings.objects.create(
-            root_user_github_login_id=self.root_settings[
-                "root_user_github_login_id"],
-            root_user_github_login_name=self.root_settings[
-                "root_user_github_login_name"],
-            client_id=self.root_settings["client_id"],
-            client_secret=self.root_settings["client_secret"],
-            is_cloudcv=self.root_settings["is_cloudcv"],
-            allow_new_logins=self.root_settings["allow_new_logins"],
-            app_ip=self.root_settings["app_ip"],
-            port=self.root_settings["port"])
+        Demo.objects.create(name=self.demo["name"],
+                            id=self.demo["id"],
+                            user_id=self.demo["user_id"],
+                            address=self.demo["address"],
+                            description=self.demo["description"],
+                            footer_message=self.demo["footer_message"],
+                            cover_image=self.demo["cover_image"],
+                            terminal=self.demo["terminal"],
+                            timestamp=self.demo["timestamp"],
+                            token=self.demo["token"],
+                            status=self.demo["status"])
 
-    def test_get_root_settings(self):
-        response = self.client.get('/api/rootsettings')
-        response = json.loads(response.content.decode('utf-8'))
-        self.assertEqual(response["client_id"],
-                         self.root_settings["client_id"])
-        self.assertEqual(
-            response["root_user_github_login_id"],
-            self.root_settings["root_user_github_login_id"])
-
-    def test_create_root_settings(self):
-        response = self.client.post('/api/rootsettings', self.root_settings)
+    def test_upload_sample_input_nofile(self):
+        response = self.client.post("/upload_sample_input",
+                                    {"demo_id": self.demo["id"]})
         self.assertContains(response, '', None, 200)
 
-    def test_is_cloudcv(self):
-        response = self.client.get('/api/is_cloudcv/')
-        response = json.loads(response.content.decode('utf-8'))
-        self.assertEqual(response["is_cloudcv"],
-                         self.root_settings["is_cloudcv"])
+    def test_upload_sample_input(self):
+        with open('api/sample_image.png', 'rb') as f:
+            response = self.client.post(
+                "/upload_sample_input",
+                {"demo_id": self.demo["id"], "sample-image": f})
+            self.assertContains(response, '', None, 200)
+            response = json.loads(response.content.decode('utf-8'))
+            response = response[0]
+            self.assertEqual(int(response["type_of_input"]),
+                             3, str(dir(response)))
