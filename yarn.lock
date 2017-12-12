@@ -5795,14 +5795,14 @@ react-deep-force-update@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-2.1.1.tgz#8ea4263cd6455a050b37445b3f08fd839d86e909"
 
-react-dom@^15.4.2:
-  version "15.6.2"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.6.2.tgz#41cfadf693b757faf2708443a1d1fd5a02bef730"
+react-dom@^16.2.0:
+  version "16.2.0"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.2.0.tgz#69003178601c0ca19b709b33a83369fe6124c044"
   dependencies:
-    fbjs "^0.8.9"
+    fbjs "^0.8.16"
     loose-envify "^1.1.0"
-    object-assign "^4.1.0"
-    prop-types "^15.5.10"
+    object-assign "^4.1.1"
+    prop-types "^15.6.0"
 
 react-dropzone@^4.2.3:
   version "4.2.3"
@@ -5867,7 +5867,7 @@ react-router-redux@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/react-router-redux/-/react-router-redux-4.0.8.tgz#227403596b5151e182377dab835b5d45f0f8054e"
 
-react-router@^3.0.2:
+react-router@^3.0.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/react-router/-/react-router-3.2.0.tgz#62b6279d589b70b34e265113e4c0a9261a02ed36"
   dependencies:
@@ -5901,9 +5901,9 @@ react-slick@~0.15.4:
     object-assign "^4.1.0"
     slick-carousel "^1.6.0"
 
-react-tap-event-plugin@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/react-tap-event-plugin/-/react-tap-event-plugin-2.0.1.tgz#316beb3bc6556e29ec869a7293e89c826a9074d2"
+react-tap-event-plugin@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/react-tap-event-plugin/-/react-tap-event-plugin-3.0.2.tgz#280371677b881c31376e0027a0b86d2c6de039ee"
   dependencies:
     fbjs "^0.8.6"
 
@@ -5928,15 +5928,14 @@ react-transition-group@^1.2.1:
     prop-types "^15.5.6"
     warning "^3.0.0"
 
-react@^15.4.2:
-  version "15.6.2"
-  resolved "https://registry.yarnpkg.com/react/-/react-15.6.2.tgz#dba0434ab439cfe82f108f0f511663908179aa72"
+react@^16.2.0:
+  version "16.2.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.2.0.tgz#a31bd2dab89bff65d42134fa187f24d054c273ba"
   dependencies:
-    create-react-class "^15.6.0"
-    fbjs "^0.8.9"
+    fbjs "^0.8.16"
     loose-envify "^1.1.0"
-    object-assign "^4.1.0"
-    prop-types "^15.5.10"
+    object-assign "^4.1.1"
+    prop-types "^15.6.0"
 
 read-pkg-up@^1.0.1:
   version "1.0.1"
