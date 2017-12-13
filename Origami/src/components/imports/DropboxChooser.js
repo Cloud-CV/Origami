@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import loadScript from "load-script";
+import { PropTypes } from "prop-types";
 
 // read more
 // https://www.dropbox.com/developers/chooser
@@ -62,14 +63,14 @@ export default class DropboxChooser extends Component {
 }
 
 DropboxChooser.propTypes = {
-  children: React.PropTypes.node,
-  appKey: React.PropTypes.string.isRequired,
-  success: React.PropTypes.func.isRequired,
-  cancel: React.PropTypes.func,
-  linkType: React.PropTypes.oneOf(["preview", "direct"]),
-  multiselect: React.PropTypes.bool,
-  extensions: React.PropTypes.arrayOf(React.PropTypes.string),
-  disabled: React.PropTypes.bool
+  children: PropTypes.node,
+  appKey: PropTypes.string.isRequired,
+  success: PropTypes.func.isRequired,
+  cancel: PropTypes.func,
+  linkType: PropTypes.oneOf(["preview", "direct"]),
+  multiselect: PropTypes.bool,
+  extensions: PropTypes.arrayOf(PropTypes.string),
+  disabled: PropTypes.bool
 };
 
 DropboxChooser.defaultProps = {
