@@ -21,7 +21,7 @@ class Demo(models.Model):
         terminal: Whether the demo contains a terminal
         timestamp: The time at which the demo is created
         token: Project token, provided at creation of the demo, containing
-            'nongh':Address:Id:Current Port:Port:Temp Web Address
+            '(gh|nongh)':Address:Id:Current_Port:Port:Temp_Web_Address
         status: string, either "demo" or "input"
     """
     name = models.CharField(max_length=100)
