@@ -7,9 +7,9 @@ import json
 
 
 class Demo(models.Model):
-    '''
+    """
     This model stores all Origami demos
-    '''
+    """
     name = models.CharField(max_length=100)
     id = models.IntegerField(primary_key=True)
     user_id = models.IntegerField()
