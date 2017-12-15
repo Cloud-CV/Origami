@@ -112,8 +112,14 @@ def redirect_login(req):
         tmp.save()
         acc.user = tmp
         acc.save()
-        return HttpResponseRedirect('/login?status=passed&token=' + token.token + '&username=' + tmp.username + '&user_id=' + str(tmp.id))
-    return HttpResponseRedirect('/login?status=passed&token=' + token.token + '&username=' + user.username + '&user_id=' + str(user.id))
+        return HttpResponseRedirect(
+            '/login?status=passed&token=' + token.token +
+            '&username=' + tmp.username +
+            '&user_id=' + str(tmp.id))
+    return HttpResponseRedirect(
+        '/login?status=passed&token=' + token.token +
+        '&username=' + user.username +
+        '&user_id=' + str(user.id))
 
 
 @api_view(['GET'])
@@ -161,7 +167,10 @@ def custom_component_controller(request, type_req, user_id, demoid):
         model = OutputComponent
         serializer = OutputComponentSerializer
     else:
-        return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
+        return Response(
+            "Invalid URL",
+            status=response_status.HTTP_404_NOT_FOUND
+        )
 
     if request.method == "POST":
         body = request.data
@@ -178,17 +187,20 @@ def custom_component_controller(request, type_req, user_id, demoid):
             else:
                 props.append({})
         user_id = body["user_id"]
-        component = model.objects.create(demo=demo, base_component_id=base_comp_id,
-                                         props=json.dumps(props), user_id=user_id)
+        component = model.objects.create(
+            demo=demo, base_component_id=base_comp_id,
+            props=json.dumps(props), user_id=user_id
+        )
         serialize = serializer(component)
-        return Response(serialize.data, status=response_status.HTTP_201_CREATED)
+        return Response(serialize.data,
+                        status=response_status.HTTP_201_CREATED)
     elif request.method == "GET":
         if user_id:
             if demoid:
                 demo = Demo.objects.get(id=demoid)
                 try:
                     component = model.objects.get(user_id=user_id, demo=demo)
-                except Exception as e:
+                except Exception:
                     return Response({"text": "Not Found"})
 
                 serialize = serializer(component)
@@ -207,9 +219,13 @@ def custom_component_controller(request, type_req, user_id, demoid):
                         "ascii", "ignore").decode('utf8'))
                     data[x]["demo"] = DemoSerializer(components[x].demo).data
                     data[x]["id"] = components[x].demo.id
-                return Response(serialize.data, status=response_status.HTTP_200_OK)
+                return Response(serialize.data,
+                                status=response_status.HTTP_200_OK)
         else:
-            return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
+            return Response(
+                "Invalid URL",
+                status=response_status.HTTP_404_NOT_FOUND
+            )
     elif request.method == "PUT":
         body = request.data
         if user_id and demoid:
@@ -230,13 +246,16 @@ def custom_component_controller(request, type_req, user_id, demoid):
             serialize = serializer(component)
             return Response(serialize.data, status=response_status.HTTP_200_OK)
         else:
-            return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
+            return Response("Invalid URL",
+                            status=response_status.HTTP_404_NOT_FOUND)
     elif request.method == "DELETE":
         if user_id and demoid:
             model.objects.get(id=demoid, user_id=user_id).delete()
-            return Response({"removed": True}, status=response_status.HTTP_200_OK)
+            return Response({"removed": True},
+                            status=response_status.HTTP_200_OK)
         else:
-            return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
+            return Response("Invalid URL",
+                            status=response_status.HTTP_404_NOT_FOUND)
     return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
 
 
@@ -250,12 +269,12 @@ def custom_demo_controller(request, user_id, id):
         if id and user_id:
             try:
                 demo = Demo.objects.get(id=id, user_id=user_id)
-            except Exception as e:
+            except Exception:
                 return Response({"text": "Not Found"})
             serialize = DemoSerializer(demo).data
             try:
                 sample_inputs = SampleInput.objects.filter(demo=demo)
-            except Exception as e:
+            except Exception:
                 sample_inputs = None
             if sample_inputs:
                 sample_inputs_serialize = SampleInputSerializer(
@@ -289,12 +308,18 @@ def custom_demo_controller(request, user_id, id):
         timestamp = body["timestamp"]
         token = body["token"]
         status = body["status"]
-        demo = Demo.objects.create(name=name, id=id, user_id=user_id,
-                                   address=address, description=description, footer_message=footer_message,
-                                   cover_image=cover_image, terminal=terminal, timestamp=timestamp,
+        demo = Demo.objects.create(name=name, id=id,
+                                   user_id=user_id,
+                                   address=address,
+                                   description=description,
+                                   footer_message=footer_message,
+                                   cover_image=cover_image,
+                                   terminal=terminal,
+                                   timestamp=timestamp,
                                    token=token, status=status)
         serialize = DemoSerializer(demo)
-        return Response(serialize.data, status=response_status.HTTP_201_CREATED)
+        return Response(serialize.data,
+                        status=response_status.HTTP_201_CREATED)
 
     elif request.method == "PUT":
         if id and user_id:
@@ -315,14 +340,17 @@ def custom_demo_controller(request, user_id, id):
             serialize = DemoSerializer(demo)
             return Response(serialize.data, status=response_status.HTTP_200_OK)
         else:
-            return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
+            return Response("Invalid URL",
+                            status=response_status.HTTP_404_NOT_FOUND)
 
     elif request.method == "DELETE":
         if user_id and id:
             Demo.objects.get(id=id, user_id=user_id).delete()
-            return Response({"removed": True}, status=response_status.HTTP_200_OK)
+            return Response({"removed": True},
+                            status=response_status.HTTP_200_OK)
         else:
-            return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
+            return Response("Invalid URL",
+                            status=response_status.HTTP_404_NOT_FOUND)
     return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
 
 
@@ -332,7 +360,7 @@ def get_permalink(request, shorturl):
     try:
         permalink = Permalink.objects.get(short_relative_url='/p/' + shorturl)
 
-    except Exception as e:
+    except Exception:
         return Response({"text": "Not Found"})
 
     permalink.short_relative_url = permalink.short_relative_url.split('/')[-1]
@@ -349,7 +377,7 @@ def custom_permalink_controller(request, user_id, project_id):
                 permalink = Permalink.objects.get(
                     project_id=project_id, user_id=user_id)
 
-            except Exception as e:
+            except Exception:
                 return Response({"text": "Not Found"})
             serialize = PermalinkSerializer(permalink)
             return Response(serialize.data, status=response_status.HTTP_200_OK)
@@ -357,7 +385,7 @@ def custom_permalink_controller(request, user_id, project_id):
             try:
                 permalinks = Permalink.objects.all()
 
-            except Exception as e:
+            except Exception:
                 return Response({"text": "Not Found"})
             serialize = PermalinkSerializer(permalinks, many=True)
             return Response(serialize.data, status=response_status.HTTP_200_OK)
@@ -368,11 +396,14 @@ def custom_permalink_controller(request, user_id, project_id):
         full_relative_url = body["full_relative_url"]
         project_id = body["project_id"]
         user_id = body["user_id"]
-        permalink = Permalink.objects.create(short_relative_url=short_relative_url,
-                                             full_relative_url=full_relative_url, project_id=project_id, user_id=user_id)
+        permalink = Permalink.objects.create(
+            short_relative_url=short_relative_url,
+            full_relative_url=full_relative_url,
+            project_id=project_id, user_id=user_id)
         serialize = PermalinkSerializer(
             permalink)
-        return Response(serialize.data, status=response_status.HTTP_201_CREATED)
+        return Response(serialize.data,
+                        status=response_status.HTTP_201_CREATED)
 
     elif request.method == "PUT":
         if user_id and project_id:
@@ -385,15 +416,18 @@ def custom_permalink_controller(request, user_id, project_id):
             serialize = PermalinkSerializer(perm)
             return Response(serialize.data, status=response_status.HTTP_200_OK)
         else:
-            return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
+            return Response("Invalid URL",
+                            status=response_status.HTTP_404_NOT_FOUND)
 
     elif request.method == "DELETE":
         if user_id and project_id:
             Permalink.objects.get(project_id=project_id,
                                   user_id=user_id).delete()
-            return Response({"removed": True}, status=response_status.HTTP_200_OK)
+            return Response({"removed": True},
+                            status=response_status.HTTP_200_OK)
         else:
-            return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
+            return Response("Invalid URL",
+                            status=response_status.HTTP_404_NOT_FOUND)
     return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
 
 
@@ -405,7 +439,8 @@ def root_settings(request):
     if request.method == "POST":
         if root and app:
             root.root_user_github_login_id = body["root_user_github_login_id"]
-            root.root_user_github_login_name = body["root_user_github_login_name"]
+            root.root_user_github_login_name = \
+                body["root_user_github_login_name"]
             root.client_id = body["client_id"]
             root.client_secret = body["client_secret"]
             root.is_cloudcv = body["is_cloudcv"]
@@ -417,16 +452,20 @@ def root_settings(request):
             app.secret = body["client_secret"]
             app.save()
         else:
-            root = RootSettings.objects.create(root_user_github_login_id=body["root_user_github_login_id"],
-                                               root_user_github_login_name=body[
-                                               "root_user_github_login_name"],
-                                               client_id=body["client_id"], client_secret=body[
-                                               "client_secret"],
-                                               is_cloudcv=body["is_cloudcv"], allow_new_logins=body[
-                                               "allow_new_logins"],
-                                               app_ip=body["app_ip"], port=body["port"])
-            app = SocialApp.objects.create(provider=u'github', name=str(datetime.datetime.now().isoformat()),
-                                           client_id=body["client_id"], secret=body["client_secret"])
+            root = RootSettings.objects.create(
+                root_user_github_login_id=body["root_user_github_login_id"],
+                root_user_github_login_name=body[
+                    "root_user_github_login_name"],
+                client_id=body["client_id"],
+                client_secret=body["client_secret"],
+                is_cloudcv=body["is_cloudcv"],
+                allow_new_logins=body["allow_new_logins"],
+                app_ip=body["app_ip"], port=body["port"])
+            app = SocialApp.objects.create(
+                provider=u'github',
+                name=str(datetime.datetime.now().isoformat()),
+                client_id=body["client_id"],
+                secret=body["client_secret"])
         site = Site.objects.get(id=1)
         app.sites.add(site)
         app.save()
