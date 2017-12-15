@@ -542,7 +542,7 @@ def upload_sample_input(request):
 
     The data passed into the POST request needs to contain:
         demo_id (str): The demo that the sample input should belong to.
-        sample-image* (file): A value with its key having 'sample-image'
+        sample-image-* (file): A value with its key having 'sample-image'
             as a prefix, containing the image file.
     """
     data = request.data
