@@ -7,6 +7,9 @@ import json
 
 
 class Demo(models.Model):
+    '''
+    This model stores all Origami demos
+    '''
     name = models.CharField(max_length=100)
     id = models.IntegerField(primary_key=True)
     user_id = models.IntegerField()
@@ -21,6 +24,11 @@ class Demo(models.Model):
 
 
 class InputComponent(models.Model):
+    """
+    This model stores all input components, such as
+    the image input and text input components.
+    An instance of InputComponent can only belong to one demo.
+    """
     base_component_id = models.IntegerField()
     props = models.TextField()
     demo = models.OneToOneField(Demo)
@@ -34,6 +42,12 @@ class InputComponent(models.Model):
 
 
 class OutputComponent(models.Model):
+    """
+    This model stores all output components, such as
+    AreaGraphOutput, BarGraphOutput, ImageOutput, PieChartOutput,
+    ScatterGraphOutput and TextOutput.
+    An instance of OutputComponent can only belong to one demo.
+    """
     base_component_id = models.IntegerField()
     props = models.TextField()
     demo = models.OneToOneField(Demo)
@@ -47,6 +61,10 @@ class OutputComponent(models.Model):
 
 
 class Permalink(models.Model):
+    """
+    This model stores permalinks (a static hyperlink)
+    to projects.
+    """
     short_relative_url = models.CharField(max_length=100)
     full_relative_url = models.CharField(max_length=300)
     project_id = models.IntegerField()
@@ -54,6 +72,10 @@ class Permalink(models.Model):
 
 
 class RootSettings(models.Model):
+    """
+    This model stores settings for a the root user.
+    There is only one instance of this model for the app.
+    """
     root_user_github_login_id = models.IntegerField()
     root_user_github_login_name = models.CharField(max_length=30)
     client_id = models.CharField(max_length=40)
@@ -65,6 +87,10 @@ class RootSettings(models.Model):
 
 
 class SampleInput(models.Model):
+    """
+    This models stores a sample input, either an image or a text string,
+    for a demo. Type_of_input is 3 for an image.
+    """
     demo = models.ForeignKey(Demo)
     type_of_input = models.IntegerField()
     value = models.CharField(max_length=300)

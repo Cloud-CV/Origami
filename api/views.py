@@ -22,10 +22,10 @@ from collections import OrderedDict
 
 
 class DemoViewSet(ModelViewSet):
-    '''
+    """
     Contains information about inputs/outputs of a single program
     that may be used in Universe workflows.
-    '''
+    """
     lookup_field = 'id'
     serializer_class = DemoSerializer
 
@@ -34,10 +34,10 @@ class DemoViewSet(ModelViewSet):
 
 
 class InputComponentViewSet(ModelViewSet):
-    '''
+    """
     Contains information about inputs/outputs of a single program
     that may be used in Universe workflows.
-    '''
+    """
     lookup_field = 'id'
     serializer_class = InputComponentSerializer
 
@@ -56,10 +56,10 @@ user_input_component = InputComponentViewSet.as_view(
 
 
 class OutputComponentViewSet(ModelViewSet):
-    '''
+    """
     Contains information about inputs/outputs of a single program
     that may be used in Universe workflows.
-    '''
+    """
     lookup_field = 'id'
     serializer_class = OutputComponentSerializer
 
@@ -78,10 +78,10 @@ user_output_component = OutputComponentViewSet.as_view(
 
 
 class PermalinkViewSet(ModelViewSet):
-    '''
+    """
     Contains information about inputs/outputs of a single program
     that may be used in Universe workflows.
-    '''
+    """
     lookup_field = 'id'
     serializer_class = PermalinkSerializer
 
@@ -90,10 +90,10 @@ class PermalinkViewSet(ModelViewSet):
 
 
 class RootSettingsViewSet(ModelViewSet):
-    '''
+    """
     Contains information about inputs/outputs of a single program
     that may be used in Universe workflows.
-    '''
+    """
     lookup_field = 'id'
     serializer_class = RootSettingsSerializer
 
@@ -102,6 +102,10 @@ class RootSettingsViewSet(ModelViewSet):
 
 
 def redirect_login(req):
+    """
+    Retrieves the token, username and user_id of the user and
+    redirects the user to the next page.
+    """
     user = User.objects.get(username=req.user.username)
     acc = SocialAccount.objects.get(user=user)
     token = SocialToken.objects.get(account=acc)
@@ -124,6 +128,9 @@ def redirect_login(req):
 
 @api_view(['GET'])
 def is_cloudcv(request):
+    """
+    Returns all fields in the current RootSettings object.
+    """
     settings = RootSettings.objects.all().first()
     serialize = RootSettingsSerializer(settings)
     return Response(serialize.data, status=response_status.HTTP_200_OK)
@@ -131,6 +138,10 @@ def is_cloudcv(request):
 
 @api_view(['GET'])
 def get_all_user_demos(request, id):
+    """
+    Returns properties of all demos for the
+    user identified by the given id.
+    """
     demos = Demo.objects.filter(user_id=id)
     serialize = DemoSerializer(demos, many=True)
     return Response(serialize.data, status=response_status.HTTP_200_OK)
@@ -138,6 +149,12 @@ def get_all_user_demos(request, id):
 
 @api_view(['GET'])
 def get_all_demos(request):
+    """
+    If the request parameter search_by is demo,
+    returns all demos which contains the search_term as a substring,
+    otherwise returns all demos belonging to the user having the
+    username matching the given search_term.
+    """
     search_by = request.query_params.get('search_by', None)
     search_term = request.query_params.get('search_term', None)
     demos = []
@@ -158,6 +175,17 @@ def get_all_demos(request):
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def custom_component_controller(request, type_req, user_id, demoid):
+    """
+    Gets the properties of, adds, updates, or removes an
+    InputComponent or OutputComponent given a
+    GET, POST, PUT or DELETE request respectively.
+
+    Args:
+        type_req (str): Specifies whether processing is for an
+            InputComponent or OutputComponent.
+        user_id (str): The id of the user
+        demoid (str): The id of the demo
+    """
     model = ""
     serializer = ""
     if type_req == "input":
@@ -260,11 +288,25 @@ def custom_component_controller(request, type_req, user_id, demoid):
 
 
 def alive(request):
+    """Returns a status 200 if the server is running and 404 otherwise"""
     return HttpResponse(status=200)
 
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def custom_demo_controller(request, user_id, id):
+    """
+    Gets the properties of, adds, updates, or removes a demo or
+    demos given a GET, POST, PUT or DELETE request respectively.
+
+    A GET request also returns all sample_inputs belonging to
+    the demo if request parameter id is specified.
+    A GET request returns all demo objects in the database if
+    both the user_id and id of the demo are not specified.
+
+    Args:
+        user_id (str): The id of the user
+        id (str): The id of the demo
+    """
     if request.method == "GET":
         if id and user_id:
             try:
@@ -356,7 +398,7 @@ def custom_demo_controller(request, user_id, id):
 
 @api_view(['GET'])
 def get_permalink(request, shorturl):
-
+    """Returns the permalink corresponding to the given shorturl."""
     try:
         permalink = Permalink.objects.get(short_relative_url='/p/' + shorturl)
 
@@ -370,7 +412,18 @@ def get_permalink(request, shorturl):
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def custom_permalink_controller(request, user_id, project_id):
+    """
+    Gets properties of, adds, updates, or deletes a Permalink
+    object given a GET, POST, PUT, or DELETE request respectively.
 
+    A GET request returns the Permalink corresponding to the
+    given user_id and project_id, if they are both specified.
+    A GET request returns all Permalink objects otherwise.
+
+    Args:
+        user_id (str): The id of the user
+        project_id (str): The id of the project
+    """
     if request.method == "GET":
         if user_id and project_id:
             try:
@@ -433,6 +486,15 @@ def custom_permalink_controller(request, user_id, project_id):
 
 @api_view(['GET', 'POST'])
 def root_settings(request):
+    """
+    A GET request returns the RootSettings object.
+    A POST request creates the RootSettings object if there is
+    no existent RootSettings object, and updates the existing
+    object otherwise.
+
+    If a RootSettings object is created, a SocialApp object is
+    created as well.
+    """
     body = request.data
     root = RootSettings.objects.all().first()
     app = SocialApp.objects.all().first()
@@ -475,6 +537,14 @@ def root_settings(request):
 
 @api_view(['POST'])
 def upload_sample_input(request):
+    """
+    Creates a sample input. Only image input is supported currently.
+
+    The data passed into the POST request needs to contain:
+        demo_id (str): The demo that the sample input should belong to.
+        sample-image* (file): A value with its key having 'sample-image'
+            as a prefix, containing the image file.
+    """
     data = request.data
     demo_id = data["demo_id"]
     demo = Demo.objects.get(id=demo_id)
