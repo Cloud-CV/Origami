@@ -180,7 +180,7 @@ def custom_component_controller(request, type_req, user_id, demoid):
     InputComponent or OutputComponent given a
     GET, POST, PUT or DELETE request respectively.
 
-    Args:
+    Keyword arguments:
         type_req (str): Specifies whether processing is for an
             InputComponent or OutputComponent.
         user_id (str): The id of the user
@@ -303,7 +303,7 @@ def custom_demo_controller(request, user_id, id):
     A GET request returns all demo objects in the database if
     both the user_id and id of the demo are not specified.
 
-    Args:
+    Keyword arguments:
         user_id (str): The id of the user
         id (str): The id of the demo
     """
@@ -420,7 +420,7 @@ def custom_permalink_controller(request, user_id, project_id):
     given user_id and project_id, if they are both specified.
     A GET request returns all Permalink objects otherwise.
 
-    Args:
+    Keyword arguments:
         user_id (str): The id of the user
         project_id (str): The id of the project
     """
