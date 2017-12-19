@@ -12,12 +12,12 @@ RUN apt-get install -y apt-utils \
     nodejs-legacy \
     npm
 
+RUN pip install -r requirements.txt
+
 RUN pip install uwsgi channels
 
 RUN npm install -g n 
 RUN npm install -g npm@latest
 RUN n lts
-
-RUN pip install -r requirements.txt
 
 CMD ["/bin/bash", "/app/docker/django/django-entrypoint.sh"]
