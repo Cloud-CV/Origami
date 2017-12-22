@@ -516,6 +516,7 @@ class RegisterPage extends React.Component {
                               id={"input-image-preview"}
                             />
                           </div>
+                          
                           <div className="content">
                             Drag and Drop or Click to upload cover image
                           </div>

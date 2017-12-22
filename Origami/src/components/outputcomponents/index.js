@@ -21,10 +21,7 @@ import AreaGraphOutputShowCaseCard
 
 export function getOutputComponentById(id, props, calling_context, data) {
   let headers = [];
-  props.map((header, index) => {
-    if (typeof header === "object") {
-      header = "";
-    }
+    props.map((header, index) => {
     headers[index] = header;
   });
   switch (id) {

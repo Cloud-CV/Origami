@@ -120,6 +120,7 @@ class App extends React.Component {
 
   initiateLogin() {
     window.location = "/auth/github/login/";
+
   }
 
   logout() {
