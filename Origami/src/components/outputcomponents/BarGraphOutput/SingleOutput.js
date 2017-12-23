@@ -46,7 +46,7 @@ class singleOutput extends React.Component {
         onClick={this.showGraphFull}
       >
         <div className="content">
-          <div className="header">{this.props.header}</div>
+          <div className="header">{this.props.header["label"]}</div>
         </div>
         <div className="content">
           <div className="ui small feed">
@@ -72,7 +72,7 @@ class singleOutput extends React.Component {
         </div>
 
         <Dialog
-          title={this.props.header}
+          title={this.props.header["label"]}
           modal={false}
           open={this.state.open}
           autoScrollBodyContent
