@@ -209,15 +209,15 @@ def custom_component_controller(request, type_req, user_id, demoid):
         for prop in body["props"]:
             if prop:
 
-                if(type(prop) is dict):
+                if(isinstance(prop, dict)):
                     props.append({"id": prop["id"].encode(
                         "ascii", "ignore").decode('utf-8'),
-                      
+
                         "label": prop["label"].encode(
                         "ascii", "ignore").decode('utf-8')})
                 else:
                     props.append({"id": "1",
-                        "label": prop})
+                                  "label": prop})
             else:
                 props.append({})
         user_id = body["user_id"]
@@ -269,15 +269,15 @@ def custom_component_controller(request, type_req, user_id, demoid):
             props = []
             for prop in body["props"]:
                 if prop:
-                    if(type(prop) is dict):
+                    if(isinstance(prop, dict)):
                         props.append({"id": prop["id"].encode(
                             "ascii", "ignore").decode('utf-8'),
-                          
+
                             "label": prop["label"].encode(
                             "ascii", "ignore").decode('utf-8')})
                     else:
-                         props.append({"id": "1",
-                            "label": prop})
+                        props.append({"id": "1",
+                                      "label": prop})
 
                 else:
                     props.append({})
