@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 import { Link, browserHistory } from "react-router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { BounceLoader } from 'react-spinners';
 import {
   is_cloudcv,
   getAllDemosByCloudCV
@@ -42,6 +43,11 @@ const FacebookIcon = generateShareIcon("facebook");
 const TwitterIcon = generateShareIcon("twitter");
 const GooglePlusIcon = generateShareIcon("google");
 const LinkedinIcon = generateShareIcon("linkedin");
+const demoSpinnerStyle = {
+  position: 'fixed',
+  top: '50%',
+  left: '50%'
+  }
 
 class HomePage extends React.Component {
   constructor(props, context) {
@@ -59,7 +65,8 @@ class HomePage extends React.Component {
       demoBeingShown: {},
       permalinkHolder: {},
       shareModalOpen: false,
-      searchBy: "demo"
+      searchBy: "demo",
+      demoLoading: true
     };
 
     this.handleShareModal = this.handleShareModal.bind(this);
@@ -80,6 +87,7 @@ class HomePage extends React.Component {
           allDeployed.push(tmp.splice(0, 4));
         }
         this.setState({ allDeployed: allDeployed });
+        this.setState({ demoLoading: false });
       })
       .then(() => {
         const stateToPut = {};
@@ -257,7 +265,11 @@ class HomePage extends React.Component {
           <div
             style={{ padding: 12, background: "#FEFEFE", textAlign: "center" }}
           >
-            <Row>
+          {this.state.demoLoading
+          ? <div className="demoSpinner" style={demoSpinnerStyle}>
+              <BounceLoader color={'#33aadd'} size={80}/>
+            </div>
+          :<Row>
               {Object.keys(this.state.allDeployed).length > 0
                 ? this.state.allDeployed.map(row => (
                     <div key={Math.random()}>
@@ -301,7 +313,7 @@ class HomePage extends React.Component {
                 : <Col span={24} style={{ width: "100%" }}>
                     <h4> Demo not found. Try Searching for another demo</h4>
                   </Col>}
-            </Row>
+            </Row>}
           </div>
         </Content>
         <Footer
