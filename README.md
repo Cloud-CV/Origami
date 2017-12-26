@@ -8,7 +8,7 @@
 
 ## Setting the environment variables
 
-* `origami.env` stores all the environment variables necessary to run Origami.
+* `origami.env` stores all the environment variables necessary to run Origami. 
 
 1. `HOST` should be set to the hostname of the server
 2. `PORT` should be set to the port you want the server to listen on. (Generally 80)
@@ -18,6 +18,8 @@
 6. `DB_USER_EMAIL` stores the email for the admin
 7. `DB_HOST `should be set to postgres in production and localhost in development
 8. `REDIS_HOST` should be set to redis and localhost in development
+
+Run `./envsetup.sh` to generate the `origami.env` as required.
 
 * `Origami/outCalls/config.js` stores config variables needed by the UI.
 
