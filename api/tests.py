@@ -339,18 +339,20 @@ class CustomComponentControllerTests(TestCase):
     def test_modify_output_component(self):
         payload = self.output_component
         payload["base_component_id"] = 3
-        payload["props"] = [{"id": "3", "label": ""}]
-        payload.pop("demo", None)
-        url = '/api/outputcomponent/' + \
-            str(payload["user_id"]) + '/' + str(payload["id"])
-        response = self.client.put(url, json.dumps(payload),
-                                   content_type="application/json")
-        response = json.loads(response.content.decode('utf-8'))
-        response["props"] = json.loads(response["props"])
-        self.assertEqual(response["base_component_id"],
-                         payload["base_component_id"])
-        self.assertEqual(response["props"], payload["props"])
-        self.assertEqual(response["user_id"], payload["user_id"])
+        prop=[[{"id": "3", "label": ""}],[{}]]
+        for i in prop:
+            payload["props"] = i
+            payload.pop("demo", None)
+            url = '/api/outputcomponent/' + \
+                str(payload["user_id"]) + '/' + str(payload["id"])
+            response = self.client.put(url, json.dumps(payload),
+                                       content_type="application/json")
+            response = json.loads(response.content.decode('utf-8'))
+            response["props"] = json.loads(response["props"])
+            self.assertEqual(response["base_component_id"],
+                             payload["base_component_id"])
+            self.assertEqual(response["props"], payload["props"])
+            self.assertEqual(response["user_id"], payload["user_id"])
 
     def test_delete_output_component(self):
         payload = self.output_component

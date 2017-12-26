@@ -31,7 +31,7 @@ class BarGraphOutputShowcaseCard extends OutputShowcaseCard {
     } else {
       let propsToStore = [];
       this.state.headers.map(header => {
-        propsToStore.push(header);
+        propsToStore.push({id:"",label: header});
       });
       this.outputComponentDemoModelActions
         .updateOutputComponentModel({
