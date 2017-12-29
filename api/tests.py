@@ -6,7 +6,8 @@ import datetime
 import json
 from api.constants import DEFAULT_IMAGE
 from .models import *
-
+from allauth.socialaccount.models import SocialAccount, SocialToken, SocialApp
+import logging
 # Create your tests here.
 
 
@@ -360,6 +361,11 @@ class CustomComponentControllerTests(TestCase):
         response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["removed"], True)
 
+    def redirect_test(self):
+        url='/accounts/profile'
+        response=self.client.get(url)
+        self.assertEqual()
+
 
 class CustomPermalinkControllerTests(TestCase):
 
@@ -540,6 +546,8 @@ class CustomRootSettingsControllerClass(TestCase):
             self.root_settings["root_user_github_login_id"])
 
     def test_create_root_settings(self):
+        response = self.client.post('/api/rootsettings', self.root_settings)
+        self.assertContains(response, '', None, 200)
         response = self.client.post('/api/rootsettings', self.root_settings)
         self.assertContains(response, '', None, 200)
 
