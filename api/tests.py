@@ -361,11 +361,7 @@ class CustomComponentControllerTests(TestCase):
         response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["removed"], True)
 
-    def redirect_test(self):
-        url='/accounts/profile'
-        response=self.client.get(url)
-        self.assertEqual()
-
+     
 
 class CustomPermalinkControllerTests(TestCase):
 
