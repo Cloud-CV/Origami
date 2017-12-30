@@ -651,8 +651,18 @@ class CustomRootSettingsControllerClass(TestCase):
             self.root_settings["root_user_github_login_id"])
 
     def test_create_root_settings(self):
+        #create social app for rootsetting object
         response = self.client.post('/api/rootsettings', self.root_settings)
         self.assertContains(response, '', None, 200)
+
+    def test_root_settings_update(self):
+        #updates rootsetting object
+        changeID="ClientID2"
+        self.root_settings["client_id"]=changeID
+        response = self.client.post('/api/rootsettings', self.root_settings)
+        self.assertContains(response, '', None, 200)
+        response = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(response["client_id"],changeID)
 
     def test_is_cloudcv(self):
         response = self.client.get('/api/is_cloudcv/')
