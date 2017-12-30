@@ -654,8 +654,6 @@ class CustomRootSettingsControllerClass(TestCase):
         #create social app for rootsetting object
         response = self.client.post('/api/rootsettings', self.root_settings)
         self.assertContains(response, '', None, 200)
-
-    def test_root_settings_update(self):
         #updates rootsetting object
         changeID="ClientID2"
         self.root_settings["client_id"]=changeID
