@@ -46,7 +46,7 @@ class singleOutput extends React.Component {
         onClick={this.showGraphFull}
       >
         <div className="content">
-          <div className="header">{this.props.header["label"]}</div>
+          <div className="header">{(typeof this.props.header=="object")?this.props.header["label"]:this.props.header}</div>
         </div>
         <div className="content">
           <div className="ui small feed">

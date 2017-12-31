@@ -3,7 +3,7 @@ import { PropTypes } from "prop-types";
 import { browserHistory } from "react-router";
 import CustomCard from "../../stateless/cards";
 import InputShowcaseModifyDialog
-  from "../BaseInputComponent/InputShowcaseModifyDialog";
+from "../BaseInputComponent/InputShowcaseModifyDialog";
 import TextInputPreview from "./TextInputPreview";
 import toastr from "toastr";
 import InputShowcaseCard from "../BaseInputComponent/InputShowcaseCard.js";

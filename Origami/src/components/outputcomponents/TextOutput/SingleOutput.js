@@ -6,7 +6,7 @@ const singleOutput = props => {
   return (
     <div className="ui card centered origami-demo-output-text-component" id={`output-text-${props.index}`}>
       <div className="content">
-        <div className="header">{props.header["label"]}</div>
+        <div className="header">{(typeof props.header=="object")?props.header["label"]:props.header}</div>
       </div>
       <div className="content">
         <div className="ui small feed">

@@ -10,6 +10,7 @@ import toastr from "toastr";
 
 class TextOutputShowcaseCard extends OutputShowcaseCard {
   constructor(props) {
+    
     super(props);
     let initHeaders = [];
     if (props.demoProps.outputComponentDemoModel.base_component_id === 1) {
@@ -31,7 +32,15 @@ class TextOutputShowcaseCard extends OutputShowcaseCard {
     } else {
       let propsToStore = [];
       this.state.headers.map(header => {
-        propsToStore.push({id:"",label: header});
+           if(typeof header=='object')
+        {
+          propsToStore.push({id:"",label: header["label"]});
+
+        }
+        else
+        {
+          propsToStore.push({id:"",label: header});
+        }
       });
       this.outputComponentDemoModelActions
         .updateOutputComponentModel({
