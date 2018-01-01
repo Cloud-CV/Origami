@@ -100,7 +100,6 @@ class RootSettingsViewSet(ModelViewSet):
     def get_queryset(self):
         return RootSettings.objects.all()
 
-
 def redirect_login(req):
     """
     Retrieves the token, username and user_id of the user and

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.contrib.auth.models import User
+from django.contrib.auth import login
+from allauth.socialaccount.models import SocialAccount, SocialToken, SocialApp
 from django.test import TestCase, Client
 import datetime
 import json
@@ -44,7 +46,38 @@ class CustomDemoControllerViewTests(TestCase):
                                 "terminal"], timestamp=self.demo["timestamp"],
                             token=self.demo["token"],
                             status=self.demo["status"])
-
+    def test_get_redir_user_demo(self):
+        self.demo = {
+            "name": "test",
+            "id": 99,
+            "user_id": None,
+            "address": "address",
+            "description": "description",
+            "footer_message": "footer_message",
+            "cover_image": "cover_image",
+            "terminal": True,
+            "timestamp": datetime.datetime.now().isoformat(),
+            "token": "token",
+            "status": "input",
+            "username": "testname"
+        }
+        payload = {
+            "user": {
+                "username": self.demo["username"]
+            }
+        }
+        self.client.login(username=payload["user"]["username"], password="password")
+        sapp = SocialApp(provider='github', name='Github', 
+        client_id='<test>',
+        secret='<test>')
+        sapp.save()
+        sacc = SocialAccount(uid=1001, user=self.test_user, provider="github")
+        sacc.save()
+        stoken = SocialToken(app=sapp, account=sacc, token="test_token")
+        stoken.save()
+        response = self.client.post('/accounts/profile', follow=True)
+        first_url, first_response = response.redirect_chain[0]
+        self.assertEqual(first_url, "/login?status=passed&token=test_token&username=testname&user_id=1001")
     def test_get_all_user_demos(self):
         response = self.client.get('/api/demo/user/%d' %
                                    (self.demo["user_id"]))
