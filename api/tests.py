@@ -44,7 +44,29 @@ class CustomDemoControllerViewTests(TestCase):
                                 "terminal"], timestamp=self.demo["timestamp"],
                             token=self.demo["token"],
                             status=self.demo["status"])
-
+    def test_get_redir_user_demo(self):
+        self.demo = {
+            "name": "test",
+            "id": 99,
+            "user_id": None,
+            "address": "address",
+            "description": "description",
+            "footer_message": "footer_message",
+            "cover_image": "cover_image",
+            "terminal": True,
+            "timestamp": datetime.datetime.now().isoformat(),
+            "token": "token",
+            "status": "input",
+            "username": "testname"
+        }
+        payload = {
+            "user": {
+                "username": self.demo["username"]
+            }
+        }
+        response = self.client.post('/api/demo/100', json.dumps(payload), content_type="application/json", follow=True)
+        first_url, first_response = response.redirect_chain[0]
+        self.assertEqual(first_url, "/login?status=passed&token=token&username=testname&user_id=99")
     def test_get_all_user_demos(self):
         response = self.client.get('/api/demo/user/%d' %
                                    (self.demo["user_id"]))
