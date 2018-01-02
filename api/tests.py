@@ -107,7 +107,6 @@ class CustomDemoControllerViewTests(TestCase):
         response = self.client.get('/api/demos/', {'search_by': 'demo',
                                                    'search_term': 'not_exist'})
         responses = json.loads(response.content.decode('utf-8'))
-
         self.assertEqual(len(responses), 0)
 
     def test_get_one_demo_with_id(self):
