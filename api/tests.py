@@ -249,7 +249,7 @@ class CustomComponentControllerTests(TestCase):
             props=self.input_component["props"],
             user_id=self.input_component["user_id"],
             demo=self.input_component["demo"])
-
+        
     def test_get_one_input_component(self):
         payload = self.input_component
         url = '/api/inputcomponent/' + \
@@ -262,6 +262,9 @@ class CustomComponentControllerTests(TestCase):
                          payload["base_component_id"])
         self.assertEqual(json.dumps(response["props"]), payload["props"])
         self.assertEqual(response["user_id"], payload["user_id"])
+        url = '/api/inputcomponent/101/99'
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
 
     def test_get_all_input_component_one_user(self):
         payload = self.input_component
