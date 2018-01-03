@@ -47,20 +47,6 @@ class CustomDemoControllerViewTests(TestCase):
                             token=self.demo["token"],
                             status=self.demo["status"])
     def test_get_redir_user_demo(self):
-        self.demo = {
-            "name": "test",
-            "id": 99,
-            "user_id": None,
-            "address": "address",
-            "description": "description",
-            "footer_message": "footer_message",
-            "cover_image": "cover_image",
-            "terminal": True,
-            "timestamp": datetime.datetime.now().isoformat(),
-            "token": "token",
-            "status": "input",
-            "username": "testname"
-        }
         payload = {
             "user": {
                 "username": self.demo["username"]
