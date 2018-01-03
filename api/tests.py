@@ -78,6 +78,9 @@ class CustomDemoControllerViewTests(TestCase):
         response = self.client.post('/accounts/profile', follow=True)
         first_url, first_response = response.redirect_chain[0]
         self.assertEqual(first_url, "/login?status=passed&token=test_token&username=testname&user_id=1001")
+        response = self.client.post('/accounts/profile', follow=True)
+        first_url, first_response = response.redirect_chain[0]
+        self.assertEqual(first_url, "/login?status=passed&token=test_token&username=testname&user_id=1001")
     def test_get_all_user_demos(self):
         response = self.client.get('/api/demo/user/%d' %
                                    (self.demo["user_id"]))
