@@ -19,6 +19,8 @@
 7. `DB_HOST `should be set to postgres in production and localhost in development
 8. `REDIS_HOST` should be set to redis and localhost in development
 
+To create the file, `cp origami.env.sample origami.env` and edit the file with the above fields.
+
 * `Origami/outCalls/config.js` stores config variables needed by the UI.
 
 1. `CLIENT_IP` should be set to the same value as `HOST` in `origami.env`
