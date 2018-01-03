@@ -78,6 +78,9 @@ class CustomDemoControllerViewTests(TestCase):
         response = self.client.post('/accounts/profile', follow=True)
         first_url, first_response = response.redirect_chain[0]
         self.assertEqual(first_url, "/login?status=passed&token=test_token&username=testname&user_id=1001")
+        self.client.login(username=payload["user"]["username"], password="password")
+        stoken = SocialToken(app=sapp, account=sacc, token="test_token")
+        stoken.save()
         response = self.client.post('/accounts/profile', follow=True)
         first_url, first_response = response.redirect_chain[0]
         self.assertEqual(first_url, "/login?status=passed&token=test_token&username=testname&user_id=1001")
@@ -89,7 +92,7 @@ class CustomDemoControllerViewTests(TestCase):
         self.assertEqual(response["id"], self.demo["id"])
         self.assertEqual(response["user_id"], self.demo["user_id"])
         response = self.client.get('/api/demo/user/%d' %
-                                   ("1000000001"))
+                                   (1000000001))
         self.assertEqual(response.status_code, 200)
 
     def test_get_all_demos_by_name(self):
