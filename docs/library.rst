@@ -120,7 +120,7 @@ Output functions
 
 			Array/Tuple of "local path of images on the disk" in text
 
-			An example can be seen at this `gist <hhttps://gist.github.com/NSDCars5/e7b9af826c8055e6949ea9092e3be343>`_.
+			An example can be seen at this `gist <https://gist.github.com/NSDCars5/e7b9af826c8055e6949ea9092e3be343>`_.
 
 			* numpy_array
 
