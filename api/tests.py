@@ -79,7 +79,7 @@ class CustomDemoControllerViewTests(TestCase):
                                 "terminal"], timestamp=self.demo2["timestamp"],
                             token=self.demo2["token"],
                             status=self.demo2["status"])
-  def test_get_redir_user_demo(self):
+    def test_get_redir_user_demo(self):
         payload = {
             "user": {
                 "username": self.demo["username"]
