@@ -64,9 +64,9 @@ class OutputShowcaseCard extends React.Component {
     let headers = [];
     this.state.headers.map((header, index) => {
       if (typeof header == "object") {
-        propsToStore.push({ id: "", label: header["label"] });
+         headers[index] = header["label"];
       } else {
-        propsToStore.push({ id: "", label: header });
+         headers[index] = header;
       }
     });
     return headers;
