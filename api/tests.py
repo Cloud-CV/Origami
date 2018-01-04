@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.contrib.auth.models import User
+from django.contrib.auth import login
+from allauth.socialaccount.models import SocialAccount, SocialToken, SocialApp
 from django.test import TestCase, Client
 import datetime
 import json
@@ -45,7 +47,6 @@ class CustomDemoControllerViewTests(TestCase):
                                 "terminal"], timestamp=self.demo["timestamp"],
                             token=self.demo["token"],
                             status=self.demo["status"])
-
         self.demo2 = {
             "name": "test2",
             "id": 999,
@@ -78,7 +79,30 @@ class CustomDemoControllerViewTests(TestCase):
                                 "terminal"], timestamp=self.demo2["timestamp"],
                             token=self.demo2["token"],
                             status=self.demo2["status"])
-
+    def test_get_redir_user_demo(self):
+        payload = {
+            "user": {
+                "username": self.demo["username"]
+            }
+        }
+        self.client.login(username=payload["user"]["username"], password="password")
+        sapp = SocialApp(provider='github', name='Github', 
+        client_id='<test>',
+        secret='<test>')
+        sapp.save()
+        sacc = SocialAccount(uid=1001, user=self.test_user, provider="github")
+        sacc.save()
+        stoken = SocialToken(app=sapp, account=sacc, token="test_token")
+        stoken.save()
+        response = self.client.post('/accounts/profile', follow=True)
+        first_url, first_response = response.redirect_chain[0]
+        self.assertEqual(first_url, "/login?status=passed&token=test_token&username=testname&user_id=1001")
+        self.client.login(username=payload["user"]["username"], password="password")
+        stoken = SocialToken(app=sapp, account=sacc, token="test_token")
+        stoken.save()
+        response = self.client.post('/accounts/profile', follow=True)
+        first_url, first_response = response.redirect_chain[0]
+        self.assertEqual(first_url, "/login?status=passed&token=test_token&username=testname&user_id=1001")
     def test_get_all_user_demos(self):
         response = self.client.get('/api/demo/user/%d' %
                                    (self.demo["user_id"]))
@@ -86,6 +110,9 @@ class CustomDemoControllerViewTests(TestCase):
         response = responses[0]
         self.assertEqual(response["id"], self.demo["id"])
         self.assertEqual(response["user_id"], self.demo["user_id"])
+        response = self.client.get('/api/demo/user/%d' %
+                                   (1000000001))
+        self.assertEqual(response.status_code, 200)
 
     def test_get_all_demos_by_name(self):
         response = self.client.get('/api/demos/',
@@ -314,6 +341,9 @@ class CustomComponentControllerTests(TestCase):
                          payload["base_component_id"])
         self.assertEqual(json.dumps(response["props"]), payload["props"])
         self.assertEqual(response["user_id"], payload["user_id"])
+        url = '/api/inputcomponent/101/99'
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
 
     def test_get_all_input_component_one_user(self):
         payload = self.input_component
