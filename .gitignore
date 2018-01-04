@@ -41,3 +41,6 @@ django_server/static/bundles/local/*.js
 # Python
 *.pyc
 venv/
+
+# env setup
+origami.env
