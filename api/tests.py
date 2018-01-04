@@ -235,7 +235,7 @@ class CustomComponentControllerTests(TestCase):
             props=self.input_component["props"],
             user_id=self.input_component["user_id"],
             demo=self.input_component["demo"])
-        
+
     def test_get_one_input_component(self):
         payload = self.input_component
         url = '/api/inputcomponent/' + \
