@@ -10,18 +10,14 @@ import AreaGraphOutput from "./AreaGraphOutput/AreaGraphOutput";
 
 import TextOutputShowcaseCard from "./TextOutput/TextOutputShowcaseCard";
 import ImageOutputShowcaseCard from "./ImageOutput/ImageOutputShowcaseCard";
-import BarGraphOutputShowCaseCard
-  from "./BarGraphOutput/BarGraphOutputShowcaseCard";
-import ScatterGraphOutputShowCaseCard
-  from "./ScatterGraphOutput/ScatterGraphOutputShowcaseCard";
-import PieChartOutputShowCaseCard
-  from "./PieChartOutput/PieChartOutputShowcaseCard";
-import AreaGraphOutputShowCaseCard
-  from "./AreaGraphOutput/AreaGraphOutputShowcaseCard";
+import BarGraphOutputShowCaseCard from "./BarGraphOutput/BarGraphOutputShowcaseCard";
+import ScatterGraphOutputShowCaseCard from "./ScatterGraphOutput/ScatterGraphOutputShowcaseCard";
+import PieChartOutputShowCaseCard from "./PieChartOutput/PieChartOutputShowcaseCard";
+import AreaGraphOutputShowCaseCard from "./AreaGraphOutput/AreaGraphOutputShowcaseCard";
 
 export function getOutputComponentById(id, props, calling_context, data) {
   let headers = [];
-    props.map((header, index) => {
+  props.map((header, index) => {
     headers[index] = header;
   });
   switch (id) {

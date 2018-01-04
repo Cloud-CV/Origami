@@ -12,7 +12,8 @@ class OutputShowcaseCard extends React.Component {
     this.demoModel = props.demoProps.demoModel;
     this.user = props.demoProps.user;
     this.outputComponentDemoModel = props.demoProps.outputComponentDemoModel;
-    this.outputComponentDemoModelActions = props.demoProps.outputComponentDemoModelActions;
+    this.outputComponentDemoModelActions =
+      props.demoProps.outputComponentDemoModelActions;
     this.forwardAddress = props.demoProps.forwardAddress;
     this.forwardAddressAlternate = props.demoProps.forwardAddressAlternate;
     this.showModifyDialog = this.showModifyDialog.bind(this);
@@ -62,11 +63,10 @@ class OutputShowcaseCard extends React.Component {
   getHeaders() {
     let headers = [];
     this.state.headers.map((header, index) => {
-    if(typeof header=='object'){
-       propsToStore.push({id:"",label: header["label"]});
-      }
-    else{
-       propsToStore.push({id:"",label: header});
+      if (typeof header == "object") {
+        propsToStore.push({ id: "", label: header["label"] });
+      } else {
+        propsToStore.push({ id: "", label: header });
       }
     });
     return headers;
