@@ -25,7 +25,7 @@ origami-lib registration requires a TOKEN from the Origami webapp.
 This TOKEN can be copied from the registration page of the application.
 Or by clicking Get Token on the app on user profile page.
 
-For a complete example, see this `Gist <https://gist.github.com/tocttou/021c51a9055dea0ac002b7657c01fc25>`_.
+For a complete example, see this `Gist <https://gist.github.com/NSDCars5/56f3049286731373640b2f3afad88f28>`_.
 origami.py is imported to the launcher python script::
 
 	from origami import origami
@@ -61,7 +61,7 @@ Input functions
 		Text Input Component
 
 		Text Image Input Component
-		An example can bee seen at this `gist <https://gist.github.com/tocttou/ceae739c32855a657546aa8420c4bbb7>`_.
+		An example can bee seen at this `gist <https://gist.github.com/NSDCars5/c63124fa951423a3b4638664d7e3646b>`_.
 
 * *getImageArray()*:
 	Arguments:
@@ -69,11 +69,11 @@ Input functions
 			* file_path
 
 			Returns an array of local paths to the uploaded images. This is the default mode.
-			An example can be seen at this `gist <https://gist.github.com/tocttou/1fd770483294fab36cd17a163e21c4c9>`_.
+			An example can be seen at this `gist <https://gist.github.com/NSDCars5/0d3888bad9ff119f6886f2d338cc4904>`_.
 
 			* numpy_array
 
-			Returns an Array/Tuple of the uploaded images as "numpy array" elements (like the image objects used in OpenCV) An example can be seen at this `gist <https://gist.github.com/AvaisP/85b74c1a76c79bae0003c0a685b7eb95>`_.
+			Returns an Array/Tuple of the uploaded images as "numpy array" elements (like the image objects used in OpenCV) An example can be seen at this `gist <https://gist.github.com/NSDCars5/887d50defd21dabf85cc02bdd80211c6>`_.
 	
 	Returns:
 		Array of "local path of images" in text obtained after saving images to disk receievd from Origami webapp.
@@ -82,7 +82,7 @@ Input functions
 		Image Input Component
 
 		Text Image Input Component
-		An example can be seen at this `gist <https://gist.github.com/tocttou/1fd770483294fab36cd17a163e21c4c9>`_.
+		An example can be seen at this `gist <https://gist.github.com/NSDCars5/0d3888bad9ff119f6886f2d338cc4904>`_.
 
 * Hybrid components that require multiple types of Input (like Text Image input component)
 
@@ -106,7 +106,7 @@ Output functions
 
 	This function works with:
 		Text Output Component
-		An example can bee seen at this `gist <https://gist.github.com/tocttou/da35d86376f134d232907d626bccee9e>`_.
+		An example can bee seen at this `gist <https://gist.github.com/NSDCars5/e192457a3f6dffc16c9be83ea10826e5>`_.
 
 * *sendImageArray()*
 	origami.sendImageArray() injects an array of images into fields in Output component.
@@ -120,13 +120,13 @@ Output functions
 
 			Array/Tuple of "local path of images on the disk" in text
 
-			An example can be seen at this `gist <https://gist.github.com/tocttou/591d28bb89641ba7b94783687be65fdb>`_.
+			An example can be seen at this `gist <https://gist.github.com/NSDCars5/e7b9af826c8055e6949ea9092e3be343>`_.
 
 			* numpy_array
 
 			Array/Tuple of "numpy array" elements (like the image objects used in OpenCV)
 
-			An example can be seen at this `gist <https://gist.github.com/tocttou/58ef4c77d06c0190443ec721e1a233d4>`_.
+			An example can be seen at this `gist <https://gist.github.com/NSDCars5/d791ddf3afcbf377ba55cc8c87556f24>`_.
 
 	Returns:
 		None
@@ -149,7 +149,7 @@ Output functions
 		y: INTEGER
 		'x' and 'y' correspond to X-Axis and Y-Axis on the graph.
 
-		An example can be seen at this `gist <https://gist.github.com/tocttou/f82f730be453f872395c5f30df89b763>`_.
+		An example can be seen at this `gist <https://gist.github.com/NSDCars5/ed9c7b3ee0745ea746142da4629d9cb3>`_.
 
 	* Scatter Graph
 
@@ -157,7 +157,7 @@ Output functions
 		y: INTEGER
 		'x' and 'y' correspond to X-Axis and Y-Axis on the graph.
 
-		An example can be seen at this `gist <https://gist.github.com/tocttou/f82f730be453f872395c5f30df89b763>`_.
+		An example can be seen at this `gist <https://gist.github.com/NSDCars5/ed9c7b3ee0745ea746142da4629d9cb3>`_.
 
 	* Area Graph
 
@@ -165,7 +165,7 @@ Output functions
 		y: INTEGER
 		'x' and 'y' correspond to X-Axis and Y-Axis on the graph.
 
-		An example can be seen at this `gist <https://gist.github.com/tocttou/f82f730be453f872395c5f30df89b763>`_.
+		An example can be seen at this `gist <https://gist.github.com/NSDCars5/ed9c7b3ee0745ea746142da4629d9cb3>`_.
 
 	* Pie Chart
 
@@ -173,7 +173,7 @@ Output functions
 		y: INTEGER
 		'x' correponds to the sectio name, 'y' correponds to share of that section in the pie.
 
-		An example can be seen at this `gist <https://gist.github.com/tocttou/c0885ce4077d972765b00c56f79b5445>`_.
+		An example can be seen at this `gist <https://gist.github.com/NSDCars5/ed9c7b3ee0745ea746142da4629d9cb3>`_.
 
 	Returns:
 		None
@@ -205,4 +205,4 @@ Tick the Show Terminal of demo page checkbox here.
 
 	This function works with:
 		All components
-		An example can bee seen at this `gist <https://gist.github.com/tocttou/403196805e33af9d7fe0900e7ee5c4c2>`_.
+		An example can bee seen at this `gist <https://gist.github.com/NSDCars5/efbb52b06a3a44b810452b5f6b00c4cc>`_.

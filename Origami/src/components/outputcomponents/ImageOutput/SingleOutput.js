@@ -30,28 +30,38 @@ class singleOutput extends React.Component {
         id={`output-text-${this.props.index}`}
       >
         <div className="content">
-          <div className="header">{this.props.header}</div>
+          <div className="header">
+            {typeof this.props.header == "object"
+              ? this.props.header["label"]
+              : this.props.header}
+          </div>
         </div>
         <div className="content">
           <div className="ui small feed">
             <div className="event">
               <div className="content">
                 <div className="center aligned summary">
-                  {this.props.data
-                    ? <img
-                        className="ui centered center aligned fluid large image origami-demo-output-image"
-                        style={{ cursor: "pointer" }}
-                        src={this.props.data}
-                        onClick={this.showImageFull}
-                      />
-                    : <LinearProgress mode="indeterminate" />}
+                  {this.props.data ? (
+                    <img
+                      className="ui centered center aligned fluid large image origami-demo-output-image"
+                      style={{ cursor: "pointer" }}
+                      src={this.props.data}
+                      onClick={this.showImageFull}
+                    />
+                  ) : (
+                    <LinearProgress mode="indeterminate" />
+                  )}
                 </div>
               </div>
             </div>
           </div>
         </div>
         <Dialog
-          title={this.props.header}
+          title={
+            typeof this.props.header == "object"
+              ? this.props.header["label"]
+              : this.props.header
+          }
           modal={false}
           open={this.state.open}
           autoScrollBodyContent

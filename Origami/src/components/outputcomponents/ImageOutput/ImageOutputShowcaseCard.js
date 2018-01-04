@@ -2,8 +2,7 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { browserHistory } from "react-router";
 import CustomCard from "../../stateless/cards";
-import OutputShowcaseModifyDialog
-  from "../BaseOutputComponent/OutputShowcaseModifyDialog";
+import OutputShowcaseModifyDialog from "../BaseOutputComponent/OutputShowcaseModifyDialog";
 import OutputShowcaseCard from "../BaseOutputComponent/OutputShowcaseCard.js";
 import ImageOutputPreview from "./ImageOutputPreview";
 import toastr from "toastr";
@@ -14,7 +13,8 @@ class ImageOutputShowcaseCard extends OutputShowcaseCard {
     let initHeaders = [];
     if (props.demoProps.outputComponentDemoModel.base_component_id === 2) {
       initHeaders = props.demoProps.outputComponentDemoModel.props;
-      this.selected = props.demoProps.outputComponentDemoModel.base_component_id ===
+      this.selected =
+        props.demoProps.outputComponentDemoModel.base_component_id ===
         props.demoProps.selected;
     }
     this.state = {
@@ -31,7 +31,11 @@ class ImageOutputShowcaseCard extends OutputShowcaseCard {
     } else {
       let propsToStore = [];
       this.state.headers.map(header => {
-        propsToStore.push(header);
+        if (typeof header == "object") {
+          propsToStore.push({ id: "", label: header["label"] });
+        } else {
+          propsToStore.push({ id: "", label: header });
+        }
       });
       this.outputComponentDemoModelActions
         .updateOutputComponentModel({
@@ -84,7 +88,7 @@ class ImageOutputShowcaseCard extends OutputShowcaseCard {
             }
           ]}
         />
-        {this.state.modifyDialogDisplay &&
+        {this.state.modifyDialogDisplay && (
           <OutputShowcaseModifyDialog
             functions={{
               updateHeaders: this.updateHeaders,
@@ -92,15 +96,17 @@ class ImageOutputShowcaseCard extends OutputShowcaseCard {
               getHeaders: this.getHeaders
             }}
             title="Modify Image Output Component"
-          />}
+          />
+        )}
 
-        {this.state.previewDialogDisplay &&
+        {this.state.previewDialogDisplay && (
           <ImageOutputPreview
             functions={{
               getHeaders: this.getHeaders,
               hidePreviewDialog: this.hidePreviewDialog
             }}
-          />}
+          />
+        )}
       </div>
     );
   }

@@ -30,8 +30,13 @@ class AreaGraphOutputShowcaseCard extends OutputShowcaseCard {
       browserHistory.push("/");
     } else {
       let propsToStore = [];
-      this.state.headers.map(header => {
-        propsToStore.push(header);
+      this.state.headers.map(header => {        
+      if(typeof header=='object'){
+       propsToStore.push({id:"",label: header["label"]});
+      }
+      else{
+       propsToStore.push({id:"",label: header});
+       }
       });
       this.outputComponentDemoModelActions
         .updateOutputComponentModel({
