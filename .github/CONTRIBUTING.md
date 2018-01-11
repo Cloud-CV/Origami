@@ -25,14 +25,14 @@ Before you submit code, please talk to us via the issue tracker so we know you a
 
 Coding is done on feature branches and merged into it once stable and reviewed. To submit code, follow these steps:
 
-## 1. Create a new branch off of development. Select a descriptive branch name.
+### 1. Create a new branch off of development. Select a descriptive branch name.
 
         git fetch upstream
         git checkout master
         git merge upstream/master
         git checkout -b your-branch-name
 
-## 2. Commit and push code to your branch:
+### 2. Commit and push code to your branch:
 
 Commits should be self-contained and contain a descriptive commit message
 Please ensure that your code is well tested
@@ -44,7 +44,7 @@ Run the following command before creating the pull request:
  If you have more than one commits in a single pull request make sure you squash your commits afterwards.
  When you're submitting a PR for a UI-related issue, it would be preferred if you add a screenshot of your change.
             
-## 3. Creating a Pull Request
+### 3. Creating a Pull Request
 
  On your Github fork, select your branch and click “New pull request”. Select “master” as the base branch and your branch in the “compare” dropdown.
  
