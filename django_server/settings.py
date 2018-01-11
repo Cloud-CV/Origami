@@ -167,6 +167,8 @@ WEBPACK_LOADER = {
 }
 
 SITE_ID = 1
+if DEBUG :
+    ACCOUNT_UNIQUE_EMAIL=False
 
 CHANNEL_LAYERS = {
     "default": {
