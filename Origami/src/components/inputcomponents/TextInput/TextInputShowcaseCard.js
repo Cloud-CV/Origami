@@ -60,7 +60,7 @@ class TextInputShowcaseCard extends InputShowcaseCard {
 
   render() {
     return (
-      <div>
+      <div className="col-md-5 pull-left">
         <CustomCard
           header="Text Input"
           width="five"
@@ -86,7 +86,7 @@ class TextInputShowcaseCard extends InputShowcaseCard {
         {this.state.modifyDialogDisplay &&
           <InputShowcaseModifyDialog
             functions={{
-              updateLabels: this.updateLabels,
+              updateLabels: this.props.updateLabels,
               hideModifyDialog: this.hideModifyDialog,
               getLabels: this.getLabels
             }}

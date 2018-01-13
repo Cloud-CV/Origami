@@ -60,7 +60,7 @@ class ImageInputShowcaseCard extends InputShowcaseCard {
 
   render() {
     return (
-      <div>
+      <div className="col-md-5 pull-right">
         <CustomCard
           header="Image Input"
           width="five"

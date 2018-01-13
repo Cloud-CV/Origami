@@ -3,6 +3,8 @@ import { PropTypes } from "prop-types";
 import TextInputShowcaseCard from "./TextInput/TextInputShowcaseCard";
 import TypeInput from "./BaseInputComponent/TypeInput";
 import ImageInputShowcaseCard from "./ImageInput/ImageInputShowcaseCard";
+import TextInputPreview from "./TextInput/TextInputPreview";
+import ImageInputPreview from "./ImageInput/ImageInputPreview";
 
 export function getInputComponentById(
   id,
@@ -34,9 +36,16 @@ export function getInputComponentById(
   );
 }
 
-export function getAllInputComponentsForShowcase(data) {
+export function getAllInputComponentsForShowcase(data, imgUpdateLabels, textUpdateLabels, imglabels, textlabels) {
   return [
-    <TextInputShowcaseCard key={Math.random()} demoProps={data} />,
-    <ImageInputShowcaseCard key={Math.random()} demoProps={data} />
+    <TextInputShowcaseCard key={Math.random()} demoProps={data} labels={imglabels} updateLabels={imgUpdateLabels}/>,
+    <ImageInputShowcaseCard key={Math.random()} demoProps={data} labels={textlabels} updateLabels={textUpdateLabels}/>
+  ];
+}
+
+export function getAllPreviewsForShowcase(imgLabels, textLabels){
+  return [
+    <TextInputPreview functions={{getLabels: textLabels, hidePreviewDialog: () => {1}}}/>,
+    <ImageInputPreview functions={{getLabels: imgLabels, hidePreviewDialog: () => {1}}}/>
   ];
 }

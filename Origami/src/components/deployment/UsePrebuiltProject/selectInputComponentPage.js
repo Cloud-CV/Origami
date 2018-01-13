@@ -13,6 +13,8 @@ import {
 import { Step, Stepper, StepLabel } from "material-ui/Stepper";
 import { grey900 } from "material-ui/styles/colors";
 import toastr from "toastr";
+import RaisedButton from "material-ui/RaisedButton";
+import Dialog from "material-ui/Dialog";
 
 toastr.options.closeButton = true;
 
@@ -20,12 +22,34 @@ class SelectInputComponentPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      imglabels: [],
+      textlabels: [],
       user_id: parseInt(localStorage.getItem("user_id"), 10),
       inputComponentDemoModel: {},
-      outputComponentStepperHighlight: false
+      outputComponentStepperHighlight: false,
+      showPreview: "Preview"
     };
+    this.togglePreview = this.togglePreview.bind(this);
+    this.updateImgLabels = this.updateImgLabels.bind(this);
+    this.updateTextLabels = this.updateTextLabels.bind(this);
   }
-
+  
+  updateImgLabels(data) {
+    let dataToUpdate = [];
+    data.map(value => {
+      dataToUpdate.push(value);
+    });
+    this.setState({ imglabels: dataToUpdate });
+    console.log("Update Called");
+  }
+  updateTextLabels(data) {
+    let dataToUpdate = [];
+    data.map(value => {
+      dataToUpdate.push(value);
+    });
+    this.setState({ textlabels: dataToUpdate });
+    console.log("Update Called");
+  }
   componentWillMount() {
     getComponentDeployed(this.state.user_id, this.props.params.repoId, "input")
       .then(inputComponentSeedData => {
@@ -63,6 +87,7 @@ class SelectInputComponentPage extends React.Component {
       });
     }
   }
+  
 
   render() {
     document.body.scrollTop = (document.documentElement.scrollTop = 0);
@@ -118,7 +143,10 @@ class SelectInputComponentPage extends React.Component {
                   forwardAddress: `/ngh/user/${this.props.nonghDemoModel.name}/${this.props.nonghDemoModel.id}/outputcomponent`,
                   params: this.props.params,
                   selected: this.state.inputComponentDemoModel.base_component_id
-                }).map((showcasecard, index) => showcasecard)}
+                }, this.updateImgLabels, this.updateTextLabels, this.state.imglabels, this.state.textlabels).map((showcasecard, index) => showcasecard)}
+                {
+                <RaisedButton label={this.state.showPreview} secondary={true} onClick={this.showPreview}/>
+              }
               </div>
             </div>
           </div>

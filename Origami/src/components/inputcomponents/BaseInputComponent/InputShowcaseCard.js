@@ -5,7 +5,6 @@ class InputShowcaseCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      labels: [""],
       modifyDialogDisplay: false,
       previewDialogDisplay: false
     };
@@ -18,7 +17,7 @@ class InputShowcaseCard extends React.Component {
     this.getLabelRealLength = this.getLabelRealLength.bind(this);
     this.showPreviewDialog = this.showPreviewDialog.bind(this);
     this.updateInputComponentModel = this.updateInputComponentModel.bind(this);
-    this.updateLabels = this.updateLabels.bind(this);
+    this.updateLabels = props.updateLabels.bind(this);
     this.getLabels = this.getLabels.bind(this);
     this.hideModifyDialog = this.hideModifyDialog.bind(this);
     this.hidePreviewDialog = this.hidePreviewDialog.bind(this);
@@ -40,25 +39,18 @@ class InputShowcaseCard extends React.Component {
     this.setState({ previewDialogDisplay: false });
   }
 
-  updateLabels(data) {
-    let dataToUpdate = [];
-    data.map(value => {
-      dataToUpdate.push(value);
-    });
-    this.setState({ labels: dataToUpdate });
-  }
+  
 
   getLabelRealLength() {
     let counter = 0;
-    this.state.labels.map(() => {
+    this.props.labels.map(() => {
       counter += 1;
     });
     return counter;
   }
-
   getLabels() {
     let labels = [];
-    this.state.labels.map((label, index) => {
+    this.props.labels.map((label, index) => {
       if (typeof label === "object") {
         label = "";
       }
