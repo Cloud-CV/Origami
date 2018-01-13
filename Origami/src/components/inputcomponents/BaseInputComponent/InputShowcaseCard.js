@@ -39,8 +39,6 @@ class InputShowcaseCard extends React.Component {
     this.setState({ previewDialogDisplay: false });
   }
 
-  
-
   getLabelRealLength() {
     let counter = 0;
     this.props.labels.map(() => {

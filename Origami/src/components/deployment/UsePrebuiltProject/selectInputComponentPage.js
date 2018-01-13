@@ -6,7 +6,7 @@ import { bindActionCreators } from "redux";
 import * as nonghDemoModelActions from "../../../actions/nonghDemoModelActions";
 import * as inputComponentDemoModelActions
   from "../../../actions/inputComponentDemoModelActions";
-import { getAllInputComponentsForShowcase } from "../../inputcomponents";
+import { getAllInputComponentsForShowcase, getAllPreviewsForShowcase } from "../../inputcomponents";
 import {
   getComponentDeployed
 } from "../../../api/CommonLocal/getComponentDeployed";
@@ -15,6 +15,7 @@ import { grey900 } from "material-ui/styles/colors";
 import toastr from "toastr";
 import RaisedButton from "material-ui/RaisedButton";
 import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
 
 toastr.options.closeButton = true;
 
@@ -27,11 +28,13 @@ class SelectInputComponentPage extends React.Component {
       user_id: parseInt(localStorage.getItem("user_id"), 10),
       inputComponentDemoModel: {},
       outputComponentStepperHighlight: false,
-      showPreview: "Preview"
+      showPreview: false
     };
     this.togglePreview = this.togglePreview.bind(this);
     this.updateImgLabels = this.updateImgLabels.bind(this);
     this.updateTextLabels = this.updateTextLabels.bind(this);
+    this.getImgLabels = this.getImgLabels.bind(this);
+    this.getTextLabels = this.getTextLabels.bind(this);
   }
   
   updateImgLabels(data) {
@@ -88,8 +91,40 @@ class SelectInputComponentPage extends React.Component {
     }
   }
   
+  getImgLabels() {
+    let labels = [];
+    this.state.imglabels.map((label, index) => {
+      if (typeof label === "object") {
+        label = "";
+      }
+      labels[index] = label;
+    });
+    return labels;
+  }
 
+  getTextLabels() {
+    let labels = [];
+    this.state.textlabels.map((label, index) => {
+      if (typeof label === "object") {
+        label = "";
+      }
+      labels[index] = label;
+    });
+    return labels;
+  }
+  togglePreview(){
+    this.setState({showPreview: !this.state.showPreview});
+  }
   render() {
+    const actions = [
+      <FlatButton
+        key={0}
+        label="Ok"
+        primary
+        keyboardFocused
+        onTouchTap={this.togglePreview}
+      />
+    ];
     document.body.scrollTop = (document.documentElement.scrollTop = 0);
 
     return (
@@ -135,7 +170,8 @@ class SelectInputComponentPage extends React.Component {
                 className="ui three padded column stackable grid"
                 style={{ marginLeft: "3%", minHeight: "90vh" }}
               >
-                {getAllInputComponentsForShowcase({
+              
+                  { !this.state.showPreview && getAllInputComponentsForShowcase({
                   demoModel: this.props.nonghDemoModel,
                   user: this.props.user,
                   inputComponentDemoModel: this.state.inputComponentDemoModel,
@@ -144,9 +180,20 @@ class SelectInputComponentPage extends React.Component {
                   params: this.props.params,
                   selected: this.state.inputComponentDemoModel.base_component_id
                 }, this.updateImgLabels, this.updateTextLabels, this.state.imglabels, this.state.textlabels).map((showcasecard, index) => showcasecard)}
-                {
-                <RaisedButton label={this.state.showPreview} secondary={true} onClick={this.showPreview}/>
-              }
+              
+                <RaisedButton label={"Preview"} secondary={true} onClick={this.togglePreview}/>
+                {this.state.showPreview &&
+                  <Dialog
+                  title="Preview"
+                  actions={actions}
+                  modal
+                  autoScrollBodyContent
+                  open={this.state.showPreview}
+                  >
+                  {getAllPreviewsForShowcase(this.getImgLabels, this.getTextLabels).map((preview, index) => preview)}
+                  </Dialog>
+
+                }
               </div>
             </div>
           </div>

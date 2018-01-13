@@ -36,16 +36,16 @@ export function getInputComponentById(
   );
 }
 
-export function getAllInputComponentsForShowcase(data, imgUpdateLabels, textUpdateLabels, imglabels, textlabels) {
+export function getAllInputComponentsForShowcase(data, imgUpdateLabels, textUpdateLabels, imagelabels, textlabels) {
   return [
-    <TextInputShowcaseCard key={Math.random()} demoProps={data} labels={imglabels} updateLabels={imgUpdateLabels}/>,
-    <ImageInputShowcaseCard key={Math.random()} demoProps={data} labels={textlabels} updateLabels={textUpdateLabels}/>
+    <TextInputShowcaseCard key={Math.random()} demoProps={data} labels={textlabels} updateLabels={textUpdateLabels}/>,
+    <ImageInputShowcaseCard key={Math.random()} demoProps={data} labels={imagelabels} updateLabels={imgUpdateLabels}/>
   ];
 }
 
 export function getAllPreviewsForShowcase(imgLabels, textLabels){
   return [
-    <TextInputPreview functions={{getLabels: textLabels, hidePreviewDialog: () => {1}}}/>,
-    <ImageInputPreview functions={{getLabels: imgLabels, hidePreviewDialog: () => {1}}}/>
+    <TextInputPreview key={Math.random()} functions={{getLabels: textLabels, hidePreviewDialog: () => {1}}}/>,
+    <ImageInputPreview key={Math.random()} functions={{getLabels: imgLabels, hidePreviewDialog: () => {1}}}/>
   ];
 }
