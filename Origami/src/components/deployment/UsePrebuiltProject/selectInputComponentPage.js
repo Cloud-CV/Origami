@@ -181,7 +181,6 @@ class SelectInputComponentPage extends React.Component {
                   selected: this.state.inputComponentDemoModel.base_component_id
                 }, this.updateImgLabels, this.updateTextLabels, this.state.imglabels, this.state.textlabels).map((showcasecard, index) => showcasecard)}
               
-                <RaisedButton label={"Preview"} secondary={true} onClick={this.togglePreview}/>
                 {this.state.showPreview &&
                   <Dialog
                   title="Preview"
@@ -194,7 +193,11 @@ class SelectInputComponentPage extends React.Component {
                   </Dialog>
 
                 }
+                <div className="row" style={{marginTop: "-30vh", height: "6vh", minHeight: "6vh", width: "100%", marginLeft: "37%"}}>
+              <RaisedButton label={"Preview"} secondary={true} onClick={this.togglePreview}/>
               </div>
+              </div>
+              
             </div>
           </div>
         </div>
