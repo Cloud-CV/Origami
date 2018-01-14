@@ -1,14 +1,14 @@
 /*eslint-disable react/forbid-prop-types */
-import React from "react";
-import { PropTypes } from "prop-types";
-import LinearProgress from "material-ui/LinearProgress";
-import Dialog from "material-ui/Dialog";
+import React from 'react';
+import { PropTypes } from 'prop-types';
+import LinearProgress from 'material-ui/LinearProgress';
+import Dialog from 'material-ui/Dialog';
 
 class singleOutput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false
+      open: false,
     };
     this.showImageFull = this.showImageFull.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -26,13 +26,13 @@ class singleOutput extends React.Component {
     return (
       <div
         className="ui card centered origami-demo-output-image-component"
-        style={{ height: "100%", width: "75%" }}
+        style={{ height: '100%', width: '75%' }}
         id={`output-text-${this.props.index}`}
       >
         <div className="content">
           <div className="header">
-            {typeof this.props.header == "object"
-              ? this.props.header["label"]
+            {typeof this.props.header == 'object'
+              ? this.props.header['label']
               : this.props.header}
           </div>
         </div>
@@ -44,7 +44,7 @@ class singleOutput extends React.Component {
                   {this.props.data ? (
                     <img
                       className="ui centered center aligned fluid large image origami-demo-output-image"
-                      style={{ cursor: "pointer" }}
+                      style={{ cursor: 'pointer' }}
                       src={this.props.data}
                       onClick={this.showImageFull}
                     />
@@ -58,8 +58,8 @@ class singleOutput extends React.Component {
         </div>
         <Dialog
           title={
-            typeof this.props.header == "object"
-              ? this.props.header["label"]
+            typeof this.props.header == 'object'
+              ? this.props.header['label']
               : this.props.header
           }
           modal={false}
@@ -71,7 +71,7 @@ class singleOutput extends React.Component {
             <img
               className="ui centered center aligned fluid large image"
               src={this.props.data}
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
             />
           </div>
         </Dialog>
@@ -83,7 +83,7 @@ class singleOutput extends React.Component {
 singleOutput.propTypes = {
   header: PropTypes.string.isRequired,
   data: PropTypes.any,
-  index: PropTypes.number.isRequired
+  index: PropTypes.number.isRequired,
 };
 
 export default singleOutput;

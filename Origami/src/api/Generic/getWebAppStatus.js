@@ -1,5 +1,5 @@
-import request from "superagent";
-const appConfig = require("../../../outCalls/config");
+import request from 'superagent';
+const appConfig = require('../../../outCalls/config');
 
 export function getWebAppStatus(webappaddress) {
   let URL = `http://${webappaddress}:${appConfig.CLIENT_PORT}/alive`;
@@ -8,15 +8,12 @@ export function getWebAppStatus(webappaddress) {
       if (err) {
         reject(err);
       } else {
-        resolve("OK");
+        resolve('OK');
       }
     });
-    setTimeout(
-      () => {
-        req.abort();
-        reject("Timeout!");
-      },
-      4000
-    );
+    setTimeout(() => {
+      req.abort();
+      reject('Timeout!');
+    }, 4000);
   });
 }

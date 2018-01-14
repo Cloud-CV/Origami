@@ -1,15 +1,15 @@
 /*eslint-disable react/forbid-prop-types */
-import React from "react";
-import { PropTypes } from "prop-types";
-import Dialog from "material-ui/Dialog";
-import { VictoryArea, VictoryChart } from "victory";
+import React from 'react';
+import { PropTypes } from 'prop-types';
+import Dialog from 'material-ui/Dialog';
+import { VictoryArea, VictoryChart } from 'victory';
 
 class singleOutput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
-      data: []
+      data: [],
     };
     this.showGraphFull = this.showGraphFull.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -42,13 +42,13 @@ class singleOutput extends React.Component {
       <div
         className="ui card centered"
         id={`output-text-${this.props.index}`}
-        style={{ cursor: "pointer" }}
+        style={{ cursor: 'pointer' }}
         onClick={this.showGraphFull}
       >
         <div className="content">
           <div className="header">
-            {typeof this.props.header == "object"
-              ? this.props.header["label"]
+            {typeof this.props.header == 'object'
+              ? this.props.header['label']
               : this.props.header}
           </div>
         </div>
@@ -61,12 +61,12 @@ class singleOutput extends React.Component {
                     <VictoryArea
                       style={{
                         data: {
-                          fill: "tomato"
-                        }
+                          fill: 'tomato',
+                        },
                       }}
                       data={this.state.data}
-                      x={"x"}
-                      y={"y"}
+                      x={'x'}
+                      y={'y'}
                     />
                   </VictoryChart>
                 </div>
@@ -77,8 +77,8 @@ class singleOutput extends React.Component {
 
         <Dialog
           title={
-            typeof this.props.header == "object"
-              ? this.props.header["label"]
+            typeof this.props.header == 'object'
+              ? this.props.header['label']
               : this.props.header
           }
           modal={false}
@@ -91,12 +91,12 @@ class singleOutput extends React.Component {
               <VictoryArea
                 style={{
                   data: {
-                    fill: "tomato"
-                  }
+                    fill: 'tomato',
+                  },
                 }}
                 data={this.state.data}
-                x={"x"}
-                y={"y"}
+                x={'x'}
+                y={'y'}
               />
             </VictoryChart>
           </div>
@@ -109,7 +109,7 @@ class singleOutput extends React.Component {
 singleOutput.propTypes = {
   header: PropTypes.string.isRequired,
   data: PropTypes.any,
-  index: PropTypes.number.isRequired
+  index: PropTypes.number.isRequired,
 };
 
 export default singleOutput;

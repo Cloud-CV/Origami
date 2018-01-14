@@ -1,6 +1,6 @@
 /*eslint-disable react/forbid-prop-types */
-import React from "react";
-import { PropTypes } from "prop-types";
+import React from 'react';
+import { PropTypes } from 'prop-types';
 
 const singleOutput = props => {
   return (
@@ -10,8 +10,8 @@ const singleOutput = props => {
     >
       <div className="content">
         <div className="header">
-          {typeof props.header == "object"
-            ? props.header["label"]
+          {typeof props.header == 'object'
+            ? props.header['label']
             : props.header}
         </div>
       </div>
@@ -31,7 +31,7 @@ const singleOutput = props => {
 singleOutput.propTypes = {
   header: PropTypes.string.isRequired,
   data: PropTypes.any,
-  index: PropTypes.number.isRequired
+  index: PropTypes.number.isRequired,
 };
 
 export default singleOutput;

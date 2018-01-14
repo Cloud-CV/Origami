@@ -1,13 +1,13 @@
-import React from "react";
-import { PropTypes } from "prop-types";
-import TextField from "material-ui/TextField";
-import RaisedButton from "material-ui/RaisedButton";
+import React from 'react';
+import { PropTypes } from 'prop-types';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 
 class OverloadedHeader extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      elementId: ""
+      elementId: '',
     };
     this.headerLength = props.data.headerLength;
     this.addLocalHeadersToParent = props.data.addLocalHeaders;
@@ -19,7 +19,7 @@ class OverloadedHeader extends React.Component {
   }
 
   componentDidMount() {
-    this.addLocalHeadersToParent(this.headerLength, "");
+    this.addLocalHeadersToParent(this.headerLength, '');
   }
 
   render() {
@@ -28,14 +28,16 @@ class OverloadedHeader extends React.Component {
         <TextField
           hintText="Header"
           onChange={e =>
-            this.addLocalHeadersToParent(this.headerLength, e.target.value)}
+            this.addLocalHeadersToParent(this.headerLength, e.target.value)
+          }
         />
         &nbsp;&nbsp;&nbsp;
         <RaisedButton
           label="Delete"
           primary
           onMouseDown={() =>
-            this.deleteLocalHeadersFromParent(this.state.elementId)}
+            this.deleteLocalHeadersFromParent(this.state.elementId)
+          }
         />
       </div>
     );
@@ -43,7 +45,7 @@ class OverloadedHeader extends React.Component {
 }
 
 OverloadedHeader.propTypes = {
-  data: PropTypes.object.isRequired
+  data: PropTypes.object.isRequired,
 };
 
 export default OverloadedHeader;

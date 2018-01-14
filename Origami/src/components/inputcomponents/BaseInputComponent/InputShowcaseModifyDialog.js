@@ -1,10 +1,10 @@
-import React from "react";
-import { PropTypes } from "prop-types";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
-import RaisedButton from "material-ui/RaisedButton";
-import TextField from "material-ui/TextField";
-import OverloadedField from "./OverloadedField";
+import React from 'react';
+import { PropTypes } from 'prop-types';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+import OverloadedField from './OverloadedField';
 
 class InputShowcaseModifyDialog extends React.Component {
   constructor(props, context) {
@@ -14,7 +14,7 @@ class InputShowcaseModifyDialog extends React.Component {
         props.functions.getLabels()
       ),
       labels: props.functions.getLabels(),
-      open: true
+      open: true,
     };
     this.updateLabelsInParent = props.functions.updateLabels;
     this.getLabelsFromParent = props.functions.getLabels;
@@ -34,8 +34,8 @@ class InputShowcaseModifyDialog extends React.Component {
     let tempText = [];
     allLabels.map((label, index) => {
       let currentIndex = allLabels.findIndex(x => x === label);
-      if (typeof label === "object") {
-        label = "";
+      if (typeof label === 'object') {
+        label = '';
       }
       tempText[currentIndex] = (
         <div>
@@ -78,7 +78,7 @@ class InputShowcaseModifyDialog extends React.Component {
         data={{
           labelLength: this.state.labels.length,
           addLocalLabels: this.addLocalLabels,
-          deleteLocalLabels: this.deleteLocalLabels
+          deleteLocalLabels: this.deleteLocalLabels,
         }}
       />
     );
@@ -113,7 +113,7 @@ class InputShowcaseModifyDialog extends React.Component {
         label="Cancel"
         primary
         onTouchTap={this.handleCancel}
-      />
+      />,
     ];
     return (
       <Dialog
@@ -125,14 +125,14 @@ class InputShowcaseModifyDialog extends React.Component {
       >
         {this.state.textFields.map(field => [
           field,
-          <br key={Math.random()} />
+          <br key={Math.random()} />,
         ])}
         <RaisedButton
           key={Math.random()}
           label="Add Field"
           primary
           onClick={() => this.addMoreTextFields()}
-          style={{ marginTop: "2%" }}
+          style={{ marginTop: '2%' }}
         />
       </Dialog>
     );
@@ -141,7 +141,7 @@ class InputShowcaseModifyDialog extends React.Component {
 
 InputShowcaseModifyDialog.propTypes = {
   functions: PropTypes.object.isRequired,
-  title: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
 };
 
 export default InputShowcaseModifyDialog;

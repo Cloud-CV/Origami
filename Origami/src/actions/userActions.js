@@ -1,5 +1,5 @@
-import * as types from "./actionTypes";
-import userApi from "../api/Github/userApi";
+import * as types from './actionTypes';
+import userApi from '../api/Github/userApi';
 
 export function enableUserLoad(user) {
   let userJSON = JSON.parse(user);

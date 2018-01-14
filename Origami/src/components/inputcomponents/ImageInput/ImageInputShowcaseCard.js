@@ -1,12 +1,11 @@
-import React from "react";
-import { PropTypes } from "prop-types";
-import { browserHistory } from "react-router";
-import CustomCard from "../../stateless/cards";
-import InputShowcaseModifyDialog
-  from "../BaseInputComponent/InputShowcaseModifyDialog";
-import ImageInputPreview from "./ImageInputPreview";
-import toastr from "toastr";
-import InputShowcaseCard from "../BaseInputComponent/InputShowcaseCard.js";
+import React from 'react';
+import { PropTypes } from 'prop-types';
+import { browserHistory } from 'react-router';
+import CustomCard from '../../stateless/cards';
+import InputShowcaseModifyDialog from '../BaseInputComponent/InputShowcaseModifyDialog';
+import ImageInputPreview from './ImageInputPreview';
+import toastr from 'toastr';
+import InputShowcaseCard from '../BaseInputComponent/InputShowcaseCard.js';
 
 class ImageInputShowcaseCard extends InputShowcaseCard {
   constructor(props) {
@@ -16,8 +15,8 @@ class ImageInputShowcaseCard extends InputShowcaseCard {
     this.others = [];
     try {
       this.init.map((prop, index) => {
-        if (prop["id"] === "3") {
-          labels.push(prop["label"]);
+        if (prop['id'] === '3') {
+          labels.push(prop['label']);
         } else {
           this.others.push(prop);
         }
@@ -28,29 +27,29 @@ class ImageInputShowcaseCard extends InputShowcaseCard {
     this.state = {
       labels: labels,
       modifyDialogDisplay: false,
-      previewDialogDisplay: false
+      previewDialogDisplay: false,
     };
   }
 
   updateInputComponentModel() {
     if (Object.keys(this.demoModel).length === 0) {
-      toastr.error("Registration info not found! Register again");
-      browserHistory.push("/");
+      toastr.error('Registration info not found! Register again');
+      browserHistory.push('/');
     } else {
       let propsToStore = this.others;
       this.state.labels.map(label => {
-        propsToStore.push({ id: "3", label: label });
+        propsToStore.push({ id: '3', label: label });
       });
       this.inputComponentModelActions
         .updateInputComponentModel({
           id: this.demoModel.id,
           user_id: this.user.id,
           base_component_id: 3,
-          props: propsToStore
+          props: propsToStore,
         })
         .then(() => {
-          if (this.props.demoProps.params.type === "modify") {
-            browserHistory.push("/ngh/user");
+          if (this.props.demoProps.params.type === 'modify') {
+            browserHistory.push('/ngh/user');
           } else {
             browserHistory.push(this.forwardAddress);
           }
@@ -71,42 +70,44 @@ class ImageInputShowcaseCard extends InputShowcaseCard {
           displayData={[`Number of inputs: ${this.getLabelRealLength()}`]}
           buttonData={[
             {
-              label: "Modify",
-              onDeployClick: () => this.showModifyDialog()
+              label: 'Modify',
+              onDeployClick: () => this.showModifyDialog(),
             },
             {
-              label: "Preview",
-              onDeployClick: () => this.showPreviewDialog()
+              label: 'Preview',
+              onDeployClick: () => this.showPreviewDialog(),
             },
             {
-              label: "Save",
-              onDeployClick: () => this.updateInputComponentModel()
-            }
+              label: 'Save',
+              onDeployClick: () => this.updateInputComponentModel(),
+            },
           ]}
         />
-        {this.state.modifyDialogDisplay &&
+        {this.state.modifyDialogDisplay && (
           <InputShowcaseModifyDialog
             functions={{
               updateLabels: this.updateLabels,
               hideModifyDialog: this.hideModifyDialog,
-              getLabels: this.getLabels
+              getLabels: this.getLabels,
             }}
             title="Modify Image Input Component"
-          />}
-        {this.state.previewDialogDisplay &&
+          />
+        )}
+        {this.state.previewDialogDisplay && (
           <ImageInputPreview
             functions={{
               getLabels: this.getLabels,
-              hidePreviewDialog: this.hidePreviewDialog
+              hidePreviewDialog: this.hidePreviewDialog,
             }}
-          />}
+          />
+        )}
       </div>
     );
   }
 }
 
 ImageInputShowcaseCard.propTypes = {
-  demoProps: PropTypes.object.isRequired
+  demoProps: PropTypes.object.isRequired,
 };
 
 export default ImageInputShowcaseCard;

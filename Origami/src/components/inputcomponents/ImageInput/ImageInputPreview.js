@@ -1,9 +1,9 @@
-import React from "react";
-import { PropTypes } from "prop-types";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
-import ImageInput from "./ImageInput";
-import InputPreview from "../BaseInputComponent/InputPreview.js";
+import React from 'react';
+import { PropTypes } from 'prop-types';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import ImageInput from './ImageInput';
+import InputPreview from '../BaseInputComponent/InputPreview.js';
 
 class ImageInputPreview extends InputPreview {
   render() {
@@ -14,7 +14,7 @@ class ImageInputPreview extends InputPreview {
         primary
         keyboardFocused
         onTouchTap={this.handleOk}
-      />
+      />,
     ];
     return (
       <Dialog
@@ -35,7 +35,7 @@ class ImageInputPreview extends InputPreview {
 }
 
 ImageInputPreview.propTypes = {
-  functions: PropTypes.object.isRequired
+  functions: PropTypes.object.isRequired,
 };
 
 export default ImageInputPreview;
