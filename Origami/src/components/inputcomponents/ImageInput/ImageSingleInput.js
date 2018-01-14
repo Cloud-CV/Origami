@@ -23,15 +23,18 @@ const singleInput = props => {
       "www.dropbox.com",
       "dl.dropboxusercontent.com"
     );
-    request.get(url).responseType("blob").end((err, res) => {
-      if (!err) {
-        let blob = new Blob([res.body], {
-          type: "image/png"
-        });
-        props.updateFormData(blob, `input-image-${props.index}`);
-        updateImage(props.index, blob);
-      }
-    });
+    request
+      .get(url)
+      .responseType("blob")
+      .end((err, res) => {
+        if (!err) {
+          let blob = new Blob([res.body], {
+            type: "image/png"
+          });
+          props.updateFormData(blob, `input-image-${props.index}`);
+          updateImage(props.index, blob);
+        }
+      });
   }
 
   return (
@@ -64,7 +67,7 @@ const singleInput = props => {
           </Dropzone>
         </div>
       </div>
-      {appConfig.DROPBOX_API_KEY !== "API_KEY" &&
+      {appConfig.DROPBOX_API_KEY !== "API_KEY" && (
         <div>
           <div className="ui horizontal divider">Or</div>
           <div className="centered row">
@@ -81,7 +84,8 @@ const singleInput = props => {
               </DropboxChooser>
             </div>
           </div>
-        </div>}
+        </div>
+      )}
     </div>
   );
 };

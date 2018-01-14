@@ -4,12 +4,12 @@ import { Link, browserHistory } from "react-router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as nonghDemoModelActions from "../../../actions/nonghDemoModelActions";
-import * as inputComponentDemoModelActions
-  from "../../../actions/inputComponentDemoModelActions";
-import { getAllInputComponentsForShowcase, getAllPreviewsForShowcase } from "../../inputcomponents";
+import * as inputComponentDemoModelActions from "../../../actions/inputComponentDemoModelActions";
 import {
-  getComponentDeployed
-} from "../../../api/CommonLocal/getComponentDeployed";
+  getAllInputComponentsForShowcase,
+  getAllPreviewsForShowcase
+} from "../../inputcomponents";
+import { getComponentDeployed } from "../../../api/CommonLocal/getComponentDeployed";
 import { Step, Stepper, StepLabel } from "material-ui/Stepper";
 import { grey900 } from "material-ui/styles/colors";
 import toastr from "toastr";
@@ -36,7 +36,7 @@ class SelectInputComponentPage extends React.Component {
     this.getImgLabels = this.getImgLabels.bind(this);
     this.getTextLabels = this.getTextLabels.bind(this);
   }
-  
+
   updateImgLabels(data) {
     let dataToUpdate = [];
     data.map(value => {
@@ -60,9 +60,8 @@ class SelectInputComponentPage extends React.Component {
           let dataToSeed = {
             id: JSON.parse(inputComponentSeedData)[0].id,
             user_id: JSON.parse(inputComponentSeedData)[0].user_id,
-            base_component_id: JSON.parse(inputComponentSeedData)[
-              0
-            ].base_component_id,
+            base_component_id: JSON.parse(inputComponentSeedData)[0]
+              .base_component_id,
             props: JSON.parse(inputComponentSeedData)[0].props
           };
           this.setState({ inputComponentDemoModel: dataToSeed });
@@ -90,7 +89,7 @@ class SelectInputComponentPage extends React.Component {
       });
     }
   }
-  
+
   getImgLabels() {
     let labels = [];
     this.state.imglabels.map((label, index) => {
@@ -112,8 +111,8 @@ class SelectInputComponentPage extends React.Component {
     });
     return labels;
   }
-  togglePreview(){
-    this.setState({showPreview: !this.state.showPreview});
+  togglePreview() {
+    this.setState({ showPreview: !this.state.showPreview });
   }
   render() {
     const actions = [
@@ -125,11 +124,10 @@ class SelectInputComponentPage extends React.Component {
         onTouchTap={this.togglePreview}
       />
     ];
-    document.body.scrollTop = (document.documentElement.scrollTop = 0);
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
 
     return (
       <div className="ui relaxed stackable grid fluid">
-
         <div className="ui relaxed stackable grid fluid container">
           <div
             style={{
@@ -160,44 +158,69 @@ class SelectInputComponentPage extends React.Component {
             </div>
 
             <div className="ui horizontal divider row">
-              <span><hr /></span>
+              <span>
+                <hr />
+              </span>
             </div>
 
-            <div
-              className="fifteen wide column stretched stackable centered row"
-            >
+            <div className="fifteen wide column stretched stackable centered row">
               <div
                 className="ui three padded column stackable grid"
                 style={{ marginLeft: "3%", minHeight: "90vh" }}
               >
-              
-                  { !this.state.showPreview && getAllInputComponentsForShowcase({
-                  demoModel: this.props.nonghDemoModel,
-                  user: this.props.user,
-                  inputComponentDemoModel: this.state.inputComponentDemoModel,
-                  inputComponentModelActions: this.props.inputComponentModelActions,
-                  forwardAddress: `/ngh/user/${this.props.nonghDemoModel.name}/${this.props.nonghDemoModel.id}/outputcomponent`,
-                  params: this.props.params,
-                  selected: this.state.inputComponentDemoModel.base_component_id
-                }, this.updateImgLabels, this.updateTextLabels, this.state.imglabels, this.state.textlabels).map((showcasecard, index) => showcasecard)}
-              
-                {this.state.showPreview &&
-                  <Dialog
-                  title="Preview"
-                  actions={actions}
-                  modal
-                  autoScrollBodyContent
-                  open={this.state.showPreview}
-                  >
-                  {getAllPreviewsForShowcase(this.getImgLabels, this.getTextLabels).map((preview, index) => preview)}
-                  </Dialog>
+                {!this.state.showPreview &&
+                  getAllInputComponentsForShowcase(
+                    {
+                      demoModel: this.props.nonghDemoModel,
+                      user: this.props.user,
+                      inputComponentDemoModel: this.state
+                        .inputComponentDemoModel,
+                      inputComponentModelActions: this.props
+                        .inputComponentModelActions,
+                      forwardAddress: `/ngh/user/${
+                        this.props.nonghDemoModel.name
+                      }/${this.props.nonghDemoModel.id}/outputcomponent`,
+                      params: this.props.params,
+                      selected: this.state.inputComponentDemoModel
+                        .base_component_id
+                    },
+                    this.updateImgLabels,
+                    this.updateTextLabels,
+                    this.state.imglabels,
+                    this.state.textlabels
+                  ).map((showcasecard, index) => showcasecard)}
 
-                }
-                <div className="row" style={{marginTop: "-30vh", height: "6vh", minHeight: "6vh", width: "100%", marginLeft: "37%"}}>
-              <RaisedButton label={"Preview"} secondary={true} onClick={this.togglePreview}/>
+                {this.state.showPreview && (
+                  <Dialog
+                    title="Preview"
+                    actions={actions}
+                    modal
+                    autoScrollBodyContent
+                    open={this.state.showPreview}
+                  >
+                    {getAllPreviewsForShowcase(
+                      this.getImgLabels,
+                      this.getTextLabels
+                    ).map((preview, index) => preview)}
+                  </Dialog>
+                )}
+                <div
+                  className="row"
+                  style={{
+                    marginTop: "-30vh",
+                    height: "6vh",
+                    minHeight: "6vh",
+                    width: "100%",
+                    marginLeft: "37%"
+                  }}
+                >
+                  <RaisedButton
+                    label={"Preview"}
+                    primary={true}
+                    onClick={this.togglePreview}
+                  />
+                </div>
               </div>
-              </div>
-              
             </div>
           </div>
         </div>

@@ -16,11 +16,11 @@ class ImageInputPreview extends InputPreview {
       />
     ];
     return (
-        <ImageInput
-          calling_context="preview"
-          labels={this.state.labels}
-          sendAddr=""
-        />
+      <ImageInput
+        calling_context="preview"
+        labels={this.state.labels}
+        sendAddr=""
+      />
     );
   }
 }

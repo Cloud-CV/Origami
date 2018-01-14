@@ -16,11 +16,11 @@ class TextInputPreview extends InputPreview {
       />
     ];
     return (
-        <TextInput
-          calling_context="preview"
-          labels={this.state.labels}
-          sendAddr=""
-        />
+      <TextInput
+        calling_context="preview"
+        labels={this.state.labels}
+        sendAddr=""
+      />
     );
   }
 }
