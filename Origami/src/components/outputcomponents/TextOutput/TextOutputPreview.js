@@ -1,29 +1,11 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
 import TextOutput from "./TextOutput";
 import OutputPreview from "../BaseOutputComponent/OutputPreview.js";
 
 class TextOutputPreview extends OutputPreview {
   render() {
-    const actions = [
-      <FlatButton
-        key={0}
-        label="Ok"
-        primary
-        keyboardFocused
-        onTouchTap={this.handleOk}
-      />
-    ];
     return (
-      <Dialog
-        title="Preview Text Output Component"
-        actions={actions}
-        modal
-        autoScrollBodyContent
-        open={this.state.open}
-      >
         <TextOutput
           headers={this.state.headers}
           calling_context="demo"
@@ -31,7 +13,6 @@ class TextOutputPreview extends OutputPreview {
             "Text Output sent from your code!"
           )}
         />
-      </Dialog>
     );
   }
 }

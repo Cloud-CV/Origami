@@ -6,13 +6,16 @@ import { bindActionCreators } from "redux";
 import * as nonghDemoModelActions from "../../../actions/nonghDemoModelActions";
 import * as outputComponentDemoModelActions
   from "../../../actions/outputComponentDemoModelActions";
-import { getAllOutputComponentsForShowcase } from "../../outputcomponents";
+import { getAllOutputComponentsForShowcase, getAllPreviewsForShowcase } from "../../outputcomponents";
 import {
   getComponentDeployed
 } from "../../../api/CommonLocal/getComponentDeployed";
 import { Step, Stepper, StepLabel } from "material-ui/Stepper";
 import { grey900 } from "material-ui/styles/colors";
 import toastr from "toastr";
+import Dialog from "material-ui/Dialog";
+import RaisedButton from "material-ui/RaisedButton";
+import FlatButton from "material-ui/FlatButton";
 
 toastr.options.closeButton = true;
 
@@ -22,11 +25,16 @@ class SelectOutputComponentPage extends React.Component {
     this.state = {
       user_id: parseInt(localStorage.getItem("user_id"), 10),
       outputComponentDemoModel: {},
-      inputComponentStepperHighlight: false
+      inputComponentStepperHighlight: false,
+      headers: {},
+      showPreview: false
     };
+    this.updateHeaders = this.updateHeaders.bind(this);
+    this.togglePreview = this.togglePreview.bind(this);
   }
 
   componentWillMount() {
+    this.setState({headers: {"areagraph": [], "bargraph": [], "image": [], "piechart": [], "scattergraph": [], "text": [] }});
     getComponentDeployed(
       this.state.user_id,
       this.props.nonghDemoModel.id,
@@ -68,7 +76,57 @@ class SelectOutputComponentPage extends React.Component {
     }
   }
 
+  updateHeaders(data, type) {
+    let dataToUpdate = [];
+    data.map(value => {
+      dataToUpdate.push(value);
+    });
+    var tempdict = Object.assign({}, this.state.headers);
+    tempdict[type]=dataToUpdate;
+    this.setState({ headers: tempdict });
+  }
+  getHeaders(type) {
+    let headers = [];
+    this.state.headers[type].map((header, index) => {
+      if (typeof header == "object") {
+         headers[index] = header["label"];
+      } else {
+         headers[index] = header;
+      }
+    });
+    return headers;
+  }
+  
+  togglePreview(){
+    this.setState({showPreview: !this.state.showPreview});
+  }
+
   render() {
+    const actions = [
+            <FlatButton
+              key={0}
+              label="Ok"
+              primary
+              keyboardFocused
+              onTouchTap={this.togglePreview}
+            />
+          ];
+    const updatefuncs = [
+      (data) => this.updateHeaders(data, "areagraph"),
+      (data) => this.updateHeaders(data, "bargraph"),
+      (data) => this.updateHeaders(data, "image"),
+      (data) => this.updateHeaders(data, "piechart"),
+      (data) => this.updateHeaders(data, "scattergraph"),
+      (data) => this.updateHeaders(data, "text")
+    ];
+    const getfuncs = [
+      () => this.getHeaders("areagraph"),
+      () => this.getHeaders("bargraph"),
+      () => this.getHeaders("image"),
+      () => this.getHeaders("piechart"),
+      () => this.getHeaders("scattergraph"),
+      () => this.getHeaders("text")
+    ];
     document.body.scrollTop = (document.documentElement.scrollTop = 0);
 
     return (
@@ -122,7 +180,22 @@ class SelectOutputComponentPage extends React.Component {
                   forwardAddress: `/ngh/user/${this.props.user.id || localStorage.getItem("user_id")}/${this.props.nonghDemoModel.name}/${this.props.nonghDemoModel.id}/demo`,
                   params: this.props.params,
                   selected: this.state.outputComponentDemoModel.base_component_id
-                }).map((showcasecard, index) => showcasecard)}
+                }, updatefuncs, this.state.headers).map((showcasecard, index) => showcasecard)}
+                
+                 {this.state.showPreview &&
+                   <Dialog
+                   title="Preview"
+                   actions={actions}
+                   modal
+                   autoScrollBodyContent
+                   open={this.state.showPreview}
+                   >
+                   {getAllPreviewsForShowcase(getfuncs).map((preview, index) => preview)}
+                   </Dialog>
+                 }
+                <div className="row" style={{marginTop: "-10vh", height: "6vh", minHeight: "6vh", width: "100%", marginLeft: "37%"}}>
+                  <RaisedButton label={"Preview"} secondary={true} onClick={this.togglePreview}/>
+               </div>
               </div>
             </div>
           </div>

@@ -1,29 +1,11 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
 import AreaGraphOutput from "./AreaGraphOutput";
 import OutputPreview from "../BaseOutputComponent/OutputPreview.js";
 
 class AreaGraphOutputPreview extends OutputPreview {
   render() {
-    const actions = [
-      <FlatButton
-        key={0}
-        label="Ok"
-        primary
-        keyboardFocused
-        onTouchTap={this.handleOk}
-      />
-    ];
     return (
-      <Dialog
-        title="Preview Area Graph Output Component"
-        actions={actions}
-        modal
-        autoScrollBodyContent
-        open={this.state.open}
-      >
         <AreaGraphOutput
           headers={this.state.headers}
           calling_context="demo"
@@ -35,7 +17,6 @@ class AreaGraphOutputPreview extends OutputPreview {
             { x: 5, y: 13 }
           ])}
         />
-      </Dialog>
     );
   }
 }

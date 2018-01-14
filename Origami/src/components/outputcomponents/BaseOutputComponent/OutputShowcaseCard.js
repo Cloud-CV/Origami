@@ -22,7 +22,7 @@ class OutputShowcaseCard extends React.Component {
     this.updateOutputComponentModel = this.updateOutputComponentModel.bind(
       this
     );
-    this.updateHeaders = this.updateHeaders.bind(this);
+    this.updateHeaders = props.updateHeaders.bind(this);
     this.getHeaders = this.getHeaders.bind(this);
     this.hideModifyDialog = this.hideModifyDialog.bind(this);
     this.hidePreviewDialog = this.hidePreviewDialog.bind(this);
@@ -44,17 +44,9 @@ class OutputShowcaseCard extends React.Component {
     this.setState({ previewDialogDisplay: false });
   }
 
-  updateHeaders(data) {
-    let dataToUpdate = [];
-    data.map(value => {
-      dataToUpdate.push(value);
-    });
-    this.setState({ headers: dataToUpdate });
-  }
-
   getHeaderRealLength() {
     let counter = 0;
-    this.state.headers.map(() => {
+    this.props.headers.map(() => {
       counter += 1;
     });
     return counter;
@@ -62,7 +54,7 @@ class OutputShowcaseCard extends React.Component {
 
   getHeaders() {
     let headers = [];
-    this.state.headers.map((header, index) => {
+    this.props.headers.map((header, index) => {
       if (typeof header == "object") {
          headers[index] = header["label"];
       } else {

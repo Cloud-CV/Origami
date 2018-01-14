@@ -7,23 +7,7 @@ import OutputPreview from "../BaseOutputComponent/OutputPreview.js";
 
 class PieChartOutputPreview extends OutputPreview {
   render() {
-    const actions = [
-      <FlatButton
-        key={0}
-        label="Ok"
-        primary
-        keyboardFocused
-        onTouchTap={this.handleOk}
-      />
-    ];
     return (
-      <Dialog
-        title="Preview Pie Chart Output Component"
-        actions={actions}
-        modal
-        autoScrollBodyContent
-        open={this.state.open}
-      >
         <PieChartOutput
           headers={this.state.headers}
           calling_context="demo"
@@ -35,7 +19,6 @@ class PieChartOutputPreview extends OutputPreview {
             { x: 5, y: 13 }
           ])}
         />
-      </Dialog>
     );
   }
 }

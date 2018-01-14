@@ -91,7 +91,7 @@ class ImageOutputShowcaseCard extends OutputShowcaseCard {
         {this.state.modifyDialogDisplay && (
           <OutputShowcaseModifyDialog
             functions={{
-              updateHeaders: this.updateHeaders,
+              updateHeaders: this.props.updateHeaders,
               hideModifyDialog: this.hideModifyDialog,
               getHeaders: this.getHeaders
             }}
