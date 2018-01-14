@@ -1,17 +1,17 @@
 /* eslint-disable no-useless-escape */
 
-import React from 'react';
-import { PropTypes } from 'prop-types';
-import { browserHistory } from 'react-router';
+import React from "react";
+import { PropTypes } from "prop-types";
+import { browserHistory } from "react-router";
 import {
   Card,
   CardActions,
   CardHeader,
   CardMedia,
-  CardText,
-} from 'material-ui/Card';
-import { blue100 } from 'material-ui/styles/colors';
-import RaisedButton from 'material-ui/RaisedButton';
+  CardText
+} from "material-ui/Card";
+import { blue100 } from "material-ui/styles/colors";
+import RaisedButton from "material-ui/RaisedButton";
 
 function HomePageDemoCard(props) {
   const reg = /.+?\:\/\/.+?(\/.+?)(?:#|\?|$)/;
@@ -22,18 +22,16 @@ function HomePageDemoCard(props) {
         <CardHeader
           title={props.name}
           subtitle="CloudCV"
-          avatar={require('../assets/cloudcv_logo.png')}
+          avatar={require("../assets/cloudcv_logo.png")}
         />
-        {props.cover_image && (
+        {props.cover_image &&
           <CardMedia className="ui medium image">
             <img src={props.cover_image} />
-          </CardMedia>
-        )}
-        {props.description && (
-          <CardText style={{ wordWrap: 'break-word' }}>
+          </CardMedia>}
+        {props.description &&
+          <CardText style={{ wordWrap: "break-word" }}>
             {props.description}
-          </CardText>
-        )}
+          </CardText>}
         <CardActions>
           <RaisedButton
             backgroundColor={blue100}
@@ -56,7 +54,7 @@ HomePageDemoCard.propTypes = {
   cover_image: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   permalink: PropTypes.string.isRequired,
-  handleShareModal: PropTypes.func.isRequired,
+  handleShareModal: PropTypes.func.isRequired
 };
 
 export default HomePageDemoCard;

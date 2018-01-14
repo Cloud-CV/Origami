@@ -3,5 +3,5 @@ export default {
   user: {},
   nonghDemoModel: {},
   inputComponentDemoModel: {},
-  outputComponentDemoModel: {},
+  outputComponentDemoModel: {}
 };

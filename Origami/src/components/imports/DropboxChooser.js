@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import loadScript from 'load-script';
-import { PropTypes } from 'prop-types';
+import React, { Component } from "react";
+import loadScript from "load-script";
+import { PropTypes } from "prop-types";
 
 // read more
 // https://www.dropbox.com/developers/chooser
 export default class DropboxChooser extends Component {
   constructor(props) {
     super(props);
-    this.Dropbox_SDK_Url = 'https://www.dropbox.com/static/api/2/dropins.js';
-    this.scriptId = 'dropboxjs';
+    this.Dropbox_SDK_Url = "https://www.dropbox.com/static/api/2/dropins.js";
+    this.scriptId = "dropboxjs";
     this.scriptLoadingStarted = false;
     this.onChoose = this.onChoose.bind(this);
   }
@@ -19,8 +19,8 @@ export default class DropboxChooser extends Component {
       loadScript(this.Dropbox_SDK_Url, {
         attrs: {
           id: this.scriptId,
-          'data-app-key': this.props.appKey,
-        },
+          "data-app-key": this.props.appKey
+        }
       });
     }
   }
@@ -34,25 +34,29 @@ export default class DropboxChooser extends Component {
       return null;
     }
 
-    const { success, cancel, linkType, multiselect, extensions } = this.props;
+    const {
+      success,
+      cancel,
+      linkType,
+      multiselect,
+      extensions
+    } = this.props;
 
     window.Dropbox.choose({
       success,
       cancel,
       linkType,
       multiselect,
-      extensions,
+      extensions
     });
   }
 
   render() {
     return (
       <div onClick={this.onChoose}>
-        {this.props.children ? (
-          this.props.children
-        ) : (
-          <button>Open dropbox chooser</button>
-        )}
+        {this.props.children
+          ? this.props.children
+          : <button>Open dropbox chooser</button>}
       </div>
     );
   }
@@ -63,15 +67,15 @@ DropboxChooser.propTypes = {
   appKey: PropTypes.string.isRequired,
   success: PropTypes.func.isRequired,
   cancel: PropTypes.func,
-  linkType: PropTypes.oneOf(['preview', 'direct']),
+  linkType: PropTypes.oneOf(["preview", "direct"]),
   multiselect: PropTypes.bool,
   extensions: PropTypes.arrayOf(PropTypes.string),
-  disabled: PropTypes.bool,
+  disabled: PropTypes.bool
 };
 
 DropboxChooser.defaultProps = {
   cancel: () => {},
-  linkType: 'preview',
+  linkType: "preview",
   multiselect: false,
-  disabled: false,
+  disabled: false
 };

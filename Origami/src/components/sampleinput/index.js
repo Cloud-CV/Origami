@@ -1,21 +1,21 @@
-import React from 'react';
-import { PropTypes } from 'prop-types';
-import Dropzone from 'react-dropzone';
-import DropboxChooser from '../imports/DropboxChooser';
-import request from 'superagent';
-import { Layout, Icon, Button, Card, Row, Col, Input, Select } from 'antd';
-import Cookies from 'universal-cookie';
+import React from "react";
+import { PropTypes } from "prop-types";
+import Dropzone from "react-dropzone";
+import DropboxChooser from "../imports/DropboxChooser";
+import request from "superagent";
+import { Layout, Icon, Button, Card, Row, Col, Input, Select } from "antd";
+import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 const { Header, Content, Footer, Sider } = Layout;
 
-const appConfig = require('../../../outCalls/config');
+const appConfig = require("../../../outCalls/config");
 
 class SampleInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      files: [],
+      files: []
     };
     this.updateImage = this.updateImage.bind(this);
     this.onDrop = this.onDrop.bind(this);
@@ -29,46 +29,52 @@ class SampleInput extends React.Component {
   }
 
   sendRequest() {
-    let formData = new FormData($('#send-text')[0]);
+    let formData = new FormData($("#send-text")[0]);
     this.state.files.map(file => {
       formData.set(file.newfilename, file.newfile, file.newfilename);
     });
     console.log(this.props.demo_id);
-    formData.set('demo_id', this.props.demo_id);
+    formData.set("demo_id", this.props.demo_id);
     $.ajaxSetup({
       headers: {
-        'X-CSRFToken': cookies.get('csrftoken'),
-      },
+        "X-CSRFToken": cookies.get("csrftoken")
+      }
     });
-    let timeout1 = '';
-    let timeout2 = '';
-    let timeout3 = '';
-    $('#appbar-progress')
-      .css('visibility', 'visible')
-      .promise()
-      .done(() => {
-        $('#appbar-progress').progress({
-          percent: '33%',
-        });
-        timeout1 = setTimeout(() => {
-          $('#appbar-progress').progress({
-            percent: '50%',
-          });
-        }, 300);
-        timeout2 = setTimeout(() => {
-          $('#appbar-progress').progress({
-            percent: '65%',
-          });
-        }, 600);
-        timeout3 = setTimeout(() => {
-          $('#appbar-progress').progress({
-            percent: '85%',
-          });
-        }, 1000);
+    let timeout1 = "";
+    let timeout2 = "";
+    let timeout3 = "";
+    $("#appbar-progress").css("visibility", "visible").promise().done(() => {
+      $("#appbar-progress").progress({
+        percent: "33%"
       });
+      timeout1 = setTimeout(
+        () => {
+          $("#appbar-progress").progress({
+            percent: "50%"
+          });
+        },
+        300
+      );
+      timeout2 = setTimeout(
+        () => {
+          $("#appbar-progress").progress({
+            percent: "65%"
+          });
+        },
+        600
+      );
+      timeout3 = setTimeout(
+        () => {
+          $("#appbar-progress").progress({
+            percent: "85%"
+          });
+        },
+        1000
+      );
+    });
     $.ajax({
-      type: 'POST',
-      url: '/upload_sample_input',
+      type: "POST",
+      url: "/upload_sample_input",
       data: formData,
       contentType: false,
       cache: false,
@@ -79,12 +85,12 @@ class SampleInput extends React.Component {
         location.reload();
       },
       error: (xhr, textStatus, errorThrown) => {
-        $('#appbar-progress').css('visibility', 'hidden');
-        $('#appbar-progress').progress({
-          percent: '0%',
+        $("#appbar-progress").css("visibility", "hidden");
+        $("#appbar-progress").progress({
+          percent: "0%"
         });
-        toastr.error('Error occurred!');
-      },
+        toastr.error("Error occurred!");
+      }
     });
   }
 
@@ -104,7 +110,7 @@ class SampleInput extends React.Component {
     });
     this.setState(
       {
-        files: tmp,
+        files: tmp
       },
       () => {
         console.log(this.state.files);
@@ -114,27 +120,24 @@ class SampleInput extends React.Component {
 
   updateFormData(newfile, newfilename) {
     this.setState({
-      files: [...this.state.files, { newfilename, newfile }],
+      files: [...this.state.files, { newfilename, newfile }]
     });
   }
 
   onSelect(files) {
     let url = files[0].link.replace(
-      'www.dropbox.com',
-      'dl.dropboxusercontent.com'
+      "www.dropbox.com",
+      "dl.dropboxusercontent.com"
     );
-    request
-      .get(url)
-      .responseType('blob')
-      .end((err, res) => {
-        if (!err) {
-          let blob = new Blob([res.body], {
-            type: 'image/png',
-          });
-          this.updateFormData(blob, `sample-image-${this.state.index}`);
-          this.updateImage(this.state.index, blob);
-        }
-      });
+    request.get(url).responseType("blob").end((err, res) => {
+      if (!err) {
+        let blob = new Blob([res.body], {
+          type: "image/png"
+        });
+        this.updateFormData(blob, `sample-image-${this.state.index}`);
+        this.updateImage(this.state.index, blob);
+      }
+    });
   }
   render() {
     return (
@@ -147,9 +150,9 @@ class SampleInput extends React.Component {
             <Dropzone
               onDrop={this.onDrop}
               multiple={true}
-              style={{ height: 'inherit' }}
+              style={{ height: "inherit" }}
             >
-              <Card style={{ width: '100%' }} bodyStyle={{ padding: 0 }}>
+              <Card style={{ width: "100%" }} bodyStyle={{ padding: 0 }}>
                 <div className="custom-image">
                   <img
                     className="ui fluid medium bordered image"
@@ -165,8 +168,12 @@ class SampleInput extends React.Component {
           </Col>
           <Col span={6} offset={1}>
             <br />
-            <h4>Upload images to serve as sample inputs for the demo. </h4>
-            <h5>Note: You can press CTRL and select multiple images.</h5>
+            <h4>
+              Upload images to serve as sample inputs for the demo.{" "}
+            </h4>
+            <h5>
+              Note: You can press CTRL and select multiple images.
+            </h5>
             <br />
             <Row>
               <Col offset={8}>
@@ -183,11 +190,11 @@ class SampleInput extends React.Component {
           <br />
         </Row>
         <br />
-        {appConfig.DROPBOX_API_KEY !== 'API_KEY' && (
+        {appConfig.DROPBOX_API_KEY !== "API_KEY" &&
           <div>
             <div className="ui horizontal divider">Or</div>
             <Row>
-              <Col style={{ height: '100%', cursor: 'pointer' }}>
+              <Col style={{ height: "100%", cursor: "pointer" }}>
                 <DropboxChooser
                   appKey={appConfig.DROPBOX_API_KEY}
                   success={files => onSelect(files)}
@@ -200,15 +207,14 @@ class SampleInput extends React.Component {
                 </DropboxChooser>
               </Col>
             </Row>
-          </div>
-        )}
+          </div>}
       </Content>
     );
   }
 }
 
 SampleInput.propTypes = {
-  demo_id: PropTypes.number.isRequired,
+  demo_id: PropTypes.number.isRequired
 };
 
 export default SampleInput;

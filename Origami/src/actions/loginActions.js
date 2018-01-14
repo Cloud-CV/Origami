@@ -1,4 +1,4 @@
-import * as types from './actionTypes';
+import * as types from "./actionTypes";
 
 export function enableLoginSuccess() {
   return { type: types.ENABLE_LOGIN_SUCCESS };

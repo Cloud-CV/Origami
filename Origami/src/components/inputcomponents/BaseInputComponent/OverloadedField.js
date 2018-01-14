@@ -1,13 +1,13 @@
-import React from 'react';
-import { PropTypes } from 'prop-types';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
+import React from "react";
+import { PropTypes } from "prop-types";
+import TextField from "material-ui/TextField";
+import RaisedButton from "material-ui/RaisedButton";
 
 class OverloadedField extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      elementId: '',
+      elementId: ""
     };
     this.labelLength = props.data.labelLength;
     this.addLocalLabelsToParent = props.data.addLocalLabels;
@@ -19,7 +19,7 @@ class OverloadedField extends React.Component {
   }
 
   componentDidMount() {
-    this.addLocalLabelsToParent(this.labelLength, '');
+    this.addLocalLabelsToParent(this.labelLength, "");
   }
 
   render() {
@@ -28,16 +28,14 @@ class OverloadedField extends React.Component {
         <TextField
           hintText="Label"
           onChange={e =>
-            this.addLocalLabelsToParent(this.labelLength, e.target.value)
-          }
+            this.addLocalLabelsToParent(this.labelLength, e.target.value)}
         />
         &nbsp;&nbsp;&nbsp;
         <RaisedButton
           label="Delete"
           primary
           onMouseDown={() =>
-            this.deleteLocalLabelsFromParent(this.state.elementId)
-          }
+            this.deleteLocalLabelsFromParent(this.state.elementId)}
         />
       </div>
     );
@@ -45,7 +43,7 @@ class OverloadedField extends React.Component {
 }
 
 OverloadedField.propTypes = {
-  data: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired
 };
 
 export default OverloadedField;

@@ -1,6 +1,6 @@
-import React from 'react';
-import { PropTypes } from 'prop-types';
-import SingleOutput from './SingleOutput';
+import React from "react";
+import { PropTypes } from "prop-types";
+import SingleOutput from "./SingleOutput";
 
 const GraphOutput = ({ headers, calling_context, data }) => {
   return (
@@ -8,8 +8,7 @@ const GraphOutput = ({ headers, calling_context, data }) => {
       key={Math.random()}
       className="six wide stackable stretched grid container"
     >
-      <br />
-      <br />
+      <br /><br />
       {headers.map((header, index) => [
         <SingleOutput
           key={Math.random()}
@@ -19,7 +18,7 @@ const GraphOutput = ({ headers, calling_context, data }) => {
           data={data[index]}
         />,
         <br key={Math.random()} />,
-        <br key={Math.random()} />,
+        <br key={Math.random()} />
       ])}
     </div>
   );
@@ -28,7 +27,7 @@ const GraphOutput = ({ headers, calling_context, data }) => {
 GraphOutput.propTypes = {
   headers: PropTypes.array.isRequired,
   calling_context: PropTypes.string.isRequired,
-  data: PropTypes.array,
+  data: PropTypes.array
 };
 
 export default GraphOutput;

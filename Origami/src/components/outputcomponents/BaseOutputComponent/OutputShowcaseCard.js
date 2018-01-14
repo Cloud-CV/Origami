@@ -1,13 +1,13 @@
-import React from 'react';
-import { PropTypes } from 'prop-types';
+import React from "react";
+import { PropTypes } from "prop-types";
 
 class OutputShowcaseCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      headers: [''],
+      headers: [""],
       modifyDialogDisplay: false,
-      previewDialogDisplay: false,
+      previewDialogDisplay: false
     };
     this.demoModel = props.demoProps.demoModel;
     this.user = props.demoProps.user;
@@ -55,10 +55,10 @@ class OutputShowcaseCard extends React.Component {
   getHeaders() {
     let headers = [];
     this.props.headers.map((header, index) => {
-      if (typeof header == 'object') {
-        headers[index] = header['label'];
+      if (typeof header == "object") {
+         headers[index] = header["label"];
       } else {
-        headers[index] = header;
+         headers[index] = header;
       }
     });
     return headers;
@@ -66,7 +66,7 @@ class OutputShowcaseCard extends React.Component {
 }
 
 OutputShowcaseCard.propTypes = {
-  demoProps: PropTypes.object.isRequired,
+  demoProps: PropTypes.object.isRequired
 };
 
 export default OutputShowcaseCard;

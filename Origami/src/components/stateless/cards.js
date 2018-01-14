@@ -1,58 +1,54 @@
-import React from 'react';
-import { PropTypes } from 'prop-types';
-import { grey700, cyan100 } from 'material-ui/styles/colors';
+import React from "react";
+import { PropTypes } from "prop-types";
+import { grey700, cyan100 } from "material-ui/styles/colors";
 
-const CustomCard = ({
-  header,
-  heading,
-  width,
-  centeredParent,
-  centeredSegment,
-  displayData,
-  buttonData,
-  selected,
-  context,
-}) => {
-  const parentClass = `${width ? width : 'four'} wide stackable ${
-    centeredParent ? '' : 'centered'
-  } column`;
-  const cardClass = `ui card blue segment ${centeredSegment ? 'centered' : ''}`;
+const CustomCard = (
+  {
+    header,
+    heading,
+    width,
+    centeredParent,
+    centeredSegment,
+    displayData,
+    buttonData,
+    selected,
+    context
+  }
+) => {
+  const parentClass = `${width ? width : "four"} wide stackable ${centeredParent ? "" : "centered"} column`;
+  const cardClass = `ui card blue segment ${centeredSegment ? "centered" : ""}`;
   const headerToPut = selected ? `${header} - (In Use)` : header;
 
   return (
     <div className={parentClass}>
       <div className={cardClass}>
-        {selected && (
+        {selected &&
           <div className="ui blue right corner label">
             <h1>*</h1>
-          </div>
-        )}
+          </div>}
         <div className="content" style={{ backgroundColor: cyan100 }}>
-          {context === 'profile' && (
+          {context === "profile" &&
             <i
               className="right floated large red circular remove icon"
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
               onClick={() =>
                 buttonData
-                  .filter(button => button.label === 'Delete')[0]
-                  .onDeployClick()
-              }
-            />
-          )}
+                  .filter(button => button.label === "Delete")[0]
+                  .onDeployClick()}
+            />}
           <div className="header">{headerToPut}</div>
         </div>
-        {heading && (
+        {heading &&
           <div className="content">
             <div className="heading">{heading}</div>
-          </div>
-        )}
+          </div>}
         <div className="content">
           <div className="ui small feed">
             <div className="event">
               <div className="content">
                 <div
                   className="summary"
-                  style={{ fontWeight: 'initial', color: grey700 }}
+                  style={{ fontWeight: "initial", color: grey700 }}
                 >
                   {displayData.map((data, index) => (
                     <div key={index}>{data}</div>
@@ -64,11 +60,11 @@ const CustomCard = ({
         </div>
         <div className="extra content">
           {buttonData
-            .filter(button => button.label !== 'Delete')
+            .filter(button => button.label !== "Delete")
             .map((button, index) => (
               <button
                 key={index}
-                style={{ display: button.display, marginTop: '2%' }}
+                style={{ display: button.display, marginTop: "2%" }}
                 className="ui basic stackable blue button"
                 onClick={button.onDeployClick}
               >
@@ -90,7 +86,7 @@ CustomCard.propTypes = {
   centeredSegment: PropTypes.bool,
   displayData: PropTypes.array.isRequired,
   buttonData: PropTypes.array.isRequired,
-  selected: PropTypes.bool,
+  selected: PropTypes.bool
 };
 
 export default CustomCard;

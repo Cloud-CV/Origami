@@ -1,7 +1,7 @@
-import React from 'react';
-import { PropTypes } from 'prop-types';
-import { getPermalinkFromShortURL } from '../api/Nongh/getPermalink';
-import { browserHistory } from 'react-router';
+import React from "react";
+import { PropTypes } from "prop-types";
+import { getPermalinkFromShortURL } from "../api/Nongh/getPermalink";
+import { browserHistory } from "react-router";
 
 function UrlShortener(props) {
   getPermalinkFromShortURL(props.params.shorturl).then(data => {
@@ -16,7 +16,7 @@ function UrlShortener(props) {
 }
 
 UrlShortener.propTypes = {
-  params: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired
 };
 
 export default UrlShortener;

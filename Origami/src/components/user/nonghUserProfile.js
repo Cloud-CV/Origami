@@ -1,21 +1,23 @@
-import React from 'react';
-import { PropTypes } from 'prop-types';
-import { Link, browserHistory } from 'react-router';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as userActions from '../../actions/userActions';
-import * as nonghDemoModelActions from '../../actions/nonghDemoModelActions';
-import * as inputComponentDemoModelActions from '../../actions/inputComponentDemoModelActions';
-import * as outputComponentDemoModelActions from '../../actions/outputComponentDemoModelActions';
-import { getDeployed } from '../../api/Nongh/getDeployed';
-import { getAllPermalink, deletePermalink } from '../../api/Nongh/permalink';
-import Dialog from 'material-ui/Dialog';
-import RaisedButton from 'material-ui/RaisedButton';
-import toastr from 'toastr';
-import { Layout, Icon, Button, Card, Row, Col } from 'antd';
+import React from "react";
+import { PropTypes } from "prop-types";
+import { Link, browserHistory } from "react-router";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as userActions from "../../actions/userActions";
+import * as nonghDemoModelActions from "../../actions/nonghDemoModelActions";
+import * as inputComponentDemoModelActions
+  from "../../actions/inputComponentDemoModelActions";
+import * as outputComponentDemoModelActions
+  from "../../actions/outputComponentDemoModelActions";
+import { getDeployed } from "../../api/Nongh/getDeployed";
+import { getAllPermalink, deletePermalink } from "../../api/Nongh/permalink";
+import Dialog from "material-ui/Dialog";
+import RaisedButton from "material-ui/RaisedButton";
+import toastr from "toastr";
+import { Layout, Icon, Button, Card, Row, Col } from "antd";
 const { Header, Content, Footer, Sider } = Layout;
-import { Input } from 'antd';
-import Radium from 'radium';
+import { Input } from "antd";
+import Radium from "radium";
 const Search = Input.Search;
 toastr.options.closeButton = true;
 
@@ -24,16 +26,16 @@ class NonGHUserProfileComponent extends React.Component {
     super(props, context);
     this.state = {
       user: {},
-      showOutput: 'hidden',
+      showOutput: "hidden",
       allDeployed: [],
       projectBeingEdited: {},
       showModifyModal: false,
       showDeleteConfirmationModal: false,
       showDemo: {},
-      appData: { type: '', content: '' },
+      appData: { type: "", content: "" },
       showDataModal: false,
       permalinkHolder: {},
-      projectBeingDeletedId: '',
+      projectBeingDeletedId: ""
     };
     this.socket = this.context.socket;
     this.deleteDemo = this.deleteDemo.bind(this);
@@ -50,7 +52,7 @@ class NonGHUserProfileComponent extends React.Component {
   }
 
   componentWillMount() {
-    !this.props.login && browserHistory.push('/');
+    !this.props.login && browserHistory.push("/");
     this.props.useractions
       .LoadUser()
       .then(() => {
@@ -72,7 +74,7 @@ class NonGHUserProfileComponent extends React.Component {
                 }
                 stateToPut[perma.user_id][perma.project_id] = perma;
                 this.setState({
-                  permalinkHolder: Object.assign({}, stateToPut),
+                  permalinkHolder: Object.assign({}, stateToPut)
                 });
               });
             });
@@ -97,7 +99,7 @@ class NonGHUserProfileComponent extends React.Component {
       this.setState({ projectBeingDeletedId });
     }
     this.setState({
-      showDeleteConfirmationModal: !this.state.showDeleteConfirmationModal,
+      showDeleteConfirmationModal: !this.state.showDeleteConfirmationModal
     });
   }
 
@@ -117,7 +119,7 @@ class NonGHUserProfileComponent extends React.Component {
             this.setState({ allDeployed: allDeployed }, () => {
               deletePermalink({
                 user_id: this.props.user.id,
-                project_id,
+                project_id
               }).then();
             });
           })
@@ -136,7 +138,7 @@ class NonGHUserProfileComponent extends React.Component {
       timestamp: project.timestamp,
       token: project.token,
       status: project.status,
-      appData: {},
+      appData: {}
     };
     this.props.nonghModelActions.updateNonGHDemoModel(dataToUpdate).then(() => {
       this.setState({ projectBeingEdited: project }, () => {
@@ -159,9 +161,9 @@ class NonGHUserProfileComponent extends React.Component {
 
   getDisplayForDemoButton(project) {
     if (project) {
-      return '';
+      return "";
     } else {
-      return 'None';
+      return "None";
     }
   }
 
@@ -172,35 +174,35 @@ class NonGHUserProfileComponent extends React.Component {
   }
 
   goToRegisterPage() {
-    browserHistory.push('/ngh/user/register');
+    browserHistory.push("/ngh/user/register");
   }
 
   getStyles() {
     return {
       layout: {
-        background: '#ECEFF1',
+        background: "#ECEFF1"
       },
       content: {
-        margin: '24px 16px 0',
-        overflow: 'initial',
+        margin: "24px 16px 0",
+        overflow: "initial"
       },
       contentDiv: {
         padding: 12,
-        background: '#ECEFF1',
-        textAlign: 'center',
+        background: "#ECEFF1",
+        textAlign: "center"
       },
       footer: {
-        textAlign: 'center',
-        background: '#fefefe',
-        color: '#455A64',
-        fontSize: '14px',
-        boxShadow: '0px -2px 5px #E0E0E0',
-      },
+        textAlign: "center",
+        background: "#fefefe",
+        color: "#455A64",
+        fontSize: "14px",
+        boxShadow: "0px -2px 5px #E0E0E0"
+      }
     };
   }
 
   render() {
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
+    document.body.scrollTop = (document.documentElement.scrollTop = 0);
     const styles = this.getStyles();
 
     const deletionActions = [
@@ -216,7 +218,7 @@ class NonGHUserProfileComponent extends React.Component {
         key="3"
         primary
         onTouchTap={this.deleteDemo}
-      />,
+      />
     ];
 
     return (
@@ -225,13 +227,13 @@ class NonGHUserProfileComponent extends React.Component {
           <Row>
             <Col span={18} offset={1}>
               <h1 id="logo-title">
-                My Demos - {localStorage.getItem('username')}
+                My Demos - {localStorage.getItem("username")}
               </h1>
             </Col>
           </Row>
         </Header>
         <Content style={styles.content}>
-          {this.state.user && (
+          {this.state.user &&
             <div style={styles.contentDiv}>
               <Row>
                 {this.state.allDeployed.map(row => (
@@ -240,7 +242,7 @@ class NonGHUserProfileComponent extends React.Component {
                       {row.map(project => (
                         <Col span={5} offset={1} key={project.id}>
                           <Card
-                            style={{ width: '100%' }}
+                            style={{ width: "100%" }}
                             bodyStyle={{ padding: 0 }}
                           >
                             <div className="custom-card">
@@ -253,14 +255,14 @@ class NonGHUserProfileComponent extends React.Component {
                             <div className="custom-card">
                               <p>{project.description}</p>
                               <br />
-                              IP: {project.token.split(':')[1]} <br />
-                              Port: {project.token.split(':')[4]} <br />
+                              IP: {project.token.split(":")[1]} <br />
+                              Port: {project.token.split(":")[4]} <br />
                               <br />
                               <Row>
                                 <Col span={22} offset={1}>
                                   <Button
                                     type="primary"
-                                    style={{ width: '100%' }}
+                                    style={{ width: "100%" }}
                                     ghost
                                     onClick={() => this.goToDemoPage(project)}
                                   >
@@ -273,7 +275,7 @@ class NonGHUserProfileComponent extends React.Component {
                                 <Col span={11} offset={1}>
                                   <Button
                                     type="primary"
-                                    style={{ width: '100%' }}
+                                    style={{ width: "100%" }}
                                     ghost
                                     onClick={() => this.modifyProject(project)}
                                   >
@@ -283,14 +285,13 @@ class NonGHUserProfileComponent extends React.Component {
                                 <Col span={10} offset={1}>
                                   <Button
                                     type="primary"
-                                    style={{ width: '100%' }}
+                                    style={{ width: "100%" }}
                                     ghost
                                     onClick={() =>
                                       this.toggleShowDataDialog({
-                                        type: 'token',
-                                        content: project.token,
-                                      })
-                                    }
+                                        type: "token",
+                                        content: project.token
+                                      })}
                                   >
                                     Token<Icon type="bars" />
                                   </Button>
@@ -301,20 +302,13 @@ class NonGHUserProfileComponent extends React.Component {
                                 <Col span={11} offset={1}>
                                   <Button
                                     type="primary"
-                                    style={{ width: '100%' }}
+                                    style={{ width: "100%" }}
                                     ghost
                                     onClick={() =>
                                       this.toggleShowDataDialog({
-                                        type: 'permalink',
-                                        content: `${
-                                          window.location.protocol
-                                        }//${window.location.host}${
-                                          this.state.permalinkHolder[
-                                            this.state.user.id
-                                          ][project.id].short_relative_url
-                                        }`,
-                                      })
-                                    }
+                                        type: "permalink",
+                                        content: `${window.location.protocol}//${window.location.host}${this.state.permalinkHolder[this.state.user.id][project.id].short_relative_url}`
+                                      })}
                                   >
                                     Permalink<Icon type="link" />
                                   </Button>
@@ -322,13 +316,12 @@ class NonGHUserProfileComponent extends React.Component {
                                 <Col span={10} offset={1}>
                                   <Button
                                     type="danger"
-                                    style={{ width: '100%' }}
+                                    style={{ width: "100%" }}
                                     ghost
                                     onClick={() =>
                                       this.toggleDeleteConfirmationDialog(
                                         project.id
-                                      )
-                                    }
+                                      )}
                                   >
                                     Delete <Icon type="delete" />
                                   </Button>
@@ -343,11 +336,13 @@ class NonGHUserProfileComponent extends React.Component {
                   </div>
                 ))}
               </Row>
-            </div>
-          )}
+            </div>}
         </Content>
         <Footer style={styles.footer}>
-          <strong>Origami</strong> - Created by{' '}
+          <strong>Origami</strong>
+          {" "}
+          - Created by
+          {" "}
           <a href="http://cloudcv.org/">Team CloudCV</a>
         </Footer>
 
@@ -355,7 +350,7 @@ class NonGHUserProfileComponent extends React.Component {
           title="Modify Application"
           open={this.state.showModifyModal}
           onRequestClose={this.toggleModifyDialog}
-          contentStyle={{ width: '30%' }}
+          contentStyle={{ width: "30%" }}
         >
           <div className="ui stackable grid">
             <div className="ui stackable row">
@@ -365,11 +360,8 @@ class NonGHUserProfileComponent extends React.Component {
                   primary
                   onTouchTap={() =>
                     browserHistory.push(
-                      `/ngh/user/${this.state.projectBeingEdited.name}/${
-                        this.state.projectBeingEdited.id
-                      }/register/modify`
-                    )
-                  }
+                      `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/register/modify`
+                    )}
                 />
               </div>
               <div className="center aligned five wide column">
@@ -378,11 +370,8 @@ class NonGHUserProfileComponent extends React.Component {
                   primary
                   onTouchTap={() =>
                     browserHistory.push(
-                      `/ngh/user/${this.state.projectBeingEdited.name}/${
-                        this.state.projectBeingEdited.id
-                      }/inputcomponent/modify`
-                    )
-                  }
+                      `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/inputcomponent/modify`
+                    )}
                 />
               </div>
               <div className="center aligned five wide column">
@@ -391,11 +380,8 @@ class NonGHUserProfileComponent extends React.Component {
                   primary
                   onTouchTap={() =>
                     browserHistory.push(
-                      `/ngh/user/${this.state.projectBeingEdited.name}/${
-                        this.state.projectBeingEdited.id
-                      }/outputcomponent/modify`
-                    )
-                  }
+                      `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/outputcomponent/modify`
+                    )}
                 />
               </div>
             </div>
@@ -403,10 +389,10 @@ class NonGHUserProfileComponent extends React.Component {
         </Dialog>
 
         <Dialog
-          title={this.state.appData.type === 'token' ? 'Token' : 'Permalink'}
+          title={this.state.appData.type === "token" ? "Token" : "Permalink"}
           open={this.state.showDataModal}
           onRequestClose={this.toggleShowDataDialog}
-          contentStyle={{ width: '30%' }}
+          contentStyle={{ width: "30%" }}
         >
           {this.state.appData.content}
         </Dialog>
@@ -432,11 +418,11 @@ NonGHUserProfileComponent.propTypes = {
   useractions: PropTypes.object.isRequired,
   nonghModelActions: PropTypes.object.isRequired,
   inputComponentModelActions: PropTypes.object.isRequired,
-  outputComponentDemoModelActions: PropTypes.object.isRequired,
+  outputComponentDemoModelActions: PropTypes.object.isRequired
 };
 
 NonGHUserProfileComponent.contextTypes = {
-  socket: PropTypes.object.isRequired,
+  socket: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
@@ -445,7 +431,7 @@ function mapStateToProps(state, ownProps) {
     user: state.user,
     nonghDemoModel: state.nonghDemoModel,
     inputComponentDemoModel: state.inputComponentDemoModel,
-    outputComponentDemoModel: state.outputComponentDemoModel,
+    outputComponentDemoModel: state.outputComponentDemoModel
   };
 }
 
@@ -460,7 +446,7 @@ function mapDispatchToProps(dispatch) {
     outputComponentDemoModelActions: bindActionCreators(
       outputComponentDemoModelActions,
       dispatch
-    ),
+    )
   };
 }
 

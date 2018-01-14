@@ -1,7 +1,7 @@
-import request from 'superagent';
-const appConfig = require('../../../outCalls/config');
-import { baseURL } from './baseURL';
-import Cookies from 'universal-cookie';
+import request from "superagent";
+const appConfig = require("../../../outCalls/config");
+import { baseURL } from "./baseURL";
+import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
@@ -11,9 +11,9 @@ export function modifyComponentDeployed(user_id, componentData, type) {
     request
       .put(URL)
       .send(componentData)
-      .set('Content-Type', 'application/json')
-      .set('Accept', 'application/json')
-      .set('X-CSRFToken', cookies.get('csrftoken'))
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .set("X-CSRFToken", cookies.get("csrftoken"))
       .end((err, res) => {
         if (err) {
           reject(err);

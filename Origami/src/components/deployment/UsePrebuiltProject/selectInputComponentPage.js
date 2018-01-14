@@ -1,15 +1,18 @@
-import React from 'react';
-import { PropTypes } from 'prop-types';
-import { Link, browserHistory } from 'react-router';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as nonghDemoModelActions from '../../../actions/nonghDemoModelActions';
-import * as inputComponentDemoModelActions from '../../../actions/inputComponentDemoModelActions';
-import { getAllInputComponentsForShowcase } from '../../inputcomponents';
-import { getComponentDeployed } from '../../../api/CommonLocal/getComponentDeployed';
-import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
-import { grey900 } from 'material-ui/styles/colors';
-import toastr from 'toastr';
+import React from "react";
+import { PropTypes } from "prop-types";
+import { Link, browserHistory } from "react-router";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as nonghDemoModelActions from "../../../actions/nonghDemoModelActions";
+import * as inputComponentDemoModelActions
+  from "../../../actions/inputComponentDemoModelActions";
+import { getAllInputComponentsForShowcase } from "../../inputcomponents";
+import {
+  getComponentDeployed
+} from "../../../api/CommonLocal/getComponentDeployed";
+import { Step, Stepper, StepLabel } from "material-ui/Stepper";
+import { grey900 } from "material-ui/styles/colors";
+import toastr from "toastr";
 
 toastr.options.closeButton = true;
 
@@ -17,22 +20,23 @@ class SelectInputComponentPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      user_id: parseInt(localStorage.getItem('user_id'), 10),
+      user_id: parseInt(localStorage.getItem("user_id"), 10),
       inputComponentDemoModel: {},
-      outputComponentStepperHighlight: false,
+      outputComponentStepperHighlight: false
     };
   }
 
   componentWillMount() {
-    getComponentDeployed(this.state.user_id, this.props.params.repoId, 'input')
+    getComponentDeployed(this.state.user_id, this.props.params.repoId, "input")
       .then(inputComponentSeedData => {
         if (JSON.parse(inputComponentSeedData).length > 0) {
           let dataToSeed = {
             id: JSON.parse(inputComponentSeedData)[0].id,
             user_id: JSON.parse(inputComponentSeedData)[0].user_id,
-            base_component_id: JSON.parse(inputComponentSeedData)[0]
-              .base_component_id,
-            props: JSON.parse(inputComponentSeedData)[0].props,
+            base_component_id: JSON.parse(inputComponentSeedData)[
+              0
+            ].base_component_id,
+            props: JSON.parse(inputComponentSeedData)[0].props
           };
           this.setState({ inputComponentDemoModel: dataToSeed });
         }
@@ -41,7 +45,7 @@ class SelectInputComponentPage extends React.Component {
         getComponentDeployed(
           this.state.user_id,
           this.props.params.repoId,
-          'output'
+          "output"
         ).then(outputComponentSeedData => {
           if (JSON.parse(outputComponentSeedData).length > 0) {
             this.setState({ outputComponentStepperHighlight: true });
@@ -55,23 +59,24 @@ class SelectInputComponentPage extends React.Component {
       this.state.inputComponentDemoModel !== nextProps.inputComponentDemoModel
     ) {
       this.setState({
-        inputComponentDemoModel: nextProps.inputComponentDemoModel,
+        inputComponentDemoModel: nextProps.inputComponentDemoModel
       });
     }
   }
 
   render() {
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
+    document.body.scrollTop = (document.documentElement.scrollTop = 0);
 
     return (
       <div className="ui relaxed stackable grid fluid">
+
         <div className="ui relaxed stackable grid fluid container">
           <div
             style={{
               visibility: this.state.showOutput,
-              width: '100%',
+              width: "100%",
               maxWidth: 700,
-              margin: 'auto',
+              margin: "auto"
             }}
           >
             <Stepper linear={false}>
@@ -80,7 +85,7 @@ class SelectInputComponentPage extends React.Component {
               </Step>
               <Step active>
                 <StepLabel>
-                  <b style={{ fontSize: 'large' }}>Select Input Component</b>
+                  <b style={{ fontSize: "large" }}>Select Input Component</b>
                 </StepLabel>
               </Step>
               <Step active={this.state.outputComponentStepperHighlight}>
@@ -95,28 +100,24 @@ class SelectInputComponentPage extends React.Component {
             </div>
 
             <div className="ui horizontal divider row">
-              <span>
-                <hr />
-              </span>
+              <span><hr /></span>
             </div>
 
-            <div className="fifteen wide column stretched stackable centered row">
+            <div
+              className="fifteen wide column stretched stackable centered row"
+            >
               <div
                 className="ui three padded column stackable grid"
-                style={{ marginLeft: '3%', minHeight: '90vh' }}
+                style={{ marginLeft: "3%", minHeight: "90vh" }}
               >
                 {getAllInputComponentsForShowcase({
                   demoModel: this.props.nonghDemoModel,
                   user: this.props.user,
                   inputComponentDemoModel: this.state.inputComponentDemoModel,
-                  inputComponentModelActions: this.props
-                    .inputComponentModelActions,
-                  forwardAddress: `/ngh/user/${
-                    this.props.nonghDemoModel.name
-                  }/${this.props.nonghDemoModel.id}/outputcomponent`,
+                  inputComponentModelActions: this.props.inputComponentModelActions,
+                  forwardAddress: `/ngh/user/${this.props.nonghDemoModel.name}/${this.props.nonghDemoModel.id}/outputcomponent`,
                   params: this.props.params,
-                  selected: this.state.inputComponentDemoModel
-                    .base_component_id,
+                  selected: this.state.inputComponentDemoModel.base_component_id
                 }).map((showcasecard, index) => showcasecard)}
               </div>
             </div>
@@ -126,10 +127,10 @@ class SelectInputComponentPage extends React.Component {
         <div
           className="ui fluid centered row"
           style={{
-            minHeight: '5vh',
+            minHeight: "5vh",
             backgroundColor: grey900,
-            color: 'white',
-            minWidth: '100vw',
+            color: "white",
+            minWidth: "100vw"
           }}
         >
           © CloudCV, 2016
@@ -146,7 +147,7 @@ SelectInputComponentPage.propTypes = {
   inputComponentDemoModel: PropTypes.object.isRequired,
   nonghModelActions: PropTypes.object.isRequired,
   inputComponentModelActions: PropTypes.object.isRequired,
-  params: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
@@ -154,7 +155,7 @@ function mapStateToProps(state, ownProps) {
     login: state.login,
     user: state.user,
     nonghDemoModel: state.nonghDemoModel,
-    inputComponentDemoModel: state.inputComponentDemoModel,
+    inputComponentDemoModel: state.inputComponentDemoModel
   };
 }
 
@@ -164,7 +165,7 @@ function mapDispatchToProps(dispatch) {
     inputComponentModelActions: bindActionCreators(
       inputComponentDemoModelActions,
       dispatch
-    ),
+    )
   };
 }
 

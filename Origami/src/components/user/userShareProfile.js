@@ -1,45 +1,45 @@
-import React from 'react';
-import { PropTypes } from 'prop-types';
-import { browserHistory } from 'react-router';
-import { getAllPermalink } from '../../api/Nongh/permalink';
-import { getDeployed } from '../../api/Nongh/getDeployed';
-import { is_cloudcv } from '../../api/Generic/getCloudCVDemos';
-import userApi from '../../api/Github/userApi';
-import { indigo600 } from 'material-ui/styles/colors';
-import Dialog from 'material-ui/Dialog';
-import toastr from 'toastr';
-import { ShareButtons, ShareCounts, generateShareIcon } from 'react-share';
-import Radium from 'radium';
-import { Layout, Menu, Icon, Dropdown, Button, Card, Row, Col } from 'antd';
+import React from "react";
+import { PropTypes } from "prop-types";
+import { browserHistory } from "react-router";
+import { getAllPermalink } from "../../api/Nongh/permalink";
+import { getDeployed } from "../../api/Nongh/getDeployed";
+import { is_cloudcv } from "../../api/Generic/getCloudCVDemos";
+import userApi from "../../api/Github/userApi";
+import { indigo600 } from "material-ui/styles/colors";
+import Dialog from "material-ui/Dialog";
+import toastr from "toastr";
+import { ShareButtons, ShareCounts, generateShareIcon } from "react-share";
+import Radium from "radium";
+import { Layout, Menu, Icon, Dropdown, Button, Card, Row, Col } from "antd";
 const { Header, Content, Footer, Sider } = Layout;
-import { Input } from 'antd';
+import { Input } from "antd";
 const Search = Input.Search;
 
 const {
   FacebookShareButton,
   GooglePlusShareButton,
   LinkedinShareButton,
-  TwitterShareButton,
+  TwitterShareButton
 } = ShareButtons;
 const {
   FacebookShareCount,
   GooglePlusShareCount,
-  LinkedinShareCount,
+  LinkedinShareCount
 } = ShareCounts;
-const FacebookIcon = generateShareIcon('facebook');
-const TwitterIcon = generateShareIcon('twitter');
-const GooglePlusIcon = generateShareIcon('google');
-const LinkedinIcon = generateShareIcon('linkedin');
+const FacebookIcon = generateShareIcon("facebook");
+const TwitterIcon = generateShareIcon("twitter");
+const GooglePlusIcon = generateShareIcon("google");
+const LinkedinIcon = generateShareIcon("linkedin");
 
 class ShareProfileComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       user: {},
-      showOutput: 'hidden',
+      showOutput: "hidden",
       allDeployed: {},
       demoBeingShown: {},
-      shareModalOpen: false,
+      shareModalOpen: false
     };
 
     this.toggleShow = this.toggleShow.bind(this);
@@ -66,9 +66,7 @@ class ShareProfileComponent extends React.Component {
                     JSON.parse(alldeployedRepos).map((demo, index) => {
                       if (index < JSON.parse(alldeployedRepos).length) {
                         const demoToPut = Object.assign({}, demo, {
-                          permalink: `http://${rootData.app_ip}:${
-                            rootData.port
-                          }${relevantLink[index].short_relative_url}`,
+                          permalink: `http://${rootData.app_ip}:${rootData.port}${relevantLink[index].short_relative_url}`
                         });
                         allDemos.push(demoToPut);
                       }
@@ -81,7 +79,7 @@ class ShareProfileComponent extends React.Component {
                           allDeployed.push(tmp.splice(0, 4));
                         }
                         this.setState({
-                          allDeployed: allDeployed,
+                          allDeployed: allDeployed
                         });
                       }
                     });
@@ -98,7 +96,7 @@ class ShareProfileComponent extends React.Component {
 
   toggleShow() {
     this.setState({
-      showOutput: this.state.showOutput === 'visible' ? 'hidden' : 'visible',
+      showOutput: this.state.showOutput === "visible" ? "hidden" : "visible"
     });
   }
 
@@ -111,28 +109,28 @@ class ShareProfileComponent extends React.Component {
   getStyles() {
     return {
       layout: {
-        background: '#FEFEFE',
+        background: "#FEFEFE"
       },
       content: {
-        margin: '24px 16px 0',
-        overflow: 'initial',
+        margin: "24px 16px 0",
+        overflow: "initial"
       },
       contentDiv: {
         padding: 12,
-        background: '#FEFEFE',
-        textAlign: 'center',
+        background: "#FEFEFE",
+        textAlign: "center"
       },
       card: {
-        width: '100%',
-        background: '#FAFAFA',
+        width: "100%",
+        background: "#FAFAFA"
       },
       footer: {
-        textAlign: 'center',
-        background: '#fefefe',
-        color: '#455A64',
-        fontSize: '14px',
-        boxShadow: '0px -2px 5px #E0E0E0',
-      },
+        textAlign: "center",
+        background: "#fefefe",
+        color: "#455A64",
+        fontSize: "14px",
+        boxShadow: "0px -2px 5px #E0E0E0"
+      }
     };
   }
 
@@ -149,14 +147,16 @@ class ShareProfileComponent extends React.Component {
         <Header id="layout-header">
           <Row>
             <Col span={4} offset={1}>
-              <h1 id="logo-title">Public Profile</h1>
+              <h1 id="logo-title">
+                Public Profile
+              </h1>
             </Col>
           </Row>
         </Header>
         <Content style={styles.content}>
-          {this.state.user && (
+          {this.state.user &&
             <div style={styles.contentDiv}>
-              {this.state.allDeployed.length > 0 && (
+              {this.state.allDeployed.length > 0 &&
                 <Row>
                   {this.state.allDeployed.map(row => (
                     <div key={Math.random()}>
@@ -181,7 +181,7 @@ class ShareProfileComponent extends React.Component {
                                   <Col span={11} offset={1}>
                                     <Button
                                       type="primary"
-                                      style={{ width: '100%' }}
+                                      style={{ width: "100%" }}
                                       onClick={() => this.goToDemo(demo)}
                                     >
                                       Launch<Icon type="rocket" />
@@ -190,10 +190,9 @@ class ShareProfileComponent extends React.Component {
                                   <Col span={10} offset={1}>
                                     <Button
                                       type="primary"
-                                      style={{ width: '100%' }}
+                                      style={{ width: "100%" }}
                                       onClick={() =>
-                                        this.handleShareModal(demo)
-                                      }
+                                        this.handleShareModal(demo)}
                                     >
                                       Share<Icon type="share-alt" />
                                     </Button>
@@ -209,13 +208,13 @@ class ShareProfileComponent extends React.Component {
                     </div>
                   ))}
                   <br />
-                </Row>
-              )}
+                </Row>}
               <br />
-            </div>
-          )}
+            </div>}
         </Content>
-        <Footer style={styles.footer}>Origami - Created by Team CloudCV</Footer>
+        <Footer style={styles.footer}>
+          Origami - Created by Team CloudCV
+        </Footer>
         <Dialog
           title="Share This Demo"
           modal={false}
@@ -223,15 +222,17 @@ class ShareProfileComponent extends React.Component {
           onRequestClose={this.handleShareModal}
           autoScrollBodyContent
         >
+
           <div className="ui padded centered grid">
+
             <div
               className="ui row stackable column grid"
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
             >
               <TwitterShareButton
                 url={this.state.demoBeingShown.permalink}
                 title={this.state.demoBeingShown.name}
-                hashtags={['cloudcv', 'cvfy']}
+                hashtags={["cloudcv", "cvfy"]}
                 className="ui row"
               >
                 <TwitterIcon size={64} round />
@@ -240,7 +241,7 @@ class ShareProfileComponent extends React.Component {
 
             <div
               className="ui eight wide stackable row column grid"
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
             >
               <FacebookShareButton
                 url={this.state.demoBeingShown.permalink}
@@ -263,7 +264,7 @@ class ShareProfileComponent extends React.Component {
 
             <div
               className="ui eight wide stackable row column grid"
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
             >
               <GooglePlusShareButton
                 url={this.state.demoBeingShown.permalink}
@@ -283,7 +284,7 @@ class ShareProfileComponent extends React.Component {
 
             <div
               className="ui stackable row column grid"
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
             >
               <LinkedinShareButton
                 url={this.state.demoBeingShown.permalink}
@@ -303,7 +304,9 @@ class ShareProfileComponent extends React.Component {
                 )}
               </LinkedinShareCount>
             </div>
+
           </div>
+
         </Dialog>
       </Layout>
     );
@@ -311,7 +314,7 @@ class ShareProfileComponent extends React.Component {
 }
 
 ShareProfileComponent.propTypes = {
-  params: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired
 };
 
 const ShareProfile = Radium(ShareProfileComponent);

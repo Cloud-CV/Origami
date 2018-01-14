@@ -1,8 +1,8 @@
-import React from 'react';
-import { PropTypes } from 'prop-types';
-import TextInputShowcaseCard from './TextInput/TextInputShowcaseCard';
-import TypeInput from './BaseInputComponent/TypeInput';
-import ImageInputShowcaseCard from './ImageInput/ImageInputShowcaseCard';
+import React from "react";
+import { PropTypes } from "prop-types";
+import TextInputShowcaseCard from "./TextInput/TextInputShowcaseCard";
+import TypeInput from "./BaseInputComponent/TypeInput";
+import ImageInputShowcaseCard from "./ImageInput/ImageInputShowcaseCard";
 
 export function getInputComponentById(
   id,
@@ -15,10 +15,10 @@ export function getInputComponentById(
   let textLabels = [];
   let imageLabels = [];
   props.map((prop, index) => {
-    if (prop['id'] === '1') {
-      textLabels.push(prop['label']);
-    } else if (prop['id'] === '3') {
-      imageLabels.push(prop['label']);
+    if (prop["id"] === "1") {
+      textLabels.push(prop["label"]);
+    } else if (prop["id"] === "3") {
+      imageLabels.push(prop["label"]);
     }
   });
   return (
@@ -37,6 +37,6 @@ export function getInputComponentById(
 export function getAllInputComponentsForShowcase(data) {
   return [
     <TextInputShowcaseCard key={Math.random()} demoProps={data} />,
-    <ImageInputShowcaseCard key={Math.random()} demoProps={data} />,
+    <ImageInputShowcaseCard key={Math.random()} demoProps={data} />
   ];
 }
