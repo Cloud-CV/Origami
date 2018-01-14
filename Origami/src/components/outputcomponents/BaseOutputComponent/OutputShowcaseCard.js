@@ -56,9 +56,9 @@ class OutputShowcaseCard extends React.Component {
     let headers = [];
     this.props.headers.map((header, index) => {
       if (typeof header == "object") {
-         headers[index] = header["label"];
+        headers[index] = header["label"];
       } else {
-         headers[index] = header;
+        headers[index] = header;
       }
     });
     return headers;

@@ -6,13 +6,13 @@ import OutputPreview from "../BaseOutputComponent/OutputPreview.js";
 class TextOutputPreview extends OutputPreview {
   render() {
     return (
-        <TextOutput
-          headers={this.state.headers}
-          calling_context="demo"
-          data={new Array(this.state.headers.length).fill(
-            "Text Output sent from your code!"
-          )}
-        />
+      <TextOutput
+        headers={this.state.headers}
+        calling_context="demo"
+        data={new Array(this.state.headers.length).fill(
+          "Text Output sent from your code!"
+        )}
+      />
     );
   }
 }

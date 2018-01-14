@@ -83,22 +83,100 @@ export function getOutputComponentById(id, props, calling_context, data) {
 
 export function getAllOutputComponentsForShowcase(data, updatefuncs, headers) {
   return [
-    <TextOutputShowcaseCard key={Math.random()} updateHeaders={updatefuncs[5]} headers={headers["text"]} demoProps={data} />,
-    <ImageOutputShowcaseCard key={Math.random()} updateHeaders={updatefuncs[2]} headers={headers["image"]} demoProps={data} />,
-    <BarGraphOutputShowCaseCard key={Math.random()} updateHeaders={updatefuncs[1]} headers={headers["bargraph"]} demoProps={data} />,
-    <ScatterGraphOutputShowCaseCard key={Math.random()} updateHeaders={updatefuncs[4]} headers={headers["scattergraph"]} demoProps={data} />,
-    <PieChartOutputShowCaseCard key={Math.random()} updateHeaders={updatefuncs[3]} headers={headers["piechart"]} demoProps={data} />,
-    <AreaGraphOutputShowCaseCard key={Math.random()} updateHeaders={updatefuncs[0]} headers={headers["areagraph"]} demoProps={data} />
+    <TextOutputShowcaseCard
+      key={Math.random()}
+      updateHeaders={updatefuncs[5]}
+      headers={headers["text"]}
+      demoProps={data}
+    />,
+    <ImageOutputShowcaseCard
+      key={Math.random()}
+      updateHeaders={updatefuncs[2]}
+      headers={headers["image"]}
+      demoProps={data}
+    />,
+    <BarGraphOutputShowCaseCard
+      key={Math.random()}
+      updateHeaders={updatefuncs[1]}
+      headers={headers["bargraph"]}
+      demoProps={data}
+    />,
+    <ScatterGraphOutputShowCaseCard
+      key={Math.random()}
+      updateHeaders={updatefuncs[4]}
+      headers={headers["scattergraph"]}
+      demoProps={data}
+    />,
+    <PieChartOutputShowCaseCard
+      key={Math.random()}
+      updateHeaders={updatefuncs[3]}
+      headers={headers["piechart"]}
+      demoProps={data}
+    />,
+    <AreaGraphOutputShowCaseCard
+      key={Math.random()}
+      updateHeaders={updatefuncs[0]}
+      headers={headers["areagraph"]}
+      demoProps={data}
+    />
   ];
 }
 
-export function getAllPreviewsForShowcase(getfuncs){
+export function getAllPreviewsForShowcase(getfuncs) {
   return [
-    <TextOutputPreview key={Math.random()} functions={{getHeaders: getfuncs[5], hidePreviewDialog: () => {1}}} />,
-    <ImageOutputPreview key={Math.random()} functions={{getHeaders: getfuncs[2], hidePreviewDialog: () => {1}}} />,
-    <BarGraphOutputPreview key={Math.random()} functions={{getHeaders: getfuncs[1], hidePreviewDialog: () => {1}}} />,
-    <ScatterGraphOutputPreview key={Math.random()} functions={{getHeaders: getfuncs[4], hidePreviewDialog: () => {1}}} />,
-    <PieChartOutputPreview key={Math.random()} functions={{getHeaders: getfuncs[3], hidePreviewDialog: () => {1}}} />,
-    <AreaGraphOutputPreview key={Math.random()} functions={{getHeaders: getfuncs[0], hidePreviewDialog: () => {1}}} />
+    <TextOutputPreview
+      key={Math.random()}
+      functions={{
+        getHeaders: getfuncs[5],
+        hidePreviewDialog: () => {
+          1;
+        }
+      }}
+    />,
+    <ImageOutputPreview
+      key={Math.random()}
+      functions={{
+        getHeaders: getfuncs[2],
+        hidePreviewDialog: () => {
+          1;
+        }
+      }}
+    />,
+    <BarGraphOutputPreview
+      key={Math.random()}
+      functions={{
+        getHeaders: getfuncs[1],
+        hidePreviewDialog: () => {
+          1;
+        }
+      }}
+    />,
+    <ScatterGraphOutputPreview
+      key={Math.random()}
+      functions={{
+        getHeaders: getfuncs[4],
+        hidePreviewDialog: () => {
+          1;
+        }
+      }}
+    />,
+    <PieChartOutputPreview
+      key={Math.random()}
+      functions={{
+        getHeaders: getfuncs[3],
+        hidePreviewDialog: () => {
+          1;
+        }
+      }}
+    />,
+    <AreaGraphOutputPreview
+      key={Math.random()}
+      functions={{
+        getHeaders: getfuncs[0],
+        hidePreviewDialog: () => {
+          1;
+        }
+      }}
+    />
   ];
 }

@@ -194,7 +194,7 @@ class SelectOutputComponentPage extends React.Component {
                    </Dialog>
                  }
                 <div className="row" style={{marginTop: "-10vh", height: "6vh", minHeight: "6vh", width: "100%", marginLeft: "37%"}}>
-                  <RaisedButton label={"Preview"} secondary={true} onClick={this.togglePreview}/>
+                  <RaisedButton label={"Preview"} primary={true} onClick={this.togglePreview}/>
                </div>
               </div>
             </div>
