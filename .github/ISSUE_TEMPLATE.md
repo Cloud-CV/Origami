@@ -2,7 +2,9 @@ Thanks for taking the time to report a bug in the Origami project, or propose a 
 
 If you'd like to report a bug, please include the following information:
 - Node version:
+- Python version:
 - npm version:
+- Other dependencies:
 - Operating system:
 - Command line used:
 - Steps to reproduce:
