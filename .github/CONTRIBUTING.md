@@ -25,7 +25,7 @@ Before you submit code, please talk to us via the issue tracker so we know you a
 
 Coding is done on feature branches and merged into it once stable and reviewed. To submit code, follow these steps:
 
-### 1. Create a new branch off of development. Select a descriptive branch name.
+### 1. Create a new branch off of master. Select a descriptive branch name.
 
         git fetch upstream
         git checkout master
