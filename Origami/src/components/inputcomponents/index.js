@@ -3,7 +3,7 @@ import { PropTypes } from "prop-types";
 import TextInputShowcaseCard from "./TextInput/TextInputShowcaseCard";
 import TypeInput from "./BaseInputComponent/TypeInput";
 import ImageInputShowcaseCard from "./ImageInput/ImageInputShowcaseCard";
-
+import { Draggable, Droppable } from 'react-drag-and-drop'
 export function getInputComponentById(
   id,
   props,
@@ -36,7 +36,7 @@ export function getInputComponentById(
 
 export function getAllInputComponentsForShowcase(data) {
   return [
-    <TextInputShowcaseCard key={Math.random()} demoProps={data} />,
+  <Draggable><TextInputShowcaseCard key={Math.random()} demoProps={data} /></Draggable>,
     <ImageInputShowcaseCard key={Math.random()} demoProps={data} />
   ];
 }
