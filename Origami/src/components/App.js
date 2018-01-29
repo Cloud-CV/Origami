@@ -24,9 +24,8 @@ class App extends React.Component {
       login: false,
       displayLogin: "",
       showTitle: true,
-      isFrame: window.location.pathname.split("/")[1] == "frame",
+      isFrame: window.location.pathname.split("/")[1] == "frame"
     };
-    
     this.handleClickAfterLogin = this.handleClickAfterLogin.bind(this);
     this.initiateLogin = this.initiateLogin.bind(this);
     this.logout = this.logout.bind(this);
