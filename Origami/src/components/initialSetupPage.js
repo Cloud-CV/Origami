@@ -154,7 +154,6 @@ class InitialSetup extends React.Component {
           );
           this.setState({ rootError: "This user does not exist" });
         });
-
     }
   }
 
@@ -172,11 +171,9 @@ class InitialSetup extends React.Component {
             </div>
           </div>
         </div>
-        )
-    }
+        )}
     
-    else
-    {
+    else{
     return (
       <div className="ui relaxed stackable grid fluid container">
 
