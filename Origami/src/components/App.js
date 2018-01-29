@@ -25,7 +25,6 @@ class App extends React.Component {
       displayLogin: "",
       showTitle: true,
       isFrame: window.location.pathname.split("/")[1] == "frame",
-      isRoot:false
     };
     
     this.handleClickAfterLogin = this.handleClickAfterLogin.bind(this);
@@ -74,10 +73,6 @@ class App extends React.Component {
           JSON.parse(data).root_user_github_login_id === null
         ) {
           window.location = "/initialsetup";
-        }
-         if(JSON.parse(data).root_user_github_login_name==localStorage.getItem("username"))
-        {
-          this.setState({ isRoot: true });
         }
       })
       .catch(err => {
@@ -233,9 +228,10 @@ class App extends React.Component {
                 <Icon type="logout" />
                 <span className="nav-text">Logout</span>
               </Menu.Item>
-
-              {Root_Setting}
-
+              <Menu.Item key="7" style={{ "font-size": "16px" }}>
+                <Icon type="setting" />
+                <span className="nav-text">Root-Settings</span>
+              </Menu.Item>
             </Menu>
           </Sider>
           {this.props.children}
