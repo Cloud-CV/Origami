@@ -24,8 +24,9 @@ class App extends React.Component {
       login: false,
       displayLogin: "",
       showTitle: true,
-      isFrame: window.location.pathname.split("/")[1] == "frame"
+      isFrame: window.location.pathname.split("/")[1] == "frame",
     };
+    
     this.handleClickAfterLogin = this.handleClickAfterLogin.bind(this);
     this.initiateLogin = this.initiateLogin.bind(this);
     this.logout = this.logout.bind(this);
@@ -148,6 +149,8 @@ class App extends React.Component {
       this.getDocs();
     } else if (e.key === "6") {
       this.logout();
+    } else if (e.key === "7") {
+      browserHistory.push("/initialsetup");
     }
   }
 
@@ -210,6 +213,10 @@ class App extends React.Component {
               <Menu.Item key="6" style={{ "font-size": "16px" }}>
                 <Icon type="logout" />
                 <span className="nav-text">Logout</span>
+              </Menu.Item>
+              <Menu.Item key="7" style={{ "font-size": "16px" }}>
+                <Icon type="setting" />
+                <span className="nav-text">Root-Settings</span>
               </Menu.Item>
             </Menu>
           </Sider>
