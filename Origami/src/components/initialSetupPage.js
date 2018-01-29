@@ -168,7 +168,7 @@ class InitialSetup extends React.Component {
           <div className="centered row">
             <div className="ui very padded text">
               <h2>
-                Not a Root User &nbsp;
+                Not the Root User &nbsp;
               </h2>
             </div>
           </div>
