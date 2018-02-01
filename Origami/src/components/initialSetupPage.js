@@ -21,12 +21,13 @@ class InitialSetup extends React.Component {
       app_ipError: "",
       allowNewUsers: false,
       is_cloudcv: false,
-      isRoot:false
+      isRoot:false,
+      isLoggedIn:true,
     };
     this.updateFields = this.updateFields.bind(this);
     this.updateCheck = this.updateCheck.bind(this);
     this.save = this.save.bind(this);
-    this.check=this.check.bind(this);
+    
   }
 
   updateFields(fieldToUpdate, value) {
@@ -40,9 +41,9 @@ class InitialSetup extends React.Component {
       [fieldToUpdate]: !this.state[fieldToUpdate]
     });
   }
-
-  check(){
-        rootApi
+ 
+  componentWillMount() {
+      rootApi
       .checkRootSettings()
       .then(data => {
          if(JSON.parse(data).root_user_github_login_id === null || JSON.parse(data).root_user_github_login_name==localStorage.getItem("username"))
@@ -50,8 +51,8 @@ class InitialSetup extends React.Component {
           this.setState({ isRoot: true });
         }
       })
+  
   }
-
   save() {
     if (this.state.root.length === 0) {
       this.setState({ rootError: "Required" });
@@ -154,11 +155,11 @@ class InitialSetup extends React.Component {
           );
           this.setState({ rootError: "This user does not exist" });
         });
+
     }
   }
 
   render() {
-    this.check();
     if(!this.state.isRoot)
     {
       return(
@@ -166,14 +167,16 @@ class InitialSetup extends React.Component {
           <div className="centered row">
             <div className="ui very padded text">
               <h2>
-                Not the Root User &nbsp;
+                Not a Root User &nbsp;
               </h2>
             </div>
           </div>
         </div>
-        )}
+        )
+    }
     
-    else{
+    else
+    {
     return (
       <div className="ui relaxed stackable grid fluid container">
 
