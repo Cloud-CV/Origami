@@ -696,3 +696,18 @@ class CustomRootSettingsControllerClass(TestCase):
         response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["is_cloudcv"],
                          self.root_settings["is_cloudcv"])
+
+    def test_modify_root_settings(self):
+        payload = self.root_settings
+        payload["root_user_github_login_id"] = 201
+        payload["root_user_github_login_name"] = "changedname"
+        payload["client_id"] = "changedclientid"
+        payload["app_ip"] = "127.0.0.1"
+        payload["port"] = "8080"
+        response = self.client.post('/api/rootsettings', payload)
+        response = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(response["root_user_github_login_id"], payload["root_user_github_login_id"])
+        self.assertEqual(response["root_user_github_login_name"], payload["root_user_github_login_name"])
+        self.assertEqual(response["client_id"], payload["client_id"])
+        self.assertEqual(response["app_ip"], payload["app_ip"])
+        self.assertEqual(response["port"], payload["port"])
