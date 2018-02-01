@@ -21,8 +21,7 @@ class InitialSetup extends React.Component {
       app_ipError: "",
       allowNewUsers: false,
       is_cloudcv: false,
-      isRoot:false,
-      isLoggedIn:true,
+      isRoot:false
     };
     this.updateFields = this.updateFields.bind(this);
     this.updateCheck = this.updateCheck.bind(this);
