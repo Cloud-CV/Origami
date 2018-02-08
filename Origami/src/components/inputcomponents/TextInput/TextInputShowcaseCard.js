@@ -7,7 +7,7 @@ import InputShowcaseModifyDialog
 import TextInputPreview from "./TextInputPreview";
 import toastr from "toastr";
 import InputShowcaseCard from "../BaseInputComponent/InputShowcaseCard.js";
-
+import { Draggable, Droppable } from 'react-drag-and-drop'
 class TextInputShowcaseCard extends InputShowcaseCard {
   constructor(props) {
     super(props);
@@ -60,46 +60,18 @@ class TextInputShowcaseCard extends InputShowcaseCard {
 
   render() {
     return (
-      <div>
+      <div key={Math.random()} style={{width: 'fit-content',margin: "auto"}}>
+      <Draggable type="lr" data="Text Input">
         <CustomCard
           header="Text Input"
           width="five"
           context="selection"
           centeredParent
           centeredSegment
-          displayData={[`Number of inputs: ${this.getLabelRealLength()}`]}
-          buttonData={[
-            {
-              label: "Modify",
-              onDeployClick: () => this.showModifyDialog()
-            },
-            {
-              label: "Preview",
-              onDeployClick: () => this.showPreviewDialog()
-            },
-            {
-              label: "Save",
-              onDeployClick: () => this.updateInputComponentModel()
-            }
-          ]}
         />
-        {this.state.modifyDialogDisplay &&
-          <InputShowcaseModifyDialog
-            functions={{
-              updateLabels: this.updateLabels,
-              hideModifyDialog: this.hideModifyDialog,
-              getLabels: this.getLabels
-            }}
-            title="Modify Text Input Component"
-          />}
-        {this.state.previewDialogDisplay &&
-          <TextInputPreview
-            functions={{
-              getLabels: this.getLabels,
-              hidePreviewDialog: this.hidePreviewDialog
-            }}
-          />}
+      </Draggable> 
       </div>
+      
     );
   }
 }

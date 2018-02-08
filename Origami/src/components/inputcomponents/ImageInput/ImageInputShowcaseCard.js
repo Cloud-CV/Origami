@@ -7,7 +7,8 @@ import InputShowcaseModifyDialog
 import ImageInputPreview from "./ImageInputPreview";
 import toastr from "toastr";
 import InputShowcaseCard from "../BaseInputComponent/InputShowcaseCard.js";
-
+import { Draggable, Droppable } from 'react-drag-and-drop';
+import Button from 'material-ui-next/Button';
 class ImageInputShowcaseCard extends InputShowcaseCard {
   constructor(props) {
     super(props);
@@ -58,9 +59,15 @@ class ImageInputShowcaseCard extends InputShowcaseCard {
     }
   }
 
+   onDrop(data)
+  {
+    console.log(data);
+    alert("gira");
+  }
   render() {
     return (
-      <div>
+      <div key={Math.random()} style={{width: 'fit-content',margin: "auto"}}>
+      <Draggable type="ll" data="Image Input">
         <CustomCard
           header="Image Input"
           width="five"
@@ -68,39 +75,10 @@ class ImageInputShowcaseCard extends InputShowcaseCard {
           selected={false}
           centeredParent
           centeredSegment
-          displayData={[`Number of inputs: ${this.getLabelRealLength()}`]}
-          buttonData={[
-            {
-              label: "Modify",
-              onDeployClick: () => this.showModifyDialog()
-            },
-            {
-              label: "Preview",
-              onDeployClick: () => this.showPreviewDialog()
-            },
-            {
-              label: "Save",
-              onDeployClick: () => this.updateInputComponentModel()
-            }
-          ]}
         />
-        {this.state.modifyDialogDisplay &&
-          <InputShowcaseModifyDialog
-            functions={{
-              updateLabels: this.updateLabels,
-              hideModifyDialog: this.hideModifyDialog,
-              getLabels: this.getLabels
-            }}
-            title="Modify Image Input Component"
-          />}
-        {this.state.previewDialogDisplay &&
-          <ImageInputPreview
-            functions={{
-              getLabels: this.getLabels,
-              hidePreviewDialog: this.hidePreviewDialog
-            }}
-          />}
+        </Draggable>
       </div>
+      
     );
   }
 }
