@@ -20,6 +20,12 @@ export function getOutputComponentById(id, props, calling_context, data) {
   props.map((header, index) => {
     headers[index] = header;
   });
+  console.log("index output props");
+  console.log(props);
+
+   console.log("data =");
+  console.log(id);
+
   switch (id) {
     case 1:
       return (

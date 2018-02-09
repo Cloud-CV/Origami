@@ -21,6 +21,7 @@ import DeleteIcon from 'material-ui-icons/Delete';
 import IconButton from 'material-ui/IconButton';
 import Save from 'material-ui-icons/Save';
 import RaisedButton from 'material-ui/RaisedButton';
+import InputShowcaseCard from "../../inputcomponents/BaseInputComponent/InputShowcaseCard.js";
 
 
 toastr.options.closeButton = true;
@@ -38,40 +39,45 @@ class SelectInputComponentPage extends React.Component {
       Rows:[],
       labels:[]
     };
-
+           console.log("props aa rhe hai");
+    console.log(props);
+    this.id=props["params"].repoId;
+    this.base_component_id=1;
+    this.modify=(props["params"].type==="modify")
+    this.forwardAddress="/ngh/user/"+props["routeParams"].repoName+"/"+ props["routeParams"].repoId+"/outputcomponent";
+    
   }
 
   componentWillMount() {
     getComponentDeployed(this.state.user_id, this.props.params.repoId, "input")
       .then(inputComponentSeedData => {
+  
         if (JSON.parse(inputComponentSeedData).length > 0) {
-          let dataToSeed = {
-            id: JSON.parse(inputComponentSeedData)[0].id,
-            user_id: JSON.parse(inputComponentSeedData)[0].user_id,
-            base_component_id: JSON.parse(inputComponentSeedData)[
+          let id=JSON.parse(inputComponentSeedData)[0].id;
+          let user_id= JSON.parse(inputComponentSeedData)[0].user_id;
+          let base_component_id=JSON.parse(inputComponentSeedData)[
               0
-            ].base_component_id,
+            ].base_component_id
+
+          let dataToSeed = {
+            id: id,
+            user_id: user_id,
+            base_component_id: base_component_id,
             props: JSON.parse(inputComponentSeedData)[0].props
           };
           let k=dataToSeed["props"];
           let net=[];
-          console.log(k);
           Object.keys(k).forEach(function(key,index) {
-    // key: the name of the object key
-    // index: the ordinal position of the key within the object
-            if(k[key].id==="1")
+            if(k[key].id==1)
               {
                 net.push("Text Input");
-                console.log(k[key].label);
               } 
-            if(k[key].id==="3")
+            if(k[key].id==3)
             {
               net.push("Image Input");
-              console.log("Image");
             }
             });
-          this.conv(net);
-          console.log();
+          this.helper(net);
           this.setState({ inputComponentDemoModel: dataToSeed });
         }
       })
@@ -89,16 +95,13 @@ class SelectInputComponentPage extends React.Component {
 
   }
 
-  conv(arrayvar)
+  helper(arrayvar)
   {
-    
-        var row=[];
+    var row=[];
     for(var i=0;i<arrayvar.length;i++)
     {
       var k=arrayvar[i];
-      console.log(k);
       row.push(
-        
         <div key={i} style={{width: 'fit-content',margin: "auto"}}  >     
           <CustomCard
           header={k}
@@ -108,7 +111,7 @@ class SelectInputComponentPage extends React.Component {
           context="selection"
           />
           <br/>
-          <button  onClick={this.onDrop2.bind(this,{i})}   type="button" className="btn btn-primary">Delete</button>
+          <button  onClick={this.onDragOut.bind(this,{i})}   type="button" className="btn btn-primary">Delete</button>
            <br/>
            <br/>
           </div>
@@ -119,7 +122,7 @@ class SelectInputComponentPage extends React.Component {
     this.setState({ array: arrayvar,Rows:row});
   }
 
-  onDrop2(data)
+  onDragOut(data)
   {
     
     var index=data["i"];
@@ -129,24 +132,60 @@ class SelectInputComponentPage extends React.Component {
 
     arrayvar.splice(index, 1);
     
-    this.conv(arrayvar);
+    this.helper(arrayvar);
     }
     
 
 
   }
+
   onDrop(data)
   {
-    console.log(this.state.inputComponentDemoModel);
-
-    var arrayvar = this.state.array.slice();
-    let d=data["ll"]?data["ll"]:data["lr"];
-    console.log(d);
-    arrayvar.push(d);
-    this.conv(arrayvar);
-  
     
+    let k=this.state.inputComponentDemoModel;
+    var arrayvar = this.state.array.slice();
+   
+    let d=data["ll"]?data["ll"]:data["lr"];
+    arrayvar.push(d);
+    this.helper(arrayvar);
   }
+
+
+  onSubmit()
+   {
+
+    let k=[]
+    let l=this.state.array;
+    for(var i=0;i<l.length;i++)
+    {
+      let tem={};
+      tem["id"]=(l[i]=="Text Input"?1:3);
+      tem["label"]=""
+      k.push(tem);
+
+    }
+    console.log("props input wale");
+    console.log(this.props);
+  
+    this.props.inputComponentModelActions
+    .updateInputComponentModel({
+      id: this.id,
+      user_id: this.state.user_id,
+      base_component_id: this.base_component_id,
+      props: k 
+    })
+    .then(() => {
+      if (this.modify) {
+        browserHistory.push("/ngh/user");
+      } else {
+        browserHistory.push(this.forwardAddress);
+      }
+    });
+
+
+
+   }
+
   componentWillReceiveProps(nextProps) {
     if (
       this.state.inputComponentDemoModel !== nextProps.inputComponentDemoModel
@@ -156,9 +195,8 @@ class SelectInputComponentPage extends React.Component {
       });
     }
   }
-  dr(i){
-    console.log(i);
-  }
+
+ 
 
   render() {
     document.body.scrollTop = (document.documentElement.scrollTop = 0);
@@ -183,7 +221,7 @@ class SelectInputComponentPage extends React.Component {
     bottom: 20,
     right: 125
  }
-   
+
     
     return (
       
@@ -245,7 +283,7 @@ class SelectInputComponentPage extends React.Component {
           </div>
             
             <div style={but}>
-            <RaisedButton label="Primary" primary={true}  />
+            <RaisedButton label="Submit" primary={true} onClick={this.onSubmit.bind(this)}  />
             </div>
             
             

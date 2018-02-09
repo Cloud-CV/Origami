@@ -11,7 +11,7 @@ import { Draggable, Droppable } from 'react-drag-and-drop';
 import Button from 'material-ui-next/Button';
 class ImageInputShowcaseCard extends InputShowcaseCard {
   constructor(props) {
-    super(props);
+    super(props); 
     this.init = props.demoProps.inputComponentDemoModel.props;
     let labels = [];
     this.others = [];
@@ -59,11 +59,6 @@ class ImageInputShowcaseCard extends InputShowcaseCard {
     }
   }
 
-   onDrop(data)
-  {
-    console.log(data);
-    alert("gira");
-  }
   render() {
     return (
       <div key={Math.random()} style={{width: 'fit-content',margin: "auto"}}>

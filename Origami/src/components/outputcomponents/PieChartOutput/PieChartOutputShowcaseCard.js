@@ -6,6 +6,7 @@ import OutputShowcaseModifyDialog from "../BaseOutputComponent/OutputShowcaseMod
 import OutputShowcaseCard from "../BaseOutputComponent/OutputShowcaseCard.js";
 import PieChartOutputPreview from "./PieChartOutputPreview";
 import toastr from "toastr";
+import { Draggable, Droppable } from 'react-drag-and-drop';
 
 class PieChartOutputShowcaseCard extends OutputShowcaseCard {
   constructor(props) {
@@ -64,7 +65,8 @@ class PieChartOutputShowcaseCard extends OutputShowcaseCard {
 
   render() {
     return (
-      <div>
+      <div key={Math.random()} style={{width: 'fit-content',margin: "auto"}}>
+      <Draggable type="l5" data="Pie Chart Output">
         <CustomCard
           header="Pie Chart Output"
           width="five"
@@ -72,41 +74,9 @@ class PieChartOutputShowcaseCard extends OutputShowcaseCard {
           selected={this.selected}
           centeredParent
           centeredSegment
-          displayData={[`Number of Outputs: ${this.getHeaderRealLength()}`]}
-          buttonData={[
-            {
-              label: "Modify",
-              onDeployClick: () => this.showModifyDialog()
-            },
-            {
-              label: "Preview",
-              onDeployClick: () => this.showPreviewDialog()
-            },
-            {
-              label: "Save",
-              onDeployClick: () => this.updateOutputComponentModel()
-            }
-          ]}
+          
         />
-        {this.state.modifyDialogDisplay && (
-          <OutputShowcaseModifyDialog
-            functions={{
-              updateHeaders: this.updateHeaders,
-              hideModifyDialog: this.hideModifyDialog,
-              getHeaders: this.getHeaders
-            }}
-            title="Modify Pie Chart Output Component"
-          />
-        )}
-
-        {this.state.previewDialogDisplay && (
-          <PieChartOutputPreview
-            functions={{
-              getHeaders: this.getHeaders,
-              hidePreviewDialog: this.hidePreviewDialog
-            }}
-          />
-        )}
+        </Draggable>
       </div>
     );
   }
