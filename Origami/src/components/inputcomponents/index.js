@@ -14,15 +14,20 @@ export function getInputComponentById(
   let labels = [];
   let textLabels = [];
   let imageLabels = [];
+  console.log("props aaenge index input se");
+  console.log(props);
   props.map((prop, index) => {
     if (prop["id"] === 1) {
-      textLabels.push(prop["label"]);
+      textLabels.push("text label");
     } else if (prop["id"] === 3) {
-      imageLabels.push(prop["label"]);
+      imageLabels.push("image label");
     }
   });
-  console.log("index.js se aa rhe hai")
-  console.log(props);
+  console.log("Text label")
+  console.log(textLabels);
+
+  console.log("Image label")
+  console.log(imageLabels);
   return (
     <div>
       <TypeInput

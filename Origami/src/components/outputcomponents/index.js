@@ -23,61 +23,81 @@ export function getOutputComponentById(id, props, calling_context, data) {
   console.log("index output props");
   console.log(props);
 
-   console.log("data =");
-  console.log(id);
+   console.log("headers =");
+  console.log(headers);
 
-  switch (id) {
+  let fin=[];
+  for(var i=0;i<props.length;i++)
+  {
+    let lab={};
+    lab["id"]=props[i].id;
+    lab["label"]=props[i].label;
+    console.log("id= ");
+    console.log(lab["id"]);
+       
+
+  switch (lab["id"]) {
     case 1:
-      return (
+      fin.push(
         <TextOutput
-          headers={headers}
+          headers={lab["label"]}
           calling_context={calling_context}
           data={data}
         />
       );
+      break;
     case 2:
-      return (
+      fin.push(
         <ImageOutput
-          headers={headers}
+          headers={lab["label"]}
           calling_context={calling_context}
           data={data}
         />
       );
+      break;
     case 3:
-      return (
+      fin.push(
         <BarGraphOutput
-          headers={headers}
+          headers={lab["label"]}
           calling_context={calling_context}
           data={data}
         />
       );
+      break;
     case 4:
-      return (
+      fin.push(
         <ScatterGraphOutput
-          headers={headers}
+          headers={lab["label"]}
           calling_context={calling_context}
           data={data}
         />
       );
+      break;
     case 5:
-      return (
+      fin.push(
         <PieChartOutput
-          headers={headers}
+          headers={lab["label"]}
           calling_context={calling_context}
           data={data}
         />
       );
+      break;
     case 6:
-      return (
+      fin.push(
         <AreaGraphOutput
-          headers={headers}
+          headers={lab["label"]}
           calling_context={calling_context}
           data={data}
         />
       );
+      break;
     default:
+      console.log("console aaya");
       return <div>Null</div>;
   }
+}
+
+return fin;
 }
 
 export function getAllOutputComponentsForShowcase(data) {

@@ -9,23 +9,21 @@ const GraphOutput = ({ headers, calling_context, data }) => {
       className="six wide stackable stretched grid container"
     >
       <br /><br />
-      {headers.map((header, index) => [
-        <SingleOutput
-          key={Math.random()}
-          calling_context={calling_context}
-          index={index}
-          header={header}
-          data={data[index]}
-        />,
-        <br key={Math.random()} />,
-        <br key={Math.random()} />
-      ])}
+      <SingleOutput
+        key={Math.random()}
+        calling_context={calling_context}
+        header={headers}
+        data={data}
+      />,
+      <br key={Math.random()} />,
+      <br key={Math.random()} />
+   
     </div>
   );
 };
 
 GraphOutput.propTypes = {
-  headers: PropTypes.array.isRequired,
+  headers: PropTypes.string.isRequired,
   calling_context: PropTypes.string.isRequired,
   data: PropTypes.array
 };

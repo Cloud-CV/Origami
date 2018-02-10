@@ -33,7 +33,8 @@ const singleInput = props => {
       }
     });
   }
-
+  console.log("image single input");
+  console.log(props);
   return (
     <div className="ui container grid origami-demo-input-image-component">
       <div className="centered center aligned stretched row origami-demo-input-image-label-container">

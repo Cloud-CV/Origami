@@ -72,6 +72,8 @@ class SelectOutputComponentPage extends React.Component {
 
           let k=dataToSeed["props"];
           let net=[];
+          console.log("k aaega");
+          console.log(k);
           Object.keys(k).forEach(function(key,index) {
             switch(k[key].id)
             {
@@ -209,6 +211,8 @@ class SelectOutputComponentPage extends React.Component {
     {
       let tem={};
       let t;
+      console.log("l[i] aaega");
+      console.log(l[i]);
    switch(l[i])
     {
 
