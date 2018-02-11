@@ -12,7 +12,7 @@ const GraphOutput = ({ headers, calling_context, data }) => {
       <SingleOutput
         key={Math.random()}
         calling_context={calling_context}
-        header={header}
+        header={headers}
         data={data}
       />,
       <br key={Math.random()} />,

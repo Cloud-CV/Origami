@@ -66,7 +66,7 @@ class ImageOutputShowcaseCard extends OutputShowcaseCard {
   render() {
     return (
      <div key={Math.random()} style={{width: 'fit-content',margin: "auto"}}>
-      <Draggable type="l2" data="Image Input">
+      <Draggable type="l2" data="Image Output">
         <CustomCard
           header="Image Output"
           width="five"

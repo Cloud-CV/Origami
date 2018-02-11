@@ -295,7 +295,7 @@ class SelectOutputComponentPage extends React.Component {
 
      const but={
        position: 'absolute',
-        bottom: 20,
+        bottom: 0,
         right: 125
      }
 
@@ -360,6 +360,8 @@ class SelectOutputComponentPage extends React.Component {
         <b style={{ fontSize: "large"}}>Drag N Drop</b>
         </div>
           
+          <br/>
+          <br/>
           <div style={but}>
           <RaisedButton label="Submit" primary={true} onClick={this.onSubmit.bind(this)}  />
           </div>

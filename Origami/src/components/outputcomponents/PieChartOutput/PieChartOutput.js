@@ -3,8 +3,7 @@ import { PropTypes } from "prop-types";
 import SingleOutput from "./SingleOutput";
 
 const PieChartOutput = ({ headers, calling_context, data }) => {
-  console.log("data aa rha hai");
-  console.log(data);
+
   return (
     <div
       key={Math.random()}

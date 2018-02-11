@@ -4,8 +4,6 @@ import SingleOutput from "./SingleOutput";
 import LinearProgress from "material-ui/LinearProgress";
 
 const TextOutput = ({ headers, calling_context, data }) => {
-  console.log("header");
-  console.log(headers);
   return (
     <div
       key={Math.random()}
@@ -25,7 +23,7 @@ const TextOutput = ({ headers, calling_context, data }) => {
 };
 
 TextOutput.propTypes = {
-  headers: PropTypes.object.isRequired,
+  headers: PropTypes.string.isRequired,
   calling_context: PropTypes.string.isRequired,
   data: PropTypes.array
 };

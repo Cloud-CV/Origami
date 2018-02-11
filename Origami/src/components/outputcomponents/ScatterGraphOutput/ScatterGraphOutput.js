@@ -13,9 +13,8 @@ const ScatterGraphOutput = ({ headers, calling_context, data }) => {
       <SingleOutput
         key={Math.random()}
         calling_context={calling_context}
-        index={index}
-        header={header}
-        data={data[index]}
+        header={headers}
+        data={data}
       />,
       <br key={Math.random()} />,
       <br key={Math.random()} />
