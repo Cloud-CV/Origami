@@ -8,7 +8,6 @@ import ImageInputPreview from "./ImageInputPreview";
 import toastr from "toastr";
 import InputShowcaseCard from "../BaseInputComponent/InputShowcaseCard.js";
 import { Draggable, Droppable } from 'react-drag-and-drop';
-import Button from 'material-ui-next/Button';
 class ImageInputShowcaseCard extends InputShowcaseCard {
   constructor(props) {
     super(props); 

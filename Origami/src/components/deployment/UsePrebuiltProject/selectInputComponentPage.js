@@ -15,17 +15,32 @@ import { grey900 } from "material-ui/styles/colors";
 import toastr from "toastr";
 import { Draggable, Droppable } from 'react-drag-and-drop'
 import CustomCard from "../../stateless/cards";
-import Button from 'material-ui-next/Button';
 import Delete from 'material-ui-icons/Delete';
 import DeleteIcon from 'material-ui-icons/Delete';
 import IconButton from 'material-ui/IconButton';
 import Save from 'material-ui-icons/Save';
 import RaisedButton from 'material-ui/RaisedButton';
 import InputShowcaseCard from "../../inputcomponents/BaseInputComponent/InputShowcaseCard.js";
+import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
 
 
 toastr.options.closeButton = true;
 
+
+const SortableItem = SortableElement(({value}) =>
+ <li>{value}</li>
+);
+
+
+const SortableList = SortableContainer(({items ,axis='x'} ) => {
+  return (
+    <ul>
+      {items.map((value, index) => (
+        <SortableItem key={`item-${index}`} index={index} value={value} />
+      ))}
+    </ul>
+  );
+});
 
 class SelectInputComponentPage extends React.Component {
   constructor(props, context) {
@@ -47,6 +62,20 @@ class SelectInputComponentPage extends React.Component {
     this.forwardAddress="/ngh/user/"+props["routeParams"].repoName+"/"+ props["routeParams"].repoId+"/outputcomponent";
     
   }
+
+  onSortEnd({oldIndex, newIndex}){
+    console.log("old and new");
+    console.log(oldIndex);
+    console.log(newIndex);
+    var old=this.state.array;
+    var temp=old[oldIndex]
+    old[oldIndex]=old[newIndex];
+    old[newIndex]=temp;
+    this.setState({
+      Rows: arrayMove(this.state.Rows, oldIndex, newIndex),
+      array:old
+    });
+  };
 
   componentWillMount() {
     getComponentDeployed(this.state.user_id, this.props.params.repoId, "input")
@@ -185,6 +214,10 @@ class SelectInputComponentPage extends React.Component {
 
 
    }
+    getcon({data}){
+  console.log("kuch hua");
+  console.log(data);
+ }
 
   componentWillReceiveProps(nextProps) {
     if (
@@ -203,7 +236,7 @@ class SelectInputComponentPage extends React.Component {
       const myScrollbar = {
       width: '900px',
       height: '400px',
-      overflow: 'scroll',
+      overflowY: 'scroll',
       backgroundColor: 'grey'
     };
     const fix={
@@ -221,6 +254,11 @@ class SelectInputComponentPage extends React.Component {
     bottom: 20,
     right: 125
  }
+
+  const k={
+    height:'400px',
+    overflowY: 'scroll'
+  }
 
     
     return (
@@ -288,8 +326,8 @@ class SelectInputComponentPage extends React.Component {
             
             
             {this.state.Rows.length>0 &&
-              <div>
-              {this.state.Rows}
+              <div style={k}>
+              <SortableList items={this.state.Rows} onSortEnd={this.onSortEnd.bind(this)}  />;
               </div> }
 
               

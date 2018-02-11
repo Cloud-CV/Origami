@@ -15,7 +15,6 @@ import { Step, Stepper, StepLabel } from "material-ui/Stepper";
 import { grey900 } from "material-ui/styles/colors";
 import toastr from "toastr";
 import { Draggable, Droppable } from 'react-drag-and-drop';
-import Button from 'material-ui-next/Button';
 import Delete from 'material-ui-icons/Delete';
 import DeleteIcon from 'material-ui-icons/Delete';
 import IconButton from 'material-ui/IconButton';
