@@ -14,8 +14,10 @@ export function getInputComponentById(
   let labels = [];
   let textLabels = [];
   let imageLabels = [];
-  console.log("props aaenge index input se");
-  console.log(props);
+  console.log("calling_context socketId sendAddr =");
+  console.log(calling_context);
+  console.log(socketId);
+  console.log(sendAddr);
   props.map((prop, index) => {
     if (prop["id"] === 1) {
       textLabels.push("text label");

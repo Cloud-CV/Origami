@@ -20,8 +20,26 @@ import DeleteIcon from 'material-ui-icons/Delete';
 import IconButton from 'material-ui/IconButton';
 import Save from 'material-ui-icons/Save';
 import RaisedButton from 'material-ui/RaisedButton';
+import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
 
 toastr.options.closeButton = true;
+
+
+const SortableItem = SortableElement(({value}) =>
+ <li style={{listStyleType:'none'}}>{value}</li>
+);
+
+
+const SortableList = SortableContainer(({items} ) => {
+  return (
+    <ul style={{listStyleType:'none'}}>
+      {items.map((value, index) => (
+        <SortableItem key={`item-${index}`} index={index} value={value} />
+      ))}
+    </ul>
+  );
+});
+
 
 class SelectOutputComponentPage extends React.Component {
   constructor(props, context) {
@@ -47,6 +65,20 @@ class SelectOutputComponentPage extends React.Component {
 
 
   }
+
+    onSortEnd({oldIndex, newIndex}){
+    console.log("old and new");
+    console.log(oldIndex);
+    console.log(newIndex);
+    var old=this.state.array;
+    var temp=old[oldIndex]
+    old[oldIndex]=old[newIndex];
+    old[newIndex]=temp;
+    this.setState({
+      Rows: arrayMove(this.state.Rows, oldIndex, newIndex),
+      array:old
+    });
+  };
 
   componentWillMount() {
     getComponentDeployed(
@@ -368,7 +400,7 @@ class SelectOutputComponentPage extends React.Component {
           
           {this.state.Rows.length>0 &&
             <div>
-            {this.state.Rows}
+            <SortableList items={this.state.Rows} onSortEnd={this.onSortEnd.bind(this)}  />;
             </div> }
 
             

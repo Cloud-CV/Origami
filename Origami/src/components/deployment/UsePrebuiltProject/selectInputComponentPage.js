@@ -28,13 +28,13 @@ toastr.options.closeButton = true;
 
 
 const SortableItem = SortableElement(({value}) =>
- <li>{value}</li>
+ <li style={{listStyleType:'none'}}>{value}</li>
 );
 
 
-const SortableList = SortableContainer(({items ,axis='x'} ) => {
+const SortableList = SortableContainer(({items} ) => {
   return (
-    <ul>
+    <ul style={{listStyleType:'none'}}>
       {items.map((value, index) => (
         <SortableItem key={`item-${index}`} index={index} value={value} />
       ))}
@@ -54,8 +54,8 @@ class SelectInputComponentPage extends React.Component {
       Rows:[],
       labels:[]
     };
-           console.log("props aa rhe hai");
-    console.log(props);
+           console.log("contex aa rhe hai");
+    console.log(this.context);
     this.id=props["params"].repoId;
     this.base_component_id=1;
     this.modify=(props["params"].type==="modify")
