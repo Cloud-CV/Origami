@@ -79,7 +79,7 @@ class TextInputShowcaseCard extends InputShowcaseCard {
 }
 
 TextInputShowcaseCard.propTypes = {
-  demoProps: PropTypes.object.isRequired
+  demoProps: PropTypes.object
 };
 
 export default TextInputShowcaseCard;

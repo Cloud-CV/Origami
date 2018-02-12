@@ -22,7 +22,7 @@ import Save from 'material-ui-icons/Save';
 import RaisedButton from 'material-ui/RaisedButton';
 import InputShowcaseCard from "../../inputcomponents/BaseInputComponent/InputShowcaseCard.js";
 import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
-
+import TypeInput from "../../inputcomponents/BaseInputComponent/TypeInput";
 
 toastr.options.closeButton = true;
 
@@ -127,18 +127,22 @@ class SelectInputComponentPage extends React.Component {
   helper(arrayvar)
   {
     var row=[];
+    
+    var imageLabels=[];
     for(var i=0;i<arrayvar.length;i++)
     {
       var k=arrayvar[i];
+      var textLabels=[];
+      textLabels.push(k);
       row.push(
         <div key={i} style={{width: 'fit-content',margin: "auto"}}  >     
-          <CustomCard
-          header={k}
-          width="five"
-          centeredParent
-          centeredSegment
-          context="selection"
-          />
+        <TypeInput
+        textLabels={textLabels}
+        imageLabels={imageLabels}
+        calling_context="demo"
+        socketId="0.r6mheg6l2ln"
+        sendAddr="http://0.0.0.0:4205/event"
+      />
           <br/>
           <button  onClick={this.onDragOut.bind(this,{i})}   type="button" className="btn btn-primary">Delete</button>
            <br/>
