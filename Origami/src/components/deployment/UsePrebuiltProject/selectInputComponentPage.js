@@ -23,24 +23,14 @@ import RaisedButton from 'material-ui/RaisedButton';
 import InputShowcaseCard from "../../inputcomponents/BaseInputComponent/InputShowcaseCard.js";
 import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
 import TypeInput from "../../inputcomponents/BaseInputComponent/TypeInput";
-
+import Sortable from  'react-sortablejs';
 toastr.options.closeButton = true;
 
 
-const SortableItem = SortableElement(({value}) =>
- <li style={{listStyleType:'none'}}>{value}</li>
-);
 
 
-const SortableList = SortableContainer(({items} ) => {
-  return (
-    <ul style={{listStyleType:'none'}}>
-      {items.map((value, index) => (
-        <SortableItem key={`item-${index}`} index={index} value={value} />
-      ))}
-    </ul>
-  );
-});
+
+
 
 class SelectInputComponentPage extends React.Component {
   constructor(props, context) {
@@ -128,22 +118,32 @@ class SelectInputComponentPage extends React.Component {
   {
     var row=[];
     
-    var imageLabels=[];
+  
     for(var i=0;i<arrayvar.length;i++)
     {
       var k=arrayvar[i];
       var textLabels=[];
+      var imageLabels=[];
+      if(k=="Text Input"){
       textLabels.push(k);
+      }
+      else
+      {
+        imageLabels.push(k);
+      }
+     
       row.push(
-        <div key={i} style={{width: 'fit-content',margin: "auto"}}  >     
+        <div key={i} style={{width: 'fit-content',margin: "auto",backgroundColor:"White"}}  >     
+      <div  style={{boxShadow: '10px 10px 5px grey',borderStyle:'Solid'}}>
         <TypeInput
         textLabels={textLabels}
         imageLabels={imageLabels}
-        calling_context="demo"
+        calling_context="dnd"
         socketId="0.r6mheg6l2ln"
         sendAddr="http://0.0.0.0:4205/event"
       />
           <br/>
+          </div>
           <button  onClick={this.onDragOut.bind(this,{i})}   type="button" className="btn btn-primary">Delete</button>
            <br/>
            <br/>
@@ -241,7 +241,10 @@ class SelectInputComponentPage extends React.Component {
       width: '900px',
       height: '400px',
       overflowY: 'scroll',
-      backgroundColor: 'grey'
+      backgroundColor: '#F0FFFF',
+      borderStyle: 'solid',
+      borderColor: 'coral'
+
     };
     const fix={
       position:'fixed'
@@ -258,11 +261,11 @@ class SelectInputComponentPage extends React.Component {
     bottom: 20,
     right: 125
  }
-
-  const k={
-    height:'400px',
-    overflowY: 'scroll'
-  }
+ var items=null;
+ if(this.state.Rows)
+ {
+  items = this.state.Rows.map(val => (<li data-id={val}>{val}</li>));
+}
 
     
     return (
@@ -330,9 +333,37 @@ class SelectInputComponentPage extends React.Component {
             
             
             {this.state.Rows.length>0 &&
-              <div style={k}>
-              <SortableList items={this.state.Rows} onSortEnd={this.onSortEnd.bind(this)}  />;
-              </div> }
+             
+                              <Sortable
+                    onChange={(order, sortable, evt) => {
+                      console.log(order[0]);
+                        var start=-1,end=-1;
+                        var order2=this.state.Rows;
+                        for(var i=0;i<order.length;i++)
+                        {
+                            if(order[i]!=order2[i])
+                            {
+                                if(start==-1)
+                                    start=i;
+                                else
+                                    end=i;
+                            }
+                        }
+                        console.log(start,end);
+                          var old=this.state.array;
+                          var temp=old[start]
+                          old[start]=old[end];
+                          old[end]=temp;
+                          this.setState({
+                            Rows: order,
+                            array:old
+                          });
+        
+                    }}
+                >
+                    {items}
+                </Sortable>
+               }
 
               
           </div>

@@ -35,10 +35,13 @@ const singleInput = props => {
   }
   console.log("image single input");
   console.log(props);
+  const cl1=(props.calling_context=="dnd"?null:"ui container grid origami-demo-input-image-component");
+  const cl2=(props.calling_context=="dnd"?null:"centered center aligned stretched row origami-demo-input-image-label-container");
+  const cl3=(props.calling_context=="dnd"?null:"ui blue segment origami-demo-input-image-label");
   return (
-    <div className="ui container grid origami-demo-input-image-component">
-      <div className="centered center aligned stretched row origami-demo-input-image-label-container">
-        <div className="ui blue segment origami-demo-input-image-label">
+    <div className={cl1} style={{width:'fit-content'}}>
+      <div className={cl2}>
+        <div className={cl3}>
           {props.label}
         </div>
       </div>
