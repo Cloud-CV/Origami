@@ -23,14 +23,32 @@ import RaisedButton from 'material-ui/RaisedButton';
 import InputShowcaseCard from "../../inputcomponents/BaseInputComponent/InputShowcaseCard.js";
 import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
 import TypeInput from "../../inputcomponents/BaseInputComponent/TypeInput";
-import Sortable from  'react-sortablejs';
+
 toastr.options.closeButton = true;
 
 
+const SortableItem = SortableElement(({value}) =>
+ <li style={{listStyleType:'none'}}>{value}</li>
+);
 
 
-
-
+const SortableList = SortableContainer(({items} ) => {
+  return (
+        <div style={{
+        width: '900px',
+        height: '400px',
+        margin: '0 auto',
+        overflowY: 'scroll',
+        backgroundColor: '#f3f3f3',
+        border: '1px solid #EFEFEF',
+        borderRadius: 3
+    }}>
+      {items.map((value, index) => (
+        <SortableItem key={`item-${index}`} index={index} value={value} />
+      ))}
+    </div>
+  );
+});
 
 class SelectInputComponentPage extends React.Component {
   constructor(props, context) {
@@ -118,7 +136,7 @@ class SelectInputComponentPage extends React.Component {
   {
     var row=[];
     
-  
+    var imageLabels=[];
     for(var i=0;i<arrayvar.length;i++)
     {
       var k=arrayvar[i];
@@ -131,20 +149,19 @@ class SelectInputComponentPage extends React.Component {
       {
         imageLabels.push(k);
       }
-     
       row.push(
-        <div key={i} style={{width: 'fit-content',margin: "auto",backgroundColor:"White"}}  >     
-      <div  style={{boxShadow: '10px 10px 5px grey',borderStyle:'Solid'}}>
+        <div key={i}  >     
         <TypeInput
         textLabels={textLabels}
         imageLabels={imageLabels}
-        calling_context="dnd"
+        calling_context="demo"
         socketId="0.r6mheg6l2ln"
         sendAddr="http://0.0.0.0:4205/event"
       />
           <br/>
+          <div style={{margin: 'auto',width: '50%'}}>
+          <button onClick={this.onDragOut.bind(this,{i})}   type="button" className="btn btn-primary">Delete</button>
           </div>
-          <button  onClick={this.onDragOut.bind(this,{i})}   type="button" className="btn btn-primary">Delete</button>
            <br/>
            <br/>
           </div>
@@ -240,11 +257,7 @@ class SelectInputComponentPage extends React.Component {
       const myScrollbar = {
       width: '900px',
       height: '400px',
-      overflowY: 'scroll',
-      backgroundColor: '#F0FFFF',
-      borderStyle: 'solid',
-      borderColor: 'coral'
-
+      backgroundColor: 'grey'
     };
     const fix={
       position:'fixed'
@@ -261,11 +274,8 @@ class SelectInputComponentPage extends React.Component {
     bottom: 20,
     right: 125
  }
- var items=null;
- if(this.state.Rows)
- {
-  items = this.state.Rows.map(val => (<li data-id={val}>{val}</li>));
-}
+
+  
 
     
     return (
@@ -333,37 +343,9 @@ class SelectInputComponentPage extends React.Component {
             
             
             {this.state.Rows.length>0 &&
-             
-                              <Sortable
-                    onChange={(order, sortable, evt) => {
-                      console.log(order[0]);
-                        var start=-1,end=-1;
-                        var order2=this.state.Rows;
-                        for(var i=0;i<order.length;i++)
-                        {
-                            if(order[i]!=order2[i])
-                            {
-                                if(start==-1)
-                                    start=i;
-                                else
-                                    end=i;
-                            }
-                        }
-                        console.log(start,end);
-                          var old=this.state.array;
-                          var temp=old[start]
-                          old[start]=old[end];
-                          old[end]=temp;
-                          this.setState({
-                            Rows: order,
-                            array:old
-                          });
-        
-                    }}
-                >
-                    {items}
-                </Sortable>
-               }
+              <div >
+              <SortableList items={this.state.Rows} onSortEnd={this.onSortEnd.bind(this)}  />;
+              </div> }
 
               
           </div>

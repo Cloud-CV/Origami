@@ -23,8 +23,8 @@ export function getOutputComponentById(id, props, calling_context, data) {
   console.log("index output props");
   console.log(props);
 
-   console.log("headers =");
-  console.log(headers);
+   console.log("calling_context =");
+  console.log(calling_context);
 
   let fin=[];
   for(var i=0;i<props.length;i++)

@@ -21,7 +21,7 @@ import IconButton from 'material-ui/IconButton';
 import Save from 'material-ui-icons/Save';
 import RaisedButton from 'material-ui/RaisedButton';
 import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
-
+import {getOutputComponentById} from "../../outputcomponents/index"
 toastr.options.closeButton = true;
 
 
@@ -32,11 +32,19 @@ const SortableItem = SortableElement(({value}) =>
 
 const SortableList = SortableContainer(({items} ) => {
   return (
-    <ul style={{listStyleType:'none'}}>
+      <div style={{
+         width: '900px',
+        height: '400px',
+        margin: '0 auto',
+        overflowY: 'scroll',
+        backgroundColor: '#f3f3f3',
+        border: '1px solid #EFEFEF',
+        borderRadius: 3
+    }}>
       {items.map((value, index) => (
         <SortableItem key={`item-${index}`} index={index} value={value} />
       ))}
-    </ul>
+    </div>
   );
 });
 
@@ -52,24 +60,19 @@ class SelectOutputComponentPage extends React.Component {
       Rows:[],
       labels:[]
     };
-       console.log("props aa rhe hai");
+    console.log("props aa rhe hai");
     console.log(props);
     this.id=props["params"].repoId;
     this.base_component_id=1;
     this.modify=(props["params"].type==="modify")
     this.forwardAddress="/ngh/user/"+this.state.user_id+"/"+props["routeParams"].repoName+"/"+ props["routeParams"].repoId+"/demo";
     
-    console.log("modify");
-    console.log(this.forwardAddress);
-    console.log(this.modify);
+
 
 
   }
 
     onSortEnd({oldIndex, newIndex}){
-    console.log("old and new");
-    console.log(oldIndex);
-    console.log(newIndex);
     var old=this.state.array;
     var temp=old[oldIndex]
     old[oldIndex]=old[newIndex];
@@ -159,17 +162,52 @@ class SelectOutputComponentPage extends React.Component {
     for(var i=0;i<arrayvar.length;i++)
     {
       var k=arrayvar[i];
+      var prp={};
+      var le=[];
+      console.log(" k aaega");
+      console.log(k);
+      var t;
+        switch(k)
+    {
+
+      case "Text Output":
+          t=1
+          break;
+
+      case "Image Output":
+          t=2;
+          break;
+
+      case "Bar Graph Output":
+          t=3;
+          break;
+
+      case "Scatter Graph Output":
+          t=4
+          break;
+
+      case "Pie Chart Output":
+          t=5;
+          break;
+
+      case "Area Graph Output":
+          t=6;
+          break;
+        }
+  
+      prp["id"]=t;
+      prp["label"]="lab";
+      le.push(prp);
+      var data=[];
+      var id=this.base_component_id;
+      console.log("e");
       row.push(
-        <div key={i} style={{width: 'fit-content',margin: "auto"}}  >     
-          <CustomCard
-          header={k}
-          width="five"
-          centeredParent
-          centeredSegment
-          context="selection"
-          />
+        <div key={i}   >     
+        {getOutputComponentById(id,le,"demo",data)}
           <br/>
+          <div style={{margin: 'auto',width: '50%'}}>
           <button  onClick={this.onDragOut.bind(this,{i})}   type="button" className="btn btn-primary">Delete</button>
+           </div>
            <br/>
            <br/>
           </div>
@@ -224,9 +262,6 @@ class SelectOutputComponentPage extends React.Component {
       d=data["l6"];
     }
     
-   
-    console.log("data aaega");
-    console.log(data);
 
     arrayvar.push(d);
     this.helper(arrayvar);
@@ -276,7 +311,7 @@ class SelectOutputComponentPage extends React.Component {
       k.push(tem);
 
     }
-        console.log("props output wale");
+    console.log("props output wale");
     console.log(this.props);
   
     this.props.outputComponentDemoModelActions
@@ -310,8 +345,7 @@ class SelectOutputComponentPage extends React.Component {
     document.body.scrollTop = (document.documentElement.scrollTop = 0);
     const myScrollbar = {
       width: '900px',
-      height: '400px',
-      overflow: 'scroll',
+      height: '500px',
       backgroundColor: 'grey'
     };
         const fix={
@@ -326,7 +360,7 @@ class SelectOutputComponentPage extends React.Component {
 
      const but={
        position: 'absolute',
-        bottom: 0,
+        bottom: 20,
         right: 125
      }
 
@@ -391,8 +425,7 @@ class SelectOutputComponentPage extends React.Component {
         <b style={{ fontSize: "large"}}>Drag N Drop</b>
         </div>
           
-          <br/>
-          <br/>
+        
           <div style={but}>
           <RaisedButton label="Submit" primary={true} onClick={this.onSubmit.bind(this)}  />
           </div>
@@ -411,7 +444,8 @@ class SelectOutputComponentPage extends React.Component {
           </div>
         </div>
       </div>
-
+        <br/>
+        <br/>
         <div
           className="ui fluid centered row"
           style={{
