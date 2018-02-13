@@ -23,10 +23,17 @@ class singleOutput extends React.Component {
   }
 
   render() {
+    console.log("props aayega singel image pr");
+    console.log(this.props);
+    if(this.props.data)
+      console.log("true");
+
+    const height=(this.props.calling_context=="demo2")?("50%"):("100%");
+    const width=(this.props.calling_context=="demo2")?("35%"):("75%");
     return (
       <div
         className="ui card centered origami-demo-output-image-component"
-        style={{ height: "100%", width: "75%" }}
+        style={{ height: height, width: width }}
         id={`output-text-${this.props.index}`}
       >
         <div className="content">
@@ -41,7 +48,7 @@ class singleOutput extends React.Component {
             <div className="event">
               <div className="content">
                 <div className="center aligned summary">
-                  {this.props.data ? (
+                  {this.props.data.length ? (
                     <img
                       className="ui centered center aligned fluid large image origami-demo-output-image"
                       style={{ cursor: "pointer" }}

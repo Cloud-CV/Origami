@@ -11,27 +11,28 @@ export function getInputComponentById(
   socketId,
   sendAddr
 ) {
-  let labels = [];
-  let textLabels = [];
-  let imageLabels = [];
+ 
   console.log("calling_context socketId sendAddr =");
   console.log(calling_context);
   console.log(socketId);
   console.log(sendAddr);
+  let fin=[];
   props.map((prop, index) => {
+     let labels = [];
+  let textLabels = [];
+  let imageLabels = [];
     if (prop["id"] === 1) {
       textLabels.push("text label");
     } else if (prop["id"] === 3) {
       imageLabels.push("image label");
     }
-  });
+  
   console.log("Text label")
   console.log(textLabels);
 
   console.log("Image label")
   console.log(imageLabels);
-  return (
-    <div>
+  fin.push(
       <TypeInput
         textLabels={textLabels}
         imageLabels={imageLabels}
@@ -39,6 +40,11 @@ export function getInputComponentById(
         socketId={socketId}
         sendAddr={sendAddr}
       />
+    );
+  });
+  return (
+    <div>
+      {fin}
     </div>
   );
 }

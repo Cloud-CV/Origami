@@ -39,7 +39,7 @@ const SortableList = SortableContainer(({items} ) => {
         overflowY: 'scroll',
         backgroundColor: '#f3f3f3',
         border: '1px solid #EFEFEF',
-        borderRadius: 3
+        borderRadius: 3,
     }}>
       {items.map((value, index) => (
         <SortableItem key={`item-${index}`} index={index} value={value} />
@@ -203,7 +203,7 @@ class SelectOutputComponentPage extends React.Component {
       console.log("e");
       row.push(
         <div key={i}   >     
-        {getOutputComponentById(id,le,"demo",data)}
+        {getOutputComponentById(id,le,"demo2",data)}
           <br/>
           <div style={{margin: 'auto',width: '50%'}}>
           <button  onClick={this.onDragOut.bind(this,{i})}   type="button" className="btn btn-primary">Delete</button>
@@ -345,7 +345,7 @@ class SelectOutputComponentPage extends React.Component {
     document.body.scrollTop = (document.documentElement.scrollTop = 0);
     const myScrollbar = {
       width: '900px',
-      height: '500px',
+      height: '450px',
       backgroundColor: 'grey'
     };
         const fix={
@@ -360,7 +360,7 @@ class SelectOutputComponentPage extends React.Component {
 
      const but={
        position: 'absolute',
-        bottom: 20,
+        bottom: 5,
         right: 125
      }
 
@@ -425,16 +425,12 @@ class SelectOutputComponentPage extends React.Component {
         <b style={{ fontSize: "large"}}>Drag N Drop</b>
         </div>
           
-        
-          <div style={but}>
-          <RaisedButton label="Submit" primary={true} onClick={this.onSubmit.bind(this)}  />
-          </div>
           
           
           {this.state.Rows.length>0 &&
-            <div>
-            <SortableList items={this.state.Rows} onSortEnd={this.onSortEnd.bind(this)}  />;
-            </div> }
+           
+            <SortableList items={this.state.Rows} onSortEnd={this.onSortEnd.bind(this)} lockToContainerEdges={true} />
+             }
 
             
         </div>
@@ -444,6 +440,9 @@ class SelectOutputComponentPage extends React.Component {
           </div>
         </div>
       </div>
+          <div style={but}>
+          <RaisedButton label="Submit" primary={true} onClick={this.onSubmit.bind(this)}  />
+          </div>
         <br/>
         <br/>
         <div
