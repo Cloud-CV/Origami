@@ -60,8 +60,7 @@ class SelectOutputComponentPage extends React.Component {
       Rows:[],
       labels:[]
     };
-    console.log("props aa rhe hai");
-    console.log(props);
+
     this.id=props["params"].repoId;
     this.base_component_id=1;
     this.modify=(props["params"].type==="modify")
@@ -106,8 +105,7 @@ class SelectOutputComponentPage extends React.Component {
 
           let k=dataToSeed["props"];
           let net=[];
-          console.log("k aaega");
-          console.log(k);
+ 
           Object.keys(k).forEach(function(key,index) {
             switch(k[key].id)
             {
@@ -164,8 +162,7 @@ class SelectOutputComponentPage extends React.Component {
       var k=arrayvar[i];
       var prp={};
       var le=[];
-      console.log(" k aaega");
-      console.log(k);
+
       var t;
         switch(k)
     {
@@ -200,7 +197,6 @@ class SelectOutputComponentPage extends React.Component {
       le.push(prp);
       var data=[];
       var id=this.base_component_id;
-      console.log("e");
       row.push(
         <div key={i}   >     
         {getOutputComponentById(id,le,"demo2",data)}
@@ -277,8 +273,6 @@ class SelectOutputComponentPage extends React.Component {
     {
       let tem={};
       let t;
-      console.log("l[i] aaega");
-      console.log(l[i]);
    switch(l[i])
     {
 
@@ -311,8 +305,6 @@ class SelectOutputComponentPage extends React.Component {
       k.push(tem);
 
     }
-    console.log("props output wale");
-    console.log(this.props);
   
     this.props.outputComponentDemoModelActions
     .updateOutputComponentModel({
@@ -429,7 +421,7 @@ class SelectOutputComponentPage extends React.Component {
           
           {this.state.Rows.length>0 &&
            
-            <SortableList items={this.state.Rows} onSortEnd={this.onSortEnd.bind(this)} lockToContainerEdges={true} />
+            <SortableList items={this.state.Rows} onSortEnd={this.onSortEnd.bind(this)} lockToContainerEdges={true} lockOffset="90px" />
              }
 
             

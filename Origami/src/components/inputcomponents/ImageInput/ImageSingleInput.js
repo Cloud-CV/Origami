@@ -35,10 +35,16 @@ const singleInput = props => {
   }
   console.log("image single input");
   console.log(props);
-  const cl1=(props.calling_context=="dnd"?null:"ui container grid origami-demo-input-image-component");
-  const cl2=(props.calling_context=="dnd"?null:"centered center aligned stretched row origami-demo-input-image-label-container");
-  const cl3=(props.calling_context=="dnd"?null:"ui blue segment origami-demo-input-image-label");
+  const cl1=(props.calling_context=="demo2"?null:"ui container grid origami-demo-input-image-component");
+  const cl2=(props.calling_context=="demo2"?null:"centered center aligned stretched row origami-demo-input-image-label-container");
+  const cl3=(props.calling_context=="demo2"?null:"ui blue segment origami-demo-input-image-label");
+  const height=(props.calling_context=="demo2"?"50%":"100%");
+  const width=(props.calling_context=="demo2"?"50%":"75%");
+  console.log("height and width");
+  console.log(height);
+  console.log(width);
   return (
+
     <div className={cl1} style={{width:'fit-content'}}>
       <div className={cl2}>
         <div className={cl3}>
@@ -46,7 +52,7 @@ const singleInput = props => {
         </div>
       </div>
       <div className="centered row">
-        <div className="" style={{ height: "100%", cursor: "pointer" }}>
+        <div className="" style={{ height: height, cursor: "pointer" }}>
           <Dropzone
             onDrop={onDrop}
             multiple={false}
@@ -58,7 +64,7 @@ const singleInput = props => {
                   className="ui fluid medium bordered image"
                   src="/static/img/wireframe.png"
                   id={`input-image-preview-${props.index}`}
-                  style={{ width: "100%" }}
+                  style={{ width: width}}
                 />
               </div>
               <div className="content origami-demo-input-image-component-desc">

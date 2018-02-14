@@ -137,6 +137,8 @@ class TypeInput extends React.Component {
       {
         fin.push(
 
+          <div style={{marginTop:"60px"}}>
+
               <TextSingleInput
                   key={Math.random()}
                   index={i}
@@ -145,13 +147,14 @@ class TypeInput extends React.Component {
                 />,
                 <br key={Math.random()} />,
                 <br key={Math.random()} />
+          </div>
 
           );
       }
       else
       {
         fin.push(
-
+             <div>
               <ImageSingleInput
                 key={Math.random()}
                 index={i}
@@ -161,6 +164,7 @@ class TypeInput extends React.Component {
               />,
               <br key={Math.random()} />,
               <br key={Math.random()} />
+            </div>
 
           );
       }
@@ -177,22 +181,7 @@ class TypeInput extends React.Component {
             <input type="hidden" name="socket-id" value={this.props.socketId} />
           </div>
         </form>
-        <div className="ui row">
-          <pre className="ui centered center aligned origami-demo-send-button">
-            <br />
-            <RaisedButton
-              label="Send"
-              primary
-              key={Math.random()}
-              onClick={() => {
-                this.sendRequest(
-                  this.props.sendAddr,
-                  this.props.calling_context
-                );
-              }}
-            />
-          </pre>
-        </div>
+
       </div>
     );
   }

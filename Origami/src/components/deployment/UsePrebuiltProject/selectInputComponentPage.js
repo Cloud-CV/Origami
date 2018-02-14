@@ -154,7 +154,7 @@ class SelectInputComponentPage extends React.Component {
         <div key={i}  >     
         <TypeInput
         prop={prp}
-        calling_context="demo"
+        calling_context="demo2"
         socketId=""
         sendAddr=""
       />
@@ -344,7 +344,7 @@ class SelectInputComponentPage extends React.Component {
             
             {this.state.Rows.length>0 &&
               <div >
-              <SortableList items={this.state.Rows} onSortEnd={this.onSortEnd.bind(this)}  />;
+              <SortableList items={this.state.Rows} onSortEnd={this.onSortEnd.bind(this)} lockToContainerEdges={true} lockOffset="60px" />;
               </div> }
 
               

@@ -17,17 +17,19 @@ export function getInputComponentById(
   console.log(socketId);
   console.log(sendAddr);
   let fin=[];
-  
+  var l="llkjvjkvjhvhjfvl";
   console.log("props input label")
   console.log(props);
 
   fin.push(
+  
       <TypeInput
         prop={props}
         calling_context={calling_context}
         socketId={socketId}
         sendAddr={sendAddr}
       />
+
     );
   
   return (
