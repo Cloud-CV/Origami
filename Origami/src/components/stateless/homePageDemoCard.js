@@ -2,7 +2,7 @@
 
 import React from "react";
 import { PropTypes } from "prop-types";
-import { browserHistory } from "react-router";
+import { withRouter } from "react-router-dom";
 import {
   Card,
   CardActions,
@@ -36,7 +36,7 @@ function HomePageDemoCard(props) {
           <RaisedButton
             backgroundColor={blue100}
             label="Launch"
-            onClick={() => browserHistory.push(reg.exec(props.permalink)[1])}
+            onClick={() => this.props.history.push(reg.exec(props.permalink)[1])}
           />
           <RaisedButton
             backgroundColor={blue100}
@@ -54,7 +54,8 @@ HomePageDemoCard.propTypes = {
   cover_image: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   permalink: PropTypes.string.isRequired,
-  handleShareModal: PropTypes.func.isRequired
+  handleShareModal: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired
 };
 
-export default HomePageDemoCard;
+export default withRouter(HomePageDemoCard);

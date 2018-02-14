@@ -2,7 +2,8 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import AppBar from "material-ui/AppBar";
-import { Link, browserHistory } from "react-router";
+import { Link, withRouter } from "react-router-dom";
+import Routes from "./routes";
 import IconButton from "material-ui/IconButton";
 import IconMenu from "material-ui/IconMenu";
 import { bindActionCreators } from "redux";
@@ -15,6 +16,7 @@ import userApi from "../api/Github/userApi";
 import { Layout, Menu, Icon, Button, Card, Row, Col, Input } from "antd";
 import * as rootApi from "../api/CommonLocal/rootSettingsApi";
 import "./index.css";
+
 const { Header, Content, Footer, Sider } = Layout;
 
 class App extends React.Component {
@@ -140,16 +142,16 @@ class App extends React.Component {
 
   handleClickAfterLogin(e) {
     if (e.key === "1") {
-      browserHistory.push(
+      this.props.history.push(
         `/u/${localStorage.getItem("username")}/${localStorage.getItem("user_id")}`
       );
     }
     if (e.key === "2") {
-      browserHistory.push("/");
+      this.props.history.push("/");
     } else if (e.key === "3") {
-      browserHistory.push("/ngh/user");
+      this.props.history.push("/ngh/user");
     } else if (e.key === "4") {
-      browserHistory.push("/ngh/user/register");
+      this.props.history.push("/ngh/user/register");
     } else if (e.key === "5") {
       this.getDocs();
     } else if (e.key === "6") {
@@ -185,7 +187,7 @@ class App extends React.Component {
     if (this.state.isFrame) {
       return (
         <Layout style={{ background: "#FEFEFE" }}>
-          {this.props.children}
+          { Routes }
         </Layout>
       );
     }
@@ -238,13 +240,13 @@ class App extends React.Component {
 
             </Menu>
           </Sider>
-          {this.props.children}
+          { Routes }
         </Layout>
       );
     } else {
       return (
         <Layout id="layout">
-          {this.props.children}
+          { Routes }
         </Layout>
       );
     }
@@ -252,7 +254,8 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-  children: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   loginactions: PropTypes.object.isRequired,
   login: PropTypes.bool.isRequired
@@ -275,4 +278,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

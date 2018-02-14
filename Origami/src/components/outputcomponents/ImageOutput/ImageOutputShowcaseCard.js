@@ -1,6 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { browserHistory } from "react-router";
+import { withRouter } from "react-router-dom";
 import CustomCard from "../../stateless/cards";
 import OutputShowcaseModifyDialog from "../BaseOutputComponent/OutputShowcaseModifyDialog";
 import OutputShowcaseCard from "../BaseOutputComponent/OutputShowcaseCard.js";
@@ -27,7 +27,7 @@ class ImageOutputShowcaseCard extends OutputShowcaseCard {
   updateOutputComponentModel() {
     if (Object.keys(this.demoModel).length === 0) {
       toastr.error("Registration info not found! Register again");
-      browserHistory.push("/");
+      this.props.history.push("/");
     } else {
       let propsToStore = [];
       this.state.headers.map(header => {
@@ -46,16 +46,16 @@ class ImageOutputShowcaseCard extends OutputShowcaseCard {
         })
         .then(() => {
           if (this.props.demoProps.params.type === "modify") {
-            browserHistory.push("/ngh/user");
+            this.props.history.push("/ngh/user");
           } else {
             if (this.forwardAddressAlternate) {
               if (this.demoModel.status === "input") {
-                browserHistory.push(this.forwardAddress);
+                this.props.history.push(this.forwardAddress);
               } else if (this.demoModel.status === "demo") {
-                browserHistory.push(this.forwardAddressAlternate);
+                this.props.history.push(this.forwardAddressAlternate);
               }
             } else {
-              browserHistory.push(this.forwardAddress);
+              this.props.history.push(this.forwardAddress);
             }
           }
         });
@@ -113,7 +113,8 @@ class ImageOutputShowcaseCard extends OutputShowcaseCard {
 }
 
 ImageOutputShowcaseCard.propTypes = {
-  demoProps: PropTypes.object.isRequired
+  demoProps: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 
-export default ImageOutputShowcaseCard;
+export default withRouter(ImageOutputShowcaseCard);

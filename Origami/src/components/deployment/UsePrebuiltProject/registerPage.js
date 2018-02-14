@@ -1,6 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Link, browserHistory } from "react-router";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import CircularProgress from "material-ui/CircularProgress";
@@ -81,9 +81,9 @@ class RegisterPage extends React.Component {
   }
 
   componentWillMount() {
-    getDeployed(this.state.user_id, this.props.params.repoId)
+    getDeployed(this.state.user_id, this.props.match.params.repoId)
       .then(singleRepo => {
-        if (this.props.params.repoId) {
+        if (this.props.match.params.repoId) {
           if (JSON.parse(singleRepo).length !== 0) {
             this.setState({ returning: true });
             this.setState({
@@ -121,10 +121,10 @@ class RegisterPage extends React.Component {
         }
       })
       .then(() => {
-        if (this.props.params.repoId) {
+        if (this.props.match.params.repoId) {
           getComponentDeployed(
             this.state.user_id,
-            this.props.params.repoId,
+            this.props.match.params.repoId,
             "input"
           ).then(inputComponentSeedData => {
             if (JSON.parse(inputComponentSeedData).length !== 0) {
@@ -134,10 +134,10 @@ class RegisterPage extends React.Component {
         }
       })
       .then(() => {
-        if (this.props.params.repoId) {
+        if (this.props.match.params.repoId) {
           getComponentDeployed(
             this.state.user_id,
-            this.props.params.repoId,
+            this.props.match.params.repoId,
             "output"
           ).then(outputComponentSeedData => {
             if (JSON.parse(outputComponentSeedData).length !== 0) {
@@ -147,10 +147,10 @@ class RegisterPage extends React.Component {
         }
       })
       .then(() => {
-        if (this.props.params.repoId) {
+        if (this.props.match.params.repoId) {
           getSinglePermalink(
             this.state.user_id,
-            this.props.params.repoId
+            this.props.match.params.repoId
           ).then(data => {
             if (JSON.parse(data).text !== "Not Found") {
               this.setState({ permalinkObject: JSON.parse(data) });
@@ -270,10 +270,10 @@ class RegisterPage extends React.Component {
 
               modifyPermalink(permaLinkDataToPut)
                 .then(() => {
-                  if (this.props.params.type === "modify") {
-                    browserHistory.push("/ngh/user");
+                  if (this.props.match.params.type === "modify") {
+                    this.props.history.push("/ngh/user");
                   } else {
-                    browserHistory.push(
+                    this.props.history.push(
                       `/ngh/user/${this.state.name}/${this.state.id}/inputcomponent`
                     );
                   }
@@ -295,10 +295,10 @@ class RegisterPage extends React.Component {
 
               addPermalink(permaLinkDataToPut)
                 .then(() => {
-                  if (this.props.params.type === "modify") {
-                    browserHistory.push("/ngh/user");
+                  if (this.props.match.params.type === "modify") {
+                    this.props.history.push("/ngh/user");
                   } else {
-                    browserHistory.push(
+                    this.props.history.push(
                       `/ngh/user/${this.state.name}/${this.state.id}/inputcomponent`
                     );
                   }
@@ -672,7 +672,8 @@ class RegisterPage extends React.Component {
 RegisterPage.propTypes = {
   login: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
-  params: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
   nonghDemoModel: PropTypes.object.isRequired,
   nonghModelActions: PropTypes.object.isRequired
 };
@@ -695,4 +696,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterPage);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RegisterPage));
