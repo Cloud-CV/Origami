@@ -58,6 +58,8 @@ class App extends React.Component {
   }
 
   componentWillMount() {
+    console.log("App me kuch hai");
+    console.log(this.props)
     if (
       window.location.pathname.split("/").slice(-1)[0] === "demo" ||
       window.location.pathname.split("/")[1] === "initialsetup"

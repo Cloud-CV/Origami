@@ -17,31 +17,19 @@ export function getInputComponentById(
   console.log(socketId);
   console.log(sendAddr);
   let fin=[];
-  props.map((prop, index) => {
-     let labels = [];
-  let textLabels = [];
-  let imageLabels = [];
-    if (prop["id"] === 1) {
-      textLabels.push("text label");
-    } else if (prop["id"] === 3) {
-      imageLabels.push("image label");
-    }
   
-  console.log("Text label")
-  console.log(textLabels);
+  console.log("props input label")
+  console.log(props);
 
-  console.log("Image label")
-  console.log(imageLabels);
   fin.push(
       <TypeInput
-        textLabels={textLabels}
-        imageLabels={imageLabels}
+        prop={props}
         calling_context={calling_context}
         socketId={socketId}
         sendAddr={sendAddr}
       />
     );
-  });
+  
   return (
     <div>
       {fin}

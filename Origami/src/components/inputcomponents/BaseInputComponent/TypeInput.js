@@ -126,35 +126,54 @@ class TypeInput extends React.Component {
   }
 
   render() {
+    let fin=[];
+    let k=this.props.prop;
+    console.log("k =====");
+    console.log(this.props);
+    for(var i=0;i<k.length;i++)
+    {
+
+      if(k[i].id==1)
+      {
+        fin.push(
+
+              <TextSingleInput
+                  key={Math.random()}
+                  index={i}
+                  calling_context={this.props.calling_context}
+                  label={k[i].label}
+                />,
+                <br key={Math.random()} />,
+                <br key={Math.random()} />
+
+          );
+      }
+      else
+      {
+        fin.push(
+
+              <ImageSingleInput
+                key={Math.random()}
+                index={i}
+                updateFormData={this.updateFormData}
+                calling_context={this.props.calling_context}
+                label={k[i].label}
+              />,
+              <br key={Math.random()} />,
+              <br key={Math.random()} />
+
+          );
+      }
+
+    }
+    console.log("props aa rha hai in typeinput");
+    console.log(fin);
     return (
       <div className="ui centered center aligned grid">
         <form id="send-text" className="six wide stackable stretched ui input">
           <div className="origami-demo-input-components" key={Math.random()}>
             <br /><br />
-            {this.props.textLabels.length > 0 &&
-            <div className="origami-demo-input-text-components">  
-              {this.props.textLabels.map((label, index) => [
-                <TextSingleInput
-                  key={Math.random()}
-                  index={index}
-                  calling_context={this.props.calling_context}
-                  label={label}
-                />,
-                <br key={Math.random()} />,
-                <br key={Math.random()} />
-              ])}
-            </div>}
-            {this.props.imageLabels.map((label, index) => [
-              <ImageSingleInput
-                key={Math.random()}
-                index={index}
-                updateFormData={this.updateFormData}
-                calling_context={this.props.calling_context}
-                label={label}
-              />,
-              <br key={Math.random()} />,
-              <br key={Math.random()} />
-            ])}  
+            {fin}
             <input type="hidden" name="socket-id" value={this.props.socketId} />
           </div>
         </form>
@@ -180,8 +199,7 @@ class TypeInput extends React.Component {
 }
 
 TypeInput.propTypes = {
-  textLabels: PropTypes.array.isRequired,
-  imageLabels: PropTypes.array.isRequired,
+  prop:PropTypes.array.isRequired,
   calling_context: PropTypes.string.isRequired,
   sendAddr: PropTypes.string.isRequired,
   socketId: PropTypes.string

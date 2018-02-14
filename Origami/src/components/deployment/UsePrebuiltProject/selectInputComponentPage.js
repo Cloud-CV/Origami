@@ -23,9 +23,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import InputShowcaseCard from "../../inputcomponents/BaseInputComponent/InputShowcaseCard.js";
 import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
 import TypeInput from "../../inputcomponents/BaseInputComponent/TypeInput";
-
 toastr.options.closeButton = true;
-
+import io from "socket.io-client";
 
 const SortableItem = SortableElement(({value}) =>
  <li style={{listStyleType:'none'}}>{value}</li>
@@ -62,8 +61,8 @@ class SelectInputComponentPage extends React.Component {
       Rows:[],
       labels:[]
     };
-           console.log("contex aa rhe hai");
-    console.log(this.context);
+           console.log("props aa rhe hai");
+    console.log(this.props);
     this.id=props["params"].repoId;
     this.base_component_id=1;
     this.modify=(props["params"].type==="modify")
@@ -86,6 +85,10 @@ class SelectInputComponentPage extends React.Component {
   };
 
   componentWillMount() {
+
+
+
+
     getComponentDeployed(this.state.user_id, this.props.params.repoId, "input")
       .then(inputComponentSeedData => {
   
@@ -136,27 +139,24 @@ class SelectInputComponentPage extends React.Component {
   {
     var row=[];
     
-    var imageLabels=[];
+    
     for(var i=0;i<arrayvar.length;i++)
     {
+      var prp=[];
       var k=arrayvar[i];
-      var textLabels=[];
-      var imageLabels=[];
-      if(k=="Text Input"){
-      textLabels.push(k);
-      }
-      else
-      {
-        imageLabels.push(k);
-      }
+      let tem={};
+      tem["id"]=(k=="Text Input"?1:3);
+      tem["label"]=""
+      prp.push(tem);
+
+  
       row.push(
         <div key={i}  >     
         <TypeInput
-        textLabels={textLabels}
-        imageLabels={imageLabels}
+        prop={prp}
         calling_context="demo"
-        socketId="0.r6mheg6l2ln"
-        sendAddr="http://0.0.0.0:4205/event"
+        socketId=""
+        sendAddr=""
       />
           <br/>
           <div style={{margin: 'auto',width: '50%'}}>
