@@ -20,21 +20,13 @@ export function getOutputComponentById(id, props, calling_context, data) {
   props.map((header, index) => {
     headers[index] = header;
   });
-  console.log("index output props");
-  console.log(props);
-
-   console.log("calling_context =");
-  console.log(calling_context);
 
   let fin=[];
   for(var i=0;i<props.length;i++)
   {
     let lab={};
     lab["id"]=props[i].id;
-    lab["label"]=props[i].label;
-    console.log("id= ");
-    console.log(lab["id"]);
-       
+    lab["label"]=props[i].label;     
 
   switch (lab["id"]) {
     case 1:
@@ -92,7 +84,6 @@ export function getOutputComponentById(id, props, calling_context, data) {
       );
       break;
     default:
-      console.log("console aaya");
       return <div>Null</div>;
   }
 }

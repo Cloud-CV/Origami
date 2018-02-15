@@ -94,8 +94,6 @@ class TextInput extends React.Component {
   }
 
   render() {
-    console.log("props from text input");
-    console.log(this.props);
     return (
       <div className="ui centered center aligned grid">
         <form id="send-text" className="six wide stackable stretched ui input">

@@ -11,16 +11,8 @@ export function getInputComponentById(
   socketId,
   sendAddr
 ) {
- 
-  console.log("calling_context socketId sendAddr =");
-  console.log(calling_context);
-  console.log(socketId);
-  console.log(sendAddr);
-  let fin=[];
-  var l="llkjvjkvjhvhjfvl";
-  console.log("props input label")
-  console.log(props);
 
+  let fin=[];
   fin.push(
   
       <TypeInput

@@ -11,8 +11,6 @@ import { Draggable, Droppable } from 'react-drag-and-drop'
 class TextInputShowcaseCard extends InputShowcaseCard {
   constructor(props) {
     super(props);
-    console.log("props from imageshow");
-    console.log(props);
     this.init = props.demoProps.inputComponentDemoModel.props;
     let labels = [];
     this.others = [];

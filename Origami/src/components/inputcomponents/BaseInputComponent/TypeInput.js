@@ -128,8 +128,6 @@ class TypeInput extends React.Component {
   render() {
     let fin=[];
     let k=this.props.prop;
-    console.log("k =====");
-    console.log(this.props);
     for(var i=0;i<k.length;i++)
     {
 
@@ -170,8 +168,29 @@ class TypeInput extends React.Component {
       }
 
     }
-    console.log("props aa rha hai in typeinput");
-    console.log(fin);
+
+
+    var but=null;
+    if(this.props.calling_context=="demo")
+    {
+      but=(
+                <div className="ui row">
+          <pre className="ui centered center aligned origami-demo-send-button">
+            <br />
+            <RaisedButton
+              label="Send"
+              primary
+              key={Math.random()}
+              onClick={() => {
+                this.sendRequest(
+                  this.props.sendAddr,
+                  this.props.calling_context
+                );
+              }}
+            />
+          </pre>
+        </div>);
+    }
     return (
       <div className="ui centered center aligned grid">
         <form id="send-text" className="six wide stackable stretched ui input">
@@ -181,6 +200,7 @@ class TypeInput extends React.Component {
             <input type="hidden" name="socket-id" value={this.props.socketId} />
           </div>
         </form>
+          {but}
 
       </div>
     );

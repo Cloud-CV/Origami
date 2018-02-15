@@ -61,8 +61,7 @@ class SelectInputComponentPage extends React.Component {
       Rows:[],
       labels:[]
     };
-           console.log("props aa rhe hai");
-    console.log(this.props);
+
     this.id=props["params"].repoId;
     this.base_component_id=1;
     this.modify=(props["params"].type==="modify")
@@ -71,9 +70,6 @@ class SelectInputComponentPage extends React.Component {
   }
 
   onSortEnd({oldIndex, newIndex}){
-    console.log("old and new");
-    console.log(oldIndex);
-    console.log(newIndex);
     var old=this.state.array;
     var temp=old[oldIndex]
     old[oldIndex]=old[newIndex];
@@ -214,8 +210,7 @@ class SelectInputComponentPage extends React.Component {
       k.push(tem);
 
     }
-    console.log("props input wale");
-    console.log(this.props);
+
   
     this.props.inputComponentModelActions
     .updateInputComponentModel({
@@ -235,10 +230,7 @@ class SelectInputComponentPage extends React.Component {
 
 
    }
-    getcon({data}){
-  console.log("kuch hua");
-  console.log(data);
- }
+
 
   componentWillReceiveProps(nextProps) {
     if (

@@ -23,10 +23,6 @@ class singleOutput extends React.Component {
   }
 
   render() {
-    console.log("props aayega singel image pr");
-    console.log(this.props);
-    if(this.props.data)
-      console.log("true");
 
     const height=(this.props.calling_context=="demo2")?("50%"):("100%");
     const width=(this.props.calling_context=="demo2")?("35%"):("75%");
