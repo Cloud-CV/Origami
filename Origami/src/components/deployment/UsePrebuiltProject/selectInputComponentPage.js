@@ -15,16 +15,12 @@ import { grey900 } from "material-ui/styles/colors";
 import toastr from "toastr";
 import { Draggable, Droppable } from 'react-drag-and-drop'
 import CustomCard from "../../stateless/cards";
-import Delete from 'material-ui-icons/Delete';
-import DeleteIcon from 'material-ui-icons/Delete';
-import IconButton from 'material-ui/IconButton';
-import Save from 'material-ui-icons/Save';
 import RaisedButton from 'material-ui/RaisedButton';
-import InputShowcaseCard from "../../inputcomponents/BaseInputComponent/InputShowcaseCard.js";
 import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
 import TypeInput from "../../inputcomponents/BaseInputComponent/TypeInput";
-toastr.options.closeButton = true;
 import { Modal, Button } from 'antd';
+
+toastr.options.closeButton = true;
 
 
 
@@ -166,7 +162,7 @@ class SelectInputComponentPage extends React.Component {
     this.setState({value:""});
   }
 
-  
+
   handleCancel(e){
     console.log(e);
     this.setState({
@@ -191,7 +187,7 @@ class SelectInputComponentPage extends React.Component {
       prp.push(tem);
 
       row.push(
-        <div key={i}  >     
+        <div key={i}>     
         <TypeInput
         prop={prp}
         calling_context="demo2"

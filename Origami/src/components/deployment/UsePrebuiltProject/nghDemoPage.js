@@ -115,7 +115,6 @@ class NGHDemoPage extends React.Component {
               Object.assign({}, JSON.parse(data)[0], { status: "demo" })
             ).then();
           }
-          console.log("6th");
         });
         getComponentDeployed(
           this.state.demo_creator_id,
