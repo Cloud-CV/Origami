@@ -23,7 +23,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
 import {getOutputComponentById} from "../../outputcomponents/index"
 toastr.options.closeButton = true;
-
+import { Modal, Button } from 'antd';
 
 const SortableItem = SortableElement(({value}) =>
  <li style={{listStyleType:'none'}}>{value}</li>
@@ -58,25 +58,30 @@ class SelectOutputComponentPage extends React.Component {
       inputComponentStepperHighlight: false,
       array:[],
       Rows:[],
-      labels:[]
+      current:0,
+      value:"",
+      visible: false,
+      label:[]
     };
 
     this.id=props["params"].repoId;
     this.base_component_id=1;
     this.modify=(props["params"].type==="modify")
-    this.forwardAddress="/ngh/user/"+this.state.user_id+"/"+props["routeParams"].repoName+"/"+ props["routeParams"].repoId+"/demo";
-    
-
-
-
+    this.forwardAddress="/ngh/user/"+this.state.user_id+"/"+props["routeParams"].repoName+"/"+ props["routeParams"].repoId+"/demo";   
   }
 
     onSortEnd({oldIndex, newIndex}){
     var old=this.state.array;
-    var temp=old[oldIndex]
+    var lab=this.state.label;
+    var temp=old[oldIndex];
     old[oldIndex]=old[newIndex];
     old[newIndex]=temp;
-    this.helper(old);
+
+    var temp2=lab[oldIndex];
+    lab[oldIndex]=lab[newIndex];
+    lab[newIndex]=temp2;
+
+    this.helper(old,lab);
   };
 
   componentWillMount() {
@@ -102,7 +107,7 @@ class SelectOutputComponentPage extends React.Component {
 
           let k=dataToSeed["props"];
           let net=[];
- 
+          let lab=[];
           Object.keys(k).forEach(function(key,index) {
             switch(k[key].id)
             {
@@ -133,8 +138,9 @@ class SelectOutputComponentPage extends React.Component {
 
 
             };
+            lab[index]=k[key]["label"];
             });
-          this.helper(net);
+          this.helper(net,lab);
           this.setState({ outputComponentDemoModel: dataToSeed });
         }
       })
@@ -151,7 +157,35 @@ class SelectOutputComponentPage extends React.Component {
       });
   }
 
-    helper(arrayvar)
+  showModal(e){
+    let lab=this.state.label;
+    this.setState({
+      value:lab[e["i"]],
+      visible: true,
+      current:e["i"],
+
+    });
+  }
+
+
+    handleOk(event){
+    var array=this.state.array;
+    var lab=this.state.label;
+    var val=this.state.value;
+    var idx=this.state.current;
+    lab[idx]=val;
+    this.helper(array,lab);
+    this.setState({value:""});
+  }
+
+    handleCancel(e){
+    this.setState({
+      visible: false,
+      value:""
+    });
+  }
+
+    helper(arrayvar,lab)
   {
     var row=[];
     for(var i=0;i<arrayvar.length;i++)
@@ -190,16 +224,17 @@ class SelectOutputComponentPage extends React.Component {
         }
   
       prp["id"]=t;
-      prp["label"]="lab";
+      prp["label"]=(lab[i]?lab[i]:"");
       le.push(prp);
       var data=[];
       var id=this.base_component_id;
       row.push(
         <div key={i}   >     
         {getOutputComponentById(id,le,"demo2",data)}
-          <br/>
-          <div style={{margin: 'auto',width: '50%'}}>
+          
+          <div style={{marginLeft: '40%',width: '50%'}}>
           <button  onClick={this.onDragOut.bind(this,{i})}   type="button" className="btn btn-primary">Delete</button>
+          <button  type="button" onClick={this.showModal.bind(this,{i})} className="btn btn-primary" style={{float:'right'}}>Label</button>
            </div>
            <br/>
            <br/>
@@ -208,29 +243,25 @@ class SelectOutputComponentPage extends React.Component {
          
       );
     }
-    this.setState({ array: arrayvar,Rows:row});
+    this.setState({ array: arrayvar,Rows:row,visible:false,label:lab,value:""});
   }
 
-    onDragOut(data)
-  {
-    console.log("data aaega");
-    console.log(data);
+    onDragOut(data){
+
     var index=data["i"];
+    var lab=this.state.label;
     var arrayvar = this.state.array.slice();
-
     if (index > -1) {
-
     arrayvar.splice(index, 1);
-    
-    this.helper(arrayvar);
+    lab.splice(index, 1);
+    this.helper(arrayvar,lab);
     }
   }
 
-    onDrop(data)
-  {
-    
+    onDrop(data){
     let k=this.state.outputComponentDemoModel;
     var arrayvar = this.state.array.slice();
+    let lab=this.state.label.slice();
     var d;
     if(data["l1"]){
       d=data["l1"];
@@ -255,18 +286,16 @@ class SelectOutputComponentPage extends React.Component {
     if(data["l6"]){
       d=data["l6"];
     }
-    
-
     arrayvar.push(d);
-    this.helper(arrayvar);
+    lab.push("");
+    this.helper(arrayvar,lab);
   }
 
 
-  onSubmit()
-   {
-
+  onSubmit(){
     let k=[]
     let l=this.state.array;
+    let lab=this.state.label;
     for(var i=0;i<l.length;i++)
     {
       let tem={};
@@ -299,7 +328,7 @@ class SelectOutputComponentPage extends React.Component {
           break;
         }
       tem["id"]=t;
-      tem["label"]=""
+      tem["label"]=(lab[i]?lab[i]:"");
       k.push(tem);
 
     }
@@ -329,6 +358,10 @@ class SelectOutputComponentPage extends React.Component {
         outputComponentDemoModel: nextProps.outputComponentDemoModel
       });
     }
+  }
+
+    handleChange(event) {
+    this.setState({value: event.target.value});
   }
 
   render() {
@@ -419,8 +452,24 @@ class SelectOutputComponentPage extends React.Component {
           
           {this.state.Rows.length>0 &&
            
-            <SortableList items={this.state.Rows} onSortEnd={this.onSortEnd.bind(this)} lockToContainerEdges={true} lockOffset="90px" />
+            <SortableList items={this.state.Rows} onSortEnd={this.onSortEnd.bind(this)} lockToContainerEdges={true} lockOffset="95px" />
              }
+        <Modal
+          title="Input Label"
+          visible={this.state.visible}
+          onOk={this.handleOk.bind(this)}
+          onCancel={this.handleCancel.bind(this)}
+        >
+
+        <form onSubmit={this.handleOk.bind(this)}>
+        <div className="form-group">
+          <label for="usr">Label:</label><br/>
+          <input type="text" className="form-control" value={this.state.value} onChange={this.handleChange.bind(this)} />
+        </div>
+       </form>
+
+        </Modal>
+
 
             
         </div>

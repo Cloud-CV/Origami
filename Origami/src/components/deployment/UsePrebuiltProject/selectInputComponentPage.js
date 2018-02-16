@@ -77,6 +77,8 @@ class SelectInputComponentPage extends React.Component {
   onSortEnd({oldIndex, newIndex}){
     var old=this.state.array;
     var lab=this.state.label;
+    console.log("old label");
+    console.log(lab);
     var temp=old[oldIndex];
     old[oldIndex]=old[newIndex];
     old[newIndex]=temp;
@@ -121,7 +123,7 @@ class SelectInputComponentPage extends React.Component {
             {
               net.push("Image Input");
             }
-            lab[index]=k["label"];
+            lab[index]=k[key]["label"];
             });
 
           this.helper(net,lab);
@@ -143,23 +145,33 @@ class SelectInputComponentPage extends React.Component {
   }
 
   showModal(e){
-
+    let lab=this.state.label;
     this.setState({
+      value:lab[e["i"]],
       visible: true,
-      current:e["i"]
+      current:e["i"],
+
     });
     
   }
-  handleOk(e){
-
-    this.setState({
-      visible: false,
-    });
+  handleOk(event){
+    console.log("handle event");
+    console.log(this.state.value);
+    var array=this.state.array;
+    var lab=this.state.label;
+    var val=this.state.value;
+    var idx=this.state.current;
+    lab[idx]=val;
+    this.helper(array,lab);
+    this.setState({value:""});
   }
+
+  
   handleCancel(e){
     console.log(e);
     this.setState({
       visible: false,
+      value:""
     });
   }
 
@@ -189,7 +201,7 @@ class SelectInputComponentPage extends React.Component {
           <br/>
           <div style={{margin: 'auto',width: '50%'}}>
           <button onClick={this.onDragOut.bind(this,{i})}   type="button" className="btn btn-primary">Delete</button>
-          <button  type="button" onClick={this.showModal.bind(this,{i})} className="btn btn-primary" style={{float:'right'}}>Label+{i}</button>
+          <button  type="button" onClick={this.showModal.bind(this,{i})} className="btn btn-primary" style={{float:'right'}}>Label</button>
           </div>
 
 
@@ -202,7 +214,7 @@ class SelectInputComponentPage extends React.Component {
          
       );
     }
-    this.setState({ array: arrayvar,Rows:row,visible:false});
+    this.setState({ array: arrayvar,Rows:row,visible:false,label:lab,value:""});
   }
 
   onDragOut(data)
@@ -272,19 +284,6 @@ class SelectInputComponentPage extends React.Component {
    }
 
 
-  handleSubmit(event) {
-    console.log("handle event");
-    console.log(this.state.value);
-    var array=this.state.array;
-    var lab=this.state.label;
-    var val=this.state.value;
-    var idx=this.state.current;
-    lab[idx]=val;
-    this.helper(array,lab);
-    event.preventDefault();
-  }
-
-
   componentWillReceiveProps(nextProps) {
     if (
       this.state.inputComponentDemoModel !== nextProps.inputComponentDemoModel
@@ -295,12 +294,7 @@ class SelectInputComponentPage extends React.Component {
     }
   }
 
-  try(data)
-  {
-    console.log("data aaega");
-    console.log(data);
-  }
-    handleChange(event) {
+  handleChange(event) {
     this.setState({value: event.target.value});
   }
  
@@ -401,17 +395,16 @@ class SelectInputComponentPage extends React.Component {
 
 
           <Modal
-          title="Basic Modal"
+          title="Input Label"
           visible={this.state.visible}
           onOk={this.handleOk.bind(this)}
           onCancel={this.handleCancel.bind(this)}
         >
 
-        <form onSubmit={this.handleSubmit.bind(this)}>
+        <form onSubmit={this.handleOk.bind(this)}>
         <div className="form-group">
           <label for="usr">Label:</label><br/>
-          <input type="text" value={this.state.value} onChange={this.handleChange.bind(this)} />
-          <input type="submit" value="Submit" />
+          <input type="text" className="form-control" value={this.state.value} onChange={this.handleChange.bind(this)} />
         </div>
        </form>
 

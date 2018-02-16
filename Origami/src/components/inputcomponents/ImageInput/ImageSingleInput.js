@@ -34,8 +34,8 @@ const singleInput = props => {
     });
   }
   const cl1=(props.calling_context=="demo2"?null:"ui container grid origami-demo-input-image-component");
-  const cl2=(props.calling_context=="demo2"?null:"centered center aligned stretched row origami-demo-input-image-label-container");
-  const cl3=(props.calling_context=="demo2"?null:"ui blue segment origami-demo-input-image-label");
+  const cl2="centered center aligned stretched row origami-demo-input-image-label-container";
+  const cl3="ui blue segment origami-demo-input-image-label";
   const height=(props.calling_context=="demo2"?"50%":"100%");
   const width=(props.calling_context=="demo2"?"50%":"75%");
   return (
