@@ -149,8 +149,8 @@ class TypeInput extends React.Component {
                   index={i}
                   calling_context={this.props.calling_context}
                   label={k[i].label}
-                />,
-                <br key={Math.random()} />,
+                />
+                <br key={Math.random()} />
                 <br key={Math.random()} />
           </div>
 
@@ -167,7 +167,7 @@ class TypeInput extends React.Component {
                 calling_context={this.props.calling_context}
                 label={k[i].label}
               />,
-              <br key={Math.random()} />,
+              <br key={Math.random()} />
               <br key={Math.random()} />
             </div>
 

@@ -4,7 +4,6 @@ import { browserHistory } from "react-router";
 import CustomCard from "../../stateless/cards";
 import OutputShowcaseModifyDialog from "../BaseOutputComponent/OutputShowcaseModifyDialog";
 import OutputShowcaseCard from "../BaseOutputComponent/OutputShowcaseCard.js";
-import ScatterGraphOutputPreview from "./ScatterGraphOutputPreview";
 import { Draggable, Droppable } from 'react-drag-and-drop';
 import toastr from "toastr";
 

@@ -5,7 +5,6 @@ import CustomCard from "../../stateless/cards";
 import OutputShowcaseModifyDialog
   from "../BaseOutputComponent/OutputShowcaseModifyDialog";
 import OutputShowcaseCard from "../BaseOutputComponent/OutputShowcaseCard.js";
-import AreaGraphOutputPreview from "./AreaGraphOutputPreview";
 import toastr from "toastr";
 import { Draggable, Droppable } from 'react-drag-and-drop';
 

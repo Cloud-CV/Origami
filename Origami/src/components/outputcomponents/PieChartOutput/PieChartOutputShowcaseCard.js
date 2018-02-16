@@ -4,7 +4,6 @@ import { browserHistory } from "react-router";
 import CustomCard from "../../stateless/cards";
 import OutputShowcaseModifyDialog from "../BaseOutputComponent/OutputShowcaseModifyDialog";
 import OutputShowcaseCard from "../BaseOutputComponent/OutputShowcaseCard.js";
-import PieChartOutputPreview from "./PieChartOutputPreview";
 import toastr from "toastr";
 import { Draggable, Droppable } from 'react-drag-and-drop';
 
