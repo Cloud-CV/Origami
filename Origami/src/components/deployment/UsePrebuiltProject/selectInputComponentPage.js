@@ -24,7 +24,9 @@ import InputShowcaseCard from "../../inputcomponents/BaseInputComponent/InputSho
 import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
 import TypeInput from "../../inputcomponents/BaseInputComponent/TypeInput";
 toastr.options.closeButton = true;
-import io from "socket.io-client";
+import { Modal, Button } from 'antd';
+
+
 
 const SortableItem = SortableElement(({value}) =>
  <li style={{listStyleType:'none'}}>{value}</li>
@@ -59,7 +61,10 @@ class SelectInputComponentPage extends React.Component {
       what:'Add something',
       array:[],
       Rows:[],
-      labels:[]
+      current:0,
+      value:"",
+      visible: false,
+      label:[]
     };
 
     this.id=props["params"].repoId;
@@ -71,19 +76,20 @@ class SelectInputComponentPage extends React.Component {
 
   onSortEnd({oldIndex, newIndex}){
     var old=this.state.array;
-    var temp=old[oldIndex]
+    var lab=this.state.label;
+    var temp=old[oldIndex];
     old[oldIndex]=old[newIndex];
     old[newIndex]=temp;
-    this.setState({
-      Rows: arrayMove(this.state.Rows, oldIndex, newIndex),
-      array:old
-    });
+
+    var temp2=lab[oldIndex];
+    lab[oldIndex]=lab[newIndex];
+    lab[newIndex]=temp2;
+
+    this.helper(old,lab);
+
   };
 
   componentWillMount() {
-
-
-
 
     getComponentDeployed(this.state.user_id, this.props.params.repoId, "input")
       .then(inputComponentSeedData => {
@@ -102,7 +108,10 @@ class SelectInputComponentPage extends React.Component {
             props: JSON.parse(inputComponentSeedData)[0].props
           };
           let k=dataToSeed["props"];
+          console.log("props =");
+          console.log(k)
           let net=[];
+          let lab=[];
           Object.keys(k).forEach(function(key,index) {
             if(k[key].id==1)
               {
@@ -112,8 +121,10 @@ class SelectInputComponentPage extends React.Component {
             {
               net.push("Image Input");
             }
+            lab[index]=k["label"];
             });
-          this.helper(net);
+
+          this.helper(net,lab);
           this.setState({ inputComponentDemoModel: dataToSeed });
         }
       })
@@ -131,10 +142,32 @@ class SelectInputComponentPage extends React.Component {
 
   }
 
-  helper(arrayvar)
+  showModal(e){
+
+    this.setState({
+      visible: true,
+      current:e["i"]
+    });
+    
+  }
+  handleOk(e){
+
+    this.setState({
+      visible: false,
+    });
+  }
+  handleCancel(e){
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  }
+
+  helper(arrayvar,lab)
   {
     var row=[];
-    
+    console.log("laba aega");
+    console.log(lab);
     
     for(var i=0;i<arrayvar.length;i++)
     {
@@ -142,10 +175,9 @@ class SelectInputComponentPage extends React.Component {
       var k=arrayvar[i];
       let tem={};
       tem["id"]=(k=="Text Input"?1:3);
-      tem["label"]=""
+      tem["label"]=(lab[i]?lab[i]:"");
       prp.push(tem);
 
-  
       row.push(
         <div key={i}  >     
         <TypeInput
@@ -157,7 +189,12 @@ class SelectInputComponentPage extends React.Component {
           <br/>
           <div style={{margin: 'auto',width: '50%'}}>
           <button onClick={this.onDragOut.bind(this,{i})}   type="button" className="btn btn-primary">Delete</button>
+          <button  type="button" onClick={this.showModal.bind(this,{i})} className="btn btn-primary" style={{float:'right'}}>Label+{i}</button>
           </div>
+
+
+
+      
            <br/>
            <br/>
           </div>
@@ -165,20 +202,22 @@ class SelectInputComponentPage extends React.Component {
          
       );
     }
-    this.setState({ array: arrayvar,Rows:row});
+    this.setState({ array: arrayvar,Rows:row,visible:false});
   }
 
   onDragOut(data)
   {
-    
     var index=data["i"];
     var arrayvar = this.state.array.slice();
+    var lab=this.state.label;
 
     if (index > -1) {
 
     arrayvar.splice(index, 1);
-    
-    this.helper(arrayvar);
+    lab.splice(index, 1);
+
+
+    this.helper(arrayvar,lab);
     }
     
 
@@ -190,23 +229,24 @@ class SelectInputComponentPage extends React.Component {
     
     let k=this.state.inputComponentDemoModel;
     var arrayvar = this.state.array.slice();
-   
+    let lab=this.state.label.slice();
+    lab.push("");
     let d=data["ll"]?data["ll"]:data["lr"];
     arrayvar.push(d);
-    this.helper(arrayvar);
+    this.helper(arrayvar,lab);
   }
 
 
   onSubmit()
    {
-
+    let lab=this.state.label;
     let k=[]
     let l=this.state.array;
     for(var i=0;i<l.length;i++)
     {
       let tem={};
       tem["id"]=(l[i]=="Text Input"?1:3);
-      tem["label"]=""
+      tem["label"]=(lab[i]?lab[i]:"");
       k.push(tem);
 
     }
@@ -232,6 +272,19 @@ class SelectInputComponentPage extends React.Component {
    }
 
 
+  handleSubmit(event) {
+    console.log("handle event");
+    console.log(this.state.value);
+    var array=this.state.array;
+    var lab=this.state.label;
+    var val=this.state.value;
+    var idx=this.state.current;
+    lab[idx]=val;
+    this.helper(array,lab);
+    event.preventDefault();
+  }
+
+
   componentWillReceiveProps(nextProps) {
     if (
       this.state.inputComponentDemoModel !== nextProps.inputComponentDemoModel
@@ -242,6 +295,14 @@ class SelectInputComponentPage extends React.Component {
     }
   }
 
+  try(data)
+  {
+    console.log("data aaega");
+    console.log(data);
+  }
+    handleChange(event) {
+    this.setState({value: event.target.value});
+  }
  
 
   render() {
@@ -337,6 +398,24 @@ class SelectInputComponentPage extends React.Component {
             {this.state.Rows.length>0 &&
               <div >
               <SortableList items={this.state.Rows} onSortEnd={this.onSortEnd.bind(this)} lockToContainerEdges={true} lockOffset="60px" />;
+
+
+          <Modal
+          title="Basic Modal"
+          visible={this.state.visible}
+          onOk={this.handleOk.bind(this)}
+          onCancel={this.handleCancel.bind(this)}
+        >
+
+        <form onSubmit={this.handleSubmit.bind(this)}>
+        <div className="form-group">
+          <label for="usr">Label:</label><br/>
+          <input type="text" value={this.state.value} onChange={this.handleChange.bind(this)} />
+          <input type="submit" value="Submit" />
+        </div>
+       </form>
+
+        </Modal>
               </div> }
 
               

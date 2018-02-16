@@ -11,13 +11,20 @@ class TypeInput extends React.Component {
     this.state = {
       files: []
     };
+ 
     this.sendRequest = this.sendRequest.bind(this);
     this.inputSubmitted = this.inputSubmitted.bind(this);
     this.updateFormData = this.updateFormData.bind(this);
   }
 
-  shouldComponentUpdate() {
-    return false;
+  shouldComponentUpdate() {;
+    if(this.props.calling_context=="demo2")
+    {
+   
+      return true;
+    }
+    else
+      return false;
   }
 
   inputSubmitted(formData) {
@@ -135,7 +142,7 @@ class TypeInput extends React.Component {
       {
         fin.push(
 
-          <div style={{marginTop:"60px"}}>
+          <div key ={i} style={{marginTop:"60px"}}>
 
               <TextSingleInput
                   key={Math.random()}
@@ -152,7 +159,7 @@ class TypeInput extends React.Component {
       else
       {
         fin.push(
-             <div>
+             <div key ={i}>
               <ImageSingleInput
                 key={Math.random()}
                 index={i}

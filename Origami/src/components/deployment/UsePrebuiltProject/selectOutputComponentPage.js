@@ -76,10 +76,7 @@ class SelectOutputComponentPage extends React.Component {
     var temp=old[oldIndex]
     old[oldIndex]=old[newIndex];
     old[newIndex]=temp;
-    this.setState({
-      Rows: arrayMove(this.state.Rows, oldIndex, newIndex),
-      array:old
-    });
+    this.helper(old);
   };
 
   componentWillMount() {
@@ -216,7 +213,8 @@ class SelectOutputComponentPage extends React.Component {
 
     onDragOut(data)
   {
-    
+    console.log("data aaega");
+    console.log(data);
     var index=data["i"];
     var arrayvar = this.state.array.slice();
 
