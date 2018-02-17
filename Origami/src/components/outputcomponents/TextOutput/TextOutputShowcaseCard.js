@@ -4,7 +4,7 @@ import { browserHistory } from "react-router";
 import CustomCard from "../../stateless/cards";
 import OutputShowcaseModifyDialog from "../BaseOutputComponent/OutputShowcaseModifyDialog";
 import OutputShowcaseCard from "../BaseOutputComponent/OutputShowcaseCard.js";
-import TextOutputPreview from "./TextOutputPreview";
+import { Draggable, Droppable } from 'react-drag-and-drop';
 import toastr from "toastr";
 
 class TextOutputShowcaseCard extends OutputShowcaseCard {
@@ -64,7 +64,8 @@ class TextOutputShowcaseCard extends OutputShowcaseCard {
 
   render() {
     return (
-      <div>
+      <div key={Math.random()} style={{width: 'fit-content',margin: "auto"}}>
+      <Draggable type="l1" data="Text Output">
         <CustomCard
           header="Text Output"
           width="five"
@@ -72,41 +73,8 @@ class TextOutputShowcaseCard extends OutputShowcaseCard {
           selected={this.selected}
           centeredParent
           centeredSegment
-          displayData={[`Number of Outputs: ${this.getHeaderRealLength()}`]}
-          buttonData={[
-            {
-              label: "Modify",
-              onDeployClick: () => this.showModifyDialog()
-            },
-            {
-              label: "Preview",
-              onDeployClick: () => this.showPreviewDialog()
-            },
-            {
-              label: "Save",
-              onDeployClick: () => this.updateOutputComponentModel()
-            }
-          ]}
         />
-        {this.state.modifyDialogDisplay && (
-          <OutputShowcaseModifyDialog
-            functions={{
-              updateHeaders: this.updateHeaders,
-              hideModifyDialog: this.hideModifyDialog,
-              getHeaders: this.getHeaders
-            }}
-            title="Modify Text Output Component"
-          />
-        )}
-
-        {this.state.previewDialogDisplay && (
-          <TextOutputPreview
-            functions={{
-              getHeaders: this.getHeaders,
-              hidePreviewDialog: this.hidePreviewDialog
-            }}
-          />
-        )}
+      </Draggable>
       </div>
     );
   }

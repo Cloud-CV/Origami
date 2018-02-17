@@ -208,10 +208,8 @@ def custom_component_controller(request, type_req, user_id, demoid):
         props = []
         for prop in body["props"]:
             if prop:
-                props.append({"id": prop["id"].encode(
-                    "ascii", "ignore").decode('utf-8'),
-                    "label": prop["label"].encode(
-                        "ascii", "ignore").decode('utf-8')})
+                props.append({"id": prop["id"],
+                    "label": prop["label"]})
             else:
                 props.append({})
         user_id = body["user_id"]
@@ -263,10 +261,8 @@ def custom_component_controller(request, type_req, user_id, demoid):
             props = []
             for prop in body["props"]:
                 if prop:
-                    props.append({"id": prop["id"].encode(
-                        "ascii", "ignore").decode('utf-8'),
-                        "label": prop["label"].encode(
-                        "ascii", "ignore").decode('utf-8')})
+                    props.append({"id": prop["id"],
+                        "label": prop["label"]})
                 else:
                     props.append({})
             component.props = json.dumps(props)

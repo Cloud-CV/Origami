@@ -21,7 +21,6 @@ class SampleInput extends React.Component {
     this.onDrop = this.onDrop.bind(this);
     this.sendRequest = this.sendRequest.bind(this);
     this.updateFormData = this.updateFormData.bind(this);
-    console.log(props.demo_id);
   }
 
   shouldComponentUpdate() {
@@ -33,7 +32,6 @@ class SampleInput extends React.Component {
     this.state.files.map(file => {
       formData.set(file.newfilename, file.newfile, file.newfilename);
     });
-    console.log(this.props.demo_id);
     formData.set("demo_id", this.props.demo_id);
     $.ajaxSetup({
       headers: {

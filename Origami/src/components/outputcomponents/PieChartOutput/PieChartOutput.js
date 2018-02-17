@@ -3,35 +3,32 @@ import { PropTypes } from "prop-types";
 import SingleOutput from "./SingleOutput";
 
 const PieChartOutput = ({ headers, calling_context, data }) => {
+
   return (
     <div
       key={Math.random()}
       className="six wide stackable stretched grid container"
     >
       <br /><br />
-      {headers.map((header, index) => [
-        <SingleOutput
-          key={Math.random()}
-          calling_context={calling_context}
-          index={index}
-          header={header}
-          data={
-            data.length > 0
-              ? data[index]
-              : [{ x: "...", y: 1 }, { x: "...", y: 1 }]
-          }
-        />,
-        <br key={Math.random()} />,
-        <br key={Math.random()} />
-      ])}
+    
+      <SingleOutput
+        key={Math.random()}
+        calling_context={calling_context}
+        header={headers}
+        data={
+          data.length>0
+            ? data
+            : [{ x: "...", y: 1 }, { x: "...", y: 1 }]
+        }
+      />
+      <br key={Math.random()} />
+      <br key={Math.random()} />
+     
     </div>
   );
 };
 
-PieChartOutput.propTypes = {
-  headers: PropTypes.array.isRequired,
-  calling_context: PropTypes.string.isRequired,
-  data: PropTypes.array
-};
+PieChartOutput.propTypes = {   headers: PropTypes.string.isRequired,
+calling_context: PropTypes.string.isRequired,   data: PropTypes.array };
 
 export default PieChartOutput;
