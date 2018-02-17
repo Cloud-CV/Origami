@@ -20,8 +20,8 @@ const PieChartOutput = ({ headers, calling_context, data }) => {
             ? data
             : [{ x: "...", y: 1 }, { x: "...", y: 1 }]
         }
-      />,
-      <br key={Math.random()} />,
+      />
+      <br key={Math.random()} />
       <br key={Math.random()} />
      
     </div>

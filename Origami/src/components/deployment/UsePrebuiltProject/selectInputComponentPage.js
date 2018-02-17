@@ -280,19 +280,9 @@ class SelectInputComponentPage extends React.Component {
       height: '400px',
       backgroundColor: 'grey',
     };
-    const fix = {
-      position: 'fixed',
-    };
-    const styles = {
-      largeIcon: {
-        width: 60,
-        height: 60,
-      },
-    };
-
     const but = {
       position: 'absolute',
-      bottom: 20,
+      bottom: 5,
       right: 125,
     };
 
@@ -356,14 +346,6 @@ class SelectInputComponentPage extends React.Component {
                       <b style={{ fontSize: 'large' }}>Drag N Drop</b>
                     </div>
 
-                    <div style={but}>
-                      <RaisedButton
-                        label="Submit"
-                        primary={true}
-                        onClick={this.onSubmit.bind(this)}
-                      />
-                    </div>
-
                     {this.state.Rows.length > 0 && (
                       <div>
                         <SortableList
@@ -399,6 +381,14 @@ class SelectInputComponentPage extends React.Component {
             </div>
           </div>
         </div>
+        <div style={but}>
+          <RaisedButton
+            label="Submit"
+            primary={true}
+            onClick={this.onSubmit.bind(this)}
+          />
+        </div>
+
 
         <div
           className="ui fluid centered row"

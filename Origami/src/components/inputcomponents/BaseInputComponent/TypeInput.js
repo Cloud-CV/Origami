@@ -145,7 +145,7 @@ class TypeInput extends React.Component {
               updateFormData={this.updateFormData}
               calling_context={this.props.calling_context}
               label={k[i].label}
-            />,
+            />
             <br key={Math.random()} />
             <br key={Math.random()} />
           </div>

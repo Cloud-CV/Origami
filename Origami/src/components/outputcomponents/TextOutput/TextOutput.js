@@ -15,8 +15,8 @@ const TextOutput = ({ headers, calling_context, data }) => {
           calling_context={calling_context}
           header={headers}
           data={data || <LinearProgress mode="indeterminate" />}
-        />,
-        <br key={Math.random()} />,
+        />
+        <br key={Math.random()} />
         <br key={Math.random()} />
     </div>
   );

@@ -14,8 +14,8 @@ const ImageOutput = ({ headers, calling_context, data }) => {
           calling_context={calling_context}
           header={headers}
           data={data}
-        />,
-        <br key={Math.random()} />,
+        />
+        <br key={Math.random()} />
         <br key={Math.random()} />
     
     </div>

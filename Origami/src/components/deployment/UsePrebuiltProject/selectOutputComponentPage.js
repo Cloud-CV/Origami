@@ -378,16 +378,6 @@ class SelectOutputComponentPage extends React.Component {
       height: '450px',
       backgroundColor: 'grey',
     };
-    const fix = {
-      position: 'fixed',
-    };
-    const styles = {
-      largeIcon: {
-        width: 60,
-        height: 60,
-      },
-    };
-
     const but = {
       position: 'absolute',
       bottom: 5,
