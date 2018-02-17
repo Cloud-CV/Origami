@@ -157,7 +157,7 @@ class App extends React.Component {
     } else if (e.key === "6") {
       this.logout();
     } else if (e.key === "7") {
-      browserHistory.push("/initialsetup");
+      this.props.history.push("/initialsetup");
     }
   }
 
@@ -236,7 +236,7 @@ class App extends React.Component {
                 <span className="nav-text">Logout</span>
               </Menu.Item>
 
-              {Root_Setting}
+              { Root_Setting }
 
             </Menu>
           </Sider>
