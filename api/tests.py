@@ -8,7 +8,7 @@ import datetime
 import json
 from api.constants import DEFAULT_IMAGE
 from .models import *
-from api.constants import DEFAULT_IMAGE
+
 
 # Create your tests here.
 
