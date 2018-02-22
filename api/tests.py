@@ -942,10 +942,10 @@ class MyTests(ChannelTestCase):
         self.assertIsNone(client.receive()) #connectionEstablished
 
         client.send_and_consume('websocket.receive',text={'event': 'fetchCurrentPort'})
-        receive=client.receive()["data"].decode('utf-8')
+        receive=client.receive()["data"]
         self.assertEqual(receive,settings.PORT)
 
         client.send_and_consume('websocket.receive',text={'event': 'getPublicIPaddress'})
-        receive=client.receive()["data"].decode('utf-8')
+        receive=client.receive()["data"]
         self.assertEqual(receive,settings.HOST_NAME)
 
