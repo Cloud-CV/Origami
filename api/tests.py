@@ -8,7 +8,11 @@ import datetime
 import json
 from api.constants import DEFAULT_IMAGE
 from .models import *
-from api.constants import DEFAULT_IMAGE
+from channels import Channel
+from channels.test import ChannelTestCase,WSClient
+from .consumers import*
+from django.conf import settings
+
 
 # Create your tests here.
 
@@ -923,3 +927,24 @@ class DemoViewSetTests(TestCase):
         self.assertEqual(response["user_id"],output_component["user_id"])
         self.assertEqual(response["props"],output_component["props"])
         self.assertEqual(response["base_component_id"],output_component["base_component_id"])
+
+
+class MyTests(ChannelTestCase):
+    def test_ws_connect(self):
+        client = WSClient()
+        client.send_and_consume('websocket.connect')
+        self.assertIsNone(client.receive())
+
+    def test_ws_message(self):
+        client=WSClient()
+        client.send_and_consume('websocket.receive',text={'event': 'ConnectionEstablished','socketId':'54'})
+        self.assertIsNone(client.receive()) #connectionEstablished
+
+        client.send_and_consume('websocket.receive',text={'event': 'fetchCurrentPort'})
+        receive=client.receive()["data"].decode('utf-8')
+        self.assertEqual(receive,settings.PORT)
+
+        client.send_and_consume('websocket.receive',text={'event': 'getPublicIPaddress'})
+        receive=client.receive()["data"].decode('utf-8')
+        self.assertEqual(receive,settings.HOST_NAME)
+
