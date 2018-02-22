@@ -75,8 +75,7 @@ class App extends React.Component {
         ) {
           window.location = "/initialsetup";
         }
-         if(JSON.parse(data).root_user_github_login_name==localStorage.getItem("username"))
-        {
+         if(JSON.parse(data).root_user_github_login_name == localStorage.getItem("username")) {
           this.setState({ isRoot: true });
         }
       })
@@ -165,7 +164,7 @@ class App extends React.Component {
     if(this.state.isRoot)
     {
       Root_Setting=(
-              <Menu.Item key="7" style={{ "font-size": "16px" }}>
+              <Menu.Item key="7" style={{ fontSize: "16px" }}>
                 <Icon type="setting" />
                 <span className="nav-text">Root-Settings</span>
               </Menu.Item>
@@ -196,7 +195,7 @@ class App extends React.Component {
             style={{
               overflow: "auto",
               background: "#FEFEFE",
-              "box-shadow": "10px 0px 20px #E0E0E0"
+              boxShadow: "10px 0px 20px #E0E0E0"
             }}
             width="200"
           >
@@ -206,30 +205,30 @@ class App extends React.Component {
             <Menu
               style={{ background: "#FEFEFE" }}
               mode="inline"
-              defaultSelectedKeys={["3"]}
+              defaultSelectedKeys={["2"]}
               onClick={this.handleClickAfterLogin}
             >
-              <Menu.Item key="1" style={{ "font-size": "16px" }}>
+              <Menu.Item key="1" style={{ fontSize: "16px" }}>
                 <Icon type="user" />
                 <span className="nav-text">Profile</span>
               </Menu.Item>
-              <Menu.Item key="2" style={{ "font-size": "16px" }}>
+              <Menu.Item key="2" style={{ fontSize: "16px" }}>
                 <Icon type="video-camera" />
                 <span className="nav-text">Discover</span>
               </Menu.Item>
-              <Menu.Item key="3" style={{ "font-size": "16px" }}>
+              <Menu.Item key="3" style={{ fontSize: "16px" }}>
                 <Icon type="cloud-o" />
                 <span className="nav-text">My demos</span>
               </Menu.Item>
-              <Menu.Item key="4" style={{ "font-size": "16px" }}>
+              <Menu.Item key="4" style={{ fontSize: "16px" }}>
                 <Icon type="plus-circle-o" />
                 <span className="nav-text">Create Demo</span>
               </Menu.Item>
-              <Menu.Item key="5" style={{ "font-size": "16px" }}>
+              <Menu.Item key="5" style={{ fontSize: "16px" }}>
                 <Icon type="question-circle-o" />
                 <span className="nav-text">Help</span>
               </Menu.Item>
-              <Menu.Item key="6" style={{ "font-size": "16px" }}>
+              <Menu.Item key="6" style={{ fontSize: "16px" }}>
                 <Icon type="logout" />
                 <span className="nav-text">Logout</span>
               </Menu.Item>

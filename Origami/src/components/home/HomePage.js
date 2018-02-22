@@ -296,7 +296,7 @@ class HomePage extends React.Component {
                                 <Button
                                   type="primary"
                                   id="launchButton"
-                                  style={{ "margin-bottom": "5%" }}
+                                  style={{ marginBottom: "5%" }}
                                   onClick={() => this.goToDemoPage(demo)}
                                 >
                                   Demo<Icon type="rocket" />
@@ -321,8 +321,8 @@ class HomePage extends React.Component {
             textAlign: "center",
             background: "#fefefe",
             color: "#455A64",
-            "font-size": "14px",
-            "box-shadow": "0px -2px 5px #E0E0E0"
+            fontSize: "14px",
+            boxShadow: "0px -2px 5px #E0E0E0"
           }}
         >
           <strong>Origami</strong>
