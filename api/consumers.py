@@ -15,14 +15,11 @@ def ws_connect(message):
 
 
 def ws_message(message):
-    print("1")
     body = json.loads(message.content['text'])
     if body["event"] == "ConnectionEstablished":
-        print("2")
         Group(body["socketId"]).add(message.reply_channel)
 
     elif body["event"] == "fetchCurrentPort":
-        print("3")
         text = json.dumps({
             "data": settings.PORT,
                     "event": "fetchedCurrentPort"
@@ -30,7 +27,6 @@ def ws_message(message):
         message.reply_channel.send({"text": text})
 
     elif body["event"] == "getPublicIPaddress":
-        print("4")
         text = json.dumps({
             "data": settings.HOST_NAME,
                     "event": "gotPublicIP"
@@ -41,9 +37,7 @@ def ws_message(message):
 @csrf_exempt
 @api_view(['POST'])
 def inject(request):
-    print("aaya 1")
     if request.method == "POST":
-        print("aaya 2")
         body = request.data
         text = json.dumps({
             "data": body,
