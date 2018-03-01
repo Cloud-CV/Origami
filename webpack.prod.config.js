@@ -6,7 +6,7 @@ const GLOBALS = {
   "process.env.NODE_ENV": JSON.stringify("production")
 };
 
-config = {
+const config = {
   entry: "./Origami/src/index",
   target: "web",
   output: {

@@ -4,7 +4,7 @@ var BundleTracker = require('webpack-bundle-tracker')
 var path = require("path")
 var webpack = require('webpack')
 
-config = {
+const config = {
   devtool: "cheap-module-eval-source-map",
   entry: [
     'webpack-dev-server/client?http://localhost:3000',
