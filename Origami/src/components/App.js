@@ -213,7 +213,7 @@ class App extends React.Component {
     }
     if (this.state.login) {
       return (
-        <Layout style={{ height: "110vh", background: "#FEFEFE" }}>
+        <Layout id="layout" style={{ height: "100vh" }}>
           <Sider
             style={{
               overflow: "auto",
@@ -265,7 +265,7 @@ class App extends React.Component {
       );
     } else {
       return (
-        <Layout id="layout">
+        <Layout id="layout" style={{ height: "100vh" }}>
           { Routes }
         </Layout>
       );
