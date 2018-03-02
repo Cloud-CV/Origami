@@ -123,18 +123,18 @@ class NGHDemoPage extends React.Component {
         ).then(data => {
           let pdata = JSON.parse(data);
           if (pdata['text'] != 'Not Found') {
-          if (Object.keys(JSON.parse(data)).length) {
-            this.setState({ inputModel: JSON.parse(data)[0] }, () => {
-              let val = 0;
-              this.state.inputModel.props.map((prop, index) => {
-                if (prop["id"] === "3") {
-                  val += 1;
-                }
+            if (Object.keys(JSON.parse(data)).length) {
+              this.setState({ inputModel: JSON.parse(data)[0] }, () => {
+                let val = 0;
+                this.state.inputModel.props.map((prop, index) => {
+                  if (prop['id'] === '3') {
+                    val += 1;
+                  }
+                });
+                this.setState({ imageInputCount: val });
               });
-              this.setState({ imageInputCount: val });
-            });
+            }
           }
-        }
         });
         getComponentDeployed(
           this.state.demo_creator_id,
@@ -142,11 +142,11 @@ class NGHDemoPage extends React.Component {
           "output"
         ).then(data => {
           let pdata = JSON.parse(data);
-          if (pdata['text'] != 'Not Found') {         
-          if (Object.keys(JSON.parse(data)).length) {
-            this.setState({ outputModel: JSON.parse(data)[0] });
+          if (pdata['text'] != 'Not Found') {
+            if (Object.keys(JSON.parse(data)).length) {
+              this.setState({ outputModel: JSON.parse(data)[0] });
+            }
           }
-        }
         });
       }
     );
