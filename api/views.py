@@ -309,7 +309,7 @@ def custom_demo_controller(request, user_id, id):
             try:
                 demo = Demo.objects.get(id=id, user_id=user_id)
             except Exception:
-                 return Response({"text": "Not Found"})
+                return Response({"text": "Not Found"})
             serialize = DemoSerializer(demo).data
             try:
                 sample_inputs = SampleInput.objects.filter(demo=demo)

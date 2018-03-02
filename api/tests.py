@@ -296,7 +296,7 @@ class CustomDemoControllerViewTests(TestCase):
         self.assertEqual(response["token"], payload["token"])
         self.assertEqual(response["status"], payload["status"])
 
-    def test_put_demo_No_body_cover_image(self):
+    def test_put_demo_without_body_cover_image(self):
         payload = self.demo
         payload["name"] = "Not Test"
         payload["cover_image"] = ""
@@ -498,7 +498,7 @@ class CustomComponentControllerTests(TestCase):
         self.assertEqual(response["props"], payload["props"])
         self.assertEqual(response["user_id"], payload["user_id"])
 
-    def test_PUT_without_id_and_userid(self):
+    def test_put_without_id_and_userid(self):
         payload = self.input_component
         payload["base_component_id"] = 3
         payload["props"] = [{"id": "1", "label": ""}]
@@ -549,7 +549,7 @@ class CustomComponentControllerTests(TestCase):
         self.assertEqual(json.dumps(response["props"]), payload["props"])
         self.assertEqual(response["user_id"], payload["user_id"])
 
-    def test_output_component_with_no_userID(self):
+    def test_output_component_with_no_userid(self):
         payload = self.output_component
         url = '/api/outputcomponent/'
         responses = self.client.get(url)
@@ -654,7 +654,7 @@ class CustomPermalinkControllerTests(TestCase):
         self.assertEqual(response["full_relative_url"],
                          payload["full_relative_url"])
 
-    def test_getpermalink_Text_not_found(self):
+    def test_getpermalink_text_not_found(self):
         payload = self.permalink
         payload["short_relative_url"] = "abchdafwf"
         url = '/api/getpermalink/' + payload["short_relative_url"]
@@ -675,7 +675,7 @@ class CustomPermalinkControllerTests(TestCase):
         self.assertEqual(response["full_relative_url"],
                          payload["full_relative_url"])
 
-    def test_get_permalink_Not_found(self):
+    def test_get_permalink_text_not_found(self):
         payload = self.permalink
         url = '/api/permalink/' + \
             str(payload["user_id"]) + '/' + str(58)
@@ -728,7 +728,7 @@ class CustomPermalinkControllerTests(TestCase):
         self.assertEqual(response["full_relative_url"],
                          payload["full_relative_url"])
 
-    def test_modify_permalink_Text_not_found(self):
+    def test_modify_permalink_text_not_found(self):
         payload = self.permalink
         payload["short_relative_url"] = '/p/qazxsw'
         url = '/api/permalink/'
@@ -911,9 +911,7 @@ class DemoViewSetTests(TestCase):
         self.assertEqual(response["id"],demo["id"])
         self.assertEqual(response["user_id"],demo["user_id"])
 
-        
-
-    def test_Input_Componenet_View_Set(self):
+    def test_Input_Component_View_Set(self):
         input_component=self.input_component
         response = self.client.get('/api/input-component/')
         response = json.loads(response.content.decode('utf-8'))[0]
@@ -921,7 +919,7 @@ class DemoViewSetTests(TestCase):
         self.assertEqual(response["props"],input_component["props"])
         self.assertEqual(response["base_component_id"],input_component["base_component_id"])
 
-    def test_Output_Componenet_View_Set(self):
+    def test_Output_Component_View_Set(self):
         output_component=self.output_component
         response = self.client.get('/api/output-component/')
         response = json.loads(response.content.decode('utf-8'))[0]
