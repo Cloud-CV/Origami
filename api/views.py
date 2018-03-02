@@ -195,7 +195,6 @@ def custom_component_controller(request, type_req, user_id, demoid):
         model = OutputComponent
         serializer = OutputComponentSerializer
 
-
     if request.method == "POST":
         body = request.data
         demo_id = body["id"]
@@ -210,7 +209,6 @@ def custom_component_controller(request, type_req, user_id, demoid):
                         "ascii", "ignore").decode('utf-8')})
             else:
                 props.append({})
-
         user_id = body["user_id"]
         component = model.objects.create(
             demo=demo, base_component_id=base_comp_id,
