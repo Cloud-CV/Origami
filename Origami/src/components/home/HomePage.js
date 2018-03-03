@@ -26,6 +26,8 @@ import {
   Select
 } from "antd";
 import { Modal } from "antd";
+import toastr from "toastr";
+
 const { Header, Content, Footer } = Layout;
 const Option = Select.Option;
 const {
