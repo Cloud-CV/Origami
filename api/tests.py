@@ -9,10 +9,9 @@ import json
 from api.constants import DEFAULT_IMAGE
 from .models import *
 from channels import Channel
-from channels.test import ChannelTestCase,WSClient
+from channels.test import ChannelTestCase, WSClient
 from .consumers import*
 from django.conf import settings
-
 
 
 # Create your tests here.
@@ -905,27 +904,31 @@ class DemoViewSetTests(TestCase):
             demo=self.output_component["demo"])
 
     def test_Demo_View_Set(self):
-        demo=self.demo
+        demo = self.demo
         response = self.client.get('/api/demo-view/')
         response = json.loads(response.content.decode('utf-8'))[0]
-        self.assertEqual(response["id"],demo["id"])
-        self.assertEqual(response["user_id"],demo["user_id"])
+        self.assertEqual(response["id"], demo["id"])
+        self.assertEqual(response["user_id"], demo["user_id"])
 
     def test_Input_Component_View_Set(self):
-        input_component=self.input_component
+        input_component = self.input_component
         response = self.client.get('/api/input-component/')
         response = json.loads(response.content.decode('utf-8'))[0]
-        self.assertEqual(response["user_id"],input_component["user_id"])
-        self.assertEqual(response["props"],input_component["props"])
-        self.assertEqual(response["base_component_id"],input_component["base_component_id"])
+        self.assertEqual(response["user_id"], input_component["user_id"])
+        self.assertEqual(response["props"], input_component["props"])
+        self.assertEqual(
+            response["base_component_id"],
+            input_component["base_component_id"])
 
     def test_Output_Component_View_Set(self):
-        output_component=self.output_component
+        output_component = self.output_component
         response = self.client.get('/api/output-component/')
         response = json.loads(response.content.decode('utf-8'))[0]
-        self.assertEqual(response["user_id"],output_component["user_id"])
-        self.assertEqual(response["props"],output_component["props"])
-        self.assertEqual(response["base_component_id"],output_component["base_component_id"])
+        self.assertEqual(response["user_id"], output_component["user_id"])
+        self.assertEqual(response["props"], output_component["props"])
+        self.assertEqual(
+            response["base_component_id"],
+            output_component["base_component_id"])
 
 
 class MyTests(ChannelTestCase):
@@ -935,15 +938,22 @@ class MyTests(ChannelTestCase):
         self.assertIsNone(client.receive())
 
     def test_ws_message(self):
-        client=WSClient()
-        client.send_and_consume('websocket.receive',text={'event': 'ConnectionEstablished','socketId':'54'})
-        self.assertIsNone(client.receive()) #connectionEstablished
+        client = WSClient()
+        client.send_and_consume(
+            'websocket.receive',
+            text={
+                'event': 'ConnectionEstablished',
+                'socketId': '54'})
+        self.assertIsNone(client.receive())  
 
-        client.send_and_consume('websocket.receive',text={'event': 'fetchCurrentPort'})
-        receive=client.receive()["data"]
-        self.assertEqual(receive,settings.PORT)
+        client.send_and_consume(
+            'websocket.receive', text={
+                'event': 'fetchCurrentPort'})
+        receive = client.receive()["data"]
+        self.assertEqual(receive, settings.PORT)
 
-        client.send_and_consume('websocket.receive',text={'event': 'getPublicIPaddress'})
-        receive=client.receive()["data"]
-        self.assertEqual(receive,settings.HOST_NAME)
-
+        client.send_and_consume(
+            'websocket.receive', text={
+                'event': 'getPublicIPaddress'})
+        receive = client.receive()["data"]
+        self.assertEqual(receive, settings.HOST_NAME)
