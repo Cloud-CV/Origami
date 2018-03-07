@@ -93,7 +93,6 @@ class HomePage extends React.Component {
   }
 
 
-
   success() {
     const modal = Modal.info({
       title: "Logging you in"
