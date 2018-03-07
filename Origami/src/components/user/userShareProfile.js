@@ -73,7 +73,7 @@ class ShareProfileComponent extends React.Component {
                       if (
                         allDemos.length === JSON.parse(alldeployedRepos).length
                       ) {
-                        let tmp = allDemos;
+                        let tmp = JSON.parse(alldeployedRepos);
                         let allDeployed = [];
                         while (tmp.length) {
                           allDeployed.push(tmp.splice(0, 4));

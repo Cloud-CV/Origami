@@ -13,7 +13,6 @@ import { getSearchedDemos } from "../../api/Nongh/getSearchedDemos";
 import HomePageDemoCard from "../stateless/homePageDemoCard";
 import { getAllPermalink } from "../../api/Nongh/permalink";
 import * as loginActions from "../../actions/loginActions";
-import { ShareButtons, ShareCounts, generateShareIcon } from "react-share";
 import {
   Layout,
   Menu,
@@ -30,21 +29,6 @@ import toastr from "toastr";
 
 const { Header, Content, Footer } = Layout;
 const Option = Select.Option;
-const {
-  FacebookShareButton,
-  GooglePlusShareButton,
-  LinkedinShareButton,
-  TwitterShareButton
-} = ShareButtons;
-const {
-  FacebookShareCount,
-  GooglePlusShareCount,
-  LinkedinShareCount
-} = ShareCounts;
-const FacebookIcon = generateShareIcon("facebook");
-const TwitterIcon = generateShareIcon("twitter");
-const GooglePlusIcon = generateShareIcon("google");
-const LinkedinIcon = generateShareIcon("linkedin");
 const demoSpinnerStyle = {
   position: 'fixed',
   top: '50%',
@@ -54,7 +38,6 @@ const demoSpinnerStyle = {
 class HomePage extends React.Component {
   constructor(props, context) {
     super(props, context);
-    // this.buildFromGithubLogin = this.buildFromGithubLogin.bind(this);
     this.useLocalDeploymentLogin = this.useLocalDeploymentLogin.bind(this);
     $("#appbar-progress").progress({
       percent: "0%"
@@ -71,7 +54,6 @@ class HomePage extends React.Component {
       demoLoading: true
     };
 
-    this.handleShareModal = this.handleShareModal.bind(this);
     this.goToDemoPage = this.goToDemoPage.bind(this);
     this.findDemo = this.findDemo.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -110,11 +92,7 @@ class HomePage extends React.Component {
       });
   }
 
-  handleShareModal(demoBeingShown) {
-    this.setState({ demoBeingShown }, () => {
-      this.setState({ shareModalOpen: !this.state.shareModalOpen });
-    });
-  }
+
 
   success() {
     const modal = Modal.info({
