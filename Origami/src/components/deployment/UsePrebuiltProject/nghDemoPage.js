@@ -1,6 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { browserHistory } from "react-router";
+import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import { getInputComponentById } from "../../inputcomponents";
 import { getOutputComponentById } from "../../outputcomponents";
@@ -45,7 +45,7 @@ class NGHDemoPage extends React.Component {
     this.updateFormData = this.updateFormData.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     $("body").css("overflow", "hidden");
 
     let socket = this.socket;
@@ -82,7 +82,7 @@ class NGHDemoPage extends React.Component {
       }
     }.bind(this);
     this.setState(
-      { demo_creator_id: parseInt(this.props.params.user_id, 10) },
+      { demo_creator_id: parseInt(this.props.match.params.user_id, 10) },
       () => {
         this.setState(
           { user_id: parseInt(localStorage.getItem("user_id")) },
@@ -94,7 +94,7 @@ class NGHDemoPage extends React.Component {
         );
         getDeployed(
           this.state.demo_creator_id,
-          this.props.params.repoId
+          this.props.match.params.repoId
         ).then(data => {
           this.setState({ demoModel: JSON.parse(data)[0] }, () => {
             if (this.state.demoModel.terminal) {
@@ -118,28 +118,34 @@ class NGHDemoPage extends React.Component {
         });
         getComponentDeployed(
           this.state.demo_creator_id,
-          this.props.params.repoId,
+          this.props.match.params.repoId,
           "input"
         ).then(data => {
-          if (Object.keys(JSON.parse(data)).length) {
-            this.setState({ inputModel: JSON.parse(data)[0] }, () => {
-              let val = 0;
-              this.state.inputModel.props.map((prop, index) => {
-                if (prop["id"] === "3") {
-                  val += 1;
-                }
+          let pdata = JSON.parse(data);
+          if (pdata['text'] != 'Not Found') {
+            if (Object.keys(JSON.parse(data)).length) {
+              this.setState({ inputModel: JSON.parse(data)[0] }, () => {
+                let val = 0;
+                this.state.inputModel.props.map((prop, index) => {
+                  if (prop['id'] === '3') {
+                    val += 1;
+                  }
+                });
+                this.setState({ imageInputCount: val });
               });
-              this.setState({ imageInputCount: val });
-            });
+            }
           }
         });
         getComponentDeployed(
           this.state.demo_creator_id,
-          this.props.params.repoId,
+          this.props.match.params.repoId,
           "output"
         ).then(data => {
-          if (Object.keys(JSON.parse(data)).length) {
-            this.setState({ outputModel: JSON.parse(data)[0] });
+          let pdata = JSON.parse(data);
+          if (pdata['text'] != 'Not Found') {
+            if (Object.keys(JSON.parse(data)).length) {
+              this.setState({ outputModel: JSON.parse(data)[0] });
+            }
           }
         });
       }
@@ -472,8 +478,8 @@ class NGHDemoPage extends React.Component {
             textAlign: "center",
             background: "#fefefe",
             color: "#455A64",
-            "font-size": "14px",
-            "box-shadow": "0px -2px 5px #E0E0E0"
+            fontSize: "14px",
+            boxShadow: "0px -2px 5px #E0E0E0"
           }}
         >
           <strong>Origami</strong>
@@ -493,7 +499,7 @@ class NGHDemoPage extends React.Component {
 NGHDemoPage.propTypes = {
   login: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
-  params: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
   nonghDemoModel: PropTypes.object.isRequired,
   outputComponentDemoModel: PropTypes.object.isRequired,
   inputComponentDemoModel: PropTypes.object.isRequired
@@ -518,4 +524,4 @@ function mapDispatchToProps(dispatch) {
   return {};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NGHDemoPage);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NGHDemoPage));

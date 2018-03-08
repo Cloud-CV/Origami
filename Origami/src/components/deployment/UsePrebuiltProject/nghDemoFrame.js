@@ -1,6 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { browserHistory } from "react-router";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { getInputComponentById } from "../../inputcomponents";
 import { getOutputComponentById } from "../../outputcomponents";
@@ -103,7 +103,7 @@ class NGHDemoFramePage extends React.Component {
       }
     }.bind(this);
     this.setState(
-      { demo_creator_id: parseInt(this.props.params.user_id, 10) },
+      { demo_creator_id: parseInt(this.props.match.params.user_id, 10) },
       () => {
         this.setState(
           { user_id: parseInt(localStorage.getItem("user_id")) },
@@ -115,7 +115,7 @@ class NGHDemoFramePage extends React.Component {
         );
         getDeployed(
           this.state.demo_creator_id,
-          this.props.params.repoId
+          this.props.match.params.repoId
         ).then(data => {
           this.setState({ demoModel: JSON.parse(data)[0] }, () => {
             if (this.state.demoModel.terminal) {
@@ -139,28 +139,34 @@ class NGHDemoFramePage extends React.Component {
         });
         getComponentDeployed(
           this.state.demo_creator_id,
-          this.props.params.repoId,
+          this.props.match.params.repoId,
           "input"
         ).then(data => {
-          if (Object.keys(JSON.parse(data)).length) {
-            this.setState({ inputModel: JSON.parse(data)[0] }, () => {
-              let val = 0;
-              this.state.inputModel.props.map((prop, index) => {
-                if (prop["id"] === "3") {
-                  val += 1;
-                }
+          let pdata = JSON.parse(data);
+          if (pdata['text'] != 'Not Found') {
+            if (Object.keys(JSON.parse(data)).length) {
+              this.setState({ inputModel: JSON.parse(data)[0] }, () => {
+                let val = 0;
+                this.state.inputModel.props.map((prop, index) => {
+                  if (prop['id'] === '3') {
+                    val += 1;
+                  }
+                });
+                this.setState({ imageInputCount: val });
               });
-              this.setState({ imageInputCount: val });
-            });
+            }
           }
         });
         getComponentDeployed(
           this.state.demo_creator_id,
-          this.props.params.repoId,
+          this.props.match.params.repoId,
           "output"
         ).then(data => {
-          if (Object.keys(JSON.parse(data)).length) {
-            this.setState({ outputModel: JSON.parse(data)[0] });
+          let pdata = JSON.parse(data);
+          if (pdata['text'] != 'Not Found') {
+            if (Object.keys(JSON.parse(data)).length) {
+              this.setState({ outputModel: JSON.parse(data)[0] });
+            }
           }
         });
       }
@@ -427,7 +433,7 @@ class NGHDemoFramePage extends React.Component {
 NGHDemoFramePage.propTypes = {
   login: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
-  params: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
   nonghDemoModel: PropTypes.object.isRequired,
   outputComponentDemoModel: PropTypes.object.isRequired,
   inputComponentDemoModel: PropTypes.object.isRequired
@@ -452,4 +458,4 @@ function mapDispatchToProps(dispatch) {
   return {};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NGHDemoFramePage);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NGHDemoFramePage));

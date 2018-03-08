@@ -1,6 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Link, browserHistory } from "react-router";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { BounceLoader } from 'react-spinners';
@@ -26,6 +26,8 @@ import {
   Select
 } from "antd";
 import { Modal } from "antd";
+import toastr from "toastr";
+
 const { Header, Content, Footer } = Layout;
 const Option = Select.Option;
 const {
@@ -125,12 +127,12 @@ class HomePage extends React.Component {
     if (!this.props.login) {
       $(".loginButton").trigger("click");
     } else {
-      browserHistory.push("/ngh/user");
+      this.props.history.push("/ngh/user");
     }
   }
 
   goToDemoPage(demo) {
-    browserHistory.push(this.state.permalinkHolder[demo.id].short_relative_url);
+    this.props.history.push(this.state.permalinkHolder[demo.id].short_relative_url);
   }
 
   findDemo(search_term) {
@@ -296,7 +298,7 @@ class HomePage extends React.Component {
                                 <Button
                                   type="primary"
                                   id="launchButton"
-                                  style={{ "margin-bottom": "5%" }}
+                                  style={{ marginBottom: "5%" }}
                                   onClick={() => this.goToDemoPage(demo)}
                                 >
                                   Demo<Icon type="rocket" />
@@ -321,8 +323,8 @@ class HomePage extends React.Component {
             textAlign: "center",
             background: "#fefefe",
             color: "#455A64",
-            "font-size": "14px",
-            "box-shadow": "0px -2px 5px #E0E0E0"
+            fontSize: "14px",
+            boxShadow: "0px -2px 5px #E0E0E0"
           }}
         >
           <strong>Origami</strong>
@@ -338,7 +340,8 @@ class HomePage extends React.Component {
 
 HomePage.propTypes = {
   loginactions: PropTypes.object.isRequired,
-  login: PropTypes.bool.isRequired
+  login: PropTypes.bool.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
@@ -353,4 +356,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HomePage));

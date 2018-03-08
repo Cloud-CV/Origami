@@ -44,3 +44,6 @@ venv/
 
 # env setup
 origami.env
+
+# package-lock.json as we use yarn for dependency management
+package-lock.json

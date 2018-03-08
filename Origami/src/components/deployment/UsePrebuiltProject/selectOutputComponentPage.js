@@ -1,6 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as nonghDemoModelActions from "../../../actions/nonghDemoModelActions";
@@ -48,7 +48,7 @@ class SelectOutputComponentPage extends React.Component {
       .then(() => {
         getComponentDeployed(
           this.state.user_id,
-          this.props.params.repoId,
+          this.props.match.params.repoId,
           "output"
         ).then(outputComponentSeedData => {
           if (JSON.parse(outputComponentSeedData).length > 0) {
@@ -120,7 +120,7 @@ class SelectOutputComponentPage extends React.Component {
                   outputComponentDemoModel: this.state.outputComponentDemoModel,
                   outputComponentDemoModelActions: this.props.outputComponentDemoModelActions,
                   forwardAddress: `/ngh/user/${this.props.user.id || localStorage.getItem("user_id")}/${this.props.nonghDemoModel.name}/${this.props.nonghDemoModel.id}/demo`,
-                  params: this.props.params,
+                  params: this.props.match.params,
                   selected: this.state.outputComponentDemoModel.base_component_id
                 }).map((showcasecard, index) => showcasecard)}
               </div>
@@ -151,7 +151,7 @@ SelectOutputComponentPage.propTypes = {
   outputComponentDemoModel: PropTypes.object.isRequired,
   nonghModelActions: PropTypes.object.isRequired,
   outputComponentDemoModelActions: PropTypes.object.isRequired,
-  params: PropTypes.object.isRequired
+  match: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {

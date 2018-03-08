@@ -5,6 +5,7 @@ import DropboxChooser from "../imports/DropboxChooser";
 import request from "superagent";
 import { Layout, Icon, Button, Card, Row, Col, Input, Select } from "antd";
 import Cookies from "universal-cookie";
+import toastr from "toastr";
 
 const cookies = new Cookies();
 const { Header, Content, Footer, Sider } = Layout;

@@ -19,7 +19,7 @@ from api.constants import DEFAULT_IMAGE
 import datetime
 import json
 from collections import OrderedDict
-
+import sys
 
 class DemoViewSet(ModelViewSet):
     """
@@ -557,6 +557,8 @@ def upload_sample_input(request):
             sample_input = SampleInput.objects.create(
                 demo=demo, type_of_input=3, value=relative_path)
             serialize = SampleInputSerializer(sample_input)
+            if("test" in sys.argv):
+                os.remove(absolute_path)
     sample_inputs = SampleInput.objects.filter(demo=demo)
     serialize = SampleInputSerializer(sample_inputs, many=True)
     return Response(serialize.data, status=response_status.HTTP_200_OK)

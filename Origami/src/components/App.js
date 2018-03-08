@@ -2,7 +2,8 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import AppBar from "material-ui/AppBar";
-import { Link, browserHistory } from "react-router";
+import { Link, withRouter } from "react-router-dom";
+import Routes from "./routes";
 import IconButton from "material-ui/IconButton";
 import IconMenu from "material-ui/IconMenu";
 import { bindActionCreators } from "redux";
@@ -11,10 +12,12 @@ import MenuItem from "material-ui/MenuItem";
 import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
 import FlatButton from "material-ui/FlatButton";
 import io from "socket.io-client";
+import toastr from "toastr";
 import userApi from "../api/Github/userApi";
 import { Layout, Menu, Icon, Button, Card, Row, Col, Input } from "antd";
 import * as rootApi from "../api/CommonLocal/rootSettingsApi";
 import "./index.css";
+
 const { Header, Content, Footer, Sider } = Layout;
 
 class App extends React.Component {
@@ -75,8 +78,7 @@ class App extends React.Component {
         ) {
           window.location = "/initialsetup";
         }
-         if(JSON.parse(data).root_user_github_login_name==localStorage.getItem("username"))
-        {
+         if(JSON.parse(data).root_user_github_login_name == localStorage.getItem("username")) {
           this.setState({ isRoot: true });
         }
       })
@@ -140,22 +142,22 @@ class App extends React.Component {
 
   handleClickAfterLogin(e) {
     if (e.key === "1") {
-      browserHistory.push(
+      this.props.history.push(
         `/u/${localStorage.getItem("username")}/${localStorage.getItem("user_id")}`
       );
     }
     if (e.key === "2") {
-      browserHistory.push("/");
+      this.props.history.push("/");
     } else if (e.key === "3") {
-      browserHistory.push("/ngh/user");
+      this.props.history.push("/ngh/user");
     } else if (e.key === "4") {
-      browserHistory.push("/ngh/user/register");
+      this.props.history.push("/ngh/user/register");
     } else if (e.key === "5") {
       this.getDocs();
     } else if (e.key === "6") {
       this.logout();
     } else if (e.key === "7") {
-      browserHistory.push("/initialsetup");
+      this.props.history.push("/initialsetup");
     }
   }
 
@@ -165,7 +167,7 @@ class App extends React.Component {
     if(this.state.isRoot)
     {
       Root_Setting=(
-              <Menu.Item key="7" style={{ "font-size": "16px" }}>
+              <Menu.Item key="7" style={{ fontSize: "16px" }}>
                 <Icon type="setting" />
                 <span className="nav-text">Root-Settings</span>
               </Menu.Item>
@@ -185,7 +187,7 @@ class App extends React.Component {
     if (this.state.isFrame) {
       return (
         <Layout style={{ background: "#FEFEFE" }}>
-          {this.props.children}
+          { Routes }
         </Layout>
       );
     }
@@ -196,7 +198,7 @@ class App extends React.Component {
             style={{
               overflow: "auto",
               background: "#FEFEFE",
-              "box-shadow": "10px 0px 20px #E0E0E0"
+              boxShadow: "10px 0px 20px #E0E0E0"
             }}
             width="200"
           >
@@ -206,45 +208,45 @@ class App extends React.Component {
             <Menu
               style={{ background: "#FEFEFE" }}
               mode="inline"
-              defaultSelectedKeys={["3"]}
+              defaultSelectedKeys={["2"]}
               onClick={this.handleClickAfterLogin}
             >
-              <Menu.Item key="1" style={{ "font-size": "16px" }}>
+              <Menu.Item key="1" style={{ fontSize: "16px" }}>
                 <Icon type="user" />
                 <span className="nav-text">Profile</span>
               </Menu.Item>
-              <Menu.Item key="2" style={{ "font-size": "16px" }}>
+              <Menu.Item key="2" style={{ fontSize: "16px" }}>
                 <Icon type="video-camera" />
                 <span className="nav-text">Discover</span>
               </Menu.Item>
-              <Menu.Item key="3" style={{ "font-size": "16px" }}>
+              <Menu.Item key="3" style={{ fontSize: "16px" }}>
                 <Icon type="cloud-o" />
                 <span className="nav-text">My demos</span>
               </Menu.Item>
-              <Menu.Item key="4" style={{ "font-size": "16px" }}>
+              <Menu.Item key="4" style={{ fontSize: "16px" }}>
                 <Icon type="plus-circle-o" />
                 <span className="nav-text">Create Demo</span>
               </Menu.Item>
-              <Menu.Item key="5" style={{ "font-size": "16px" }}>
+              <Menu.Item key="5" style={{ fontSize: "16px" }}>
                 <Icon type="question-circle-o" />
                 <span className="nav-text">Help</span>
               </Menu.Item>
-              <Menu.Item key="6" style={{ "font-size": "16px" }}>
+              <Menu.Item key="6" style={{ fontSize: "16px" }}>
                 <Icon type="logout" />
                 <span className="nav-text">Logout</span>
               </Menu.Item>
 
-              {Root_Setting}
+              { Root_Setting }
 
             </Menu>
           </Sider>
-          {this.props.children}
+          { Routes }
         </Layout>
       );
     } else {
       return (
         <Layout id="layout">
-          {this.props.children}
+          { Routes }
         </Layout>
       );
     }
@@ -252,7 +254,8 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-  children: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   loginactions: PropTypes.object.isRequired,
   login: PropTypes.bool.isRequired
@@ -275,4 +278,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

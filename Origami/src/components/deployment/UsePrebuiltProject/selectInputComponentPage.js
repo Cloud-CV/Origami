@@ -1,6 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as nonghDemoModelActions from "../../../actions/nonghDemoModelActions";
@@ -27,7 +27,7 @@ class SelectInputComponentPage extends React.Component {
   }
 
   componentWillMount() {
-    getComponentDeployed(this.state.user_id, this.props.params.repoId, "input")
+    getComponentDeployed(this.state.user_id, this.props.match.params.repoId, "input")
       .then(inputComponentSeedData => {
         if (JSON.parse(inputComponentSeedData).length > 0) {
           let dataToSeed = {
@@ -44,7 +44,7 @@ class SelectInputComponentPage extends React.Component {
       .then(() => {
         getComponentDeployed(
           this.state.user_id,
-          this.props.params.repoId,
+          this.props.match.params.repoId,
           "output"
         ).then(outputComponentSeedData => {
           if (JSON.parse(outputComponentSeedData).length > 0) {
@@ -116,7 +116,7 @@ class SelectInputComponentPage extends React.Component {
                   inputComponentDemoModel: this.state.inputComponentDemoModel,
                   inputComponentModelActions: this.props.inputComponentModelActions,
                   forwardAddress: `/ngh/user/${this.props.nonghDemoModel.name}/${this.props.nonghDemoModel.id}/outputcomponent`,
-                  params: this.props.params,
+                  params: this.props.match.params,
                   selected: this.state.inputComponentDemoModel.base_component_id
                 }).map((showcasecard, index) => showcasecard)}
               </div>
@@ -147,7 +147,7 @@ SelectInputComponentPage.propTypes = {
   inputComponentDemoModel: PropTypes.object.isRequired,
   nonghModelActions: PropTypes.object.isRequired,
   inputComponentModelActions: PropTypes.object.isRequired,
-  params: PropTypes.object.isRequired
+  match: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
