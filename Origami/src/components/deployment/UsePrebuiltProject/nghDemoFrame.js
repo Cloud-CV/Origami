@@ -142,16 +142,19 @@ class NGHDemoFramePage extends React.Component {
           this.props.match.params.repoId,
           "input"
         ).then(data => {
-          if (Object.keys(JSON.parse(data)).length) {
-            this.setState({ inputModel: JSON.parse(data)[0] }, () => {
-              let val = 0;
-              this.state.inputModel.props.map((prop, index) => {
-                if (prop["id"] === "3") {
-                  val += 1;
-                }
+          let pdata = JSON.parse(data);
+          if (pdata['text'] != 'Not Found') {
+            if (Object.keys(JSON.parse(data)).length) {
+              this.setState({ inputModel: JSON.parse(data)[0] }, () => {
+                let val = 0;
+                this.state.inputModel.props.map((prop, index) => {
+                  if (prop['id'] === '3') {
+                    val += 1;
+                  }
+                });
+                this.setState({ imageInputCount: val });
               });
-              this.setState({ imageInputCount: val });
-            });
+            }
           }
         });
         getComponentDeployed(
@@ -159,8 +162,11 @@ class NGHDemoFramePage extends React.Component {
           this.props.match.params.repoId,
           "output"
         ).then(data => {
-          if (Object.keys(JSON.parse(data)).length) {
-            this.setState({ outputModel: JSON.parse(data)[0] });
+          let pdata = JSON.parse(data);
+          if (pdata['text'] != 'Not Found') {
+            if (Object.keys(JSON.parse(data)).length) {
+              this.setState({ outputModel: JSON.parse(data)[0] });
+            }
           }
         });
       }
