@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 
 function UrlShortener(props) {
   getPermalinkFromShortURL(props.match.params.shorturl).then(data => {
-    props.history.push(JSON.parse(data)[0].full_relative_url);
+    props.history.replace(JSON.parse(data)[0].full_relative_url);
   });
 
   return (
