@@ -1,5 +1,6 @@
 import React from "react";
-import { Link, browserHistory } from "react-router";
+import { PropTypes } from "prop-types";
+import { Link } from "react-router-dom";
 import TextField from "material-ui/TextField";
 import Checkbox from "material-ui/Checkbox";
 import * as rootApi from "../api/CommonLocal/rootSettingsApi";
@@ -126,7 +127,7 @@ class InitialSetup extends React.Component {
                 },
                 600
               );
-              browserHistory.push("/");
+              this.props.history.push("/");
               toastr.success("Added root user");
             })
             .catch(err => {
@@ -250,5 +251,9 @@ class InitialSetup extends React.Component {
   }
 }
 }
+
+InitialSetup.propTypes = {
+  history: PropTypes.object.isRequired
+};
 
 export default InitialSetup;

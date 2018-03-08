@@ -1,6 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { browserHistory } from "react-router";
+import { withRouter } from "react-router-dom";
 import { getAllPermalink } from "../../api/Nongh/permalink";
 import { getDeployed } from "../../api/Nongh/getDeployed";
 import { is_cloudcv } from "../../api/Generic/getCloudCVDemos";
@@ -49,15 +49,15 @@ class ShareProfileComponent extends React.Component {
   }
 
   componentWillMount() {
-    if (this.props.params.username) {
+    if (this.props.match.params.username) {
       is_cloudcv().then(data => {
         const rootData = JSON.parse(data);
         userApi
-          .userProfileFromName(this.props.params.username)
+          .userProfileFromName(this.props.match.params.username)
           .then(userData => {
             this.setState({ user: JSON.parse(userData) }, () => {
               getAllPermalink().then(links => {
-                getDeployed(this.props.params.user_id)
+                getDeployed(this.props.match.params.user_id)
                   .then(alldeployedRepos => {
                     const relevantLink = JSON.parse(links).filter(
                       x => parseInt(x.user_id, 10) === this.state.user.id
@@ -135,7 +135,7 @@ class ShareProfileComponent extends React.Component {
   }
 
   goToDemo(demo) {
-    browserHistory.push(
+    this.props.history.push(
       `/ngh/user/${demo.user_id}/${demo.name}/${demo.id}/demo`
     );
   }
@@ -314,9 +314,10 @@ class ShareProfileComponent extends React.Component {
 }
 
 ShareProfileComponent.propTypes = {
-  params: PropTypes.object.isRequired
+  match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 const ShareProfile = Radium(ShareProfileComponent);
 
-export default ShareProfile;
+export default withRouter(ShareProfile);

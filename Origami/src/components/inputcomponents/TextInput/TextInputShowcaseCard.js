@@ -1,6 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { browserHistory } from "react-router";
+import { withRouter } from "react-router-dom";
 import CustomCard from "../../stateless/cards";
 import InputShowcaseModifyDialog
   from "../BaseInputComponent/InputShowcaseModifyDialog";
@@ -35,7 +35,7 @@ class TextInputShowcaseCard extends InputShowcaseCard {
   updateInputComponentModel() {
     if (Object.keys(this.demoModel).length === 0) {
       toastr.error("Registration info not found! Register again");
-      browserHistory.push("/");
+      this.props.history.push("/");
     } else {
       let propsToStore = this.others;
       this.state.labels.map(label => {
@@ -50,9 +50,9 @@ class TextInputShowcaseCard extends InputShowcaseCard {
         })
         .then(() => {
           if (this.props.demoProps.params.type === "modify") {
-            browserHistory.push("/ngh/user");
+            this.props.history.push("/ngh/user");
           } else {
-            browserHistory.push(this.forwardAddress);
+            this.props.history.push(this.forwardAddress);
           }
         });
     }
@@ -105,7 +105,8 @@ class TextInputShowcaseCard extends InputShowcaseCard {
 }
 
 TextInputShowcaseCard.propTypes = {
-  demoProps: PropTypes.object.isRequired
+  demoProps: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 
-export default TextInputShowcaseCard;
+export default withRouter(TextInputShowcaseCard);

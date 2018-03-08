@@ -1,6 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Link, browserHistory } from "react-router";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as userActions from "../../actions/userActions";
@@ -52,7 +52,7 @@ class NonGHUserProfileComponent extends React.Component {
   }
 
   componentWillMount() {
-    !this.props.login && browserHistory.push("/");
+    !this.props.login && this.props.history.push("/");
     this.props.useractions
       .LoadUser()
       .then(() => {
@@ -168,13 +168,13 @@ class NonGHUserProfileComponent extends React.Component {
   }
 
   goToDemoPage(project) {
-    browserHistory.push(
+    this.props.history.push(
       `/ngh/user/${this.props.user.id}/${project.name}/${project.id}/demo`
     );
   }
 
   goToRegisterPage() {
-    browserHistory.push("/ngh/user/register");
+    this.props.history.push("/ngh/user/register");
   }
 
   getStyles() {
@@ -359,7 +359,7 @@ class NonGHUserProfileComponent extends React.Component {
                   label="Metadata"
                   primary
                   onTouchTap={() =>
-                    browserHistory.push(
+                    this.props.history.push(
                       `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/register/modify`
                     )}
                 />
@@ -369,7 +369,7 @@ class NonGHUserProfileComponent extends React.Component {
                   label="Input"
                   primary
                   onTouchTap={() =>
-                    browserHistory.push(
+                    this.props.history.push(
                       `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/inputcomponent/modify`
                     )}
                 />
@@ -379,7 +379,7 @@ class NonGHUserProfileComponent extends React.Component {
                   label="Output"
                   primary
                   onTouchTap={() =>
-                    browserHistory.push(
+                    this.props.history.push(
                       `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/outputcomponent/modify`
                     )}
                 />
@@ -411,6 +411,7 @@ class NonGHUserProfileComponent extends React.Component {
 }
 
 NonGHUserProfileComponent.propTypes = {
+  history: PropTypes.object.isRequired,
   login: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
   inputComponentDemoModel: PropTypes.object.isRequired,
@@ -452,4 +453,4 @@ function mapDispatchToProps(dispatch) {
 
 const NonGHUserProfile = Radium(NonGHUserProfileComponent);
 
-export default connect(mapStateToProps, mapDispatchToProps)(NonGHUserProfile);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NonGHUserProfile));

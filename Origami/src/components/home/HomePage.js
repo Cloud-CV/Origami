@@ -1,6 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Link, browserHistory } from "react-router";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { BounceLoader } from 'react-spinners';
@@ -127,12 +127,12 @@ class HomePage extends React.Component {
     if (!this.props.login) {
       $(".loginButton").trigger("click");
     } else {
-      browserHistory.push("/ngh/user");
+      this.props.history.push("/ngh/user");
     }
   }
 
   goToDemoPage(demo) {
-    browserHistory.push(this.state.permalinkHolder[demo.id].short_relative_url);
+    this.props.history.push(this.state.permalinkHolder[demo.id].short_relative_url);
   }
 
   findDemo(search_term) {
@@ -340,7 +340,8 @@ class HomePage extends React.Component {
 
 HomePage.propTypes = {
   loginactions: PropTypes.object.isRequired,
-  login: PropTypes.bool.isRequired
+  login: PropTypes.bool.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
@@ -355,4 +356,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HomePage));

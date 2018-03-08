@@ -1,7 +1,7 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
-import { Link, browserHistory } from "react-router";
+import { Link, withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import * as loginActions from "../../actions/loginActions";
 import toastr from "toastr";
@@ -23,7 +23,7 @@ class LoginHandler extends React.Component {
       const username = temp[1].split("=")[1];
       const user_id = temp[2].split("=")[1];
       this.setSessionFlag(access_token, username, user_id);
-      browserHistory.push("/ngh/user");
+      this.props.history.push("/ngh/user");
     } else if (window.location.search.indexOf("?status=failed") === 0) {
       toastr.error("Unable to login");
     }
@@ -47,7 +47,8 @@ class LoginHandler extends React.Component {
 
 LoginHandler.propTypes = {
   loginactions: PropTypes.object.isRequired,
-  login: PropTypes.bool.isRequired
+  login: PropTypes.bool.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
@@ -62,4 +63,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginHandler);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginHandler));
