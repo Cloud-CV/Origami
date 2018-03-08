@@ -140,50 +140,70 @@ class App extends React.Component {
     window.location = "http://cloudcv-origami.readthedocs.io/en/latest/index.html";
   }
 
-  handleClickAfterLogin(e) {
-    if (e.key === "1") {
-      this.props.history.push(
-        `/u/${localStorage.getItem("username")}/${localStorage.getItem("user_id")}`
-      );
-    }
-    if (e.key === "2") {
-      this.props.history.push("/");
-    } else if (e.key === "3") {
-      this.props.history.push("/ngh/user");
-    } else if (e.key === "4") {
-      this.props.history.push("/ngh/user/register");
-    } else if (e.key === "5") {
-      this.getDocs();
-    } else if (e.key === "6") {
-      this.logout();
-    } else if (e.key === "7") {
-      this.props.history.push("/initialsetup");
+  handleClickAfterLogin(e, navLinks) {
+    if (navLinks && navLinks.has(e.key)) {
+      let activeAttr = navLinks.get(e.key);
+      if (typeof activeAttr === 'string' || activeAttr instanceof String) {
+        this.props.history.push(activeAttr);
+      } else {
+        activeAttr();
+      }
     }
   }
 
   render() {
+    /** 
+     * We use Map here since we need the keys to be in order when we are iterating
+     * over links, which is not the case with Javascript objects.
+     * For example we want `/ngh/user/register` to be checked before `/ngh/user`to
+     * to properly set the active link.
+     */
+    /** @type {Object} - Stores sidebar links corresponding to Menu entry key */
+    let navLinks = new Map([
+      ["7", "/initialsetup"],
+      ["6", this.logout],
+      ["5", this.getDocs],
+      ["4", "/ngh/user/register"],
+      ["3", "/ngh/user"],
+      ["1", `/u/${localStorage.getItem("username")}/${localStorage.getItem("user_id")}`],
+      ["2", "/"]
+    ]);
+
+    /** @type {Number} - Key of the MenuItem active */
+    let currentActiveKey;
+    for (let [key, value] of navLinks) {
+      if (typeof value === "string" || value instanceof String) {
+        if (this.props.location.pathname.match(new RegExp(`^${value}`))) {
+          currentActiveKey = key;
+          break;
+        }
+      }
+    };
 
     let Root_Setting;
     if(this.state.isRoot)
     {
-      Root_Setting=(
-              <Menu.Item key="7" style={{ fontSize: "16px" }}>
-                <Icon type="setting" />
-                <span className="nav-text">Root-Settings</span>
-              </Menu.Item>
-        )
+      Root_Setting = (
+        <Menu.Item key="7" style={{ fontSize: "16px" }}>
+          <Icon type="setting" />
+          <span className="nav-text">Root-Settings</span>
+        </Menu.Item>
+      );
     }
     else{
-      Root_Setting=null;
+      Root_Setting = null;
     }
+
     if (this.props.location.pathname === "/") {
       $("#appbar-progress").css("display", "None");
     } else {
       $("#appbar-progress").css("display", "");
     }
+
     if (this.readSessionToken()) {
       this.props.loginactions.Login();
     }
+
     if (this.state.isFrame) {
       return (
         <Layout style={{ background: "#FEFEFE" }}>
@@ -208,8 +228,8 @@ class App extends React.Component {
             <Menu
               style={{ background: "#FEFEFE" }}
               mode="inline"
-              defaultSelectedKeys={["2"]}
-              onClick={this.handleClickAfterLogin}
+              defaultSelectedKeys={[currentActiveKey || "2"]}
+              onClick={e => this.handleClickAfterLogin(e, navLinks)}
             >
               <Menu.Item key="1" style={{ fontSize: "16px" }}>
                 <Icon type="user" />
