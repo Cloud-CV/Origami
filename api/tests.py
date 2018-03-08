@@ -696,3 +696,122 @@ class CustomRootSettingsControllerClass(TestCase):
         response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["is_cloudcv"],
                          self.root_settings["is_cloudcv"])
+
+class DemoViewSetTests(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.demo = {
+            "name": "test",
+            "id": 99,
+            "user_id": 99,
+            "address": "address",
+            "description": "description",
+            "footer_message": "footer_message",
+            "cover_image": "cover_image",
+            "terminal": True,
+            "timestamp": datetime.datetime.now().isoformat(),
+            "token": "token",
+            "status": "input"
+        }
+
+        self.instance = Demo.objects.create(
+            name=self.demo["name"],
+            id=self.demo["id"],
+            user_id=self.demo["user_id"],
+            address=self.demo["address"],
+            description=self.demo["description"],
+            footer_message=self.demo["footer_message"],
+            cover_image=self.demo["cover_image"],
+            terminal=self.demo["terminal"],
+            timestamp=self.demo["timestamp"],
+            token=self.demo["token"],
+            status=self.demo["status"])
+        self.input_component = {
+            "id": 99,
+            "base_component_id": 1,
+            "props": json.dumps([{}]),
+            "demo": self.instance,
+            "user_id": 99
+        }
+        self.output_component = {
+            "id": 99,
+            "base_component_id": 1,
+            "props": json.dumps([{}]),
+            "demo": self.instance,
+            "user_id": 99
+        }
+
+        self.input_component_object = InputComponent.objects.create(
+            id=self.input_component["id"],
+            base_component_id=self.input_component["base_component_id"],
+            props=self.input_component["props"],
+            user_id=self.input_component["user_id"],
+            demo=self.input_component["demo"])
+        self.output_component_object = OutputComponent.objects.create(
+            id=self.output_component["id"],
+            base_component_id=self.output_component["base_component_id"],
+            props=self.output_component["props"],
+            user_id=self.output_component["user_id"],
+            demo=self.output_component["demo"])
+
+
+    def test_Input_Component_View_Set(self):
+        input_component = self.input_component
+        response = self.client.get('/api/input-component/')
+        response = json.loads(response.content.decode('utf-8'))[0]
+        self.assertEqual(response["user_id"], input_component["user_id"])
+        self.assertEqual(response["props"], input_component["props"])
+        self.assertEqual(
+            response["base_component_id"],
+            input_component["base_component_id"])
+
+    def test_user_input_component(self):
+        input_component=self.input_component
+        url="/api/input-component/{}/user_input_component/{}/".format(input_component["base_component_id"],input_component["user_id"])
+        response=self.client.get(url)
+        response = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(response["user_id"], input_component["user_id"])
+        self.assertEqual(response["props"], input_component["props"])
+        self.assertEqual(
+            response["base_component_id"],
+            input_component["base_component_id"])
+
+    def test_user_input_component_404(self):
+        input_component=self.input_component
+        url="/api/input-component/{}/user_input_component/{}/".format(input_component["base_component_id"],12345)
+        response=self.client.get(url)
+        status=response.status_code
+        response = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(status,404)
+        self.assertEqual(response["error"],"Error 404")
+
+    def test_Output_Component_View_Set(self):
+        output_component = self.output_component
+        response = self.client.get('/api/output-component/')
+        response = json.loads(response.content.decode('utf-8'))[0]
+        self.assertEqual(response["user_id"], output_component["user_id"])
+        self.assertEqual(response["props"], output_component["props"])
+        self.assertEqual(
+            response["base_component_id"],
+            output_component["base_component_id"])
+
+    def test_user_output_component(self):
+        output_component=self.output_component
+        url="/api/output-component/{}/user_output_component/{}/".format(output_component["base_component_id"],output_component["user_id"])
+        response=self.client.get(url)
+        response = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(response["user_id"], output_component["user_id"])
+        self.assertEqual(response["props"], output_component["props"])
+        self.assertEqual(
+            response["base_component_id"],
+            output_component["base_component_id"])
+
+    def test_user_output_component_404(self):
+        output_component=self.output_component
+        url="/api/output-component/{}/user_output_component/{}/".format(output_component["base_component_id"],12345)
+        response=self.client.get(url)
+        status=response.status_code
+        response = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(status,404)
+        self.assertEqual(response["error"],"Error 404")
