@@ -2,8 +2,7 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { browserHistory } from "react-router";
 import CustomCard from "../../stateless/cards";
-import InputShowcaseModifyDialog
-  from "../BaseInputComponent/InputShowcaseModifyDialog";
+import InputShowcaseModifyDialog from "../BaseInputComponent/InputShowcaseModifyDialog";
 import TextInputPreview from "./TextInputPreview";
 import toastr from "toastr";
 import InputShowcaseCard from "../BaseInputComponent/InputShowcaseCard.js";
@@ -60,7 +59,7 @@ class TextInputShowcaseCard extends InputShowcaseCard {
 
   render() {
     return (
-      <div>
+      <div className="col-md-5 pull-left">
         <CustomCard
           header="Text Input"
           width="five"
@@ -83,22 +82,24 @@ class TextInputShowcaseCard extends InputShowcaseCard {
             }
           ]}
         />
-        {this.state.modifyDialogDisplay &&
+        {this.state.modifyDialogDisplay && (
           <InputShowcaseModifyDialog
             functions={{
-              updateLabels: this.updateLabels,
+              updateLabels: this.props.updateLabels,
               hideModifyDialog: this.hideModifyDialog,
               getLabels: this.getLabels
             }}
             title="Modify Text Input Component"
-          />}
-        {this.state.previewDialogDisplay &&
+          />
+        )}
+        {this.state.previewDialogDisplay && (
           <TextInputPreview
             functions={{
               getLabels: this.getLabels,
               hidePreviewDialog: this.hidePreviewDialog
             }}
-          />}
+          />
+        )}
       </div>
     );
   }

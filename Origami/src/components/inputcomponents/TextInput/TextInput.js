@@ -28,35 +28,29 @@ class TextInput extends React.Component {
       let timeout1 = "";
       let timeout2 = "";
       let timeout3 = "";
-      $("#appbar-progress").css("visibility", "visible").promise().done(() => {
-        $("#appbar-progress").progress({
-          percent: "33%"
-        });
-        timeout1 = setTimeout(
-          () => {
+      $("#appbar-progress")
+        .css("visibility", "visible")
+        .promise()
+        .done(() => {
+          $("#appbar-progress").progress({
+            percent: "33%"
+          });
+          timeout1 = setTimeout(() => {
             $("#appbar-progress").progress({
               percent: "50%"
             });
-          },
-          300
-        );
-        timeout2 = setTimeout(
-          () => {
+          }, 300);
+          timeout2 = setTimeout(() => {
             $("#appbar-progress").progress({
               percent: "65%"
             });
-          },
-          600
-        );
-        timeout3 = setTimeout(
-          () => {
+          }, 600);
+          timeout3 = setTimeout(() => {
             $("#appbar-progress").progress({
               percent: "85%"
             });
-          },
-          1000
-        );
-      });
+          }, 1000);
+        });
       $.ajax({
         type: "POST",
         url: sendAddr,
@@ -72,15 +66,12 @@ class TextInput extends React.Component {
           clearTimeout(timeout1);
           clearTimeout(timeout2);
           clearTimeout(timeout3);
-          setTimeout(
-            () => {
-              $("#appbar-progress").css("visibility", "hidden");
-              $("#appbar-progress").progress({
-                percent: "0%"
-              });
-            },
-            1000
-          );
+          setTimeout(() => {
+            $("#appbar-progress").css("visibility", "hidden");
+            $("#appbar-progress").progress({
+              percent: "0%"
+            });
+          }, 1000);
         },
         error: (xhr, textStatus, errorThrown) => {
           $("#appbar-progress").css("visibility", "hidden");
@@ -98,7 +89,8 @@ class TextInput extends React.Component {
       <div className="ui centered center aligned grid">
         <form id="send-text" className="six wide stackable stretched ui input">
           <div key={Math.random()}>
-            <br /><br />
+            <br />
+            <br />
             {this.props.labels.map((label, index) => [
               <SingleInput
                 key={Math.random()}

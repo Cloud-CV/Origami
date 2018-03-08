@@ -2,8 +2,7 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { browserHistory } from "react-router";
 import CustomCard from "../../stateless/cards";
-import InputShowcaseModifyDialog
-  from "../BaseInputComponent/InputShowcaseModifyDialog";
+import InputShowcaseModifyDialog from "../BaseInputComponent/InputShowcaseModifyDialog";
 import ImageInputPreview from "./ImageInputPreview";
 import toastr from "toastr";
 import InputShowcaseCard from "../BaseInputComponent/InputShowcaseCard.js";
@@ -60,7 +59,7 @@ class ImageInputShowcaseCard extends InputShowcaseCard {
 
   render() {
     return (
-      <div>
+      <div className="col-md-5 pull-right">
         <CustomCard
           header="Image Input"
           width="five"
@@ -84,7 +83,7 @@ class ImageInputShowcaseCard extends InputShowcaseCard {
             }
           ]}
         />
-        {this.state.modifyDialogDisplay &&
+        {this.state.modifyDialogDisplay && (
           <InputShowcaseModifyDialog
             functions={{
               updateLabels: this.updateLabels,
@@ -92,14 +91,16 @@ class ImageInputShowcaseCard extends InputShowcaseCard {
               getLabels: this.getLabels
             }}
             title="Modify Image Input Component"
-          />}
-        {this.state.previewDialogDisplay &&
+          />
+        )}
+        {this.state.previewDialogDisplay && (
           <ImageInputPreview
             functions={{
               getLabels: this.getLabels,
               hidePreviewDialog: this.hidePreviewDialog
             }}
-          />}
+          />
+        )}
       </div>
     );
   }
