@@ -5,14 +5,16 @@
   "scripts": {
     "remove:bundle": "node_modules/.bin/rimraf ./django_server/static/bundles/local",
     "clean:bundle": "npm-run-all remove:bundle && mkdir ./django_server/static/bundles/local",
-    "build": "npm-run-all clean:bundle && babel-node Origami/scripts/build.js",
+    "build": "npm-run-all clean:bundle test lint:build && babel-node Origami/scripts/build.js",
     "start": "babel-node server.js",
     "open:src": "babel-node server.js",
     "lint": "esw webpack.* Origami",
     "lint:build": "esw webpack.* Origami -c ./.eslintrc",
     "lint:watch": "npm run lint -- --watch",
     "lint:fix": "eslint Origami webpack.* --fix",
-    "dev": "npm-run-all --parallel open:src lint:watch"
+    "dev": "npm-run-all --parallel open:src lint:watch test:watch",
+    "test": "mocha --reporter spec Origami/scripts/test.js \"Origami/src/**/*.test.js\"",
+    "test:watch": "npm run test -- --watch"
   },
   "author": "Ashish Chaudhary",
   "license": "AGPL-3.0",
