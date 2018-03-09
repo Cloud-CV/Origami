@@ -20,7 +20,7 @@ import datetime
 import json
 from collections import OrderedDict
 import sys
-from django.http import Http404
+
 class DemoViewSet(ModelViewSet):
     """
     Contains information about inputs/outputs of a single program
