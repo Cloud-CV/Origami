@@ -931,7 +931,7 @@ class DemoViewSetTests(TestCase):
             output_component["base_component_id"])
 
 
-class MyTests(ChannelTestCase):
+class ChannelTests(ChannelTestCase):
     def test_ws_connect(self):
         client = WSClient()
         client.send_and_consume('websocket.connect')
