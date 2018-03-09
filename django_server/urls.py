@@ -24,7 +24,7 @@ from api.views import *
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register(r'demo', DemoViewSet, r"demo")
+router.register(r'demo-view', DemoViewSet, r"demo-view")
 router.register(r'input-component', InputComponentViewSet, r"input-component")
 router.register(r'output-component',
                 OutputComponentViewSet, r"output-component")

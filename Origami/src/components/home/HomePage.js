@@ -205,11 +205,11 @@ class HomePage extends React.Component {
                     onSearch={value => this.findDemo(value)}
                   />
                 </Col>
-                <Col span={2} offset={0}>
-                  <Col span={2} offset={0}>
+                <Col span={3} offset={0}>
+                  <Col span={3} offset={0}>
                     <Select
                       defaultValue="demo"
-                      style={{ width: 70 }}
+                      style={{ width: 85 }}
                       onChange={value => this.setState({ searchBy: value })}
                     >
                       <Option value="demo">demo</Option>
@@ -226,18 +226,18 @@ class HomePage extends React.Component {
                     <img src="/static/img/origami.png" width="180" />
                   </h2>
                 </Col>
-                <Col span={10} offset={1}>
+                <Col span={9} offset={1}>
                   <Input.Search
                     id="search"
                     placeholder="Search for demos, users"
                     onSearch={value => this.findDemo(value)}
                   />
                 </Col>
-                <Col span={2} offset={0}>
-                  <Col span={2} offset={0}>
+                <Col span={3} offset={0}>
+                  <Col span={3} offset={0}>
                     <Select
                       defaultValue="demo"
-                      style={{ width: 70 }}
+                      style={{ width: 85 }}
                       onChange={value => this.setState({ searchBy: value })}
                     >
                       <Option value="demo">demo</Option>

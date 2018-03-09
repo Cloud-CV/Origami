@@ -538,6 +538,7 @@ class RegisterPage extends React.Component {
                         {this.state.webappUnreachableErrorText}<br />
                       </div>}
                     {this.state.webappLocalUnreachableErrorText.length > 0 &&
+                      this.state.deploymentBoxSelectedStatus  &&
                       <div
                         className="ui raised compact centered red segment"
                         style={{ color: "red" }}
