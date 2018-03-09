@@ -194,11 +194,6 @@ def custom_component_controller(request, type_req, user_id, demoid):
     elif type_req == "output":
         model = OutputComponent
         serializer = OutputComponentSerializer
-    else:
-        return Response(
-            "Invalid URL",
-            status=response_status.HTTP_404_NOT_FOUND
-        )
 
     if request.method == "POST":
         body = request.data
