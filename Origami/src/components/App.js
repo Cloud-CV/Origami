@@ -16,6 +16,7 @@ import toastr from "toastr";
 import userApi from "../api/Github/userApi";
 import { Layout, Menu, Icon, Button, Card, Row, Col, Input } from "antd";
 import * as rootApi from "../api/CommonLocal/rootSettingsApi";
+import { ORIGAMI_READ_THE_DOCS } from "../constants";
 import "./index.css";
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -137,7 +138,7 @@ class App extends React.Component {
   }
 
   getDocs() {
-    window.location = "http://cloudcv-origami.readthedocs.io/en/latest/index.html";
+    window.location = ORIGAMI_READ_THE_DOCS;
   }
 
   handleClickAfterLogin(e, navLinks) {
