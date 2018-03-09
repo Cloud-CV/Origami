@@ -27,6 +27,9 @@ import TextField from "material-ui/TextField";
 import request from "superagent";
 import { Step, Stepper, StepLabel } from "material-ui/Stepper";
 import toastr from "toastr";
+import { Layout, Row, Col } from "antd";
+
+const { Content, Footer } = Layout;
 
 toastr.options.closeButton = true;
 
@@ -78,6 +81,7 @@ class RegisterPage extends React.Component {
     this.validateTempwebaddress = this.validateTempwebaddress.bind(this);
     this.validateIP = this.validateIP.bind(this);
     this.validatePort = this.validatePort.bind(this);
+    this.getStyles = this.getStyles.bind(this);
   }
 
   componentWillMount() {
@@ -398,274 +402,291 @@ class RegisterPage extends React.Component {
     });
   }
 
+  getStyles() {
+    return {
+      layout: {
+        background: "#FFFFFF"
+      },
+      content: {
+        margin: "24px 0 0",
+        overflow: "initial"
+      },
+      contentDiv: {
+        padding: "12px 0",
+        background: "#FFFFFF"
+      },
+      footer: {
+        backgroundColor: grey900,
+        color: "white",
+        textAlign: "center",
+        marginTop: "4vh",
+        height: "4rem",
+        zIndex: "2"
+      }
+    }
+  }
+
   render() {
     let tokenClassName = this.validateTempwebaddress() &&
       this.validateIP() &&
       this.validatePort(this.state.port)
       ? "ui positive message"
       : "ui negative message";
+    let styles = this.getStyles();
     return (
-      <div className="ui relaxed stackable grid fluid">
-
-        <div className="ui relaxed stackable grid fluid container">
-          {this.state.showOutput === "hidden" &&
-            <div className="centered row" style={{ marginTop: "30vh" }}>
-              <CircularProgress size={89.25} />
-            </div>}
-
-          <div
-            style={{
-              visibility: this.state.showOutput,
-              width: "100%",
-              maxWidth: 700,
-              margin: "auto"
-            }}
-          >
-            <Stepper linear={false}>
-              <Step active>
-                <StepLabel>
-                  <b style={{ fontSize: "large" }}>Register Application</b>
-                </StepLabel>
-              </Step>
-              <Step active={this.state.inputComponentStepperHighlight}>
-                <StepLabel>Select Input Component</StepLabel>
-              </Step>
-              <Step active={this.state.outputComponentStepperHighlight}>
-                <StepLabel>Select Output Component</StepLabel>
-              </Step>
-            </Stepper>
+      <Layout style={styles.layout}>
+        {
+          this.state.showOutput === "hidden" &&
+          <div className="centered row" style={{ marginTop: "30vh" }}>
+            <CircularProgress size={89.25} />
           </div>
+        }
+        <Content style={styles.content}>
 
-          <div
-            className="sixteen wide column stretched row"
-            style={{ visibility: this.state.showOutput }}
-          >
-            <div className="row">
-              <h1>Register Application</h1>
-            </div>
+          <div style={styles.contentDiv}>
+            <Row>
+              <div
+                style={{
+                  visibility: this.state.showOutput,
+                  width: "100%",
+                  maxWidth: 700,
+                  margin: "auto"
+                }}
+              >
+                <Stepper linear={false}>
+                  <Step active>
+                    <StepLabel>
+                      <b style={{ fontSize: "large" }}>Register Application</b>
+                    </StepLabel>
+                  </Step>
+                  <Step active={this.state.inputComponentStepperHighlight}>
+                    <StepLabel>Select Input Component</StepLabel>
+                  </Step>
+                  <Step active={this.state.outputComponentStepperHighlight}>
+                    <StepLabel>Select Output Component</StepLabel>
+                  </Step>
+                </Stepper>
+              </div>
 
-            <div className="ui horizontal divider row">
-              <span><hr /></span>
-            </div>
+              <div
+                className="sixteen wide column stretched"
+                style={{ visibility: this.state.showOutput }}
+              >
+                <h1 
+                  style={{
+                    textAlign: "center",
+                    margin: "25px 0 40px"
+                  }}
+                >
+                  Register Application
+                </h1>
 
-            <div className="row">
-              <div className="ui relaxed stackable grid container">
-                <div className="two column row">
-                  <div className="column aligned">
+                <div className="ui grid container" style={{ position: "relative" }}>
+                  <div className="ui grid container">
+                    <hr className="ui grid container" />
+                  </div>
+                  <div className="ui grid container">
+                    <div className="column aligned" style={{ flexGrow: "5.75", minWidth: "300px" }}>
 
-                    <TextField
-                      hintText="MyApp"
-                      floatingLabelText="Appname"
-                      value={this.state.name}
-                      errorText={this.state.nameErrorText}
-                      onChange={this.updateName}
-                    />&nbsp;&nbsp;&nbsp;&nbsp;
-                    <TextField
-                      hintText="0.0.0.0"
-                      errorText={this.state.addressErrorText}
-                      floatingLabelText="IP of service (no http://)"
-                      value={this.state.address}
-                      onChange={this.updateAddress}
-                    />
-                    <br />
-                    <TextField
-                      hintText="Description"
-                      floatingLabelText="Description"
-                      value={this.state.description}
-                      onChange={this.updateDescription}
-                      multiLine
-                      rows={2}
-                      rowsMax={8}
-                    />&nbsp;&nbsp;&nbsp;&nbsp;
-                    <TextField
-                      hintText="Footer Message"
-                      floatingLabelText="Footer Message"
-                      value={this.state.footer_message}
-                      onChange={this.updatefooter_message}
-                      multiLine
-                      rows={2}
-                      rowsMax={8}
-                    />
-                    <br />
-                    <TextField
-                      hintText="8000"
-                      errorText={this.state.portErrorText}
-                      floatingLabelText="Port for service"
-                      value={this.state.port}
-                      onChange={this.updatePort}
-                    />
-                    <br />
-                    <br />
-                    <div
-                      className=""
-                      style={{ cursor: "pointer", maxWidth: "50%" }}
-                    >
-                      <Dropzone
-                        onDrop={this.onDrop}
-                        multiple={false}
-                        style={{ height: "inherit" }}
-                      >
-                        <div className="ui card">
-                          <div className="ui fluid image">
-                            <img
-                              className="ui fluid medium bordered image"
-                              src={
-                                this.state.cover_image ||
-                                  "/static/img/wireframe.png"
-                              }
-                              id={"input-image-preview"}
-                            />
-                          </div>
-                          <div className="content">
-                            Drag and Drop or Click to upload cover image
-                          </div>
-                        </div>
-                      </Dropzone>
-                    </div>
-                    <div className="" style={{ maxWidth: "50%" }}>
-                      <Checkbox
-                        checked={this.state.showTerminal}
-                        onCheck={this.toggleTerminal}
-                        label="Show Terminal on demo page"
+                      <TextField
+                        hintText="MyApp"
+                        floatingLabelText="Appname"
+                        value={this.state.name}
+                        errorText={this.state.nameErrorText}
+                        onChange={this.updateName}
+                      />&nbsp;&nbsp;&nbsp;&nbsp;
+                      <TextField
+                        hintText="0.0.0.0"
+                        errorText={this.state.addressErrorText}
+                        floatingLabelText="IP of service (no http://)"
+                        value={this.state.address}
+                        onChange={this.updateAddress}
                       />
                       <br />
-                    </div>
-                    {this.state.webappUnreachableErrorText.length > 0 &&
-                      <div
-                        className="ui raised compact centered red segment"
-                        style={{ color: "red" }}
-                      >
-                        {this.state.webappUnreachableErrorText}<br />
-                      </div>}
-                    {this.state.webappLocalUnreachableErrorText.length > 0 &&
-                      this.state.deploymentBoxSelectedStatus  &&
-                      <div
-                        className="ui raised compact centered red segment"
-                        style={{ color: "red" }}
-                      >
-                        {this.state.webappLocalUnreachableErrorText}<br />
-                      </div>}
-                    {this.state.showLocalDeploymentCheckBox &&
-                      <div className="" style={{ maxWidth: "45%" }}>
-                        <Checkbox
-                          checked={this.state.deploymentBoxSelectedStatus}
-                          disabled={this.state.returning}
-                          onCheck={this.onLocalDeploymentCheckBoxCheck}
-                          label="WebApp is running locally"
-                        />
-                      </div>}
-                    <br />
-                    <RaisedButton
-                      label="Save"
-                      primary
-                      onClick={this.updateDemoModelData}
-                    />
-                  </div>
-
-                  <div className="ui vertical internal divider">
-                    <hr />
-                  </div>
-                  <div className="column">
-
-                    <div className="ui raise fluid very padded container text">
+                      <TextField
+                        hintText="Description"
+                        floatingLabelText="Description"
+                        value={this.state.description}
+                        onChange={this.updateDescription}
+                        multiLine
+                        rows={2}
+                        rowsMax={8}
+                      />&nbsp;&nbsp;&nbsp;&nbsp;
+                      <TextField
+                        hintText="Footer Message"
+                        floatingLabelText="Footer Message"
+                        value={this.state.footer_message}
+                        onChange={this.updatefooter_message}
+                        multiLine
+                        rows={2}
+                        rowsMax={8}
+                      />
                       <br />
-                      <div className="ui relaxed grid container segment">
-                        <div className="two column row">
-                          <div className="thirteen wide column">
-                            <div
-                              className={tokenClassName}
-                              style={{ wordWrap: "break-word" }}
-                            >
-                              <u>Token:</u>
-                              <b>
-                                <p style={{ fontSize: "90%" }}>
-                                  {`nongh:${this.state.address}:${this.state.id}:${this.state.currentPort}:` +
-                                    `${this.state.port}:${this.state.tempwebaddress}`}
-                                </p>
-                              </b>
+                      <TextField
+                        hintText="8000"
+                        errorText={this.state.portErrorText}
+                        floatingLabelText="Port for service"
+                        value={this.state.port}
+                        onChange={this.updatePort}
+                      />
+                      <br />
+                      <br />
+                      <div
+                        className=""
+                        style={{ cursor: "pointer", maxWidth: "50%" }}
+                      >
+                        <Dropzone
+                          onDrop={this.onDrop}
+                          multiple={false}
+                          style={{ height: "inherit" }}
+                        >
+                          <div className="ui card">
+                            <div className="ui fluid image">
+                              <img
+                                className="ui fluid medium bordered image"
+                                src={
+                                  this.state.cover_image ||
+                                    "/static/img/wireframe.png"
+                                }
+                                id={"input-image-preview"}
+                              />
+                            </div>
+                            <div className="content">
+                              Drag and Drop or Click to upload cover image
                             </div>
                           </div>
-                          <div className="three wide column">
-                            {this.validateTempwebaddress() &&
-                              this.validateIP() &&
-                              this.validatePort(this.state.port)
-                              ? <GoAhead
-                                  style={{ height: "", width: "" }}
-                                  color={green500}
-                                />
-                              : <StopNow
-                                  style={{ height: "", width: "" }}
-                                  color={red500}
-                                />}
-                          </div>
-                        </div>
-                        <div className="one column row">
-                          <div className="sixteen wide column">
-                            <div className="ui info message">
-                              <div className="header">
-                                Steps
+                        </Dropzone>
+                      </div>
+                      <div className="" style={{ maxWidth: "50%" }}>
+                        <Checkbox
+                          checked={this.state.showTerminal}
+                          onCheck={this.toggleTerminal}
+                          label="Show Terminal on demo page"
+                        />
+                        <br />
+                      </div>
+                      {this.state.webappUnreachableErrorText.length > 0 &&
+                        <div
+                          className="ui raised compact centered red segment"
+                          style={{ color: "red" }}
+                        >
+                          {this.state.webappUnreachableErrorText}<br />
+                        </div>}
+                      {this.state.webappLocalUnreachableErrorText.length > 0 &&
+                        this.state.deploymentBoxSelectedStatus  &&
+                        <div
+                          className="ui raised compact centered red segment"
+                          style={{ color: "red" }}
+                        >
+                          {this.state.webappLocalUnreachableErrorText}<br />
+                        </div>}
+                      {this.state.showLocalDeploymentCheckBox &&
+                        <div className="" style={{ maxWidth: "45%" }}>
+                          <Checkbox
+                            checked={this.state.deploymentBoxSelectedStatus}
+                            disabled={this.state.returning}
+                            onCheck={this.onLocalDeploymentCheckBoxCheck}
+                            label="WebApp is running locally"
+                          />
+                        </div>}
+                      <br />
+                      <RaisedButton
+                        label="Save"
+                        primary
+                        onClick={this.updateDemoModelData}
+                      />
+                    </div>
+
+                    <div className="ui vertical internal divider">
+                      <hr />
+                    </div>
+                    <div className="column" style={{ minWidth: "350px", flexGrow: "4.25", padding: 0 }}>
+
+                      <div className="ui raise fluid very padded container text">
+                        <br />
+                        <div className="ui relaxed grid container segment">
+                          <div className="two column row">
+                            <div className="thirteen wide column">
+                              <div
+                                className={tokenClassName}
+                                style={{ wordWrap: "break-word" }}
+                              >
+                                <u>Token:</u>
+                                <b>
+                                  <p style={{ fontSize: "90%" }}>
+                                    {`nongh:${this.state.address}:${this.state.id}:${this.state.currentPort}:` +
+                                      `${this.state.port}:${this.state.tempwebaddress}`}
+                                  </p>
+                                </b>
                               </div>
-                              <ul className="list">
-                                <li>
-                                  "IP of service" is the public IP address of the machine where the
-                                  ML evaluation code is running (or will be run) with the help of cvfy lib.
-                                </li>
-                                <li>
-                                  "Port of service" is the port of the above mentioned service.
-                                </li>
-                                <li>
-                                  Enter the application details and copy the Token.
-                                </li>
-                                <li>
-                                  Use this Token to do registration with the cvfy lib.
-                                  See
-                                  <Link to="/gettingstarted">
-                                    Getting Started
-                                  </Link>
-                                  .
-                                </li>
-                              </ul>
                             </div>
-                            {(this.state.webappUnreachableErrorText.length >
-                              0 ||
-                              this.state.webappLocalUnreachableErrorText.length >
-                                0) &&
-                              <div className="ui orange message">
-                                <p>
-                                  If this is a local deployment (your machine is not reachable on it's public IP),
-                                  you must select the "Webapp is running locally" option.
-                                </p>
-                              </div>}
+                            <div className="three wide column">
+                              {this.validateTempwebaddress() &&
+                                this.validateIP() &&
+                                this.validatePort(this.state.port)
+                                ? <GoAhead
+                                    style={{ height: "", width: "" }}
+                                    color={green500}
+                                  />
+                                : <StopNow
+                                    style={{ height: "", width: "" }}
+                                    color={red500}
+                                  />}
+                            </div>
+                          </div>
+                          <div className="one column row">
+                            <div className="sixteen wide column">
+                              <div className="ui info message">
+                                <div className="header">
+                                  Steps
+                                </div>
+                                <ul className="list">
+                                  <li>
+                                    "IP of service" is the public IP address of the machine where the
+                                    ML evaluation code is running (or will be run) with the help of cvfy lib.
+                                  </li>
+                                  <li>
+                                    "Port of service" is the port of the above mentioned service.
+                                  </li>
+                                  <li>
+                                    Enter the application details and copy the Token.
+                                  </li>
+                                  <li>
+                                    Use this Token to do registration with the cvfy lib.
+                                    See
+                                    <Link to="/gettingstarted">
+                                      Getting Started
+                                    </Link>
+                                    .
+                                  </li>
+                                </ul>
+                              </div>
+                              {(this.state.webappUnreachableErrorText.length >
+                                0 ||
+                                this.state.webappLocalUnreachableErrorText.length >
+                                  0) &&
+                                <div className="ui orange message">
+                                  <p>
+                                    If this is a local deployment (your machine is not reachable on it's public IP),
+                                    you must select the "Webapp is running locally" option.
+                                  </p>
+                                </div>}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
 
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-
+            </Row>
           </div>
-        </div>
-
-        <div
-          className="ui fluid centered row"
-          style={{ minHeight: "10vh", minWidth: "100vw" }}
-        />
-
-        <div
-          className="ui fluid centered row"
-          style={{
-            minHeight: "5vh",
-            backgroundColor: grey900,
-            color: "white",
-            minWidth: "100vw"
-          }}
-        >
-          © CloudCV, 2016
-        </div>
-      </div>
+        </Content>
+      <Footer style={styles.footer}>
+        © CloudCV, 2016
+      </Footer>
+    </Layout>
     );
   }
 }
