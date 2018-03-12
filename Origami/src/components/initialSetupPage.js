@@ -1,9 +1,9 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Link } from "react-router-dom";
 import TextField from "material-ui/TextField";
 import Checkbox from "material-ui/Checkbox";
 import * as rootApi from "../api/CommonLocal/rootSettingsApi";
+import { ORIGAMI_READ_THE_DOCS } from "../constants";
 import RaisedButton from "material-ui/RaisedButton";
 import toastr from "toastr";
 
@@ -185,9 +185,9 @@ class InitialSetup extends React.Component {
             <div className="ui very padded text">
               <h2>
                 FIRST RUN SETUP &nbsp;
-                <Link to="/gettingstarted">
+                <a href={ORIGAMI_READ_THE_DOCS}>
                   [Help]
-                </Link>
+                </a>
               </h2>
             </div>
           </div>
