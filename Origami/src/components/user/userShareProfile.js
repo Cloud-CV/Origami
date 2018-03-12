@@ -101,6 +101,8 @@ class ShareProfileComponent extends React.Component {
   }
 
   handleShareModal(demoBeingShown) {
+    console.log("demo shown =");
+    console.log(demoBeingShown);
     this.setState({ demoBeingShown }, () => {
       this.setState({ shareModalOpen: !this.state.shareModalOpen });
     });
