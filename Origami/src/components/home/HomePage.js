@@ -1,19 +1,19 @@
-import React from 'react';
-import { PropTypes } from 'prop-types';
-import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import React from "react";
+import { PropTypes } from "prop-types";
+import { Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import { BounceLoader } from 'react-spinners';
 import {
   is_cloudcv,
-  getAllDemosByCloudCV,
-} from '../../api/Generic/getCloudCVDemos';
-import { getAllDeployed } from '../../api/Nongh/getAllDeployed';
-import { getSearchedDemos } from '../../api/Nongh/getSearchedDemos';
-import HomePageDemoCard from '../stateless/homePageDemoCard';
-import { getAllPermalink } from '../../api/Nongh/permalink';
-import * as loginActions from '../../actions/loginActions';
-import { ShareButtons, ShareCounts, generateShareIcon } from 'react-share';
+  getAllDemosByCloudCV
+} from "../../api/Generic/getCloudCVDemos";
+import { getAllDeployed } from "../../api/Nongh/getAllDeployed";
+import { getSearchedDemos } from "../../api/Nongh/getSearchedDemos";
+import HomePageDemoCard from "../stateless/homePageDemoCard";
+import { getAllPermalink } from "../../api/Nongh/permalink";
+import * as loginActions from "../../actions/loginActions";
+import { ShareButtons, ShareCounts, generateShareIcon } from "react-share";
 import {
   Layout,
   Menu,
@@ -23,10 +23,10 @@ import {
   Row,
   Col,
   Input,
-  Select,
-} from 'antd';
-import { Modal } from 'antd';
-import toastr from 'toastr';
+  Select
+} from "antd";
+import { Modal } from "antd";
+import toastr from "toastr";
 import Dialog from 'material-ui/Dialog';
 import { indigo600 } from 'material-ui/styles/colors';
 
@@ -36,30 +36,30 @@ const {
   FacebookShareButton,
   GooglePlusShareButton,
   LinkedinShareButton,
-  TwitterShareButton,
+  TwitterShareButton
 } = ShareButtons;
 const {
   FacebookShareCount,
   GooglePlusShareCount,
-  LinkedinShareCount,
+  LinkedinShareCount
 } = ShareCounts;
-const FacebookIcon = generateShareIcon('facebook');
-const TwitterIcon = generateShareIcon('twitter');
-const GooglePlusIcon = generateShareIcon('google');
-const LinkedinIcon = generateShareIcon('linkedin');
+const FacebookIcon = generateShareIcon("facebook");
+const TwitterIcon = generateShareIcon("twitter");
+const GooglePlusIcon = generateShareIcon("google");
+const LinkedinIcon = generateShareIcon("linkedin");
 const demoSpinnerStyle = {
   position: 'fixed',
   top: '50%',
-  left: '50%',
-};
+  left: '50%'
+  }
 
 class HomePage extends React.Component {
   constructor(props, context) {
     super(props, context);
     // this.buildFromGithubLogin = this.buildFromGithubLogin.bind(this);
     this.useLocalDeploymentLogin = this.useLocalDeploymentLogin.bind(this);
-    $('#appbar-progress').progress({
-      percent: '0%',
+    $("#appbar-progress").progress({
+      percent: "0%"
     });
 
     this.state = {
@@ -69,8 +69,8 @@ class HomePage extends React.Component {
       demoBeingShown: {},
       permalinkHolder: {},
       shareModalOpen: false,
-      searchBy: 'demo',
-      demoLoading: true,
+      searchBy: "demo",
+      demoLoading: true
     };
 
     this.handleShareModal = this.handleShareModal.bind(this);
@@ -97,7 +97,7 @@ class HomePage extends React.Component {
         const stateToPut = {};
         getAllPermalink().then(data => {
           JSON.parse(data).map(perma => {
-            if (!stateToPut[perma.project_id]) {
+            if (!stateToPut[perma.proect_id]) {
               stateToPut[perma.project_id] = {};
             }
 
@@ -107,7 +107,7 @@ class HomePage extends React.Component {
             perma['permalink'] = permalink;
             stateToPut[perma.project_id] = perma;
             this.setState({
-              permalinkHolder: Object.assign({}, stateToPut),
+              permalinkHolder: Object.assign({}, stateToPut)
             });
           });
         });
@@ -125,26 +125,23 @@ class HomePage extends React.Component {
       this.setState({ shareModalOpen: !this.state.shareModalOpen });
     });
   }
-
   success() {
     const modal = Modal.info({
-      title: 'Logging you in',
+      title: "Logging you in"
     });
     setTimeout(() => modal.destroy(), 2000);
   }
 
   useLocalDeploymentLogin() {
     if (!this.props.login) {
-      $('.loginButton').trigger('click');
+      $(".loginButton").trigger("click");
     } else {
-      this.props.history.push('/ngh/user');
+      this.props.history.push("/ngh/user");
     }
   }
 
   goToDemoPage(demo) {
-    this.props.history.push(
-      this.state.permalinkHolder[demo.id].short_relative_url
-    );
+    this.props.history.push(this.state.permalinkHolder[demo.id].short_relative_url);
   }
 
   findDemo(search_term) {
@@ -157,7 +154,7 @@ class HomePage extends React.Component {
             allDeployed.push(tmp.splice(0, 4));
           }
           this.setState({
-            allDeployed: allDeployed,
+            allDeployed: allDeployed
           });
         } else {
           this.setState({ allDeployed: [] });
@@ -172,7 +169,7 @@ class HomePage extends React.Component {
             }
             stateToPut[perma.project_id] = perma;
             this.setState({
-              permalinkHolder: Object.assign({}, stateToPut),
+              permalinkHolder: Object.assign({}, stateToPut)
             });
           });
         });
@@ -183,113 +180,115 @@ class HomePage extends React.Component {
   }
 
   handleClick(e) {
-    if (!this.state.login && e.key === '2') {
+    if (!this.state.login && e.key === "2") {
       this.initiateLogin();
-    } else if (e.key == '3') {
+    } else if (e.key == "3") {
       this.getDocs();
     }
   }
 
   initiateLogin() {
     this.success();
-    window.location = '/auth/github/login/';
+    window.location = "/auth/github/login/";
   }
 
   getDocs() {
-    window.location =
-      'http://cloudcv-origami.readthedocs.io/en/latest/index.html';
+    window.location = "http://cloudcv-origami.readthedocs.io/en/latest/index.html";
   }
 
   render() {
     return (
-      <Layout style={{ background: '#FEFEFE' }}>
-        {this.props.login ? (
-          <Header id="layout-header">
-            <Row>
-              <Col span={3} offset={1}>
-                <h2 id="logo-title">Origami</h2>
-              </Col>
-              <Col span={12} offset={3}>
-                <Input.Search
-                  id="search"
-                  placeholder="Search for demos, users"
-                  onSearch={value => this.findDemo(value)}
-                />
-              </Col>
-              <Col span={3} offset={0}>
-                <Col span={3} offset={0}>
-                  <Select
-                    defaultValue="demo"
-                    style={{ width: 85 }}
-                    onChange={value => this.setState({ searchBy: value })}
-                  >
-                    <Option value="demo">demo</Option>
-                    <Option value="user">user</Option>
-                  </Select>
-                </Col>
-              </Col>
-            </Row>
-          </Header>
-        ) : (
-          <Header id="layout-header-no-login">
-            <Row>
-              <Col span={3} offset={1}>
-                <h2 id="logo">
-                  <img src="/static/img/origami.png" width="180" />
-                </h2>
-              </Col>
-              <Col span={9} offset={1}>
-                <Input.Search
-                  id="search"
-                  placeholder="Search for demos, users"
-                  onSearch={value => this.findDemo(value)}
-                />
-              </Col>
-              <Col span={3} offset={0}>
-                <Col span={3} offset={0}>
-                  <Select
-                    defaultValue="demo"
-                    style={{ width: 85 }}
-                    onChange={value => this.setState({ searchBy: value })}
-                  >
-                    <Option value="demo">demo</Option>
-                    <Option value="user">user</Option>
-                  </Select>
-                </Col>
-              </Col>
-              <Col span={6} offset={1}>
-                <Menu
-                  mode="horizontal"
-                  defaultSelectedKeys={['1']}
-                  style={{ lineHeight: '64px' }}
-                  onClick={this.handleClick}
-                >
-                  <Menu.Item key="1">Home</Menu.Item>
-                  <Menu.Item key="2">Login</Menu.Item>
-                  <Menu.Item key="3">Docs</Menu.Item>
-                </Menu>
-              </Col>
-            </Row>
-          </Header>
-        )}
-        <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
-          <div
-            style={{ padding: 12, background: '#FEFEFE', textAlign: 'center' }}
-          >
-            {this.state.demoLoading ? (
-              <div className="demoSpinner" style={demoSpinnerStyle}>
-                <BounceLoader color={'#33aadd'} size={80} />
-              </div>
-            ) : (
+      <Layout style={{ background: "#FEFEFE" }}>
+        {this.props.login
+          ? <Header id="layout-header">
               <Row>
-                {Object.keys(this.state.allDeployed).length > 0 ? (
-                  this.state.allDeployed.map(row => (
+                <Col span={3} offset={1}>
+                  <h2 id="logo-title">
+                    Origami
+                  </h2>
+                </Col>
+                <Col span={12} offset={3}>
+                  <Input.Search
+                    id="search"
+                    placeholder="Search for demos, users"
+                    onSearch={value => this.findDemo(value)}
+                  />
+                </Col>
+                <Col span={3} offset={0}>
+                  <Col span={3} offset={0}>
+                    <Select
+                      defaultValue="demo"
+                      style={{ width: 85 }}
+                      onChange={value => this.setState({ searchBy: value })}
+                    >
+                      <Option value="demo">demo</Option>
+                      <Option value="user">user</Option>
+                    </Select>
+                  </Col>
+                </Col>
+              </Row>
+            </Header>
+          : <Header id="layout-header-no-login">
+              <Row>
+                <Col span={3} offset={1}>
+                  <h2 id="logo">
+                    <img src="/static/img/origami.png" width="180" />
+                  </h2>
+                </Col>
+                <Col span={9} offset={1}>
+                  <Input.Search
+                    id="search"
+                    placeholder="Search for demos, users"
+                    onSearch={value => this.findDemo(value)}
+                  />
+                </Col>
+                <Col span={3} offset={0}>
+                  <Col span={3} offset={0}>
+                    <Select
+                      defaultValue="demo"
+                      style={{ width: 85 }}
+                      onChange={value => this.setState({ searchBy: value })}
+                    >
+                      <Option value="demo">demo</Option>
+                      <Option value="user">user</Option>
+                    </Select>
+                  </Col>
+                </Col>
+                <Col span={6} offset={1}>
+                  <Menu
+                    mode="horizontal"
+                    defaultSelectedKeys={["1"]}
+                    style={{ lineHeight: "64px" }}
+                    onClick={this.handleClick}
+                  >
+                    <Menu.Item key="1">Home</Menu.Item>
+                    <Menu.Item key="2">
+
+                      Login
+
+                    </Menu.Item>
+                    <Menu.Item key="3">Docs</Menu.Item>
+                  </Menu>
+                </Col>
+              </Row>
+            </Header>}
+        <Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
+          <div
+            style={{ padding: 12, background: "#FEFEFE", textAlign: "center" }}
+          >
+          {this.state.demoLoading
+          ? <div className="demoSpinner" style={demoSpinnerStyle}>
+              <BounceLoader color={'#33aadd'} size={80}/>
+            </div>
+          :<Row>
+              {Object.keys(this.state.allDeployed).length > 0
+                ? this.state.allDeployed.map(row => (
                     <div key={Math.random()}>
                       <Row>
                         {row.map(demo => (
                           <Col span={5} offset={1} key={demo.id}>
                             <Card
-                              style={{ width: '100%' }}
+                              style={{ width: "100%" }}
                               bodyStyle={{ padding: 0 }}
                             >
                               <div className="custom-card">
@@ -336,25 +335,25 @@ class HomePage extends React.Component {
                       <br />
                     </div>
                   ))
-                ) : (
-                  <Col span={24} style={{ width: '100%' }}>
+                : <Col span={24} style={{ width: "100%" }}>
                     <h4> Demo not found. Try Searching for another demo</h4>
-                  </Col>
-                )}
-              </Row>
-            )}
+                  </Col>}
+            </Row>}
           </div>
         </Content>
         <Footer
           style={{
-            textAlign: 'center',
-            background: '#fefefe',
-            color: '#455A64',
-            fontSize: '14px',
-            boxShadow: '0px -2px 5px #E0E0E0',
+            textAlign: "center",
+            background: "#fefefe",
+            color: "#455A64",
+            fontSize: "14px",
+            boxShadow: "0px -2px 5px #E0E0E0"
           }}
         >
-          <strong>Origami</strong> - Created by{' '}
+          <strong>Origami</strong>
+          {" "}
+          - Created by
+          {" "}
           <a href="http://cloudcv.org/">Team CloudCV</a>
         </Footer>
         <Dialog
@@ -454,21 +453,19 @@ class HomePage extends React.Component {
 HomePage.propTypes = {
   loginactions: PropTypes.object.isRequired,
   login: PropTypes.bool.isRequired,
-  history: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
   return {
-    login: state.login,
+    login: state.login
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    loginactions: bindActionCreators(loginActions, dispatch),
+    loginactions: bindActionCreators(loginActions, dispatch)
   };
 }
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(HomePage)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HomePage));
