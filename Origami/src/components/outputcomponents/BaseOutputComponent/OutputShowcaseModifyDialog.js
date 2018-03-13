@@ -35,7 +35,9 @@ class OutputShowcaseModifyDialog extends React.Component {
     allHeaders.map((header, index) => {
       let currentIndex = allHeaders.findIndex(x => x === header);
       if (typeof header === "object") {
+        /*eslint-disable*/
         header = "";
+        /*eslint-enable*/
       }
       tempText[currentIndex] = (
         <div>

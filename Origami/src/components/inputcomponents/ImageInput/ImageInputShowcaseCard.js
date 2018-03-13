@@ -2,8 +2,7 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { withRouter } from "react-router-dom";
 import CustomCard from "../../stateless/cards";
-import InputShowcaseModifyDialog
-  from "../BaseInputComponent/InputShowcaseModifyDialog";
+import InputShowcaseModifyDialog from "../BaseInputComponent/InputShowcaseModifyDialog";
 import ImageInputPreview from "./ImageInputPreview";
 import toastr from "toastr";
 import InputShowcaseCard from "../BaseInputComponent/InputShowcaseCard.js";
@@ -16,17 +15,17 @@ class ImageInputShowcaseCard extends InputShowcaseCard {
     this.others = [];
     try {
       this.init.map((prop, index) => {
-        if (prop["id"] === "3") {
-          labels.push(prop["label"]);
+        if (prop.id === "3") {
+          labels.push(prop.label);
         } else {
           this.others.push(prop);
         }
       });
     } catch (err) {
-      console.log(err);
+      /** Handle error */
     }
     this.state = {
-      labels: labels,
+      labels,
       modifyDialogDisplay: false,
       previewDialogDisplay: false
     };
@@ -39,7 +38,7 @@ class ImageInputShowcaseCard extends InputShowcaseCard {
     } else {
       let propsToStore = this.others;
       this.state.labels.map(label => {
-        propsToStore.push({ id: "3", label: label });
+        propsToStore.push({ id: "3", label });
       });
       this.inputComponentModelActions
         .updateInputComponentModel({
@@ -84,7 +83,7 @@ class ImageInputShowcaseCard extends InputShowcaseCard {
             }
           ]}
         />
-        {this.state.modifyDialogDisplay &&
+        {this.state.modifyDialogDisplay && (
           <InputShowcaseModifyDialog
             functions={{
               updateLabels: this.updateLabels,
@@ -92,14 +91,16 @@ class ImageInputShowcaseCard extends InputShowcaseCard {
               getLabels: this.getLabels
             }}
             title="Modify Image Input Component"
-          />}
-        {this.state.previewDialogDisplay &&
+          />
+        )}
+        {this.state.previewDialogDisplay && (
           <ImageInputPreview
             functions={{
               getLabels: this.getLabels,
               hidePreviewDialog: this.hidePreviewDialog
             }}
-          />}
+          />
+        )}
       </div>
     );
   }

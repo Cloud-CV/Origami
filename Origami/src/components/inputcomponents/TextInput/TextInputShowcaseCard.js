@@ -2,8 +2,7 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { withRouter } from "react-router-dom";
 import CustomCard from "../../stateless/cards";
-import InputShowcaseModifyDialog
-  from "../BaseInputComponent/InputShowcaseModifyDialog";
+import InputShowcaseModifyDialog from "../BaseInputComponent/InputShowcaseModifyDialog";
 import TextInputPreview from "./TextInputPreview";
 import toastr from "toastr";
 import InputShowcaseCard from "../BaseInputComponent/InputShowcaseCard.js";
@@ -16,17 +15,17 @@ class TextInputShowcaseCard extends InputShowcaseCard {
     this.others = [];
     try {
       this.init.map((prop, index) => {
-        if (prop["id"] === "1") {
-          labels.push(prop["label"]);
+        if (prop.id === "1") {
+          labels.push(prop.label);
         } else {
           this.others.push(prop);
         }
       });
     } catch (err) {
-      console.log(err);
+      /** Handler error here */
     }
     this.state = {
-      labels: labels,
+      labels,
       modifyDialogDisplay: false,
       previewDialogDisplay: false
     };
@@ -39,7 +38,7 @@ class TextInputShowcaseCard extends InputShowcaseCard {
     } else {
       let propsToStore = this.others;
       this.state.labels.map(label => {
-        propsToStore.push({ id: "1", label: label });
+        propsToStore.push({ id: "1", label });
       });
       this.inputComponentModelActions
         .updateInputComponentModel({
@@ -83,7 +82,7 @@ class TextInputShowcaseCard extends InputShowcaseCard {
             }
           ]}
         />
-        {this.state.modifyDialogDisplay &&
+        {this.state.modifyDialogDisplay && (
           <InputShowcaseModifyDialog
             functions={{
               updateLabels: this.updateLabels,
@@ -91,14 +90,16 @@ class TextInputShowcaseCard extends InputShowcaseCard {
               getLabels: this.getLabels
             }}
             title="Modify Text Input Component"
-          />}
-        {this.state.previewDialogDisplay &&
+          />
+        )}
+        {this.state.previewDialogDisplay && (
           <TextInputPreview
             functions={{
               getLabels: this.getLabels,
               hidePreviewDialog: this.hidePreviewDialog
             }}
-          />}
+          />
+        )}
       </div>
     );
   }

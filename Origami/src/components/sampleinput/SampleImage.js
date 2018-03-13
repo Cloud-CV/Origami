@@ -13,7 +13,9 @@ class SampleImage extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    /*eslint-disable*/
     if (nextProps.resetBorder) {
+      /*eslint-enable*/
       this.setState({ clicked: false });
     }
   }
@@ -26,21 +28,23 @@ class SampleImage extends React.Component {
   render() {
     return (
       <Col span={5} offset={1}>
-        {this.state.clicked
-          ? <img
-              key={Math.random()}
-              className="ui fluid medium bordered image"
-              style={{ border: "2px solid black", width: "100%"}}
-              src={this.props.value}
-              onClick={() => this.onSelect(this.props.value)}
-            />
-          : <img
-              key={Math.random()}
-              className="ui fluid medium bordered image"
-              style={{width: "100%"}}
-              src={this.props.value}
-              onClick={() => this.onSelect(this.props.value)}
-            />}
+        {this.state.clicked ? (
+          <img
+            key={Math.random()}
+            className="ui fluid medium bordered image"
+            style={{ border: "2px solid black", width: "100%" }}
+            src={this.props.value}
+            onClick={() => this.onSelect(this.props.value)}
+          />
+        ) : (
+          <img
+            key={Math.random()}
+            className="ui fluid medium bordered image"
+            style={{ width: "100%" }}
+            src={this.props.value}
+            onClick={() => this.onSelect(this.props.value)}
+          />
+        )}
       </Col>
     );
   }

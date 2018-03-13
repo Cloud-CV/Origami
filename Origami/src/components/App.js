@@ -28,10 +28,10 @@ class App extends React.Component {
       login: false,
       displayLogin: "",
       showTitle: true,
-      isFrame: window.location.pathname.split("/")[1] == "frame",
-      isRoot:false
+      isFrame: window.location.pathname.split("/")[1] === "frame",
+      isRoot: false
     };
-    
+
     this.handleClickAfterLogin = this.handleClickAfterLogin.bind(this);
     this.initiateLogin = this.initiateLogin.bind(this);
     this.logout = this.logout.bind(this);
@@ -39,9 +39,7 @@ class App extends React.Component {
     this.clearSessionFlag = this.clearSessionFlag.bind(this);
     this.setSessionFlag = this.setSessionFlag.bind(this);
     let ws_scheme = "ws";
-    this.socket = new WebSocket(
-      ws_scheme + "://" + window.location.host + "/chat/"
-    );
+    this.socket = new WebSocket(`${ws_scheme}://${window.location.host}/chat/`);
     let socket = this.socket;
     this.socketId = Math.random().toString(36);
     socket.onopen = function() {
@@ -79,21 +77,21 @@ class App extends React.Component {
         ) {
           window.location = "/initialsetup";
         }
-         if(JSON.parse(data).root_user_github_login_name == localStorage.getItem("username")) {
+        if (
+          JSON.parse(data).root_user_github_login_name ===
+          localStorage.getItem("username")
+        ) {
           this.setState({ isRoot: true });
         }
       })
       .catch(err => {
         toastr.error("Unauthorized");
-        setTimeout(
-          () => {
-            $("#appbar-progress").css("visibility", "hidden");
-            $("#appbar-progress").progress({
-              percent: "0%"
-            });
-          },
-          600
-        );
+        setTimeout(() => {
+          $("#appbar-progress").css("visibility", "hidden");
+          $("#appbar-progress").progress({
+            percent: "0%"
+          });
+        }, 600);
       });
   }
 
@@ -144,7 +142,7 @@ class App extends React.Component {
   handleClickAfterLogin(e, navLinks) {
     if (navLinks && navLinks.has(e.key)) {
       let activeAttr = navLinks.get(e.key);
-      if (typeof activeAttr === 'string' || activeAttr instanceof String) {
+      if (typeof activeAttr === "string" || activeAttr instanceof String) {
         this.props.history.push(activeAttr);
       } else {
         activeAttr();
@@ -153,7 +151,7 @@ class App extends React.Component {
   }
 
   render() {
-    /** 
+    /**
      * We use Map here since we need the keys to be in order when we are iterating
      * over links, which is not the case with Javascript objects.
      * For example we want `/ngh/user/register` to be checked before `/ngh/user`to
@@ -166,7 +164,12 @@ class App extends React.Component {
       ["5", this.getDocs],
       ["4", "/ngh/user/register"],
       ["3", "/ngh/user"],
-      ["1", `/u/${localStorage.getItem("username")}/${localStorage.getItem("user_id")}`],
+      [
+        "1",
+        `/u/${localStorage.getItem("username")}/${localStorage.getItem(
+          "user_id"
+        )}`
+      ],
       ["2", "/"]
     ]);
 
@@ -179,19 +182,17 @@ class App extends React.Component {
           break;
         }
       }
-    };
+    }
 
     let Root_Setting;
-    if(this.state.isRoot)
-    {
+    if (this.state.isRoot) {
       Root_Setting = (
         <Menu.Item key="7" style={{ fontSize: "16px" }}>
           <Icon type="setting" />
           <span className="nav-text">Root-Settings</span>
         </Menu.Item>
       );
-    }
-    else{
+    } else {
       Root_Setting = null;
     }
 
@@ -206,11 +207,7 @@ class App extends React.Component {
     }
 
     if (this.state.isFrame) {
-      return (
-        <Layout style={{ background: "#FEFEFE" }}>
-          { Routes }
-        </Layout>
-      );
+      return <Layout style={{ background: "#FEFEFE" }}>{Routes}</Layout>;
     }
     if (this.state.login) {
       return (
@@ -257,17 +254,16 @@ class App extends React.Component {
                 <span className="nav-text">Logout</span>
               </Menu.Item>
 
-              { Root_Setting }
-
+              {Root_Setting}
             </Menu>
           </Sider>
-          { Routes }
+          {Routes}
         </Layout>
       );
     } else {
       return (
         <Layout id="layout" style={{ height: "100vh" }}>
-          { Routes }
+          {Routes}
         </Layout>
       );
     }

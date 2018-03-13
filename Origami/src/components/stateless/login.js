@@ -63,4 +63,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginHandler));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(LoginHandler)
+);

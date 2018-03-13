@@ -24,19 +24,23 @@ function HomePageDemoCard(props) {
           subtitle="CloudCV"
           avatar={require("../assets/cloudcv_logo.png")}
         />
-        {props.cover_image &&
+        {props.cover_image && (
           <CardMedia className="ui medium image">
             <img src={props.cover_image} />
-          </CardMedia>}
-        {props.description &&
+          </CardMedia>
+        )}
+        {props.description && (
           <CardText style={{ wordWrap: "break-word" }}>
             {props.description}
-          </CardText>}
+          </CardText>
+        )}
         <CardActions>
           <RaisedButton
             backgroundColor={blue100}
             label="Launch"
-            onClick={() => this.props.history.push(reg.exec(props.permalink)[1])}
+            onClick={() =>
+              this.props.history.push(reg.exec(props.permalink)[1])
+            }
           />
           <RaisedButton
             backgroundColor={blue100}

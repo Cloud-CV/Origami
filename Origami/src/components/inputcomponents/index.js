@@ -14,11 +14,13 @@ export function getInputComponentById(
   let labels = [];
   let textLabels = [];
   let imageLabels = [];
+  /*eslint-disable*/
   props.map((prop, index) => {
-    if (prop["id"] === "1") {
-      textLabels.push(prop["label"]);
-    } else if (prop["id"] === "3") {
-      imageLabels.push(prop["label"]);
+    /*eslint-enable*/
+    if (prop.id === "1") {
+      textLabels.push(prop.label);
+    } else if (prop.id === "3") {
+      imageLabels.push(prop.label);
     }
   });
   return (

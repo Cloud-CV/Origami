@@ -5,20 +5,19 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as userActions from "../../actions/userActions";
 import * as nonghDemoModelActions from "../../actions/nonghDemoModelActions";
-import * as inputComponentDemoModelActions
-  from "../../actions/inputComponentDemoModelActions";
-import * as outputComponentDemoModelActions
-  from "../../actions/outputComponentDemoModelActions";
+import * as inputComponentDemoModelActions from "../../actions/inputComponentDemoModelActions";
+import * as outputComponentDemoModelActions from "../../actions/outputComponentDemoModelActions";
 import { getDeployed } from "../../api/Nongh/getDeployed";
 import { getAllPermalink, deletePermalink } from "../../api/Nongh/permalink";
 import Dialog from "material-ui/Dialog";
 import RaisedButton from "material-ui/RaisedButton";
 import toastr from "toastr";
-import { Layout, Icon, Button, Card, Row, Col } from "antd";
-const { Header, Content, Footer, Sider } = Layout;
-import { Input } from "antd";
+import { Layout, Icon, Button, Card, Row, Col, Input } from "antd";
 import Radium from "radium";
+
+const { Header, Content, Footer, Sider } = Layout;
 const Search = Input.Search;
+
 toastr.options.closeButton = true;
 
 class NonGHUserProfileComponent extends React.Component {
@@ -63,7 +62,7 @@ class NonGHUserProfileComponent extends React.Component {
             while (tmp.length) {
               allDeployed.push(tmp.splice(0, 4));
             }
-            this.setState({ allDeployed: allDeployed });
+            this.setState({ allDeployed });
           })
           .then(() => {
             const stateToPut = {};
@@ -116,7 +115,7 @@ class NonGHUserProfileComponent extends React.Component {
             while (tmp.length) {
               allDeployed.push(tmp.splice(0, 4));
             }
-            this.setState({ allDeployed: allDeployed }, () => {
+            this.setState({ allDeployed }, () => {
               deletePermalink({
                 user_id: this.props.user.id,
                 project_id
@@ -202,7 +201,7 @@ class NonGHUserProfileComponent extends React.Component {
   }
 
   render() {
-    document.body.scrollTop = (document.documentElement.scrollTop = 0);
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
     const styles = this.getStyles();
 
     const deletionActions = [
@@ -233,7 +232,7 @@ class NonGHUserProfileComponent extends React.Component {
           </Row>
         </Header>
         <Content style={styles.content}>
-          {this.state.user &&
+          {this.state.user && (
             <div style={styles.contentDiv}>
               <Row>
                 {this.state.allDeployed.map(row => (
@@ -291,7 +290,8 @@ class NonGHUserProfileComponent extends React.Component {
                                       this.toggleShowDataDialog({
                                         type: "token",
                                         content: project.token
-                                      })}
+                                      })
+                                    }
                                   >
                                     Token<Icon type="bars" />
                                   </Button>
@@ -307,8 +307,15 @@ class NonGHUserProfileComponent extends React.Component {
                                     onClick={() =>
                                       this.toggleShowDataDialog({
                                         type: "permalink",
-                                        content: `${window.location.protocol}//${window.location.host}${this.state.permalinkHolder[this.state.user.id][project.id].short_relative_url}`
-                                      })}
+                                        content: `${
+                                          window.location.protocol
+                                        }//${window.location.host}${
+                                          this.state.permalinkHolder[
+                                            this.state.user.id
+                                          ][project.id].short_relative_url
+                                        }`
+                                      })
+                                    }
                                   >
                                     Permalink<Icon type="link" />
                                   </Button>
@@ -321,7 +328,8 @@ class NonGHUserProfileComponent extends React.Component {
                                     onClick={() =>
                                       this.toggleDeleteConfirmationDialog(
                                         project.id
-                                      )}
+                                      )
+                                    }
                                   >
                                     Delete <Icon type="delete" />
                                   </Button>
@@ -336,13 +344,11 @@ class NonGHUserProfileComponent extends React.Component {
                   </div>
                 ))}
               </Row>
-            </div>}
+            </div>
+          )}
         </Content>
         <Footer style={styles.footer}>
-          <strong>Origami</strong>
-          {" "}
-          - Created by
-          {" "}
+          <strong>Origami</strong> - Created by{" "}
           <a href="http://cloudcv.org/">Team CloudCV</a>
         </Footer>
 
@@ -360,8 +366,11 @@ class NonGHUserProfileComponent extends React.Component {
                   primary
                   onTouchTap={() =>
                     this.props.history.push(
-                      `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/register/modify`
-                    )}
+                      `/ngh/user/${this.state.projectBeingEdited.name}/${
+                        this.state.projectBeingEdited.id
+                      }/register/modify`
+                    )
+                  }
                 />
               </div>
               <div className="center aligned five wide column">
@@ -370,8 +379,11 @@ class NonGHUserProfileComponent extends React.Component {
                   primary
                   onTouchTap={() =>
                     this.props.history.push(
-                      `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/inputcomponent/modify`
-                    )}
+                      `/ngh/user/${this.state.projectBeingEdited.name}/${
+                        this.state.projectBeingEdited.id
+                      }/inputcomponent/modify`
+                    )
+                  }
                 />
               </div>
               <div className="center aligned five wide column">
@@ -380,8 +392,11 @@ class NonGHUserProfileComponent extends React.Component {
                   primary
                   onTouchTap={() =>
                     this.props.history.push(
-                      `/ngh/user/${this.state.projectBeingEdited.name}/${this.state.projectBeingEdited.id}/outputcomponent/modify`
-                    )}
+                      `/ngh/user/${this.state.projectBeingEdited.name}/${
+                        this.state.projectBeingEdited.id
+                      }/outputcomponent/modify`
+                    )
+                  }
                 />
               </div>
             </div>
@@ -453,4 +468,6 @@ function mapDispatchToProps(dispatch) {
 
 const NonGHUserProfile = Radium(NonGHUserProfileComponent);
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NonGHUserProfile));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(NonGHUserProfile)
+);

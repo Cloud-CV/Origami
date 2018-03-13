@@ -4,7 +4,9 @@ export function getRepo(repoName) {
   return new Promise((resolve, reject) => {
     request
       .get(
-        `https://api.github.com/repos/${localStorage.getItem("username")}/${repoName}`
+        `https://api.github.com/repos/${localStorage.getItem(
+          "username"
+        )}/${repoName}`
       )
       .set("Authorization", `token ${localStorage.getItem("access_token")}`)
       .set("Accept", "application/json")
@@ -22,7 +24,9 @@ export function checkDockerfile(repoName, repoId) {
   return new Promise((resolve, reject) => {
     request
       .get(
-        `https://api.github.com/repos/${localStorage.getItem("username")}/${repoName}/contents`
+        `https://api.github.com/repos/${localStorage.getItem(
+          "username"
+        )}/${repoName}/contents`
       )
       .set("Authorization", `token ${localStorage.getItem("access_token")}`)
       .set("Accept", "application/json")
@@ -36,12 +40,15 @@ export function checkDockerfile(repoName, repoId) {
           } else {
             resolve(
               downloadDockercomposeFile([
-                `https://${localStorage.getItem("access_token")}:x-oauth-basic@github.com/${localStorage.getItem("username")}/${repoName}`,
+                `https://${localStorage.getItem(
+                  "access_token"
+                )}:x-oauth-basic@github.com/${localStorage.getItem(
+                  "username"
+                )}/${repoName}`,
                 localStorage.getItem("username"),
                 repoName,
-                JSON.parse(res.text)[
-                  allFileNames.indexOf("docker-compose.yml")
-                ].download_url,
+                JSON.parse(res.text)[allFileNames.indexOf("docker-compose.yml")]
+                  .download_url,
                 repoId
               ])
             );

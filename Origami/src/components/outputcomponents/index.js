@@ -17,7 +17,9 @@ import AreaGraphOutputShowCaseCard from "./AreaGraphOutput/AreaGraphOutputShowca
 
 export function getOutputComponentById(id, props, calling_context, data) {
   let headers = [];
+  /*eslint-disable*/
   props.map((header, index) => {
+    /*eslint-enable*/
     headers[index] = header;
   });
   switch (id) {

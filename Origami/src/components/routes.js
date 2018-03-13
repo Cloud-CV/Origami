@@ -11,14 +11,10 @@ import NonGHUserProfileComponent from "./user/nonghUserProfile";
 import LoginComponent from "./stateless/login";
 import InitialSetupComponent from "./initialSetupPage";
 
-import RegisterNonGHPageComponent
-  from "./deployment/UsePrebuiltProject/registerPage";
-import SelectInputComponentsNonGHPageComponent
-  from "./deployment/UsePrebuiltProject/selectInputComponentPage";
-import SelectOutputComponentsNonGHPageComponent
-  from "./deployment/UsePrebuiltProject/selectOutputComponentPage";
-import NGHDemoPageComponent
-  from "./deployment/UsePrebuiltProject/nghDemoPage";
+import RegisterNonGHPageComponent from "./deployment/UsePrebuiltProject/registerPage";
+import SelectInputComponentsNonGHPageComponent from "./deployment/UsePrebuiltProject/selectInputComponentPage";
+import SelectOutputComponentsNonGHPageComponent from "./deployment/UsePrebuiltProject/selectOutputComponentPage";
+import NGHDemoPageComponent from "./deployment/UsePrebuiltProject/nghDemoPage";
 import NGHDemoFrameComponent from "./deployment/UsePrebuiltProject/nghDemoFrame";
 
 export default (
@@ -26,7 +22,11 @@ export default (
     <Route exact path="/" component={HomePageComponent} />
 
     <Route exact path="/ngh/user" component={NonGHUserProfileComponent} />
-    <Route exact path="/ngh/user/register" component={RegisterNonGHPageComponent} />
+    <Route
+      exact
+      path="/ngh/user/register"
+      component={RegisterNonGHPageComponent}
+    />
     <Route
       path="/ngh/user/:repoName/:repoId/register/:type?"
       component={RegisterNonGHPageComponent}

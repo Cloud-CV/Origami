@@ -46,8 +46,8 @@ class singleOutput extends React.Component {
       >
         <div className="content">
           <div className="header">
-            {typeof this.props.header == "object"
-              ? this.props.header["label"]
+            {typeof this.props.header === "object"
+              ? this.props.header.label
               : this.props.header}
           </div>
         </div>
@@ -74,8 +74,8 @@ class singleOutput extends React.Component {
 
         <Dialog
           title={
-            typeof this.props.header == "object"
-              ? this.props.header["label"]
+            typeof this.props.header === "object"
+              ? this.props.header.label
               : this.props.header
           }
           modal={false}

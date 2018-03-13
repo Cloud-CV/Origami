@@ -2,8 +2,7 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { withRouter } from "react-router-dom";
 import CustomCard from "../../stateless/cards";
-import OutputShowcaseModifyDialog
-  from "../BaseOutputComponent/OutputShowcaseModifyDialog";
+import OutputShowcaseModifyDialog from "../BaseOutputComponent/OutputShowcaseModifyDialog";
 import OutputShowcaseCard from "../BaseOutputComponent/OutputShowcaseCard.js";
 import AreaGraphOutputPreview from "./AreaGraphOutputPreview";
 import toastr from "toastr";
@@ -14,7 +13,8 @@ class AreaGraphOutputShowcaseCard extends OutputShowcaseCard {
     let initHeaders = [];
     if (props.demoProps.outputComponentDemoModel.base_component_id === 6) {
       initHeaders = props.demoProps.outputComponentDemoModel.props;
-      this.selected = props.demoProps.outputComponentDemoModel.base_component_id ===
+      this.selected =
+        props.demoProps.outputComponentDemoModel.base_component_id ===
         props.demoProps.selected;
     }
     this.state = {
@@ -30,13 +30,12 @@ class AreaGraphOutputShowcaseCard extends OutputShowcaseCard {
       this.props.history.push("/");
     } else {
       let propsToStore = [];
-      this.state.headers.map(header => {        
-      if(typeof header=='object'){
-       propsToStore.push({id:"",label: header["label"]});
-      }
-      else{
-       propsToStore.push({id:"",label: header});
-       }
+      this.state.headers.map(header => {
+        if (typeof header === "object") {
+          propsToStore.push({ id: "", label: header.label });
+        } else {
+          propsToStore.push({ id: "", label: header });
+        }
       });
       this.outputComponentDemoModelActions
         .updateOutputComponentModel({
@@ -89,7 +88,7 @@ class AreaGraphOutputShowcaseCard extends OutputShowcaseCard {
             }
           ]}
         />
-        {this.state.modifyDialogDisplay &&
+        {this.state.modifyDialogDisplay && (
           <OutputShowcaseModifyDialog
             functions={{
               updateHeaders: this.updateHeaders,
@@ -97,15 +96,17 @@ class AreaGraphOutputShowcaseCard extends OutputShowcaseCard {
               getHeaders: this.getHeaders
             }}
             title="Modify Area Graph Output Component"
-          />}
+          />
+        )}
 
-        {this.state.previewDialogDisplay &&
+        {this.state.previewDialogDisplay && (
           <AreaGraphOutputPreview
             functions={{
               getHeaders: this.getHeaders,
               hidePreviewDialog: this.hidePreviewDialog
             }}
-          />}
+          />
+        )}
       </div>
     );
   }

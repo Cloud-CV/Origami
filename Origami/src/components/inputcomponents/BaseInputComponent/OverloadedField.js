@@ -28,14 +28,16 @@ class OverloadedField extends React.Component {
         <TextField
           hintText="Label"
           onChange={e =>
-            this.addLocalLabelsToParent(this.labelLength, e.target.value)}
+            this.addLocalLabelsToParent(this.labelLength, e.target.value)
+          }
         />
         &nbsp;&nbsp;&nbsp;
         <RaisedButton
           label="Delete"
           primary
           onMouseDown={() =>
-            this.deleteLocalLabelsFromParent(this.state.elementId)}
+            this.deleteLocalLabelsFromParent(this.state.elementId)
+          }
         />
       </div>
     );

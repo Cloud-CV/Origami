@@ -172,8 +172,8 @@ class RegisterPage extends React.Component {
         );
         socket.onmessage = function(response) {
           let data = JSON.parse(response.data);
-          const event = data["event"];
-          data = data["data"];
+          const event = data.event;
+          data = data.data;
           if (event === "fetchedCurrentPort") {
             this.setState({ currentPort: data });
           } else if (event === "gotPublicIP") {
@@ -238,7 +238,9 @@ class RegisterPage extends React.Component {
     }
     if (
       this.state.name.length === 0 ||
+      /*eslint-disable*/
       /[~`!#$%\^&*+=\-\[\]\\';,/{}|":<>\?]/g.test(this.state.name)
+      /*eslint-enable*/
     ) {
       this.setState({ nameErrorText: "Invalid Project Name" });
     } else {
@@ -246,7 +248,9 @@ class RegisterPage extends React.Component {
     }
     if (
       this.state.name.length > 0 &&
+      /*eslint-disable*/
       !/[~`!#$%\^&*+=\-\[\]\\';,/{}|":<>\?]/g.test(this.state.name) &&
+      /*eslint-enable*/
       this.validateIP() &&
       this.validatePort(this.state.port)
     ) {

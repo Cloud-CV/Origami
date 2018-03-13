@@ -22,7 +22,6 @@ class SampleInput extends React.Component {
     this.onDrop = this.onDrop.bind(this);
     this.sendRequest = this.sendRequest.bind(this);
     this.updateFormData = this.updateFormData.bind(this);
-    console.log(props.demo_id);
   }
 
   shouldComponentUpdate() {
@@ -34,7 +33,6 @@ class SampleInput extends React.Component {
     this.state.files.map(file => {
       formData.set(file.newfilename, file.newfile, file.newfilename);
     });
-    console.log(this.props.demo_id);
     formData.set("demo_id", this.props.demo_id);
     $.ajaxSetup({
       headers: {
@@ -44,35 +42,29 @@ class SampleInput extends React.Component {
     let timeout1 = "";
     let timeout2 = "";
     let timeout3 = "";
-    $("#appbar-progress").css("visibility", "visible").promise().done(() => {
-      $("#appbar-progress").progress({
-        percent: "33%"
-      });
-      timeout1 = setTimeout(
-        () => {
+    $("#appbar-progress")
+      .css("visibility", "visible")
+      .promise()
+      .done(() => {
+        $("#appbar-progress").progress({
+          percent: "33%"
+        });
+        timeout1 = setTimeout(() => {
           $("#appbar-progress").progress({
             percent: "50%"
           });
-        },
-        300
-      );
-      timeout2 = setTimeout(
-        () => {
+        }, 300);
+        timeout2 = setTimeout(() => {
           $("#appbar-progress").progress({
             percent: "65%"
           });
-        },
-        600
-      );
-      timeout3 = setTimeout(
-        () => {
+        }, 600);
+        timeout3 = setTimeout(() => {
           $("#appbar-progress").progress({
             percent: "85%"
           });
-        },
-        1000
-      );
-    });
+        }, 1000);
+      });
     $.ajax({
       type: "POST",
       url: "/upload_sample_input",
@@ -82,7 +74,6 @@ class SampleInput extends React.Component {
       processData: false,
       async: true,
       success: data => {
-        console.log(data);
         location.reload();
       },
       error: (xhr, textStatus, errorThrown) => {
@@ -105,18 +96,10 @@ class SampleInput extends React.Component {
     let tmp = [];
     files.forEach((newfile, index) => {
       let newfilename = `sample-image-${index}`;
-      tmp.push({ newfilename: newfilename, newfile: newfile });
+      tmp.push({ newfilename, newfile });
       this.updateImage(newfile);
-      console.log(index);
     });
-    this.setState(
-      {
-        files: tmp
-      },
-      () => {
-        console.log(this.state.files);
-      }
-    );
+    this.setState({ files: tmp });
   }
 
   updateFormData(newfile, newfilename) {
@@ -130,15 +113,18 @@ class SampleInput extends React.Component {
       "www.dropbox.com",
       "dl.dropboxusercontent.com"
     );
-    request.get(url).responseType("blob").end((err, res) => {
-      if (!err) {
-        let blob = new Blob([res.body], {
-          type: "image/png"
-        });
-        this.updateFormData(blob, `sample-image-${this.state.index}`);
-        this.updateImage(this.state.index, blob);
-      }
-    });
+    request
+      .get(url)
+      .responseType("blob")
+      .end((err, res) => {
+        if (!err) {
+          let blob = new Blob([res.body], {
+            type: "image/png"
+          });
+          this.updateFormData(blob, `sample-image-${this.state.index}`);
+          this.updateImage(this.state.index, blob);
+        }
+      });
   }
   render() {
     return (
@@ -150,7 +136,7 @@ class SampleInput extends React.Component {
           <Col span={8} offset={4}>
             <Dropzone
               onDrop={this.onDrop}
-              multiple={true}
+              multiple
               style={{ height: "inherit" }}
             >
               <Card style={{ width: "100%" }} bodyStyle={{ padding: 0 }}>
@@ -169,12 +155,8 @@ class SampleInput extends React.Component {
           </Col>
           <Col span={6} offset={1}>
             <br />
-            <h4>
-              Upload images to serve as sample inputs for the demo.{" "}
-            </h4>
-            <h5>
-              Note: You can press CTRL and select multiple images.
-            </h5>
+            <h4>Upload images to serve as sample inputs for the demo. </h4>
+            <h5>Note: You can press CTRL and select multiple images.</h5>
             <br />
             <Row>
               <Col offset={8}>
@@ -191,14 +173,16 @@ class SampleInput extends React.Component {
           <br />
         </Row>
         <br />
-        {appConfig.DROPBOX_API_KEY !== "API_KEY" &&
+        {appConfig.DROPBOX_API_KEY !== "API_KEY" && (
           <div>
             <div className="ui horizontal divider">Or</div>
             <Row>
               <Col style={{ height: "100%", cursor: "pointer" }}>
                 <DropboxChooser
                   appKey={appConfig.DROPBOX_API_KEY}
+                  /*eslint-disable*/
                   success={files => onSelect(files)}
+                  /*eslint-enable*/
                   multiselect={false}
                 >
                   <a className="ui blue button">
@@ -208,7 +192,8 @@ class SampleInput extends React.Component {
                 </DropboxChooser>
               </Col>
             </Row>
-          </div>}
+          </div>
+        )}
       </Content>
     );
   }
