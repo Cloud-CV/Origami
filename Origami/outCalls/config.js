@@ -1,7 +1,7 @@
 const appConfig = {
-  CLIENT_IP: process.env.HOST,
-  CLIENT_PORT: process.env.PORT,
+  CLIENT_IP: 'localhost',
+  CLIENT_PORT: 8000,
   DROPBOX_API_KEY: "API_KEY"
 };
-
+ 
 module.exports = appConfig;

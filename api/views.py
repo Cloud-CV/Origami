@@ -19,7 +19,9 @@ from api.constants import DEFAULT_IMAGE
 import datetime
 import json
 from collections import OrderedDict
-import sys
+import sys 
+import requests 
+
 
 class DemoViewSet(ModelViewSet):
     """
@@ -124,6 +126,45 @@ def redirect_login(req):
         '/login?status=passed&token=' + token.token +
         '&username=' + user.username +
         '&user_id=' + str(user.id))
+
+
+@api_view(['POST'])
+def demo_input(request,user_id,name):
+
+    try:
+        demo=Demo.objects.get(user_id=user_id,name=name)
+    except:
+        error="Demo Not found"
+        return Response(error, status=response_status.HTTP_404_NOT_FOUND)
+
+    token=demo.token
+    url=str("http://"+str(token.split(":")[1])+":"+str(token.split(":")[4])+"/event");
+    print(request.data)
+
+    try:
+        text=[]
+        text.append(request.data['text'])
+    except:
+        text=[]
+    try:
+        image=[]
+        image.append(request.data['image'])
+    except:
+        image=[]
+    txt={}
+    for i in  range(0,len(text)):
+        inp=('input-text-{}').format(i)
+        print inp
+        txt[inp]=text[i]
+    print txt
+    r = requests.post(url=url, data=txt)
+    text_array = json.loads(r.content)['data']
+    print ("r ===")
+    print text_array
+
+
+    data=["lol"]
+    return Response(data, status=response_status.HTTP_200_OK)
 
 
 @api_view(['GET'])
