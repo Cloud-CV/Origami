@@ -1,23 +1,25 @@
-var path = require("path")
-var webpack = require('webpack')
-var BundleTracker = require('webpack-bundle-tracker')
+import webpack from "webpack";
+import path from "path";
+import BundleTracker from "webpack-bundle-tracker";
 
 const GLOBALS = {
   "process.env.NODE_ENV": JSON.stringify("production")
 };
 
-config = {
+const config = {
   entry: "./Origami/src/index",
   target: "web",
   output: {
-    path: path.resolve('./django_server/static/bundles/local/'),
+    path: path.resolve(
+      path.join(__dirname, "django_server/static/bundles/local/")
+    ),
     filename: "bundle.js"
   },
   plugins: [
     new webpack.DefinePlugin(GLOBALS),
     new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.AggressiveMergingPlugin(),
-    new BundleTracker({filename: './webpack-stats-local.json'})
+    new BundleTracker({ filename: "./webpack-stats-local.json" })
   ],
   module: {
     rules: [
@@ -46,4 +48,4 @@ config = {
   }
 };
 
-module.exports = config
+module.exports = config;
