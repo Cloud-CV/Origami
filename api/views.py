@@ -25,6 +25,13 @@ import ast
 from PIL import Image
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.views import APIView
+from rest_framework import status
+from .serializers import FileSerializer
+import numpy as np
+import base64
+import magic
+mime = magic.Magic(mime=True)
+
 class DemoViewSet(ModelViewSet):
     """
     Contains information about inputs/outputs of a single program
@@ -134,11 +141,26 @@ class ApiInputView(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request, user_id,name):
+
         file_serializer = ApiInputSerializer(data=request.data)
         if file_serializer.is_valid():
-            print file_serializer.data
-            return Response(file_serializer.data, status=response_status.HTTP_200_OK)
+            k=file_serializer.validated_data
+            print k
 
+
+            return Response(k, status=response_status.HTTP_200_OK)
+
+
+
+class FileView(APIView):
+  parser_classes = (MultiPartParser, FormParser)
+  def post(self, request, *args, **kwargs):
+    file_serializer = FileSerializer(data=request.data)
+    if file_serializer.is_valid():
+        file_serializer.save()
+        return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+    else:
+        return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -185,6 +207,7 @@ def demo_input(request,user_id,name):
 
 
     txt={}
+    files={}
     txt['api']=True
     for i in  range(0,len(text)):
         inp=('input-text-{}').format(i)
@@ -194,15 +217,36 @@ def demo_input(request,user_id,name):
     for i in  range(0,len(image)):
         inp=('input-image-{}').format(i)
         print inp
-        txt[inp]=image[i]
+        files[inp]=image[i]
 
-    txt=json.dumps(txt)
-    headers = {'Content-Type': 'application/json'}
-    r = requests.post(url=url,headers=headers, data=txt)
 
-    data = json.loads(r.content)['data']
+    r = requests.post(url=url,files=files, data=txt)
 
-    return Response(request.data['image'], status=response_status.HTTP_200_OK)
+    data = json.loads(r.content)['data'][1]
+    
+
+    file_path= data['image-output']
+    tempdata = []
+    with open(file_path, 'rb') as file:
+        src = ''
+        content_type = mime.from_file(file_path)
+        if content_type == 'image/jpeg' or content_type == 'image/jpg':
+            src += 'data:image/jpeg;base64,'
+        elif content_type == 'image/png':
+            src += 'data:image/png;base64,'
+        src += base64.b64encode(file.read())
+        tempdata.append(src)
+
+    l=tempdata[0]
+    img=Image.open(l)
+    img.show()
+    data={
+    'data':tempdata
+    }
+    data = json.dumps(data, ensure_ascii=False)
+    lol=['run']
+
+    return Response(data, status=response_status.HTTP_200_OK)
 
 
 @api_view(['GET'])

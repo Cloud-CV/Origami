@@ -47,8 +47,9 @@ urlpatterns = [
     url(r'^api/demo/(\d*)/?(\d*)', custom_demo_controller),
     url(r'^api/permalink/?(\d*)/?(\d*)', custom_permalink_controller),
     url(r'^api/', include(router.urls, namespace='api')),
-    url(r'api/input/(\d*)/([-\w]+)/$',ApiInputView.as_view()),
+    url(r'api/input/(\d*)/([-\w]+)/$',demo_input),
     url(r'^inject$', inject),
+    url(r'^upload/$', FileView.as_view(), name='file-upload'),
     url(r'^$',
         generic.TemplateView.as_view(template_name='view1.html')),
 ]
