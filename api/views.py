@@ -21,8 +21,10 @@ import json
 from collections import OrderedDict
 import sys 
 import requests 
-
-
+import ast
+from PIL import Image
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.views import APIView
 class DemoViewSet(ModelViewSet):
     """
     Contains information about inputs/outputs of a single program
@@ -127,10 +129,20 @@ def redirect_login(req):
         '&username=' + user.username +
         '&user_id=' + str(user.id))
 
+class ApiInputView(APIView):
+
+    parser_classes = (MultiPartParser, FormParser)
+
+    def post(self, request, user_id,name):
+        file_serializer = ApiInputSerializer(data=request.data)
+        if file_serializer.is_valid():
+            print file_serializer.data
+            return Response(file_serializer.data, status=response_status.HTTP_200_OK)
+
+
 
 @api_view(['POST'])
 def demo_input(request,user_id,name):
-
     try:
         demo=Demo.objects.get(user_id=user_id,name=name)
     except:
@@ -138,8 +150,23 @@ def demo_input(request,user_id,name):
         return Response(error, status=response_status.HTTP_404_NOT_FOUND)
 
     token=demo.token
-    url=str("http://"+str(token.split(":")[1])+":"+str(token.split(":")[4])+"/event");
-    print(request.data)
+    inp=InputComponent.objects.get(demo=demo)
+    props=inp.props
+    text_prop=0
+    image_prop=0
+    props= ast.literal_eval(props)
+    
+    for i in props:
+        if i['id'] == 1:
+            text_prop+=1
+        else:
+            image_prop+=1
+
+    url=str("http://"+str(token.split(":")[1])+":"+str(token.split(":")[4])+"/event")
+
+
+    print("req =")
+    print(request.FILES['image'])
 
     try:
         text=[]
@@ -151,20 +178,31 @@ def demo_input(request,user_id,name):
         image.append(request.data['image'])
     except:
         image=[]
+
+    if(text_prop!=len(text) or image_prop!=len(image)):
+        data='invalid input data'
+        return Response(data, status=response_status.HTTP_400_BAD_REQUEST)
+
+
     txt={}
+    txt['api']=True
     for i in  range(0,len(text)):
         inp=('input-text-{}').format(i)
         print inp
         txt[inp]=text[i]
-    print txt
-    r = requests.post(url=url, data=txt)
-    text_array = json.loads(r.content)['data']
-    print ("r ===")
-    print text_array
 
+    for i in  range(0,len(image)):
+        inp=('input-image-{}').format(i)
+        print inp
+        txt[inp]=image[i]
 
-    data=["lol"]
-    return Response(data, status=response_status.HTTP_200_OK)
+    txt=json.dumps(txt)
+    headers = {'Content-Type': 'application/json'}
+    r = requests.post(url=url,headers=headers, data=txt)
+
+    data = json.loads(r.content)['data']
+
+    return Response(request.data['image'], status=response_status.HTTP_200_OK)
 
 
 @api_view(['GET'])

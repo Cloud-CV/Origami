@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import Demo, InputComponent, OutputComponent, Permalink, RootSettings, SampleInput
+from api.models import Demo, InputComponent, OutputComponent, Permalink, RootSettings, SampleInput,ApiInput
 
 
 class DemoSerializer(serializers.ModelSerializer):
@@ -48,3 +48,8 @@ class SampleInputSerializer(serializers.ModelSerializer):
     class Meta:
         model = SampleInput
         fields = ('id', 'type_of_input', 'value')
+
+class ApiInputSerializer(serializers.ModelSerializer):
+  class Meta():
+    model = ApiInput
+    fields = ('imagefile', 'text')
