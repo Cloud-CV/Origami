@@ -49,7 +49,6 @@ urlpatterns = [
     url(r'^api/', include(router.urls, namespace='api')),
     url(r'api/input/(\d*)/([-\w]+)/$',demo_input),
     url(r'^inject$', inject),
-    url(r'^upload/$', FileView.as_view(), name='file-upload'),
     url(r'^$',
         generic.TemplateView.as_view(template_name='view1.html')),
 ]

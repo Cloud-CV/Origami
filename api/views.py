@@ -24,7 +24,6 @@ import requests
 import ast
 from PIL import Image
 from rest_framework import status
-from .serializers import FileSerializer
 import numpy as np
 import base64
 import magic
@@ -167,12 +166,9 @@ def demo_input(request,user_id,name):
     except:
         image=[]
 
-
-
     if(text_prop!=len(text) or image_prop!=len(image)):
         data='invalid input data'
         return Response(data, status=response_status.HTTP_400_BAD_REQUEST)
-
 
     txt={}
     files={}
@@ -216,8 +212,14 @@ def demo_input(request,user_id,name):
     except:
         pass
 
-    data = json.dumps(output)
+#----graph array output ------#
+    try:
+        graph=data['graph-output']
+        output['graph-output']=graph
+    except:
+        pass
 
+    data = json.dumps(output)
     return Response(data, status=response_status.HTTP_200_OK)
 
 

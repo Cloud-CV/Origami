@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import Demo, InputComponent, OutputComponent, Permalink, RootSettings, SampleInput,ApiInput,File
+from api.models import Demo, InputComponent, OutputComponent, Permalink, RootSettings, SampleInput
 
 
 class DemoSerializer(serializers.ModelSerializer):
