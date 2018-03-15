@@ -49,17 +49,4 @@ class SampleInputSerializer(serializers.ModelSerializer):
         model = SampleInput
         fields = ('id', 'type_of_input', 'value')
 
-class ApiInputSerializer(serializers.ModelSerializer):
-    class Meta():
-        model = ApiInput
-        fields = ('file', 'text')
 
-
-class FileSerializer(serializers.ModelSerializer):
-
-    def create(self, validated_data):
-        return SearchRequest(**validated_data)
-
-    class Meta():
-        model = File
-        fields = ('file', 'remark', 'timestamp')

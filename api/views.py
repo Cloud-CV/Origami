@@ -23,14 +23,13 @@ import sys
 import requests 
 import ast
 from PIL import Image
-from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.views import APIView
 from rest_framework import status
 from .serializers import FileSerializer
 import numpy as np
 import base64
 import magic
 mime = magic.Magic(mime=True)
+
 
 class DemoViewSet(ModelViewSet):
     """
@@ -136,32 +135,6 @@ def redirect_login(req):
         '&username=' + user.username +
         '&user_id=' + str(user.id))
 
-class ApiInputView(APIView):
-
-    parser_classes = (MultiPartParser, FormParser)
-
-    def post(self, request, user_id,name):
-
-        file_serializer = ApiInputSerializer(data=request.data)
-        if file_serializer.is_valid():
-            k=file_serializer.validated_data
-            print k
-
-
-            return Response(k, status=response_status.HTTP_200_OK)
-
-
-
-class FileView(APIView):
-  parser_classes = (MultiPartParser, FormParser)
-  def post(self, request, *args, **kwargs):
-    file_serializer = FileSerializer(data=request.data)
-    if file_serializer.is_valid():
-        file_serializer.save()
-        return Response(file_serializer.data, status=status.HTTP_201_CREATED)
-    else:
-        return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 @api_view(['POST'])
 def demo_input(request,user_id,name):
@@ -185,21 +158,16 @@ def demo_input(request,user_id,name):
             image_prop+=1
 
     url=str("http://"+str(token.split(":")[1])+":"+str(token.split(":")[4])+"/event")
-
-
-    print("req =")
-    print(request.FILES['image'])
-
     try:
-        text=[]
-        text.append(request.data['text'])
+        text=request.data.getlist('text')
     except:
         text=[]
     try:
-        image=[]
-        image.append(request.data['image'])
+        image=request.data.getlist('image')
     except:
         image=[]
+
+
 
     if(text_prop!=len(text) or image_prop!=len(image)):
         data='invalid input data'
@@ -211,40 +179,44 @@ def demo_input(request,user_id,name):
     txt['api']=True
     for i in  range(0,len(text)):
         inp=('input-text-{}').format(i)
-        print inp
         txt[inp]=text[i]
 
     for i in  range(0,len(image)):
         inp=('input-image-{}').format(i)
-        print inp
         files[inp]=image[i]
 
-
     r = requests.post(url=url,files=files, data=txt)
+    data = json.loads(r.content)
 
-    data = json.loads(r.content)['data'][1]
-    
+    output={}
+#----text output---#    
+    try:
+        text=data['text-output']
+        output['text-output']=text
+    except:
+        pass
 
-    file_path= data['image-output']
-    tempdata = []
-    with open(file_path, 'rb') as file:
-        src = ''
-        content_type = mime.from_file(file_path)
-        if content_type == 'image/jpeg' or content_type == 'image/jpg':
-            src += 'data:image/jpeg;base64,'
-        elif content_type == 'image/png':
-            src += 'data:image/png;base64,'
-        src += base64.b64encode(file.read())
-        tempdata.append(src)
+#----image-output--#
+    try:
+        image=data['image-output']
+        tempdata = []
+        for i in image:
+            file_path= i
+            with open(file_path, 'rb') as file:
+                src = ''
+                content_type = mime.from_file(file_path)
+                print content_type
+                if content_type == 'image/jpeg' or content_type == 'image/jpg':
+                    src += 'data:image/jpeg;base64,'
+                elif content_type == 'image/png':
+                    src += 'data:image/png;base64,'
+                src += base64.b64encode(file.read())
+                tempdata.append(src)
+        output['image-output']=tempdata
+    except:
+        pass
 
-    l=tempdata[0]
-    img=Image.open(l)
-    img.show()
-    data={
-    'data':tempdata
-    }
-    data = json.dumps(data, ensure_ascii=False)
-    lol=['run']
+    data = json.dumps(output)
 
     return Response(data, status=response_status.HTTP_200_OK)
 

@@ -143,12 +143,4 @@ class SampleInput(models.Model):
     value = models.CharField(max_length=300)
 
 
-class ApiInput(models.Model):
-    file = models.FileField(blank=True,null=True)
-    text=models.TextField(blank=True,null=True)
 
-
-class File(models.Model):
-  file = models.FileField(blank=False, null=False)
-  remark = models.CharField(max_length=20)
-  timestamp = models.DateTimeField(auto_now_add=True)
