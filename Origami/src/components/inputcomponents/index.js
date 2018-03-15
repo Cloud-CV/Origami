@@ -6,7 +6,7 @@ import ImageInputShowcaseCard from "./ImageInput/ImageInputShowcaseCard";
 
 export function getInputComponentById(
   id,
-  props,
+  inputModelProps,
   calling_context,
   socketId,
   sendAddr
@@ -14,9 +14,7 @@ export function getInputComponentById(
   let labels = [];
   let textLabels = [];
   let imageLabels = [];
-  /*eslint-disable*/
-  props.map((prop, index) => {
-    /*eslint-enable*/
+  inputModelProps.map((prop, index) => {
     if (prop.id === "1") {
       textLabels.push(prop.label);
     } else if (prop.id === "3") {
