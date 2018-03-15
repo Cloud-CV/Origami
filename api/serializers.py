@@ -48,5 +48,3 @@ class SampleInputSerializer(serializers.ModelSerializer):
     class Meta:
         model = SampleInput
         fields = ('id', 'type_of_input', 'value')
-
-
