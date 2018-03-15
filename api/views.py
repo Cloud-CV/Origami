@@ -22,8 +22,6 @@ from collections import OrderedDict
 import sys 
 import requests 
 import ast
-from PIL import Image
-from rest_framework import status
 import numpy as np
 import base64
 import magic
