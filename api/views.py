@@ -199,7 +199,6 @@ def demo_input(request,user_id,name):
             with open(file_path, 'rb') as file:
                 src = ''
                 content_type = mime.from_file(file_path)
-                print content_type
                 if content_type == 'image/jpeg' or content_type == 'image/jpg':
                     src += 'data:image/jpeg;base64,'
                 elif content_type == 'image/png':
