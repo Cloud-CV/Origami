@@ -26,7 +26,6 @@ import {
   Modal
 } from "antd";
 import toastr from "toastr";
-import Dialog from 'material-ui/Dialog';
 const { Header, Content, Footer } = Layout;
 const Option = Select.Option;
 
