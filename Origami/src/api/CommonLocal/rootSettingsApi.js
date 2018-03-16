@@ -8,13 +8,16 @@ const cookies = new Cookies();
 export function checkRootSettings() {
   let URL = `${baseURL}/api/rootsettings`;
   return new Promise((resolve, reject) => {
-    request.get(URL).set("Accept", "application/json").end((err, res) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(res.text);
-      }
-    });
+    request
+      .get(URL)
+      .set("Accept", "application/json")
+      .end((err, res) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res.text);
+        }
+      });
   });
 }
 

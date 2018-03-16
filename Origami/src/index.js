@@ -25,7 +25,6 @@ const muiTheme = getMuiTheme({
   }
 });
 
-
 render(
   <LocaleProvider locale={enUS}>
     <Provider store={store}>

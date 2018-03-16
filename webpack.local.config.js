@@ -1,30 +1,28 @@
-var path = require("path")
-var webpack = require('webpack')
-var BundleTracker = require('webpack-bundle-tracker')
-var path = require("path")
-var webpack = require('webpack')
+import path from "path";
+import webpack from "webpack";
+import BundleTracker from "webpack-bundle-tracker";
 
-config = {
+const config = {
   devtool: "cheap-module-eval-source-map",
   entry: [
-    'webpack-dev-server/client?http://localhost:3000',
-    'webpack/hot/only-dev-server',
+    "webpack-dev-server/client?http://localhost:3000",
+    "webpack/hot/only-dev-server",
     "./Origami/src/index"
   ],
-  devServer: { 
+  devServer: {
     inline: true,
     hot: true
   },
   target: "web",
   output: {
-    path: path.resolve('./django_server/static/bundles/local/'),
-    publicPath: 'http://localhost:3000/static/bundles/',
+    path: path.resolve("./django_server/static/bundles/local/"),
+    publicPath: "http://localhost:3000/static/bundles/",
     filename: "bundle.js"
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    new BundleTracker({filename: './webpack-stats-local.json'})
+    new BundleTracker({ filename: "./webpack-stats-local.json" })
   ],
   module: {
     rules: [
@@ -53,4 +51,4 @@ config = {
   }
 };
 
-module.exports = config
+module.exports = config;

@@ -9,9 +9,18 @@ import { indigo600 } from "material-ui/styles/colors";
 import Dialog from "material-ui/Dialog";
 import toastr from "toastr";
 import Radium from "radium";
-import { Layout, Menu, Icon, Dropdown, Button, Card, Row, Col } from "antd";
+import {
+  Layout,
+  Menu,
+  Icon,
+  Dropdown,
+  Button,
+  Card,
+  Row,
+  Col,
+  Input
+} from "antd";
 const { Header, Content, Footer, Sider } = Layout;
-import { Input } from "antd";
 const Search = Input.Search;
 import { SocialDialog }  from "../social/SocialDialog";
 
@@ -52,7 +61,9 @@ class ShareProfileComponent extends React.Component {
                     JSON.parse(alldeployedRepos).map((demo, index) => {
                       if (index < JSON.parse(alldeployedRepos).length) {
                         const demoToPut = Object.assign({}, demo, {
-                          permalink: `http://${rootData.app_ip}:${rootData.port}${relevantLink[index].short_relative_url}`
+                          permalink: `http://${rootData.app_ip}:${
+                            rootData.port
+                          }${relevantLink[index].short_relative_url}`
                         });
                         allDemos.push(demoToPut);
                       }
@@ -65,7 +76,7 @@ class ShareProfileComponent extends React.Component {
                           allDeployed.push(tmp.splice(0, 4));
                         }
                         this.setState({
-                          allDeployed: allDeployed
+                          allDeployed
                         });
                       }
                     });
@@ -133,16 +144,14 @@ class ShareProfileComponent extends React.Component {
         <Header id="layout-header">
           <Row>
             <Col span={4} offset={1}>
-              <h1 id="logo-title">
-                Public Profile
-              </h1>
+              <h1 id="logo-title">Public Profile</h1>
             </Col>
           </Row>
         </Header>
         <Content style={styles.content}>
-          {this.state.user &&
+          {this.state.user && (
             <div style={styles.contentDiv}>
-              {this.state.allDeployed.length > 0 &&
+              {this.state.allDeployed.length > 0 && (
                 <Row>
                   {this.state.allDeployed.map(row => (
                     <div key={Math.random()}>
@@ -178,7 +187,8 @@ class ShareProfileComponent extends React.Component {
                                       type="primary"
                                       style={{ width: "100%" }}
                                       onClick={() =>
-                                        this.handleShareModal(demo)}
+                                        this.handleShareModal(demo)
+                                      }
                                     >
                                       Share<Icon type="share-alt" />
                                     </Button>
@@ -194,10 +204,13 @@ class ShareProfileComponent extends React.Component {
                     </div>
                   ))}
                   <br />
-                </Row>}
+                </Row>
+              )}
               <br />
-            </div>}
+            </div>
+          )}
         </Content>
+
         <Footer style={styles.footer}>
           Origami - Created by Team CloudCV
         </Footer>
@@ -206,6 +219,7 @@ class ShareProfileComponent extends React.Component {
           handleShareModal={this.handleShareModal.bind(this)}
           demoBeingShown={this.state.demoBeingShown} 
         />
+
       </Layout>
     );
   }

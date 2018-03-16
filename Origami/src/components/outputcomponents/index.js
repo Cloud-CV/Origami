@@ -15,9 +15,14 @@ import ScatterGraphOutputShowCaseCard from "./ScatterGraphOutput/ScatterGraphOut
 import PieChartOutputShowCaseCard from "./PieChartOutput/PieChartOutputShowcaseCard";
 import AreaGraphOutputShowCaseCard from "./AreaGraphOutput/AreaGraphOutputShowcaseCard";
 
-export function getOutputComponentById(id, props, calling_context, data) {
+export function getOutputComponentById(
+  id,
+  outputComponentProps,
+  calling_context,
+  data
+) {
   let headers = [];
-  props.map((header, index) => {
+  outputComponentProps.map((header, index) => {
     headers[index] = header;
   });
   switch (id) {

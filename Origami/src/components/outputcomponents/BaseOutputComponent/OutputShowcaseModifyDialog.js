@@ -34,15 +34,12 @@ class OutputShowcaseModifyDialog extends React.Component {
     let tempText = [];
     allHeaders.map((header, index) => {
       let currentIndex = allHeaders.findIndex(x => x === header);
-      if (typeof header === "object") {
-        header = "";
-      }
       tempText[currentIndex] = (
         <div>
           <TextField
             key={Math.random()}
             hintText="Header"
-            defaultValue={header}
+            defaultValue={typeof header === "object" ? "" : header}
             onChange={e => this.addLocalHeaders(currentIndex, e.target.value)}
           />
           &nbsp;&nbsp;&nbsp;

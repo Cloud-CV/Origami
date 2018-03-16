@@ -8,12 +8,15 @@ export function getComponentDeployed(user_id, repoId, type) {
     URL += `/${repoId}`;
   }
   return new Promise((resolve, reject) => {
-    request.get(URL).set("Accept", "application/json").end((err, res) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(res.text);
-      }
-    });
+    request
+      .get(URL)
+      .set("Accept", "application/json")
+      .end((err, res) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res.text);
+        }
+      });
   });
 }

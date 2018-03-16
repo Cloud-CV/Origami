@@ -8,7 +8,8 @@ const ImageOutput = ({ headers, calling_context, data }) => {
       key={Math.random()}
       className="six wide stackable stretched grid container origami-demo-output-components"
     >
-      <br /><br />
+      <br />
+      <br />
       {headers.map((header, index) => [
         <SingleOutput
           key={Math.random()}

@@ -11,12 +11,9 @@ export function getWebAppStatus(webappaddress) {
         resolve("OK");
       }
     });
-    setTimeout(
-      () => {
-        req.abort();
-        reject("Timeout!");
-      },
-      4000
-    );
+    setTimeout(() => {
+      req.abort();
+      reject("Timeout!");
+    }, 4000);
   });
 }
