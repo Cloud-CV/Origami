@@ -5,8 +5,6 @@ import { getAllPermalink } from "../../api/Nongh/permalink";
 import { getDeployed } from "../../api/Nongh/getDeployed";
 import { is_cloudcv } from "../../api/Generic/getCloudCVDemos";
 import userApi from "../../api/Github/userApi";
-import { indigo600 } from "material-ui/styles/colors";
-import Dialog from "material-ui/Dialog";
 import toastr from "toastr";
 import Radium from "radium";
 import {
