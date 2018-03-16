@@ -28,7 +28,7 @@ import {
 import toastr from "toastr";
 const { Header, Content, Footer } = Layout;
 const Option = Select.Option;
-
+import { SocialDialog }  from "../social/SocialDialog"
 const demoSpinnerStyle = {
   position: "fixed",
   top: "50%",
