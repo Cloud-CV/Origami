@@ -11,9 +11,9 @@ import toastr from "toastr";
 import Radium from "radium";
 import { Layout, Menu, Icon, Dropdown, Button, Card, Row, Col } from "antd";
 const { Header, Content, Footer, Sider } = Layout;
-import { SocialDialog }  from "../social/SocialDialog"
 import { Input } from "antd";
 const Search = Input.Search;
+import { SocialDialog }  from "../social/SocialDialog";
 
 
 
