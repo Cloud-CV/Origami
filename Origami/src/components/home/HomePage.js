@@ -27,9 +27,6 @@ import {
 } from "antd";
 import toastr from "toastr";
 import Dialog from 'material-ui/Dialog';
-import { indigo600 } from 'material-ui/styles/colors';
-import { SocialDialog }  from "../social/SocialDialog"
-
 const { Header, Content, Footer } = Layout;
 const Option = Select.Option;
 
