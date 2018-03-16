@@ -47,8 +47,8 @@ class singleOutput extends React.Component {
       >
         <div className="content">
           <div className="header">
-            {typeof this.props.header == "object"
-              ? this.props.header["label"]
+            {typeof this.props.header === "object"
+              ? this.props.header.label
               : this.props.header}
           </div>
         </div>
@@ -76,7 +76,7 @@ class singleOutput extends React.Component {
         </div>
 
         <Dialog
-          title={this.props.header["label"]}
+          title={this.props.header.label}
           modal={false}
           open={this.state.open}
           autoScrollBodyContent

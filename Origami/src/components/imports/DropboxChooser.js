@@ -34,13 +34,7 @@ export default class DropboxChooser extends Component {
       return null;
     }
 
-    const {
-      success,
-      cancel,
-      linkType,
-      multiselect,
-      extensions
-    } = this.props;
+    const { success, cancel, linkType, multiselect, extensions } = this.props;
 
     window.Dropbox.choose({
       success,
@@ -54,9 +48,11 @@ export default class DropboxChooser extends Component {
   render() {
     return (
       <div onClick={this.onChoose}>
-        {this.props.children
-          ? this.props.children
-          : <button>Open dropbox chooser</button>}
+        {this.props.children ? (
+          this.props.children
+        ) : (
+          <button>Open dropbox chooser</button>
+        )}
       </div>
     );
   }

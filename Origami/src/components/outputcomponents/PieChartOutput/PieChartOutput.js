@@ -8,7 +8,8 @@ const PieChartOutput = ({ headers, calling_context, data }) => {
       key={Math.random()}
       className="six wide stackable stretched grid container"
     >
-      <br /><br />
+      <br />
+      <br />
       {headers.map((header, index) => [
         <SingleOutput
           key={Math.random()}

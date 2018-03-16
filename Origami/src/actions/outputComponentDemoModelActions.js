@@ -1,12 +1,8 @@
 import * as types from "./actionTypes";
 import { getComponentDeployed } from "../api/CommonLocal/getComponentDeployed";
 import { addComponentDeployed } from "../api/CommonLocal/addComponentDeployed";
-import {
-  modifyComponentDeployed
-} from "../api/CommonLocal/modifyComponentDeployed";
-import {
-  deleteComponentDeployed
-} from "../api/CommonLocal/deleteComponentDeployed";
+import { modifyComponentDeployed } from "../api/CommonLocal/modifyComponentDeployed";
+import { deleteComponentDeployed } from "../api/CommonLocal/deleteComponentDeployed";
 
 export function updateOutputComponentModelSuccess(model) {
   return { type: types.ADD_OUTPUT_COMPONENT_DEMO_MODEL_SUCCESS, model };

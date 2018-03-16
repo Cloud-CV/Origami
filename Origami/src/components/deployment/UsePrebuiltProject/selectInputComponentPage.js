@@ -4,12 +4,9 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as nonghDemoModelActions from "../../../actions/nonghDemoModelActions";
-import * as inputComponentDemoModelActions
-  from "../../../actions/inputComponentDemoModelActions";
+import * as inputComponentDemoModelActions from "../../../actions/inputComponentDemoModelActions";
 import { getAllInputComponentsForShowcase } from "../../inputcomponents";
-import {
-  getComponentDeployed
-} from "../../../api/CommonLocal/getComponentDeployed";
+import { getComponentDeployed } from "../../../api/CommonLocal/getComponentDeployed";
 import { Step, Stepper, StepLabel } from "material-ui/Stepper";
 import { grey900 } from "material-ui/styles/colors";
 import toastr from "toastr";
@@ -27,15 +24,18 @@ class SelectInputComponentPage extends React.Component {
   }
 
   componentWillMount() {
-    getComponentDeployed(this.state.user_id, this.props.match.params.repoId, "input")
+    getComponentDeployed(
+      this.state.user_id,
+      this.props.match.params.repoId,
+      "input"
+    )
       .then(inputComponentSeedData => {
         if (JSON.parse(inputComponentSeedData).length > 0) {
           let dataToSeed = {
             id: JSON.parse(inputComponentSeedData)[0].id,
             user_id: JSON.parse(inputComponentSeedData)[0].user_id,
-            base_component_id: JSON.parse(inputComponentSeedData)[
-              0
-            ].base_component_id,
+            base_component_id: JSON.parse(inputComponentSeedData)[0]
+              .base_component_id,
             props: JSON.parse(inputComponentSeedData)[0].props
           };
           this.setState({ inputComponentDemoModel: dataToSeed });
@@ -65,11 +65,10 @@ class SelectInputComponentPage extends React.Component {
   }
 
   render() {
-    document.body.scrollTop = (document.documentElement.scrollTop = 0);
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
 
     return (
       <div className="ui relaxed stackable grid fluid">
-
         <div className="ui relaxed stackable grid fluid container">
           <div
             style={{
@@ -100,12 +99,12 @@ class SelectInputComponentPage extends React.Component {
             </div>
 
             <div className="ui horizontal divider row">
-              <span><hr /></span>
+              <span>
+                <hr />
+              </span>
             </div>
 
-            <div
-              className="fifteen wide column stretched stackable centered row"
-            >
+            <div className="fifteen wide column stretched stackable centered row">
               <div
                 className="ui three padded column stackable grid"
                 style={{ marginLeft: "3%", minHeight: "90vh" }}
@@ -114,8 +113,11 @@ class SelectInputComponentPage extends React.Component {
                   demoModel: this.props.nonghDemoModel,
                   user: this.props.user,
                   inputComponentDemoModel: this.state.inputComponentDemoModel,
-                  inputComponentModelActions: this.props.inputComponentModelActions,
-                  forwardAddress: `/ngh/user/${this.props.nonghDemoModel.name}/${this.props.nonghDemoModel.id}/outputcomponent`,
+                  inputComponentModelActions: this.props
+                    .inputComponentModelActions,
+                  forwardAddress: `/ngh/user/${
+                    this.props.nonghDemoModel.name
+                  }/${this.props.nonghDemoModel.id}/outputcomponent`,
                   params: this.props.match.params,
                   selected: this.state.inputComponentDemoModel.base_component_id
                 }).map((showcasecard, index) => showcasecard)}

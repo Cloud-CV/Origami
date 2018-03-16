@@ -2,46 +2,50 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { grey700, cyan100 } from "material-ui/styles/colors";
 
-const CustomCard = (
-  {
-    header,
-    heading,
-    width,
-    centeredParent,
-    centeredSegment,
-    displayData,
-    buttonData,
-    selected,
-    context
-  }
-) => {
-  const parentClass = `${width ? width : "four"} wide stackable ${centeredParent ? "" : "centered"} column`;
+const CustomCard = ({
+  header,
+  heading,
+  width,
+  centeredParent,
+  centeredSegment,
+  displayData,
+  buttonData,
+  selected,
+  context
+}) => {
+  const parentClass = `${width ? width : "four"} wide stackable ${
+    centeredParent ? "" : "centered"
+  } column`;
   const cardClass = `ui card blue segment ${centeredSegment ? "centered" : ""}`;
   const headerToPut = selected ? `${header} - (In Use)` : header;
 
   return (
     <div className={parentClass}>
       <div className={cardClass}>
-        {selected &&
+        {selected && (
           <div className="ui blue right corner label">
             <h1>*</h1>
-          </div>}
+          </div>
+        )}
         <div className="content" style={{ backgroundColor: cyan100 }}>
-          {context === "profile" &&
+          {context === "profile" && (
             <i
               className="right floated large red circular remove icon"
               style={{ cursor: "pointer" }}
               onClick={() =>
                 buttonData
                   .filter(button => button.label === "Delete")[0]
-                  .onDeployClick()}
-            />}
+                  .onDeployClick()
+              }
+            />
+          )}
           <div className="header">{headerToPut}</div>
         </div>
-        {heading &&
+        {heading && (
           <div className="content">
             <div className="heading">{heading}</div>
-          </div>}
+          </div>
+        )}
         <div className="content">
           <div className="ui small feed">
             <div className="event">

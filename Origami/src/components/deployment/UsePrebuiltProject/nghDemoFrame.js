@@ -6,9 +6,7 @@ import { getInputComponentById } from "../../inputcomponents";
 import { getOutputComponentById } from "../../outputcomponents";
 import { getDeployed } from "../../../api/Nongh/getDeployed";
 import { modifyDeployed } from "../../../api/Nongh/modifyDeployed";
-import {
-  getComponentDeployed
-} from "../../../api/CommonLocal/getComponentDeployed";
+import { getComponentDeployed } from "../../../api/CommonLocal/getComponentDeployed";
 import SampleInput from "../../sampleinput";
 import SampleImage from "../../sampleinput/SampleImage";
 import toastr from "toastr";
@@ -46,15 +44,13 @@ class NGHDemoFramePage extends React.Component {
     this.sendRequest = this.sendRequest.bind(this);
     this.updateFormData = this.updateFormData.bind(this);
     setTimeout(() => {
-      var hs = document.getElementsByTagName('style');
-      var link = document.getElementsByTagName('link');
-      for (var i=0, max = hs.length; i < max; i++) {
-        if (hs[i])  
-          hs[i].parentNode.removeChild(hs[i]);
+      let hs = document.getElementsByTagName("style");
+      let link = document.getElementsByTagName("link");
+      for (let i = 0, max = hs.length; i < max; i++) {
+        if (hs[i]) hs[i].parentNode.removeChild(hs[i]);
       }
-      for (var i=0, max = link.length; i < max; i++) {
-        if (link[i])  
-          link[i].parentNode.removeChild(link[i]);
+      for (let i = 0, max = link.length; i < max; i++) {
+        if (link[i]) link[i].parentNode.removeChild(link[i]);
       }
     }, 1000);
     if (this.state.iframe) this.parentWindow = window.parent;
@@ -71,9 +67,9 @@ class NGHDemoFramePage extends React.Component {
     let socket = this.socket;
     socket.onmessage = function(response) {
       let data = JSON.parse(response.data);
-      const event = data["event"];
-      data = data["data"];
-      if (event == "injectOutputData") {
+      const event = data.event;
+      data = data.data;
+      if (event === "injectOutputData") {
         if (data.data) {
           this.outputInjected(data.data);
           this.setState({
@@ -85,15 +81,12 @@ class NGHDemoFramePage extends React.Component {
           $("#appbar-progress").progress({
             percent: "100%"
           });
-          setTimeout(
-            () => {
-              $("#appbar-progress").css("visibility", "hidden");
-              $("#appbar-progress").progress({
-                percent: "0%"
-              });
-            },
-            1000
-          );
+          setTimeout(() => {
+            $("#appbar-progress").css("visibility", "hidden");
+            $("#appbar-progress").progress({
+              percent: "0%"
+            });
+          }, 1000);
         }
         if (data.terminalData) {
           this.setState({
@@ -143,12 +136,12 @@ class NGHDemoFramePage extends React.Component {
           "input"
         ).then(data => {
           let pdata = JSON.parse(data);
-          if (pdata['text'] != 'Not Found') {
+          if (pdata.text !== "Not Found") {
             if (Object.keys(JSON.parse(data)).length) {
               this.setState({ inputModel: JSON.parse(data)[0] }, () => {
                 let val = 0;
                 this.state.inputModel.props.map((prop, index) => {
-                  if (prop['id'] === '3') {
+                  if (prop.id === "3") {
                     val += 1;
                   }
                 });
@@ -163,7 +156,7 @@ class NGHDemoFramePage extends React.Component {
           "output"
         ).then(data => {
           let pdata = JSON.parse(data);
-          if (pdata['text'] != 'Not Found') {
+          if (pdata.text !== "Not Found") {
             if (Object.keys(JSON.parse(data)).length) {
               this.setState({ outputModel: JSON.parse(data)[0] });
             }
@@ -171,6 +164,13 @@ class NGHDemoFramePage extends React.Component {
         });
       }
     );
+  }
+
+  componentDidMount() {
+    let onLoad = {
+      action: "DEMO_ONLOAD"
+    };
+    if (this.state.iframe) this.parentWindow.postMessage(onLoad, "*");
   }
 
   componentWillUnmount() {
@@ -200,35 +200,29 @@ class NGHDemoFramePage extends React.Component {
     let timeout1 = "";
     let timeout2 = "";
     let timeout3 = "";
-    $("#appbar-progress").css("visibility", "visible").promise().done(() => {
-      $("#appbar-progress").progress({
-        percent: "33%"
-      });
-      timeout1 = setTimeout(
-        () => {
+    $("#appbar-progress")
+      .css("visibility", "visible")
+      .promise()
+      .done(() => {
+        $("#appbar-progress").progress({
+          percent: "33%"
+        });
+        timeout1 = setTimeout(() => {
           $("#appbar-progress").progress({
             percent: "50%"
           });
-        },
-        300
-      );
-      timeout2 = setTimeout(
-        () => {
+        }, 300);
+        timeout2 = setTimeout(() => {
           $("#appbar-progress").progress({
             percent: "65%"
           });
-        },
-        600
-      );
-      timeout3 = setTimeout(
-        () => {
+        }, 600);
+        timeout3 = setTimeout(() => {
           $("#appbar-progress").progress({
             percent: "85%"
           });
-        },
-        1000
-      );
-    });
+        }, 1000);
+      });
     this.inputSubmitted(formData);
 
     $.ajax({
@@ -246,15 +240,12 @@ class NGHDemoFramePage extends React.Component {
         clearTimeout(timeout1);
         clearTimeout(timeout2);
         clearTimeout(timeout3);
-        setTimeout(
-          () => {
-            $("#appbar-progress").css("visibility", "hidden");
-            $("#appbar-progress").progress({
-              percent: "0%"
-            });
-          },
-          1000
-        );
+        setTimeout(() => {
+          $("#appbar-progress").css("visibility", "hidden");
+          $("#appbar-progress").progress({
+            percent: "0%"
+          });
+        }, 1000);
       },
       error: (xhr, textStatus, errorThrown) => {
         $("#appbar-progress").css("visibility", "hidden");
@@ -275,8 +266,10 @@ class NGHDemoFramePage extends React.Component {
         index: this.state.index + 1
       },
       () => {
-        if (this.state.index == this.state.imageInputCount) {
-          let sendAddr = `http://${this.state.demoModel.token.split(":")[1]}:${this.state.demoModel.token.split(":")[4]}/event`;
+        if (this.state.index === this.state.imageInputCount) {
+          let sendAddr = `http://${this.state.demoModel.token.split(":")[1]}:${
+            this.state.demoModel.token.split(":")[4]
+          }/event`;
           this.sendRequest(sendAddr);
         }
       }
@@ -288,23 +281,18 @@ class NGHDemoFramePage extends React.Component {
       this.setState({ resetBorder: false });
     }
     let url = window.location.origin + path;
-    request.get(url).responseType("blob").end((err, res) => {
-      if (!err) {
-        let file = new File([res.body], `input-image-${this.state.index}`, {
-          type: "image/png",
-          lastModified: Date.now()
-        });
-        this.updateFormData(file, `input-image-${this.state.index}`);
-      }
-    });
-  }
-
-
-  componentDidMount() {
-    let onLoad = {
-      action: "DEMO_ONLOAD"
-    };
-    if (this.state.iframe) this.parentWindow.postMessage(onLoad, "*");
+    request
+      .get(url)
+      .responseType("blob")
+      .end((err, res) => {
+        if (!err) {
+          let file = new File([res.body], `input-image-${this.state.index}`, {
+            type: "image/png",
+            lastModified: Date.now()
+          });
+          this.updateFormData(file, `input-image-${this.state.index}`);
+        }
+      });
   }
 
   addStylesheet(data) {
@@ -320,15 +308,15 @@ class NGHDemoFramePage extends React.Component {
   }
 
   inputSubmitted(formData) {
-    var data = {};
-    for(var pair of formData.entries()) {
-      data[pair[0]] = pair[1]; 
+    let data = {};
+    for (let pair of formData.entries()) {
+      data[pair[0]] = pair[1];
     }
     let inputSubmitData = {
       action: "INPUT_SUBMITTED",
       payload: data
     };
-    if (this.state.iframe) this.parentWindow.postMessage(inputSubmitData, '*');
+    if (this.state.iframe) this.parentWindow.postMessage(inputSubmitData, "*");
   }
 
   outputInjected(data) {
@@ -336,11 +324,10 @@ class NGHDemoFramePage extends React.Component {
       action: "OUTPUT_SUBMITTED",
       payload: data
     };
-    if (this.state.iframe) this.parentWindow.postMessage(outputSubmitData, '*');
+    if (this.state.iframe) this.parentWindow.postMessage(outputSubmitData, "*");
   }
 
   receiveMessage(message) {
-    console.log(message.data.action);
     switch (message.data.action) {
       case "STYLESHEET_SEND":
         this.addStylesheet(message.data);
@@ -356,64 +343,63 @@ class NGHDemoFramePage extends React.Component {
   }
 
   render() {
-
     return (
       <div className="origami-demo-wrapper">
-        {this.state.demoModel &&
-        <div
-          className="origami-demo-container"
-          style={{ visibility: this.state.showOutput }}
-        >
+        {this.state.demoModel && (
           <div
-            className="origami-demo"
-            id="output-outer"
+            className="origami-demo-container"
+            style={{ visibility: this.state.showOutput }}
           >
-            <div className="origami-demo-header">
-              <h1 className="origami-demo-heading">{this.state.demoModel.name}</h1>
-              <i className="origami-demo-description">{this.state.demoModel.description}</i>
-            </div>
-            {this.state.sampleinput.length > 0 &&
-              <Row>
-                <h3 className="origami-demo-output-heading">Sample Inputs</h3>
-                <br />
-                {this.state.sampleinput.map((row, index) => (
-                  <div key={index}>
-                    <Row>
-                      {row.map((input, index) => (
-                        <SampleImage
-                          key={index}
-                          onSelect={this.onSelect}
-                          value={input.value}
-                          resetBorder={this.state.resetBorder}
-                        />
-                      ))}
-                    </Row>
-                    <br />
-                  </div>
-                ))}
-              </Row>}
+            <div className="origami-demo" id="output-outer">
+              <div className="origami-demo-header">
+                <h1 className="origami-demo-heading">
+                  {this.state.demoModel.name}
+                </h1>
+                <i className="origami-demo-description">
+                  {this.state.demoModel.description}
+                </i>
+              </div>
+              {this.state.sampleinput.length > 0 && (
+                <Row>
+                  <h3 className="origami-demo-output-heading">Sample Inputs</h3>
+                  <br />
+                  {this.state.sampleinput.map((row, index) => (
+                    <div key={index}>
+                      <Row>
+                        {row.map((input, index) => (
+                          <SampleImage
+                            key={index}
+                            onSelect={this.onSelect}
+                            value={input.value}
+                            resetBorder={this.state.resetBorder}
+                          />
+                        ))}
+                      </Row>
+                      <br />
+                    </div>
+                  ))}
+                </Row>
+              )}
 
-            <div className="origami-demo-input">
-              <h3 className="origami-demo-input-heading">
-                Input
-              </h3>
-              <div>  
-                {Object.keys(this.state.demoModel).length &&
-                Object.keys(this.state.inputModel).length > 0 &&
-                getInputComponentById(
-                  this.state.inputModel.base_component_id,
-                  this.state.inputModel.props,
-                  "demoiframe",
-                  this.socketId,
-                  `http://${this.state.demoModel.token.split(":")[1]}:${this.state.demoModel.token.split(":")[4]}/event`
-                )}
-              </div>  
-            </div>
+              <div className="origami-demo-input">
+                <h3 className="origami-demo-input-heading">Input</h3>
+                <div>
+                  {Object.keys(this.state.demoModel).length &&
+                    Object.keys(this.state.inputModel).length > 0 &&
+                    getInputComponentById(
+                      this.state.inputModel.base_component_id,
+                      this.state.inputModel.props,
+                      "demoiframe",
+                      this.socketId,
+                      `http://${this.state.demoModel.token.split(":")[1]}:${
+                        this.state.demoModel.token.split(":")[4]
+                      }/event`
+                    )}
+                </div>
+              </div>
 
-            <div className="origami-demo-output" id="output-div">
-              <h3 className="origami-demo-output-heading">
-                Output
-              </h3>
+              <div className="origami-demo-output" id="output-div">
+                <h3 className="origami-demo-output-heading">Output</h3>
                 {Object.keys(this.state.demoModel).length &&
                   Object.keys(this.state.outputModel).length > 0 &&
                   getOutputComponentById(
@@ -422,9 +408,10 @@ class NGHDemoFramePage extends React.Component {
                     "demo",
                     this.state.outputData
                   )}
+              </div>
             </div>
           </div>
-        </div>}
+        )}
       </div>
     );
   }
@@ -458,4 +445,6 @@ function mapDispatchToProps(dispatch) {
   return {};
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NGHDemoFramePage));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(NGHDemoFramePage)
+);

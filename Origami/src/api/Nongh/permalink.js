@@ -8,26 +8,32 @@ const cookies = new Cookies();
 export function getSinglePermalink(user_id, project_id) {
   let URL = `${baseURL}/api/permalink/${user_id}/${project_id}`;
   return new Promise((resolve, reject) => {
-    request.get(URL).set("Accept", "application/json").end((err, res) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(res.text);
-      }
-    });
+    request
+      .get(URL)
+      .set("Accept", "application/json")
+      .end((err, res) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res.text);
+        }
+      });
   });
 }
 
 export function getAllPermalink() {
   let URL = `${baseURL}/api/permalink`;
   return new Promise((resolve, reject) => {
-    request.get(URL).set("Accept", "application/json").end((err, res) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(res.text);
-      }
-    });
+    request
+      .get(URL)
+      .set("Accept", "application/json")
+      .end((err, res) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res.text);
+        }
+      });
   });
 }
 

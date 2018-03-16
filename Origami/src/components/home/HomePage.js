@@ -3,7 +3,7 @@ import { PropTypes } from "prop-types";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { BounceLoader } from 'react-spinners';
+import { BounceLoader } from "react-spinners";
 import {
   is_cloudcv,
   getAllDemosByCloudCV
@@ -23,9 +23,9 @@ import {
   Row,
   Col,
   Input,
-  Select
+  Select,
+  Modal
 } from "antd";
-import { Modal } from "antd";
 import toastr from "toastr";
 
 const { Header, Content, Footer } = Layout;
@@ -46,10 +46,10 @@ const TwitterIcon = generateShareIcon("twitter");
 const GooglePlusIcon = generateShareIcon("google");
 const LinkedinIcon = generateShareIcon("linkedin");
 const demoSpinnerStyle = {
-  position: 'fixed',
-  top: '50%',
-  left: '50%'
-  }
+  position: "fixed",
+  top: "50%",
+  left: "50%"
+};
 
 class HomePage extends React.Component {
   constructor(props, context) {
@@ -88,7 +88,7 @@ class HomePage extends React.Component {
         while (tmp.length) {
           allDeployed.push(tmp.splice(0, 4));
         }
-        this.setState({ allDeployed: allDeployed });
+        this.setState({ allDeployed });
         this.setState({ demoLoading: false });
       })
       .then(() => {
@@ -132,7 +132,9 @@ class HomePage extends React.Component {
   }
 
   goToDemoPage(demo) {
-    this.props.history.push(this.state.permalinkHolder[demo.id].short_relative_url);
+    this.props.history.push(
+      this.state.permalinkHolder[demo.id].short_relative_url
+    );
   }
 
   findDemo(search_term) {
@@ -145,7 +147,7 @@ class HomePage extends React.Component {
             allDeployed.push(tmp.splice(0, 4));
           }
           this.setState({
-            allDeployed: allDeployed
+            allDeployed
           });
         } else {
           this.setState({ allDeployed: [] });
@@ -173,7 +175,7 @@ class HomePage extends React.Component {
   handleClick(e) {
     if (!this.state.login && e.key === "2") {
       this.initiateLogin();
-    } else if (e.key == "3") {
+    } else if (e.key === "3") {
       this.getDocs();
     }
   }
@@ -184,96 +186,94 @@ class HomePage extends React.Component {
   }
 
   getDocs() {
-    window.location = "http://cloudcv-origami.readthedocs.io/en/latest/index.html";
+    window.location =
+      "http://cloudcv-origami.readthedocs.io/en/latest/index.html";
   }
 
   render() {
     return (
       <Layout style={{ background: "#FEFEFE" }}>
-        {this.props.login
-          ? <Header id="layout-header">
-              <Row>
-                <Col span={3} offset={1}>
-                  <h2 id="logo-title">
-                    Origami
-                  </h2>
-                </Col>
-                <Col span={12} offset={3}>
-                  <Input.Search
-                    id="search"
-                    placeholder="Search for demos, users"
-                    onSearch={value => this.findDemo(value)}
-                  />
-                </Col>
+        {this.props.login ? (
+          <Header id="layout-header">
+            <Row>
+              <Col span={3} offset={1}>
+                <h2 id="logo-title">Origami</h2>
+              </Col>
+              <Col span={12} offset={3}>
+                <Input.Search
+                  id="search"
+                  placeholder="Search for demos, users"
+                  onSearch={value => this.findDemo(value)}
+                />
+              </Col>
+              <Col span={3} offset={0}>
                 <Col span={3} offset={0}>
-                  <Col span={3} offset={0}>
-                    <Select
-                      defaultValue="demo"
-                      style={{ width: 85 }}
-                      onChange={value => this.setState({ searchBy: value })}
-                    >
-                      <Option value="demo">demo</Option>
-                      <Option value="user">user</Option>
-                    </Select>
-                  </Col>
-                </Col>
-              </Row>
-            </Header>
-          : <Header id="layout-header-no-login">
-              <Row>
-                <Col span={3} offset={1}>
-                  <h2 id="logo">
-                    <img src="/static/img/origami.png" width="180" />
-                  </h2>
-                </Col>
-                <Col span={9} offset={1}>
-                  <Input.Search
-                    id="search"
-                    placeholder="Search for demos, users"
-                    onSearch={value => this.findDemo(value)}
-                  />
-                </Col>
-                <Col span={3} offset={0}>
-                  <Col span={3} offset={0}>
-                    <Select
-                      defaultValue="demo"
-                      style={{ width: 85 }}
-                      onChange={value => this.setState({ searchBy: value })}
-                    >
-                      <Option value="demo">demo</Option>
-                      <Option value="user">user</Option>
-                    </Select>
-                  </Col>
-                </Col>
-                <Col span={6} offset={1}>
-                  <Menu
-                    mode="horizontal"
-                    defaultSelectedKeys={["1"]}
-                    style={{ lineHeight: "64px" }}
-                    onClick={this.handleClick}
+                  <Select
+                    defaultValue="demo"
+                    style={{ width: 85 }}
+                    onChange={value => this.setState({ searchBy: value })}
                   >
-                    <Menu.Item key="1">Home</Menu.Item>
-                    <Menu.Item key="2">
-
-                      Login
-
-                    </Menu.Item>
-                    <Menu.Item key="3">Docs</Menu.Item>
-                  </Menu>
+                    <Option value="demo">demo</Option>
+                    <Option value="user">user</Option>
+                  </Select>
                 </Col>
-              </Row>
-            </Header>}
+              </Col>
+            </Row>
+          </Header>
+        ) : (
+          <Header id="layout-header-no-login">
+            <Row>
+              <Col span={3} offset={1}>
+                <h2 id="logo">
+                  <img src="/static/img/origami.png" width="180" />
+                </h2>
+              </Col>
+              <Col span={9} offset={1}>
+                <Input.Search
+                  id="search"
+                  placeholder="Search for demos, users"
+                  onSearch={value => this.findDemo(value)}
+                />
+              </Col>
+              <Col span={3} offset={0}>
+                <Col span={3} offset={0}>
+                  <Select
+                    defaultValue="demo"
+                    style={{ width: 85 }}
+                    onChange={value => this.setState({ searchBy: value })}
+                  >
+                    <Option value="demo">demo</Option>
+                    <Option value="user">user</Option>
+                  </Select>
+                </Col>
+              </Col>
+              <Col span={6} offset={1}>
+                <Menu
+                  mode="horizontal"
+                  defaultSelectedKeys={["1"]}
+                  style={{ lineHeight: "64px" }}
+                  onClick={this.handleClick}
+                >
+                  <Menu.Item key="1">Home</Menu.Item>
+                  <Menu.Item key="2">Login</Menu.Item>
+                  <Menu.Item key="3">Docs</Menu.Item>
+                </Menu>
+              </Col>
+            </Row>
+          </Header>
+        )}
         <Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
           <div
             style={{ padding: 12, background: "#FEFEFE", textAlign: "center" }}
           >
-          {this.state.demoLoading
-          ? <div className="demoSpinner" style={demoSpinnerStyle}>
-              <BounceLoader color={'#33aadd'} size={80}/>
-            </div>
-          :<Row>
-              {Object.keys(this.state.allDeployed).length > 0
-                ? this.state.allDeployed.map(row => (
+            {this.state.demoLoading ? (
+              <div className="demoSpinner" style={demoSpinnerStyle}>
+                <BounceLoader color={"#33aadd"} size={80} />
+              </div>
+            ) : (
+              <Row>
+                {Object.keys(this.state.allDeployed).length > 0 ? (
+                  this.state.allDeployed.map(row => (
                     <div key={Math.random()}>
                       <Row>
                         {row.map(demo => (
@@ -312,10 +312,13 @@ class HomePage extends React.Component {
                       <br />
                     </div>
                   ))
-                : <Col span={24} style={{ width: "100%" }}>
+                ) : (
+                  <Col span={24} style={{ width: "100%" }}>
                     <h4> Demo not found. Try Searching for another demo</h4>
-                  </Col>}
-            </Row>}
+                  </Col>
+                )}
+              </Row>
+            )}
           </div>
         </Content>
         <Footer
@@ -327,10 +330,7 @@ class HomePage extends React.Component {
             boxShadow: "0px -2px 5px #E0E0E0"
           }}
         >
-          <strong>Origami</strong>
-          {" "}
-          - Created by
-          {" "}
+          <strong>Origami</strong> - Created by{" "}
           <a href="http://cloudcv.org/">Team CloudCV</a>
         </Footer>
       </Layout>
@@ -356,4 +356,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HomePage));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(HomePage)
+);
