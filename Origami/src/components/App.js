@@ -221,12 +221,19 @@ class App extends React.Component {
             width="200"
           >
             <div id="logo-login">
-              <img src="/static/img/origami.png" width="180" />
+              <img
+                src="/static/img/origami.png"
+                width="180"
+                onClick={_ =>
+                  this.handleClickAfterLogin({ key: "2" }, navLinks)
+                }
+              />
             </div>
             <Menu
               style={{ background: "#FEFEFE" }}
               mode="inline"
               defaultSelectedKeys={[currentActiveKey || "2"]}
+              selectedKeys={[currentActiveKey || "2"]}
               onClick={e => this.handleClickAfterLogin(e, navLinks)}
             >
               <Menu.Item key="1" style={{ fontSize: "16px" }}>
