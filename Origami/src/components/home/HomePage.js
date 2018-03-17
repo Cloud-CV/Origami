@@ -13,7 +13,6 @@ import { getSearchedDemos } from "../../api/Nongh/getSearchedDemos";
 import HomePageDemoCard from "../stateless/homePageDemoCard";
 import { getAllPermalink } from "../../api/Nongh/permalink";
 import * as loginActions from "../../actions/loginActions";
-import { ShareButtons, ShareCounts, generateShareIcon } from "react-share";
 import {
   Layout,
   Menu,
@@ -27,24 +26,9 @@ import {
   Modal
 } from "antd";
 import toastr from "toastr";
-
 const { Header, Content, Footer } = Layout;
 const Option = Select.Option;
-const {
-  FacebookShareButton,
-  GooglePlusShareButton,
-  LinkedinShareButton,
-  TwitterShareButton
-} = ShareButtons;
-const {
-  FacebookShareCount,
-  GooglePlusShareCount,
-  LinkedinShareCount
-} = ShareCounts;
-const FacebookIcon = generateShareIcon("facebook");
-const TwitterIcon = generateShareIcon("twitter");
-const GooglePlusIcon = generateShareIcon("google");
-const LinkedinIcon = generateShareIcon("linkedin");
+import { SocialDialog }  from "../social/SocialDialog"
 const demoSpinnerStyle = {
   position: "fixed",
   top: "50%",
@@ -95,9 +79,14 @@ class HomePage extends React.Component {
         const stateToPut = {};
         getAllPermalink().then(data => {
           JSON.parse(data).map(perma => {
-            if (!stateToPut[perma.user_id]) {
-              stateToPut[perma.user_id] = {};
+            if (!stateToPut[perma.proect_id]) {
+              stateToPut[perma.project_id] = {};
             }
+
+            let permalink = `${window.location.protocol}//${
+              window.location.host
+            }${perma.short_relative_url}`;
+            perma['permalink'] = permalink;
             stateToPut[perma.project_id] = perma;
             this.setState({
               permalinkHolder: Object.assign({}, stateToPut)
@@ -111,11 +100,13 @@ class HomePage extends React.Component {
   }
 
   handleShareModal(demoBeingShown) {
+    let id = demoBeingShown['id'];
+    if (demoBeingShown != false)
+      demoBeingShown['permalink'] = this.state.permalinkHolder[id]['permalink'];
     this.setState({ demoBeingShown }, () => {
       this.setState({ shareModalOpen: !this.state.shareModalOpen });
     });
   }
-
   success() {
     const modal = Modal.info({
       title: "Logging you in"
@@ -295,15 +286,29 @@ class HomePage extends React.Component {
                               <div className="custom-card">
                                 <p>{demo.description}</p>
                                 <br />
-                                <Button
-                                  type="primary"
-                                  id="launchButton"
-                                  style={{ marginBottom: "5%" }}
-                                  onClick={() => this.goToDemoPage(demo)}
-                                >
-                                  Demo<Icon type="rocket" />
-                                </Button>
-                                <br />
+                                <Row>
+                                  <Col span={11} offset={1}>
+                                    <Button
+                                      type="primary"
+                                      id="launchButton"
+                                      style={{ marginBottom: '5%' }}
+                                      onClick={() => this.goToDemoPage(demo)}
+                                    >
+                                      Demo<Icon type="rocket" />
+                                    </Button>
+                                  </Col>
+                                  <Col span={10} offset={1}>
+                                    <Button
+                                      type="primary"
+                                      style={{ width: '100%' }}
+                                      onClick={() =>
+                                        this.handleShareModal(demo)
+                                      }
+                                    >
+                                      Share<Icon type="share-alt" />
+                                    </Button>
+                                  </Col>
+                                </Row>
                               </div>
                             </Card>
                           </Col>
@@ -333,6 +338,11 @@ class HomePage extends React.Component {
           <strong>Origami</strong> - Created by{" "}
           <a href="http://cloudcv.org/">Team CloudCV</a>
         </Footer>
+        <SocialDialog 
+          shareModalOpen={this.state.shareModalOpen} 
+          handleShareModal={this.handleShareModal.bind(this)}
+          demoBeingShown={this.state.demoBeingShown} 
+        />
       </Layout>
     );
   }

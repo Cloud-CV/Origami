@@ -5,10 +5,7 @@ import { getAllPermalink } from "../../api/Nongh/permalink";
 import { getDeployed } from "../../api/Nongh/getDeployed";
 import { is_cloudcv } from "../../api/Generic/getCloudCVDemos";
 import userApi from "../../api/Github/userApi";
-import { indigo600 } from "material-ui/styles/colors";
-import Dialog from "material-ui/Dialog";
 import toastr from "toastr";
-import { ShareButtons, ShareCounts, generateShareIcon } from "react-share";
 import Radium from "radium";
 import {
   Layout,
@@ -23,22 +20,9 @@ import {
 } from "antd";
 const { Header, Content, Footer, Sider } = Layout;
 const Search = Input.Search;
+import { SocialDialog }  from "../social/SocialDialog";
 
-const {
-  FacebookShareButton,
-  GooglePlusShareButton,
-  LinkedinShareButton,
-  TwitterShareButton
-} = ShareButtons;
-const {
-  FacebookShareCount,
-  GooglePlusShareCount,
-  LinkedinShareCount
-} = ShareCounts;
-const FacebookIcon = generateShareIcon("facebook");
-const TwitterIcon = generateShareIcon("twitter");
-const GooglePlusIcon = generateShareIcon("google");
-const LinkedinIcon = generateShareIcon("linkedin");
+
 
 class ShareProfileComponent extends React.Component {
   constructor(props) {
@@ -224,96 +208,16 @@ class ShareProfileComponent extends React.Component {
             </div>
           )}
         </Content>
-        <Footer style={styles.footer}>Origami - Created by Team CloudCV</Footer>
-        <Dialog
-          title="Share This Demo"
-          modal={false}
-          open={this.state.shareModalOpen}
-          onRequestClose={this.handleShareModal}
-          autoScrollBodyContent
-        >
-          <div className="ui padded centered grid">
-            <div
-              className="ui row stackable column grid"
-              style={{ cursor: "pointer" }}
-            >
-              <TwitterShareButton
-                url={this.state.demoBeingShown.permalink}
-                title={this.state.demoBeingShown.name}
-                hashtags={["cloudcv", "cvfy"]}
-                className="ui row"
-              >
-                <TwitterIcon size={64} round />
-              </TwitterShareButton>
-            </div>
 
-            <div
-              className="ui eight wide stackable row column grid"
-              style={{ cursor: "pointer" }}
-            >
-              <FacebookShareButton
-                url={this.state.demoBeingShown.permalink}
-                title={this.state.demoBeingShown.name}
-                className="ui row"
-              >
-                <FacebookIcon size={64} round />
-              </FacebookShareButton>
-              <FacebookShareCount url={this.state.demoBeingShown.permalink}>
-                {count => (
-                  <div
-                    className="ui compact inverted segment"
-                    style={{ backgroundColor: indigo600 }}
-                  >
-                    {count} Shares
-                  </div>
-                )}
-              </FacebookShareCount>
-            </div>
+        <Footer style={styles.footer}>
+          Origami - Created by Team CloudCV
+        </Footer>
+          <SocialDialog 
+          shareModalOpen={this.state.shareModalOpen} 
+          handleShareModal={this.handleShareModal.bind(this)}
+          demoBeingShown={this.state.demoBeingShown} 
+        />
 
-            <div
-              className="ui eight wide stackable row column grid"
-              style={{ cursor: "pointer" }}
-            >
-              <GooglePlusShareButton
-                url={this.state.demoBeingShown.permalink}
-                className="ui row"
-              >
-                <GooglePlusIcon size={64} round />
-              </GooglePlusShareButton>
-
-              <GooglePlusShareCount url={this.state.demoBeingShown.permalink}>
-                {count => (
-                  <div className="ui compact red inverted segment">
-                    {count} Shares
-                  </div>
-                )}
-              </GooglePlusShareCount>
-            </div>
-
-            <div
-              className="ui stackable row column grid"
-              style={{ cursor: "pointer" }}
-            >
-              <LinkedinShareButton
-                url={this.state.demoBeingShown.permalink}
-                title={this.state.demoBeingShown.name}
-                windowWidth={750}
-                windowHeight={600}
-                className="ui row"
-              >
-                <LinkedinIcon size={64} round />
-              </LinkedinShareButton>
-
-              <LinkedinShareCount url={this.state.demoBeingShown.permalink}>
-                {count => (
-                  <div className="ui compact blue inverted segment">
-                    {count} Shares
-                  </div>
-                )}
-              </LinkedinShareCount>
-            </div>
-          </div>
-        </Dialog>
       </Layout>
     );
   }
