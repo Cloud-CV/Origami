@@ -10,9 +10,7 @@ const config = {
   entry: "./Origami/src/index",
   target: "web",
   output: {
-    path: path.resolve(
-      path.join(__dirname, "django_server/static/bundles/local/")
-    ),
+    path: path.resolve(path.join(__dirname, "django_server/static/bundles/")),
     filename: "bundle.js"
   },
   plugins: [

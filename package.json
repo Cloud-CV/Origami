@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Create a demo of your machine learning model with CloudCV",
   "scripts": {
-    "remove:bundle": "node_modules/.bin/rimraf ./django_server/static/bundles/local",
-    "clean:bundle": "npm-run-all remove:bundle && mkdir ./django_server/static/bundles/local",
+    "remove:bundle": "node_modules/.bin/rimraf ./django_server/static/bundles",
+    "clean:bundle": "npm-run-all remove:bundle && mkdir ./django_server/static/bundles",
     "build": "npm-run-all clean:bundle test lint:build && babel-node Origami/scripts/build.js",
     "start": "babel-node server.js",
     "open:src": "babel-node server.js",
