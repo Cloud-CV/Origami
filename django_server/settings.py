@@ -161,7 +161,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
 WEBPACK_LOADER = {
     'DEFAULT': {
-        'BUNDLE_DIR_NAME': 'bundles/local/',  # end with slash
+        'BUNDLE_DIR_NAME': 'bundles/',  # end with slash
         'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats-local.json'),
     }
 }

@@ -15,7 +15,7 @@ const config = {
   },
   target: "web",
   output: {
-    path: path.resolve("./django_server/static/bundles/local/"),
+    path: path.resolve("./django_server/static/bundles/"),
     publicPath: "http://localhost:3000/static/bundles/",
     filename: "bundle.js"
   },

@@ -36,7 +36,7 @@ api/migrations/*
 !api/migrations/__init__.py
 
 # Bundle
-django_server/static/bundles/local
+django_server/static/bundles
 
 # Python
 *.pyc
@@ -47,3 +47,6 @@ origami.env
 
 # package-lock.json as we use yarn for dependency management
 package-lock.json
+
+# Webpack stats
+webpack-stats-local.json
