@@ -920,6 +920,27 @@ class DemoViewSetTests(TestCase):
             response["base_component_id"],
             input_component["base_component_id"])
 
+
+    def test_user_input_component(self):
+        input_component=self.input_component
+        url="/api/input-component/{}/user_input_component/{}/".format(input_component["base_component_id"],input_component["user_id"])
+        response=self.client.get(url)
+        response = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(response["user_id"], input_component["user_id"])
+        self.assertEqual(response["props"], input_component["props"])
+        self.assertEqual(
+            response["base_component_id"],
+            input_component["base_component_id"])
+
+    def test_user_input_component_404(self):
+        input_component=self.input_component
+        url="/api/input-component/{}/user_input_component/{}/".format(input_component["base_component_id"],12345)
+        response=self.client.get(url)
+        status=response.status_code
+        response = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(status,404)
+        self.assertEqual(response["error"],"Error 404")
+
     def test_Output_Component_View_Set(self):
         output_component = self.output_component
         response = self.client.get('/api/output-component/')
@@ -929,6 +950,26 @@ class DemoViewSetTests(TestCase):
         self.assertEqual(
             response["base_component_id"],
             output_component["base_component_id"])
+
+    def test_user_output_component(self):
+        output_component=self.output_component
+        url="/api/output-component/{}/user_output_component/{}/".format(output_component["base_component_id"],output_component["user_id"])
+        response=self.client.get(url)
+        response = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(response["user_id"], output_component["user_id"])
+        self.assertEqual(response["props"], output_component["props"])
+        self.assertEqual(
+            response["base_component_id"],
+            output_component["base_component_id"])
+
+    def test_user_output_component_404(self):
+        output_component=self.output_component
+        url="/api/output-component/{}/user_output_component/{}/".format(output_component["base_component_id"],12345)
+        response=self.client.get(url)
+        status=response.status_code
+        response = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(status,404)
+        self.assertEqual(response["error"],"Error 404")
 
 
 class ChannelTests(ChannelTestCase):

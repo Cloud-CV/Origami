@@ -44,11 +44,20 @@ class InputComponentViewSet(ModelViewSet):
     def get_queryset(self):
         return InputComponent.objects.all()
 
-    @detail_route(methods=['get'])
-    def user_input_component(self, request, id, user_id):
-        input = InputComponent.objects(id=id, user_id=user_id).first()
-        serialize = InputComponentSerializer(input)
-        return Response(serialize.data, status=response_status.HTTP_200_OK)
+    @detail_route(methods=['get'],url_path='user_input_component/(?P<user_id>[0-9]+)')
+    def user_input_component(self, request, id, user_id=None):
+        data=None
+        status=None
+        try:
+            input = InputComponent.objects.get(base_component_id=id, user_id=user_id)
+            serialize = InputComponentSerializer(input)
+            data=serialize.data
+            status=response_status.HTTP_200_OK
+        except:
+            data={"error":"Error 404"}
+            status=response_status.HTTP_404_NOT_FOUND
+        
+        return Response(data, status=status)
 
 
 user_input_component = InputComponentViewSet.as_view(
@@ -66,11 +75,21 @@ class OutputComponentViewSet(ModelViewSet):
     def get_queryset(self):
         return OutputComponent.objects.all()
 
-    @detail_route(methods=['get'])
+    @detail_route(methods=['get'],url_path='user_output_component/(?P<user_id>[0-9]+)')
     def user_output_component(self, request, id, user_id):
-        output = OutputComponent.objects(id=id, user_id=user_id).first()
-        serialize = OutputComponentSerializer(output)
-        return Response(serialize.data, status=response_status.HTTP_200_OK)
+        data=None
+        status=None
+        try:
+            input = OutputComponent.objects.get(base_component_id=id, user_id=user_id)
+            serialize = OutputComponentSerializer(input)
+            data=serialize.data
+            status=response_status.HTTP_200_OK
+        except:
+            data={"error":"Error 404"}
+            status=response_status.HTTP_404_NOT_FOUND
+        
+        return Response(data, status=status)
+
 
 
 user_output_component = OutputComponentViewSet.as_view(
