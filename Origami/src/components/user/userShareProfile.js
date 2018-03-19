@@ -20,9 +20,7 @@ import {
 } from "antd";
 const { Header, Content, Footer, Sider } = Layout;
 const Search = Input.Search;
-import { SocialDialog }  from "../social/SocialDialog";
-
-
+import { SocialDialog } from "../social/SocialDialog";
 
 class ShareProfileComponent extends React.Component {
   constructor(props) {
@@ -209,15 +207,12 @@ class ShareProfileComponent extends React.Component {
           )}
         </Content>
 
-        <Footer style={styles.footer}>
-          Origami - Created by Team CloudCV
-        </Footer>
-          <SocialDialog 
-          shareModalOpen={this.state.shareModalOpen} 
+        <Footer style={styles.footer}>Origami - Created by Team CloudCV</Footer>
+        <SocialDialog
+          shareModalOpen={this.state.shareModalOpen}
           handleShareModal={this.handleShareModal.bind(this)}
-          demoBeingShown={this.state.demoBeingShown} 
+          demoBeingShown={this.state.demoBeingShown}
         />
-
       </Layout>
     );
   }

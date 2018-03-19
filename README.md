@@ -87,9 +87,18 @@ python manage.py migrate
 
 1. Start the server by `python manage.py runserver --noworker`
 2. Start the worker by `python manage.py runworker`
-3. `node server.js`
+3. `yarn run dev`
 4. Go to [localhost:8000](http://localhost:8000/)
   Visit [Read the docs](http://cloudcv-origami.readthedocs.io/en/latest/) for further instructions on Getting started
+
+### Contributing to Origami
+
+1. Make sure your run tests on your changes before you push the code using:
+	* `python manage.py test`
+	* `yarn run test`
+
+2. Fix lint issues with the code using:
+	* `yarn run lint:fix`
 
 ## License
 
