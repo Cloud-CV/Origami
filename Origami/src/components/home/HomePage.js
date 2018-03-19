@@ -28,7 +28,7 @@ import {
 import toastr from "toastr";
 const { Header, Content, Footer } = Layout;
 const Option = Select.Option;
-import { SocialDialog }  from "../social/SocialDialog"
+import { SocialDialog } from "../social/SocialDialog";
 const demoSpinnerStyle = {
   position: "fixed",
   top: "50%",
@@ -86,7 +86,7 @@ class HomePage extends React.Component {
             let permalink = `${window.location.protocol}//${
               window.location.host
             }${perma.short_relative_url}`;
-            perma['permalink'] = permalink;
+            perma.permalink = permalink;
             stateToPut[perma.project_id] = perma;
             this.setState({
               permalinkHolder: Object.assign({}, stateToPut)
@@ -100,9 +100,9 @@ class HomePage extends React.Component {
   }
 
   handleShareModal(demoBeingShown) {
-    let id = demoBeingShown['id'];
-    if (demoBeingShown != false)
-      demoBeingShown['permalink'] = this.state.permalinkHolder[id]['permalink'];
+    let id = demoBeingShown.id;
+    if (demoBeingShown !== false)
+      demoBeingShown.permalink = this.state.permalinkHolder[id].permalink;
     this.setState({ demoBeingShown }, () => {
       this.setState({ shareModalOpen: !this.state.shareModalOpen });
     });
@@ -291,7 +291,7 @@ class HomePage extends React.Component {
                                     <Button
                                       type="primary"
                                       id="launchButton"
-                                      style={{ marginBottom: '5%' }}
+                                      style={{ marginBottom: "5%" }}
                                       onClick={() => this.goToDemoPage(demo)}
                                     >
                                       Demo<Icon type="rocket" />
@@ -300,7 +300,7 @@ class HomePage extends React.Component {
                                   <Col span={10} offset={1}>
                                     <Button
                                       type="primary"
-                                      style={{ width: '100%' }}
+                                      style={{ width: "100%" }}
                                       onClick={() =>
                                         this.handleShareModal(demo)
                                       }
@@ -338,10 +338,10 @@ class HomePage extends React.Component {
           <strong>Origami</strong> - Created by{" "}
           <a href="http://cloudcv.org/">Team CloudCV</a>
         </Footer>
-        <SocialDialog 
-          shareModalOpen={this.state.shareModalOpen} 
-          handleShareModal={this.handleShareModal.bind(this)}
-          demoBeingShown={this.state.demoBeingShown} 
+        <SocialDialog
+          shareModalOpen={this.state.shareModalOpen}
+          handleShareModal={this.handleShareModal}
+          demoBeingShown={this.state.demoBeingShown}
         />
       </Layout>
     );
