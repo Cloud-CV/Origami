@@ -26,9 +26,12 @@ import {
   Modal
 } from "antd";
 import toastr from "toastr";
+import { SocialDialog } from "../social/SocialDialog";
+import { trimAndPad } from "../../utils/generalUtils";
+import { DEMO_CARD_DESCRIP_MAX_LEN } from "../../constants";
+
 const { Header, Content, Footer } = Layout;
 const Option = Select.Option;
-import { SocialDialog } from "../social/SocialDialog";
 const demoSpinnerStyle = {
   position: "fixed",
   top: "50%",
@@ -284,7 +287,12 @@ class HomePage extends React.Component {
                                 <img width="100%" src={demo.cover_image} />
                               </div>
                               <div className="custom-card">
-                                <p>{demo.description}</p>
+                                <p>
+                                  {trimAndPad(
+                                    demo.description,
+                                    DEMO_CARD_DESCRIP_MAX_LEN
+                                  )}
+                                </p>
                                 <br />
                                 <Row>
                                   <Col span={11} offset={1}>
@@ -340,7 +348,7 @@ class HomePage extends React.Component {
         </Footer>
         <SocialDialog
           shareModalOpen={this.state.shareModalOpen}
-          handleShareModal={this.handleShareModal}
+          handleShareModal={this.handleShareModal.bind(this)}
           demoBeingShown={this.state.demoBeingShown}
         />
       </Layout>

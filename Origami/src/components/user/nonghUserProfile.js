@@ -14,6 +14,8 @@ import RaisedButton from "material-ui/RaisedButton";
 import toastr from "toastr";
 import { Layout, Icon, Button, Card, Row, Col, Input } from "antd";
 import Radium from "radium";
+import { trimAndPad } from "../../utils/generalUtils";
+import { DEMO_CARD_DESCRIP_MAX_LEN } from "../../constants";
 
 const { Header, Content, Footer, Sider } = Layout;
 const Search = Input.Search;
@@ -252,7 +254,12 @@ class NonGHUserProfileComponent extends React.Component {
                               <img width="100%" src={project.cover_image} />
                             </div>
                             <div className="custom-card">
-                              <p>{project.description}</p>
+                              <p>
+                                {trimAndPad(
+                                  project.description,
+                                  DEMO_CARD_DESCRIP_MAX_LEN
+                                )}
+                              </p>
                               <br />
                               IP: {project.token.split(":")[1]} <br />
                               Port: {project.token.split(":")[4]} <br />
