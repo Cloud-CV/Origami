@@ -18,9 +18,12 @@ import {
   Col,
   Input
 } from "antd";
+import { SocialDialog } from "../social/SocialDialog";
+import { trimAndPad } from "../../utils/generalUtils";
+import { DEMO_CARD_DESCRIP_MAX_LEN } from "../../constants";
+
 const { Header, Content, Footer, Sider } = Layout;
 const Search = Input.Search;
-import { SocialDialog } from "../social/SocialDialog";
 
 class ShareProfileComponent extends React.Component {
   constructor(props) {
@@ -166,7 +169,12 @@ class ShareProfileComponent extends React.Component {
                                 <img width="100%" src={demo.cover_image} />
                               </div>
                               <div className="custom-card">
-                                <p>{demo.description}</p>
+                                <p>
+                                  {trimAndPad(
+                                    demo.description,
+                                    DEMO_CARD_DESCRIP_MAX_LEN
+                                  )}
+                                </p>
                                 <br />
                                 <Row>
                                   <Col span={11} offset={1}>
