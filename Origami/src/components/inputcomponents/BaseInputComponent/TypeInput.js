@@ -134,6 +134,8 @@ class TypeInput extends React.Component {
   render() {
     let fin = [];
     let k = this.props.prop;
+    let text_index=0;
+    let image_index=0;
     let layout=[];
     for (var i = 0; i < k.length; i++) {
       layout.push(k[i]["layout"])
@@ -142,7 +144,7 @@ class TypeInput extends React.Component {
           <div key={i} style={{ marginTop: '60px' }}>
             <TextSingleInput
               key={Math.random()}
-              index={i}
+              index={text_index}
               calling_context={this.props.calling_context}
               label={k[i].label}
             />
@@ -150,12 +152,13 @@ class TypeInput extends React.Component {
             <br key={Math.random()} />
           </div>
         );
+         text_index++;
       } else {
         fin.push(
           <div key={i}>
             <ImageSingleInput
               key={Math.random()}
-              index={i}
+              index={image_index}
               updateFormData={this.updateFormData}
               calling_context={this.props.calling_context}
               label={k[i].label}
@@ -164,6 +167,7 @@ class TypeInput extends React.Component {
             <br key={Math.random()} />
           </div>
         );
+        image_index++;
       }
     }
 
@@ -175,7 +179,7 @@ class TypeInput extends React.Component {
     };
     if (this.props.calling_context == 'demo') {
       but = (
-        <div className="ui row">
+        <div className="ui row" >
           <pre className="ui centered center aligned origami-demo-send-button">
             <br />
             <RaisedButton
@@ -213,7 +217,7 @@ class TypeInput extends React.Component {
 
     return (
       <div className="ui centered center aligned grid" >
-      <div style={myScrollbar}>
+      <div style={myScrollbar} >
 
    <form id="send-text" className="six wide stackable stretched ui input" style={myScrollbar}>
               <GridLayout
@@ -222,6 +226,7 @@ class TypeInput extends React.Component {
                     width={2000}
                    verticalCompact={false}
                    isDraggable={false}
+                   isResizable={false}
                    >
 
                    
@@ -235,8 +240,7 @@ class TypeInput extends React.Component {
             
           </div>
 
-        <br/>
-        <br/>
+
         </div>
         )}
       
@@ -245,8 +249,14 @@ class TypeInput extends React.Component {
                   </form>
                
         </div> 
-        <br/>
-         {but}     
+        <div className="ui row " >
+        </div>
+                <div className="ui row" >
+        </div>
+                <div className="ui row" >
+        </div>
+         {but}
+          
           
       </div>
     );

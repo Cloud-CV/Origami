@@ -108,15 +108,12 @@ class ImageInput extends React.Component {
                 calling_context={this.props.calling_context}
                 label={label}
               />
-              <br key={Math.random()} />
-              <br key={Math.random()} />
             ])}
             <input type="hidden" name="socket-id" value={this.props.socketId} />
           </div>
         </form>
         <div className="ui row">
           <pre className="ui centered center aligned">
-            <br />
             <RaisedButton
               label="Send"
               primary

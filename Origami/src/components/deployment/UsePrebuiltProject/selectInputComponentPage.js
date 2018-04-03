@@ -126,16 +126,16 @@ class SelectInputComponentPage extends React.Component {
     }
   }
 
-    return mx>0?mx+8:mx
+    return ley.length>0?mx+4:mx
 
   }
 
     showModal(e) {
     let lab = this.state.label;
     this.setState({
-      value: lab[e['i']],
+      value: lab[e['index']],
       visible: true,
-      current: e['i'],
+      current: e['index'],
     });
   }
 
@@ -298,14 +298,12 @@ class SelectInputComponentPage extends React.Component {
 
       const but={
      position: 'absolute',
-      bottom: "12%",
-      right: "15%"
+      bottom: "0.5%",
+      right: "10%"
    };
 
   
    let layout=this.state.layout;
-   console.log("layout  ");
-   console.log(layout);
 
     
     return (
@@ -379,9 +377,9 @@ class SelectInputComponentPage extends React.Component {
                     col={10}
                     width={2000}
                    verticalCompact={false}
-                   preventCollision={true}
                   onLayoutChange={this.onLayoutChange.bind(this)}
                   layout={layout}
+                  isResizable={false}
                         style={{
                   width: '71vw',
                   height: '64vh',
@@ -403,6 +401,14 @@ class SelectInputComponentPage extends React.Component {
                           >
                            Delete
                           </button>
+                  <button
+                 type="button"
+                 onClick={this.showModal.bind(this, { index })}
+                 className="btn btn-primary"
+                 style={{ float: 'right' }}
+               >
+                 Label
+               </button>
                   </div>
                   )}
 
@@ -429,7 +435,14 @@ class SelectInputComponentPage extends React.Component {
                             </div>
                           </form>
                         </Modal>
-                        <div style={but}>
+
+
+                    
+                  </div>
+                  <br/>
+        <br/>
+                </Droppable>
+                                    <div style={but}>
                           <RaisedButton
                             label="Submit"
                             primary={true}
@@ -437,11 +450,6 @@ class SelectInputComponentPage extends React.Component {
                           />
                          </div>
 
-                    
-                  </div>
-                  <br/>
-        <br/>
-                </Droppable>
               </div>
             </div>
           </div>

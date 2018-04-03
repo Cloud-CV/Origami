@@ -103,6 +103,7 @@ let l=(
                     width={2000}
                    verticalCompact={false}
                    isDraggable={false}
+                   isResizable={false}
                    >
 
                    

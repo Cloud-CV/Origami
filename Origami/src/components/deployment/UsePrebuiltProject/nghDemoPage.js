@@ -374,7 +374,6 @@ class NGHDemoPage extends React.Component {
                     </div>
                   </div>
                 </div>
-                <h>ahbsa</h>
 
                 <div className="ui horizontal divider row">
                   <span><hr /></span>

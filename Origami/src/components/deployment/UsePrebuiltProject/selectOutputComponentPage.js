@@ -162,7 +162,7 @@ class SelectOutputComponentPage extends React.Component {
     }
   }
 
-    return mx>0?mx+8:mx
+    return ley.length>0?mx+8:mx
 
   }
 
@@ -170,9 +170,9 @@ class SelectOutputComponentPage extends React.Component {
   showModal(e){
     let lab=this.state.label;
     this.setState({
-      value:lab[e["i"]],
+      value:lab[e["index"]],
       visible: true,
-      current:e["i"],
+      current:e["index"],
 
     });
   }
@@ -397,8 +397,8 @@ class SelectOutputComponentPage extends React.Component {
 
      const but={
        position: 'absolute',
-        bottom: "9%",
-        right:  "15%",
+        bottom: "0.5%",
+        right:  "10%",
   
      }
      let layout=this.state.layout;
@@ -478,9 +478,9 @@ class SelectOutputComponentPage extends React.Component {
                     col={10}
                     width={2000}
                    verticalCompact={false}
-                   preventCollision={true}
                   onLayoutChange={this.onLayoutChange.bind(this)}
                   layout={layout}
+                  isResizable={false}
                         style={{
                   width: '71vw',
                   height: '64vh',
@@ -488,7 +488,7 @@ class SelectOutputComponentPage extends React.Component {
                   overflowY: 'scroll',
                   backgroundColor: '#f3f3f3',
                   border: '1px solid #EFEFEF',
-                  borderRadius: 3,
+                  borderRadius: 3
                 }}
                    >
                                       {this.state.Rows.map((value,index)=>
@@ -502,6 +502,14 @@ class SelectOutputComponentPage extends React.Component {
                           >
                            Delete
                           </button>
+                                            <button
+                 type="button"
+                 onClick={this.showModal.bind(this, { index })}
+                 className="btn btn-primary"
+                 style={{ float: 'right' }}
+               >
+                 Label
+               </button>
                   </div>
                   )}
 
@@ -528,17 +536,18 @@ class SelectOutputComponentPage extends React.Component {
                         </div>
                       </form>
                     </Modal>
-                    <div style={but}>
+   
+                  </div>
+                                    <br/>
+        <br/>
+                </Droppable>
+                                 <div style={but}>
                       <RaisedButton
                         label="Submit"
                         primary={true}
                         onClick={this.onSubmit.bind(this)}
                       />
                     </div>
-                  </div>
-                                    <br/>
-        <br/>
-                </Droppable>
               </div>
             </div>
           </div>
