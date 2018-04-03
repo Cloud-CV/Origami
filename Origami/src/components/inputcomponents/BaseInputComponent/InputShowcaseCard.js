@@ -12,8 +12,7 @@ class InputShowcaseCard extends React.Component {
     this.demoModel = props.demoProps.demoModel;
     this.user = props.demoProps.user;
     this.inputComponentDemoModel = props.demoProps.inputComponentDemoModel;
-    this.inputComponentModelActions =
-      props.demoProps.inputComponentModelActions;
+    this.inputComponentModelActions = props.demoProps.inputComponentModelActions;
     this.forwardAddress = props.demoProps.forwardAddress;
     this.showModifyDialog = this.showModifyDialog.bind(this);
     this.getLabelRealLength = this.getLabelRealLength.bind(this);
@@ -60,7 +59,10 @@ class InputShowcaseCard extends React.Component {
   getLabels() {
     let labels = [];
     this.state.labels.map((label, index) => {
-      labels[index] = typeof label === "object" ? "" : label;
+      if (typeof label === "object") {
+        label = "";
+      }
+      labels[index] = label;
     });
     return labels;
   }

@@ -10,7 +10,9 @@ const singleOutput = props => {
     >
       <div className="content">
         <div className="header">
-          {typeof props.header === "object" ? props.header.label : props.header}
+          {typeof props.header == "object"
+            ? props.header["label"]
+            : props.header}
         </div>
       </div>
       <div className="content">
@@ -28,8 +30,7 @@ const singleOutput = props => {
 
 singleOutput.propTypes = {
   header: PropTypes.string.isRequired,
-  data: PropTypes.any,
-  index: PropTypes.number.isRequired
+  data: PropTypes.any
 };
 
 export default singleOutput;

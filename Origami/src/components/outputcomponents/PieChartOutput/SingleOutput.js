@@ -29,7 +29,10 @@ class singleOutput extends React.Component {
   }
 
   showGraphFull() {
-    this.setState({ open: true });
+    let open=true
+    if(this.props.calling_context=="demo2")
+      open=false
+    this.setState({ open: open });
   }
 
   handleClose() {
@@ -37,17 +40,18 @@ class singleOutput extends React.Component {
   }
 
   render() {
+    const height=(this.props.calling_context=="demo2"?180:400);
     return (
       <div
         className="ui card centered"
         id={`output-text-${this.props.index}`}
         style={{ cursor: "pointer" }}
-        onClick={this.showGraphFull}
+        onClick={this.showGraphFull.bind(this)}
       >
         <div className="content">
           <div className="header">
-            {typeof this.props.header === "object"
-              ? this.props.header.label
+            {typeof this.props.header == "object"
+              ? this.props.header["label"]
               : this.props.header}
           </div>
         </div>
@@ -59,12 +63,13 @@ class singleOutput extends React.Component {
                   <VictoryPie
                     style={{
                       labels: {
-                        fontSize: 20
+                        fontSize: 20,
                       }
                     }}
                     data={this.state.data}
                     x={"x"}
                     y={"y"}
+                    height={height}
                   />
                 </div>
               </div>
@@ -74,8 +79,8 @@ class singleOutput extends React.Component {
 
         <Dialog
           title={
-            typeof this.props.header === "object"
-              ? this.props.header.label
+            typeof this.props.header == "object"
+              ? this.props.header["label"]
               : this.props.header
           }
           modal={false}
@@ -104,7 +109,6 @@ class singleOutput extends React.Component {
 singleOutput.propTypes = {
   header: PropTypes.string.isRequired,
   data: PropTypes.any,
-  index: PropTypes.number.isRequired
 };
 
 export default singleOutput;

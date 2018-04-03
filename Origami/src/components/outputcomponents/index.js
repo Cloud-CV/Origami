@@ -14,69 +14,117 @@ import BarGraphOutputShowCaseCard from "./BarGraphOutput/BarGraphOutputShowcaseC
 import ScatterGraphOutputShowCaseCard from "./ScatterGraphOutput/ScatterGraphOutputShowcaseCard";
 import PieChartOutputShowCaseCard from "./PieChartOutput/PieChartOutputShowcaseCard";
 import AreaGraphOutputShowCaseCard from "./AreaGraphOutput/AreaGraphOutputShowcaseCard";
+import GridLayout from 'react-grid-layout';
+import '../../../../node_modules/react-grid-layout/css/styles.css';
 
-export function getOutputComponentById(
-  id,
-  outputComponentProps,
-  calling_context,
-  data
-) {
+export function getOutputComponentById(id, props, calling_context, data) {
   let headers = [];
-  outputComponentProps.map((header, index) => {
+  props.map((header, index) => {
     headers[index] = header;
   });
-  switch (id) {
+
+  let fin=[];
+  let layout=[];
+  for(var i=0;i<props.length;i++)
+  {
+    let lab={};
+    lab["id"]=props[i].id;
+    lab["label"]=props[i].label; 
+    if("layout" in props[i])
+    layout.push(props[i].layout);     
+
+  switch (lab["id"]) {
     case 1:
-      return (
+      fin.push(
         <TextOutput
-          headers={headers}
+          headers={lab["label"]}
           calling_context={calling_context}
           data={data}
         />
       );
+      break;
     case 2:
-      return (
+      fin.push(
         <ImageOutput
-          headers={headers}
+          headers={lab["label"]}
           calling_context={calling_context}
           data={data}
         />
       );
+      break;
     case 3:
-      return (
+      fin.push(
         <BarGraphOutput
-          headers={headers}
+          headers={lab["label"]}
           calling_context={calling_context}
           data={data}
         />
       );
+      break;
     case 4:
-      return (
+      fin.push(
         <ScatterGraphOutput
-          headers={headers}
+          headers={lab["label"]}
           calling_context={calling_context}
           data={data}
         />
       );
+      break;
     case 5:
-      return (
+      fin.push(
         <PieChartOutput
-          headers={headers}
+          headers={lab["label"]}
           calling_context={calling_context}
           data={data}
         />
       );
+      break;
     case 6:
-      return (
+      fin.push(
         <AreaGraphOutput
-          headers={headers}
+          headers={lab["label"]}
           calling_context={calling_context}
           data={data}
         />
       );
+      break;
     default:
       return <div>Null</div>;
   }
+}
+if(calling_context == "demo2")
+return fin;
+else
+{
+let l=(
+              <GridLayout
+                    rowHeight={50} className="layout" 
+                    col={10}
+                    width={2000}
+                   verticalCompact={false}
+                   isDraggable={false}
+                   >
+
+                   
+              {fin.map((value,index)=>     
+                  <div key={index} data-grid={{x: layout[index]["x"], y:layout[index]["y"],
+                   w:layout[index]["w"] , h: layout[index]["h"]}} >
+
+                               <br /><br />
+            {value}
+                  </div>
+
+        )}
+              </GridLayout>
+
+
+
+  );
+
+return l;
+
+  
+}
 }
 
 export function getAllOutputComponentsForShowcase(data) {

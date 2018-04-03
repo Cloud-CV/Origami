@@ -1,12 +1,12 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { withRouter } from "react-router-dom";
+import { browserHistory } from "react-router";
 import CustomCard from "../../stateless/cards";
-import InputShowcaseModifyDialog from "../BaseInputComponent/InputShowcaseModifyDialog";
-import TextInputPreview from "./TextInputPreview";
+import InputShowcaseModifyDialog
+  from "../BaseInputComponent/InputShowcaseModifyDialog";
 import toastr from "toastr";
 import InputShowcaseCard from "../BaseInputComponent/InputShowcaseCard.js";
-
+import { Draggable, Droppable } from 'react-drag-and-drop'
 class TextInputShowcaseCard extends InputShowcaseCard {
   constructor(props) {
     super(props);
@@ -15,17 +15,17 @@ class TextInputShowcaseCard extends InputShowcaseCard {
     this.others = [];
     try {
       this.init.map((prop, index) => {
-        if (prop.id === "1") {
-          labels.push(prop.label);
+        if (prop["id"] === "1") {
+          labels.push(prop["label"]);
         } else {
           this.others.push(prop);
         }
       });
     } catch (err) {
-      /** Handler error here */
+      console.log(err);
     }
     this.state = {
-      labels,
+      labels: labels,
       modifyDialogDisplay: false,
       previewDialogDisplay: false
     };
@@ -34,11 +34,11 @@ class TextInputShowcaseCard extends InputShowcaseCard {
   updateInputComponentModel() {
     if (Object.keys(this.demoModel).length === 0) {
       toastr.error("Registration info not found! Register again");
-      this.props.history.push("/");
+      browserHistory.push("/");
     } else {
       let propsToStore = this.others;
       this.state.labels.map(label => {
-        propsToStore.push({ id: "1", label });
+        propsToStore.push({ id: "1", label: label });
       });
       this.inputComponentModelActions
         .updateInputComponentModel({
@@ -49,9 +49,9 @@ class TextInputShowcaseCard extends InputShowcaseCard {
         })
         .then(() => {
           if (this.props.demoProps.params.type === "modify") {
-            this.props.history.push("/ngh/user");
+            browserHistory.push("/ngh/user");
           } else {
-            this.props.history.push(this.forwardAddress);
+            browserHistory.push(this.forwardAddress);
           }
         });
     }
@@ -59,55 +59,24 @@ class TextInputShowcaseCard extends InputShowcaseCard {
 
   render() {
     return (
-      <div>
+      <div key={Math.random()} style={{width: 'fit-content',margin: "auto"}}>
+      <Draggable type="lr" data="Text Input">
         <CustomCard
           header="Text Input"
           width="five"
           context="selection"
           centeredParent
           centeredSegment
-          displayData={[`Number of inputs: ${this.getLabelRealLength()}`]}
-          buttonData={[
-            {
-              label: "Modify",
-              onDeployClick: () => this.showModifyDialog()
-            },
-            {
-              label: "Preview",
-              onDeployClick: () => this.showPreviewDialog()
-            },
-            {
-              label: "Save",
-              onDeployClick: () => this.updateInputComponentModel()
-            }
-          ]}
         />
-        {this.state.modifyDialogDisplay && (
-          <InputShowcaseModifyDialog
-            functions={{
-              updateLabels: this.updateLabels,
-              hideModifyDialog: this.hideModifyDialog,
-              getLabels: this.getLabels
-            }}
-            title="Modify Text Input Component"
-          />
-        )}
-        {this.state.previewDialogDisplay && (
-          <TextInputPreview
-            functions={{
-              getLabels: this.getLabels,
-              hidePreviewDialog: this.hidePreviewDialog
-            }}
-          />
-        )}
+      </Draggable> 
       </div>
+      
     );
   }
 }
 
 TextInputShowcaseCard.propTypes = {
-  demoProps: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  demoProps: PropTypes.object
 };
 
-export default withRouter(TextInputShowcaseCard);
+export default TextInputShowcaseCard;

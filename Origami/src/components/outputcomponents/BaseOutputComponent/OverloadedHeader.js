@@ -28,16 +28,14 @@ class OverloadedHeader extends React.Component {
         <TextField
           hintText="Header"
           onChange={e =>
-            this.addLocalHeadersToParent(this.headerLength, e.target.value)
-          }
+            this.addLocalHeadersToParent(this.headerLength, e.target.value)}
         />
         &nbsp;&nbsp;&nbsp;
         <RaisedButton
           label="Delete"
           primary
           onMouseDown={() =>
-            this.deleteLocalHeadersFromParent(this.state.elementId)
-          }
+            this.deleteLocalHeadersFromParent(this.state.elementId)}
         />
       </div>
     );

@@ -6,32 +6,25 @@ import ImageInputShowcaseCard from "./ImageInput/ImageInputShowcaseCard";
 
 export function getInputComponentById(
   id,
-  inputModelProps,
+  props,
   calling_context,
   socketId,
   sendAddr
 ) {
-  let labels = [];
-  let textLabels = [];
-  let imageLabels = [];
-  inputModelProps.map((prop, index) => {
-    if (prop.id === "1") {
-      textLabels.push(prop.label);
-    } else if (prop.id === "3") {
-      imageLabels.push(prop.label);
-    }
-  });
-  return (
-    <div>
-      <TypeInput
-        textLabels={textLabels}
-        imageLabels={imageLabels}
-        calling_context={calling_context}
-        socketId={socketId}
-        sendAddr={sendAddr}
-      />
-    </div>
+  
+  let fin = [];
+  console.log("props =");
+  console.log(props);
+  fin.push(
+    <TypeInput
+      prop={props}
+      calling_context={calling_context}
+      socketId={socketId}
+      sendAddr={sendAddr}
+    />
   );
+
+  return <div>{fin}</div>;
 }
 
 export function getAllInputComponentsForShowcase(data) {

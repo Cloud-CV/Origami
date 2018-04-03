@@ -17,8 +17,4 @@ class InputPreview extends React.Component {
   }
 }
 
-InputPreview.propTypes = {
-  functions: PropTypes.object.isRequired
-};
-
 export default InputPreview;

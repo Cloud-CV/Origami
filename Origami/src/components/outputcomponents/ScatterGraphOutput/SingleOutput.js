@@ -30,7 +30,10 @@ class singleOutput extends React.Component {
   }
 
   showGraphFull() {
-    this.setState({ open: true });
+        let open=true
+    if(this.props.calling_context=="demo2")
+      open=false
+    this.setState({ open: open });
   }
 
   handleClose() {
@@ -47,8 +50,8 @@ class singleOutput extends React.Component {
       >
         <div className="content">
           <div className="header">
-            {typeof this.props.header === "object"
-              ? this.props.header.label
+            {typeof this.props.header == "object"
+              ? this.props.header["label"]
               : this.props.header}
           </div>
         </div>
@@ -76,7 +79,7 @@ class singleOutput extends React.Component {
         </div>
 
         <Dialog
-          title={this.props.header.label}
+          title={this.props.header["label"]}
           modal={false}
           open={this.state.open}
           autoScrollBodyContent
@@ -104,8 +107,7 @@ class singleOutput extends React.Component {
 
 singleOutput.propTypes = {
   header: PropTypes.string.isRequired,
-  data: PropTypes.any,
-  index: PropTypes.number.isRequired
+  data: PropTypes.any
 };
 
 export default singleOutput;

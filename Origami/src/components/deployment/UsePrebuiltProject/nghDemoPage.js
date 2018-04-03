@@ -6,7 +6,9 @@ import { getInputComponentById } from "../../inputcomponents";
 import { getOutputComponentById } from "../../outputcomponents";
 import { getDeployed } from "../../../api/Nongh/getDeployed";
 import { modifyDeployed } from "../../../api/Nongh/modifyDeployed";
-import { getComponentDeployed } from "../../../api/CommonLocal/getComponentDeployed";
+import {
+  getComponentDeployed
+} from "../../../api/CommonLocal/getComponentDeployed";
 import SampleInput from "../../sampleinput";
 import SampleImage from "../../sampleinput/SampleImage";
 import toastr from "toastr";
@@ -43,15 +45,17 @@ class NGHDemoPage extends React.Component {
     this.updateFormData = this.updateFormData.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     $("body").css("overflow", "hidden");
+    console.log("props =");
+    console.log(this.props);
 
     let socket = this.socket;
     socket.onmessage = function(response) {
       let data = JSON.parse(response.data);
-      const event = data.event;
-      data = data.data;
-      if (event === "injectOutputData") {
+      const event = data["event"];
+      data = data["data"];
+      if (event == "injectOutputData") {
         if (data.data) {
           this.setState({
             outputData: Object.assign(
@@ -62,12 +66,15 @@ class NGHDemoPage extends React.Component {
           $("#appbar-progress").progress({
             percent: "100%"
           });
-          setTimeout(() => {
-            $("#appbar-progress").css("visibility", "hidden");
-            $("#appbar-progress").progress({
-              percent: "0%"
-            });
-          }, 1000);
+          setTimeout(
+            () => {
+              $("#appbar-progress").css("visibility", "hidden");
+              $("#appbar-progress").progress({
+                percent: "0%"
+              });
+            },
+            1000
+          );
         }
         if (data.terminalData) {
           this.setState({
@@ -76,9 +83,7 @@ class NGHDemoPage extends React.Component {
         }
       }
     }.bind(this);
-    /*eslint-disable*/
     this.setState(
-      /*eslint-enable*/
       { demo_creator_id: parseInt(this.props.match.params.user_id, 10) },
       () => {
         this.setState(
@@ -118,19 +123,16 @@ class NGHDemoPage extends React.Component {
           this.props.match.params.repoId,
           "input"
         ).then(data => {
-          let pdata = JSON.parse(data);
-          if (pdata.text !== "Not Found") {
-            if (Object.keys(JSON.parse(data)).length) {
-              this.setState({ inputModel: JSON.parse(data)[0] }, () => {
-                let val = 0;
-                this.state.inputModel.props.map((prop, index) => {
-                  if (prop.id === "3") {
-                    val += 1;
-                  }
-                });
-                this.setState({ imageInputCount: val });
+          if (Object.keys(JSON.parse(data)).length) {
+            this.setState({ inputModel: JSON.parse(data)[0] }, () => {
+              let val = 0;
+              this.state.inputModel.props.map((prop, index) => {
+                if (prop["id"] === "3") {
+                  val += 1;
+                }
               });
-            }
+              this.setState({ imageInputCount: val });
+            });
           }
         });
         getComponentDeployed(
@@ -138,11 +140,8 @@ class NGHDemoPage extends React.Component {
           this.props.match.params.repoId,
           "output"
         ).then(data => {
-          let pdata = JSON.parse(data);
-          if (pdata.text !== "Not Found") {
-            if (Object.keys(JSON.parse(data)).length) {
-              this.setState({ outputModel: JSON.parse(data)[0] });
-            }
+          if (Object.keys(JSON.parse(data)).length) {
+            this.setState({ outputModel: JSON.parse(data)[0] });
           }
         });
       }
@@ -176,29 +175,35 @@ class NGHDemoPage extends React.Component {
     let timeout1 = "";
     let timeout2 = "";
     let timeout3 = "";
-    $("#appbar-progress")
-      .css("visibility", "visible")
-      .promise()
-      .done(() => {
-        $("#appbar-progress").progress({
-          percent: "33%"
-        });
-        timeout1 = setTimeout(() => {
+    $("#appbar-progress").css("visibility", "visible").promise().done(() => {
+      $("#appbar-progress").progress({
+        percent: "33%"
+      });
+      timeout1 = setTimeout(
+        () => {
           $("#appbar-progress").progress({
             percent: "50%"
           });
-        }, 300);
-        timeout2 = setTimeout(() => {
+        },
+        300
+      );
+      timeout2 = setTimeout(
+        () => {
           $("#appbar-progress").progress({
             percent: "65%"
           });
-        }, 600);
-        timeout3 = setTimeout(() => {
+        },
+        600
+      );
+      timeout3 = setTimeout(
+        () => {
           $("#appbar-progress").progress({
             percent: "85%"
           });
-        }, 1000);
-      });
+        },
+        1000
+      );
+    });
     $.ajax({
       type: "POST",
       url: sendAddr,
@@ -214,12 +219,15 @@ class NGHDemoPage extends React.Component {
         clearTimeout(timeout1);
         clearTimeout(timeout2);
         clearTimeout(timeout3);
-        setTimeout(() => {
-          $("#appbar-progress").css("visibility", "hidden");
-          $("#appbar-progress").progress({
-            percent: "0%"
-          });
-        }, 1000);
+        setTimeout(
+          () => {
+            $("#appbar-progress").css("visibility", "hidden");
+            $("#appbar-progress").progress({
+              percent: "0%"
+            });
+          },
+          1000
+        );
       },
       error: (xhr, textStatus, errorThrown) => {
         $("#appbar-progress").css("visibility", "hidden");
@@ -240,10 +248,8 @@ class NGHDemoPage extends React.Component {
         index: this.state.index + 1
       },
       () => {
-        if (this.state.index === this.state.imageInputCount) {
-          let sendAddr = `http://${this.state.demoModel.token.split(":")[1]}:${
-            this.state.demoModel.token.split(":")[4]
-          }/event`;
+        if (this.state.index == this.state.imageInputCount) {
+          let sendAddr = `http://${this.state.demoModel.token.split(":")[1]}:${this.state.demoModel.token.split(":")[4]}/event`;
           this.sendRequest(sendAddr);
         }
       }
@@ -255,18 +261,15 @@ class NGHDemoPage extends React.Component {
       this.setState({ resetBorder: false });
     }
     let url = window.location.origin + path;
-    request
-      .get(url)
-      .responseType("blob")
-      .end((err, res) => {
-        if (!err) {
-          let file = new File([res.body], `input-image-${this.state.index}`, {
-            type: "image/png",
-            lastModified: Date.now()
-          });
-          this.updateFormData(file, `input-image-${this.state.index}`);
-        }
-      });
+    request.get(url).responseType("blob").end((err, res) => {
+      if (!err) {
+        let file = new File([res.body], `input-image-${this.state.index}`, {
+          type: "image/png",
+          lastModified: Date.now()
+        });
+        this.updateFormData(file, `input-image-${this.state.index}`);
+      }
+    });
   }
 
   render() {
@@ -277,13 +280,13 @@ class NGHDemoPage extends React.Component {
     return (
       <div>
         <div className="ui relaxed stackable grid fluid">
-          {this.state.demoModel && (
+
+          {this.state.demoModel &&
             <div
               className={mainClassName}
               style={{ visibility: this.state.showOutput }}
             >
-              {" "}
-              {!this.props.login && (
+              {" "}{!this.props.login &&
                 <Header id="layout-header">
                   <Row>
                     <Col span={3} offset={1}>
@@ -294,8 +297,7 @@ class NGHDemoPage extends React.Component {
                       </h2>
                     </Col>
                   </Row>
-                </Header>
-              )}
+                </Header>}
               <div
                 className="sixteen wide column stretched centered row"
                 id="output-outer"
@@ -307,38 +309,35 @@ class NGHDemoPage extends React.Component {
                 }}
               >
                 {!this.state.showTerminal &&
-                  this.state.demoModel.terminal && (
-                    <div className="row">
-                      <Button
-                        type="primary"
-                        shape="circle"
-                        icon="arrow-left"
-                        size="large"
-                        style={{ float: "right", marginRight: "15px" }}
-                        ghost
-                        onClick={() => this.toggleShowTerminal()}
-                      />
-                      <br />
-                      <br />
-                    </div>
-                  )}
+                  this.state.demoModel.terminal &&
+                  <div className="row">
+                    <Button
+                      type="primary"
+                      shape="circle"
+                      icon="arrow-left"
+                      size="large"
+                      style={{ float: "right", marginRight: "15px" }}
+                      ghost
+                      onClick={() => this.toggleShowTerminal()}
+                    />
+                    <br />
+                    <br />
+                  </div>}
                 <div className="row">
                   <h1>{this.state.demoModel.name}</h1>
                   <i>{this.state.demoModel.description}</i>
                 </div>
-                {this.state.isCreator && (
-                  <SampleInput demo_id={this.state.demoModel.id} />
-                )}
-                {this.state.sampleinput.length > 0 && (
+                {this.state.isCreator &&
+                  <SampleInput demo_id={this.state.demoModel.id} />}
+                {this.state.sampleinput.length > 0 &&
                   <Row>
                     <h3>Sample Inputs</h3>
                     <br />
-                    {this.state.sampleinput.map((row, index) => (
-                      <div key={index}>
+                    {this.state.sampleinput.map(row => (
+                      <div>
                         <Row>
-                          {row.map((input, index) => (
+                          {row.map(input => (
                             <SampleImage
-                              key={index}
                               onSelect={this.onSelect}
                               value={input.value}
                               resetBorder={this.state.resetBorder}
@@ -348,19 +347,19 @@ class NGHDemoPage extends React.Component {
                         <br />
                       </div>
                     ))}
-                  </Row>
-                )}
+                  </Row>}
                 <div className="ui horizontal divider row">
-                  <span>
-                    <hr />
-                  </span>
+                  <span><hr /></span>
                 </div>
 
                 <div className="row">
                   <div className="ui relaxed stackable grid container">
                     <div className="column row">
+
                       <div className="center aligned column">
-                        <h2 className="ui row">Input</h2>
+                        <h2 className="ui row">
+                          Input
+                        </h2>
                         {Object.keys(this.state.demoModel).length &&
                           Object.keys(this.state.inputModel).length > 0 &&
                           getInputComponentById(
@@ -368,19 +367,17 @@ class NGHDemoPage extends React.Component {
                             this.state.inputModel.props,
                             "demo",
                             this.socketId,
-                            `http://${
-                              this.state.demoModel.token.split(":")[1]
-                            }:${this.state.demoModel.token.split(":")[4]}/event`
+                            `http://${this.state.demoModel.token.split(":")[1]}:${this.state.demoModel.token.split(":")[4]}/event`
                           )}
                       </div>
+
                     </div>
                   </div>
                 </div>
+                <h>ahbsa</h>
 
                 <div className="ui horizontal divider row">
-                  <span>
-                    <hr />
-                  </span>
+                  <span><hr /></span>
                 </div>
 
                 <div
@@ -394,8 +391,11 @@ class NGHDemoPage extends React.Component {
                 <div className="row" id="output-div">
                   <div className="ui relaxed stackable grid container">
                     <div className="column row">
+
                       <div className="center aligned column">
-                        <h2 className="ui row">Output</h2>
+                        <h2 className="ui row">
+                          Output
+                        </h2>
                         {Object.keys(this.state.demoModel).length &&
                           Object.keys(this.state.outputModel).length > 0 &&
                           getOutputComponentById(
@@ -405,14 +405,15 @@ class NGHDemoPage extends React.Component {
                             this.state.outputData
                           )}
 
-                        {this.state.demoModel.footer_message && (
+                        {this.state.demoModel.footer_message &&
                           <div
                             className="ui fluid centered row"
                             style={{ maxWidth: "100vw", overflowX: "auto" }}
                           >
-                            <h4>{this.state.demoModel.footer_message}</h4>
-                          </div>
-                        )}
+                            <h4>
+                              {this.state.demoModel.footer_message}
+                            </h4>
+                          </div>}
 
                         <div
                           className="ui fluid centered row"
@@ -422,19 +423,22 @@ class NGHDemoPage extends React.Component {
                         <div className="ui fluid centered row">
                           © CloudCV, 2017
                         </div>
+
                       </div>
+
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+            </div>}
 
-          {this.state.showTerminal && (
+          {this.state.showTerminal &&
             <div className="ui four wide column">
               <h2 className="ui header grid" style={{ marginTop: "1vh" }}>
                 <div className="ui twelve wide column">
-                  <div className="content">Terminal</div>
+                  <div className="content">
+                    Terminal
+                  </div>
                 </div>
                 <div className="ui four wide column">
                   <Button
@@ -462,8 +466,7 @@ class NGHDemoPage extends React.Component {
                   <p key={Math.random()}>{data}</p>
                 ))}
               </div>
-            </div>
-          )}
+            </div>}
         </div>
         <br />
         <br />
@@ -472,11 +475,14 @@ class NGHDemoPage extends React.Component {
             textAlign: "center",
             background: "#fefefe",
             color: "#455A64",
-            fontSize: "14px",
-            boxShadow: "0px -2px 5px #E0E0E0"
+            "font-size": "14px",
+            "box-shadow": "0px -2px 5px #E0E0E0"
           }}
         >
-          <strong>Origami</strong> - Created by{" "}
+          <strong>Origami</strong>
+          {" "}
+          - Created by
+          {" "}
           <a href="http://cloudcv.org/">Team CloudCV</a>
           <br />
           <br />
@@ -490,7 +496,7 @@ class NGHDemoPage extends React.Component {
 NGHDemoPage.propTypes = {
   login: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired,
   nonghDemoModel: PropTypes.object.isRequired,
   outputComponentDemoModel: PropTypes.object.isRequired,
   inputComponentDemoModel: PropTypes.object.isRequired
@@ -515,6 +521,4 @@ function mapDispatchToProps(dispatch) {
   return {};
 }
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(NGHDemoPage)
-);
+export default connect(mapStateToProps, mapDispatchToProps)(NGHDemoPage);

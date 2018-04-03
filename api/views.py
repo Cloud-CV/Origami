@@ -222,10 +222,9 @@ def custom_component_controller(request, type_req, user_id, demoid):
         props = []
         for prop in body["props"]:
             if prop:
-                props.append({"id": prop["id"].encode(
-                    "ascii", "ignore").decode('utf-8'),
-                    "label": prop["label"].encode(
-                        "ascii", "ignore").decode('utf-8')})
+                props.append({"id": prop["id"],
+                    "label": prop["label"],
+                    "layout":prop["layout"]})
             else:
                 props.append({})
         user_id = body["user_id"]
@@ -277,10 +276,9 @@ def custom_component_controller(request, type_req, user_id, demoid):
             props = []
             for prop in body["props"]:
                 if prop:
-                    props.append({"id": prop["id"].encode(
-                        "ascii", "ignore").decode('utf-8'),
-                        "label": prop["label"].encode(
-                        "ascii", "ignore").decode('utf-8')})
+                    props.append({"id": prop["id"],
+                        "label": prop["label"],
+                        "layout":prop["layout"]})
                 else:
                     props.append({})
             component.props = json.dumps(props)
@@ -299,7 +297,6 @@ def custom_component_controller(request, type_req, user_id, demoid):
             return Response("Invalid URL",
                             status=response_status.HTTP_404_NOT_FOUND)
     return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
-
 
 def alive(request):
     """Returns a status 200 if the server is running and 404 otherwise"""

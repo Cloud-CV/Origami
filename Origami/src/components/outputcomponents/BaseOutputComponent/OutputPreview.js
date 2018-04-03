@@ -17,8 +17,4 @@ class OutputPreview extends React.Component {
   }
 }
 
-OutputPreview.propTypes = {
-  functions: PropTypes.object.isRequired
-};
-
 export default OutputPreview;

@@ -23,29 +23,31 @@ const singleInput = props => {
       "www.dropbox.com",
       "dl.dropboxusercontent.com"
     );
-    request
-      .get(url)
-      .responseType("blob")
-      .end((err, res) => {
-        if (!err) {
-          let blob = new Blob([res.body], {
-            type: "image/png"
-          });
-          props.updateFormData(blob, `input-image-${props.index}`);
-          updateImage(props.index, blob);
-        }
-      });
+    request.get(url).responseType("blob").end((err, res) => {
+      if (!err) {
+        let blob = new Blob([res.body], {
+          type: "image/png"
+        });
+        props.updateFormData(blob, `input-image-${props.index}`);
+        updateImage(props.index, blob);
+      }
+    });
   }
-
+  const cl1=null;
+  const cl2="centered center aligned stretched row origami-demo-input-image-label-container";
+  const cl3="ui blue segment origami-demo-input-image-label";
+  const height="50%";
+  const width="50%";
   return (
-    <div className="ui container grid origami-demo-input-image-component">
-      <div className="centered center aligned stretched row origami-demo-input-image-label-container">
-        <div className="ui blue segment origami-demo-input-image-label">
+
+    <div className={cl1} style={{width:'fit-content'}}>
+      <div className={cl2}>
+        <div className={cl3}>
           {props.label}
         </div>
       </div>
       <div className="centered row">
-        <div className="" style={{ height: "100%", cursor: "pointer" }}>
+        <div className="" style={{ height: height, cursor: "pointer" }}>
           <Dropzone
             onDrop={onDrop}
             multiple={false}
@@ -57,7 +59,7 @@ const singleInput = props => {
                   className="ui fluid medium bordered image"
                   src="/static/img/wireframe.png"
                   id={`input-image-preview-${props.index}`}
-                  style={{ width: "100%" }}
+                  style={{ width: width}}
                 />
               </div>
               <div className="content origami-demo-input-image-component-desc">
@@ -67,7 +69,7 @@ const singleInput = props => {
           </Dropzone>
         </div>
       </div>
-      {appConfig.DROPBOX_API_KEY !== "API_KEY" && (
+      {appConfig.DROPBOX_API_KEY !== "API_KEY" &&
         <div>
           <div className="ui horizontal divider">Or</div>
           <div className="centered row">
@@ -84,8 +86,8 @@ const singleInput = props => {
               </DropboxChooser>
             </div>
           </div>
-        </div>
-      )}
+        </div>}
+        <br/>
     </div>
   );
 };

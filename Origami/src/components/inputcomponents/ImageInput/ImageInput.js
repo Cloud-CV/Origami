@@ -35,29 +35,35 @@ class ImageInput extends React.Component {
       let timeout1 = "";
       let timeout2 = "";
       let timeout3 = "";
-      $("#appbar-progress")
-        .css("visibility", "visible")
-        .promise()
-        .done(() => {
-          $("#appbar-progress").progress({
-            percent: "33%"
-          });
-          timeout1 = setTimeout(() => {
+      $("#appbar-progress").css("visibility", "visible").promise().done(() => {
+        $("#appbar-progress").progress({
+          percent: "33%"
+        });
+        timeout1 = setTimeout(
+          () => {
             $("#appbar-progress").progress({
               percent: "50%"
             });
-          }, 300);
-          timeout2 = setTimeout(() => {
+          },
+          300
+        );
+        timeout2 = setTimeout(
+          () => {
             $("#appbar-progress").progress({
               percent: "65%"
             });
-          }, 600);
-          timeout3 = setTimeout(() => {
+          },
+          600
+        );
+        timeout3 = setTimeout(
+          () => {
             $("#appbar-progress").progress({
               percent: "85%"
             });
-          }, 1000);
-        });
+          },
+          1000
+        );
+      });
       $.ajax({
         type: "POST",
         url: sendAddr,
@@ -93,8 +99,7 @@ class ImageInput extends React.Component {
       <div className="ui centered center aligned grid">
         <form id="send-text" className="six wide stackable stretched ui input">
           <div key={Math.random()}>
-            <br />
-            <br />
+            <br /><br />
             {this.props.labels.map((label, index) => [
               <SingleInput
                 key={Math.random()}
@@ -102,8 +107,8 @@ class ImageInput extends React.Component {
                 updateFormData={this.updateFormData}
                 calling_context={this.props.calling_context}
                 label={label}
-              />,
-              <br key={Math.random()} />,
+              />
+              <br key={Math.random()} />
               <br key={Math.random()} />
             ])}
             <input type="hidden" name="socket-id" value={this.props.socketId} />

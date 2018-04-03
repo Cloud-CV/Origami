@@ -34,16 +34,15 @@ class InputShowcaseModifyDialog extends React.Component {
     let tempText = [];
     allLabels.map((label, index) => {
       let currentIndex = allLabels.findIndex(x => x === label);
-      let tempLabel = label;
       if (typeof label === "object") {
-        tempLabel = "";
+        label = "";
       }
       tempText[currentIndex] = (
         <div>
           <TextField
             key={Math.random()}
             hintText="Label"
-            defaultValue={tempLabel}
+            defaultValue={label}
             onChange={e => this.addLocalLabels(currentIndex, e.target.value)}
           />
           &nbsp;&nbsp;&nbsp;
