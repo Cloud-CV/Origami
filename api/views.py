@@ -19,7 +19,14 @@ from api.constants import DEFAULT_IMAGE
 import datetime
 import json
 from collections import OrderedDict
-import sys
+import sys 
+import requests 
+import ast
+import numpy as np
+import base64
+import magic
+mime = magic.Magic(mime=True)
+
 
 class DemoViewSet(ModelViewSet):
     """
@@ -143,6 +150,93 @@ def redirect_login(req):
         '/login?status=passed&token=' + token.token +
         '&username=' + user.username +
         '&user_id=' + str(user.id))
+
+
+@api_view(['POST'])
+def demo_input(request,user_id,name):
+    try:
+        demo=Demo.objects.get(user_id=user_id,name=name)
+    except:
+        error="Demo Not found"
+        return Response(error, status=response_status.HTTP_404_NOT_FOUND)
+
+    token=demo.token
+    inp=InputComponent.objects.get(demo=demo)
+    props=inp.props
+    text_prop=0
+    image_prop=0
+    props= ast.literal_eval(props)
+    
+    for i in props:
+        if i['id'] == 1:
+            text_prop+=1
+        else:
+            image_prop+=1
+
+    url=str("http://"+str(token.split(":")[1])+":"+str(token.split(":")[4])+"/event")
+    try:
+        text=request.data.getlist('text')
+    except:
+        text=[]
+    try:
+        image=request.data.getlist('image')
+    except:
+        image=[]
+
+    if(text_prop!=len(text) or image_prop!=len(image)):
+        data='invalid input data'
+        return Response(data, status=response_status.HTTP_400_BAD_REQUEST)
+
+    txt={}
+    files={}
+    txt['api']=True
+    for i in  range(0,len(text)):
+        inp=('input-text-{}').format(i)
+        txt[inp]=text[i]
+
+    for i in  range(0,len(image)):
+        inp=('input-image-{}').format(i)
+        files[inp]=image[i]
+
+    r = requests.post(url=url,files=files, data=txt)
+    data = json.loads(r.content)
+
+    output={}
+#----text output---#    
+    try:
+        text=data['text-output']
+        output['text-output']=text
+    except:
+        pass
+
+#----image-output--#
+    try:
+        image=data['image-output']
+        tempdata = []
+        for i in image:
+            file_path= i
+            with open(file_path, 'rb') as file:
+                src = ''
+                content_type = mime.from_file(file_path)
+                if content_type == 'image/jpeg' or content_type == 'image/jpg':
+                    src += 'data:image/jpeg;base64,'
+                elif content_type == 'image/png':
+                    src += 'data:image/png;base64,'
+                src += base64.b64encode(file.read())
+                tempdata.append(src)
+        output['image-output']=tempdata
+    except:
+        pass
+
+#----graph array output ------#
+    try:
+        graph=data['graph-output']
+        output['graph-output']=graph
+    except:
+        pass
+
+    data = json.dumps(output)
+    return Response(data, status=response_status.HTTP_200_OK)
 
 
 @api_view(['GET'])
