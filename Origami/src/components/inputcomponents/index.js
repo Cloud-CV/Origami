@@ -1,8 +1,8 @@
-import React from "react";
-import { PropTypes } from "prop-types";
-import TextInputShowcaseCard from "./TextInput/TextInputShowcaseCard";
-import TypeInput from "./BaseInputComponent/TypeInput";
-import ImageInputShowcaseCard from "./ImageInput/ImageInputShowcaseCard";
+import React from 'react';
+import { PropTypes } from 'prop-types';
+import TextInputShowcaseCard from './TextInput/TextInputShowcaseCard';
+import TypeInput from './BaseInputComponent/TypeInput';
+import ImageInputShowcaseCard from './ImageInput/ImageInputShowcaseCard';
 
 export function getInputComponentById(
   id,
@@ -11,10 +11,7 @@ export function getInputComponentById(
   socketId,
   sendAddr
 ) {
-  
   let fin = [];
-  console.log("props =");
-  console.log(props);
   fin.push(
     <TypeInput
       prop={props}
@@ -30,6 +27,6 @@ export function getInputComponentById(
 export function getAllInputComponentsForShowcase(data) {
   return [
     <TextInputShowcaseCard key={Math.random()} demoProps={data} />,
-    <ImageInputShowcaseCard key={Math.random()} demoProps={data} />
+    <ImageInputShowcaseCard key={Math.random()} demoProps={data} />,
   ];
 }
