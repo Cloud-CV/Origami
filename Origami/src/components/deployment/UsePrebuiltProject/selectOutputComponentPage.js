@@ -14,9 +14,8 @@ import { Modal, Button } from 'antd';
 import { getOutputComponentById } from '../../outputcomponents/index';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Draggable, Droppable } from 'react-drag-and-drop';
-import { Responsive, WidthProvider } from 'react-grid-layout';
-import GridLayout from 'react-grid-layout';
-const ResponsiveGridLayout = WidthProvider(Responsive);
+import { Responsive, WidthProvider } from "react-grid-layout";
+const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 toastr.options.closeButton = true;
 
@@ -361,7 +360,7 @@ class SelectOutputComponentPage extends React.Component {
   render() {
     document.body.scrollTop = document.documentElement.scrollTop = 0;
     const myScrollbar = {
-      minWidth: '71vw',
+      width: '71vw',
       minHeight: '63vh',
       overflow: 'scroll',
       backgroundColor: 'grey',
@@ -373,6 +372,7 @@ class SelectOutputComponentPage extends React.Component {
       right: '10%',
     };
     let layout = this.state.layout;
+    let layouts={'lg':layout};
 
     return (
       <div className="ui relaxed stackable grid fluid">
@@ -444,25 +444,27 @@ class SelectOutputComponentPage extends React.Component {
                       <b style={{ fontSize: 'large' }}>Drag N Drop</b>
                     </div>
 
-                    {this.state.Rows.length > 0 && (
-                      <GridLayout
-                        rowHeight={50}
-                        className="layout"
-                        col={10}
-                        width={2000}
-                        verticalCompact={false}
-                        onLayoutChange={this.onLayoutChange.bind(this)}
-                        layout={layout}
-                        isResizable={false}
-                        style={{
-                          width: '71vw',
+                    <div                         style={{
+                          width: '400vw',
                           height: '64vh',
                           margin: '0 auto',
                           overflowY: 'scroll',
                           backgroundColor: '#f3f3f3',
                           border: '1px solid #EFEFEF',
                           borderRadius: 3,
-                        }}
+                        }} >
+
+                    {this.state.Rows.length > 0 && (
+                      <ResponsiveReactGridLayout
+                        rowHeight={50}
+                        className="layout"
+                        breakpoints={{lg: 768}}
+                        cols={{lg: 40}}
+                        verticalCompact={false}
+                        onLayoutChange={this.onLayoutChange.bind(this)}
+                        layouts={layouts}
+                        isResizable={false}
+
                       >
                         {this.state.Rows.map((value, index) => (
                           <div key={index} data-grid={layout[index]}>
@@ -484,8 +486,9 @@ class SelectOutputComponentPage extends React.Component {
                             </button>
                           </div>
                         ))}
-                      </GridLayout>
+                      </ResponsiveReactGridLayout>
                     )}
+                    </div>
                     <Modal
                       title="Input Label"
                       visible={this.state.visible}

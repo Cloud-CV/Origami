@@ -14,7 +14,8 @@ import BarGraphOutputShowCaseCard from './BarGraphOutput/BarGraphOutputShowcaseC
 import ScatterGraphOutputShowCaseCard from './ScatterGraphOutput/ScatterGraphOutputShowcaseCard';
 import PieChartOutputShowCaseCard from './PieChartOutput/PieChartOutputShowcaseCard';
 import AreaGraphOutputShowCaseCard from './AreaGraphOutput/AreaGraphOutputShowcaseCard';
-import GridLayout from 'react-grid-layout';
+import { Responsive, WidthProvider } from "react-grid-layout";
+const ResponsiveReactGridLayout = WidthProvider(Responsive);
 import '../../../../node_modules/react-grid-layout/css/styles.css';
 
 export function getOutputComponentById(id, props, calling_context, data) {
@@ -92,13 +93,15 @@ export function getOutputComponentById(id, props, calling_context, data) {
   }
   if (calling_context == 'demo2') return fin;
   else {
+    let layouts={'lg':layout};
     let l = (
-      <GridLayout
+     <ResponsiveReactGridLayout
         rowHeight={50}
         className="layout"
-        col={10}
-        width={2000}
+        breakpoints={{lg: 768}}
+        cols={{lg: 10}}
         verticalCompact={false}
+        layouts={layouts}
         isDraggable={false}
         isResizable={false}
       >
@@ -117,7 +120,7 @@ export function getOutputComponentById(id, props, calling_context, data) {
             {value}
           </div>
         ))}
-      </GridLayout>
+      </ResponsiveReactGridLayout>
     );
 
     return l;

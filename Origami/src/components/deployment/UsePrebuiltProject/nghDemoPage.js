@@ -406,7 +406,7 @@ class NGHDemoPage extends React.Component {
 
                         <div
                           className="ui fluid centered row"
-                          style={{ minHeight: '5vh' }}
+                          
                         />
 
                         <div className="ui fluid centered row">

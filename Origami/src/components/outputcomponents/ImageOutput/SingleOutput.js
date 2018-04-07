@@ -29,7 +29,7 @@ class singleOutput extends React.Component {
   render() {
 
     const height=(this.props.calling_context=="demo2")?("50%"):("100%");
-    const width=(this.props.calling_context=="demo2")?("35%"):("75%");
+    const width="100%";
     return (
       <div
         className="ui card centered origami-demo-output-image-component"
