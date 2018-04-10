@@ -26,6 +26,8 @@ import request from "superagent";
 import { Step, Stepper, StepLabel } from "material-ui/Stepper";
 import toastr from "toastr";
 import { Layout, Row, Col } from "antd";
+import { ORIGAMI_READ_THE_DOCS } from "../../../constants";
+
 
 const { Content, Footer } = Layout;
 
@@ -444,6 +446,10 @@ class RegisterPage extends React.Component {
     };
   }
 
+  helpDirect() {
+    window.location= ORIGAMI_READ_THE_DOCS ;
+  }
+
   render() {
     let tokenClassName =
       this.validateTempwebaddress() &&
@@ -694,10 +700,8 @@ class RegisterPage extends React.Component {
                                   </li>
                                   <li>
                                     Use this Token to do registration with the
-                                    cvfy lib. See
-                                    <Link to="/gettingstarted">
-                                      Getting Started
-                                    </Link>
+                                    cvfy lib. See  <a onClick={this.helpDirect}> Getting Started
+                                    </a>
                                     .
                                   </li>
                                 </ul>
