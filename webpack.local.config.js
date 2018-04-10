@@ -1,7 +1,16 @@
 import path from "path";
 import webpack from "webpack";
 import BundleTracker from "webpack-bundle-tracker";
+const GLOBALS = {
+  "process.env.HOST": JSON.stringify(
+    process.env.HOST || "localhost"
+  ),
 
+  "process.env.PORT": JSON.stringify(
+    process.env.PORT || 8000
+  )
+
+};
 const config = {
   devtool: "cheap-module-eval-source-map",
   entry: [
@@ -22,6 +31,7 @@ const config = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.DefinePlugin(GLOBALS),
     new BundleTracker({ filename: "./webpack-stats-local.json" })
   ],
   module: {

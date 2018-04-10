@@ -21,7 +21,8 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({
       name: "vendor",
       filename: "vendor.js"
-    })
+    }),
+
   ], // add all common plugins here
 
   module: {
