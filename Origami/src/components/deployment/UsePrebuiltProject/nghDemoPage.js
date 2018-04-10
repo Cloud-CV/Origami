@@ -409,9 +409,7 @@ class NGHDemoPage extends React.Component {
                           
                         />
 
-                        <div className="ui fluid centered row">
-                          © CloudCV, 2017
-                        </div>
+
                       </div>
                     </div>
                   </div>
