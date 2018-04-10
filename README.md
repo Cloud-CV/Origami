@@ -23,7 +23,11 @@
 
 To create the file, `cp origami.env.sample origami.env` and edit the file with the above fields.
 
-* For adding Dropbox support for uploading images check step 3 of [configuring Origami](http://cloudcv-origami.readthedocs.io/en/latest/web-app.html#configuration) 
+* `Origami/outCalls/config.js` stores config variables needed by the UI.
+
+1. `CLIENT_IP` should be set to the same value as `HOST` in `origami.env`
+2. `CLIENT_PORT` should be set to the same value as `PORT` in `origami.env`
+3. For `DROPBOX_API_KEY` , check step 3 of [configuring Origami](http://cloudcv-origami.readthedocs.io/en/latest/web-app.html#configuration) 
 
 ## Production setup instructions 
 
