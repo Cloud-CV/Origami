@@ -24,7 +24,6 @@ const config = {
     new webpack.DefinePlugin(GLOBALS),
     new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.AggressiveMergingPlugin(),
-    new webpack.DefinePlugin(GLOBALS),
     new BundleTracker({ filename: "./webpack-stats-local.json" })
   ],
   module: {
