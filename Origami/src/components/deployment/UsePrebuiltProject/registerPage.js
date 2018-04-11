@@ -434,12 +434,14 @@ class RegisterPage extends React.Component {
         background: "#FFFFFF"
       },
       footer: {
-        backgroundColor: grey900,
-        color: "white",
-        textAlign: "center",
-        marginTop: "4vh",
-        height: "4rem",
-        zIndex: "2"
+            textAlign: 'center',
+            color: 'white',
+            fontSize: '14px',
+            marginTop: "2vh",
+            backgroundColor: grey900,
+            height: "4rem",
+            zIndex: "2",
+            boxShadow: '0px -2px 5px #E0E0E0'
       }
     };
   }
@@ -726,7 +728,10 @@ class RegisterPage extends React.Component {
             </Row>
           </div>
         </Content>
-        <Footer style={styles.footer}>© CloudCV, 2016</Footer>
+        <Footer style={styles.footer}>
+          <strong>Origami</strong> - Created by{" "}
+          <a href="http://cloudcv.org/">Team CloudCV</a>
+        </Footer>
       </Layout>
     );
   }

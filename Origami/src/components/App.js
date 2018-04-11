@@ -216,7 +216,7 @@ class App extends React.Component {
             style={{
               overflow: "auto",
               background: "#FEFEFE",
-              boxShadow: "10px 0px 20px #E0E0E0"
+              boxShadow: "0px 0px 10px #E0E0E0"
             }}
             width="200"
           >
