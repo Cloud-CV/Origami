@@ -55,4 +55,4 @@ If your checks have passed, your PR will be assigned a reviewer who will review 
 
 Once all comments are addressed, the reviewer will merge the PR.
 
-## Congratulations, you have successfully contributed to Project Origami!
+**Congratulations, you have successfully contributed to Project Origami!**
