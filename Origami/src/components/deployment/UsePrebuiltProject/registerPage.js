@@ -434,14 +434,12 @@ class RegisterPage extends React.Component {
         background: "#FFFFFF"
       },
       footer: {
-            textAlign: 'center',
-            color: 'white',
-            fontSize: '14px',
-            marginTop: "2vh",
-            backgroundColor: grey900,
-            height: "4rem",
-            zIndex: "2",
-            boxShadow: '0px -2px 5px #E0E0E0'
+        backgroundColor: grey900,
+        color: "white",
+        textAlign: "center",
+        marginTop: "4vh",
+        height: "4rem",
+        zIndex: "2"
       }
     };
   }
