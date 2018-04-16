@@ -8,7 +8,15 @@
 [![devDependency Status](https://david-dm.org/Cloud-CV/Origami/dev-status.svg)](https://david-dm.org/Cloud-CV/cvfy-frontend#info=devDependencies)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
-## Setting the environment variables
+- Origami is an AI-as-a-service that allows researchers to easily convert their deep learning models into an online service that is widely accessible to everyone without the need to setup the infrastructure, resolve the dependencies, and build a web service around the deep learning model. By lowering the barrier to entry to latest AI algorithms, we provide developers, researchers and students the ability to access any model using a simple REST API call.
+
+- The aim of this project is to create a framework that can help people create a web based demo out of their machine learning code and share it. Others can test the model without going into the implementation details. Usually testing models by other people involves a lot of preparation and setup. This project aims to cut that down.
+
+This app is presently under active development and we welcome contributions. Please check out our [issues thread](https://github.com/Cloud-CV/Origami/issues) to find things to work on, or ping us on [Gitter](https://gitter.im/Cloud-CV/Origami).
+
+## Getting Started
+
+### Setting the environment variables
 
 * `origami.env` stores all the environment variables necessary to run Origami.
 
