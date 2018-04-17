@@ -1,81 +1,129 @@
-import React from "react";
-import { PropTypes } from "prop-types";
+import React from 'react';
+import { PropTypes } from 'prop-types';
 
-import TextOutput from "./TextOutput/TextOutput";
-import ImageOutput from "./ImageOutput/ImageOutput";
-import BarGraphOutput from "./BarGraphOutput/BarGraphOutput";
-import ScatterGraphOutput from "./ScatterGraphOutput/ScatterGraphOutput";
-import PieChartOutput from "./PieChartOutput/PieChartOutput";
-import AreaGraphOutput from "./AreaGraphOutput/AreaGraphOutput";
+import TextOutput from './TextOutput/TextOutput';
+import ImageOutput from './ImageOutput/ImageOutput';
+import BarGraphOutput from './BarGraphOutput/BarGraphOutput';
+import ScatterGraphOutput from './ScatterGraphOutput/ScatterGraphOutput';
+import PieChartOutput from './PieChartOutput/PieChartOutput';
+import AreaGraphOutput from './AreaGraphOutput/AreaGraphOutput';
 
-import TextOutputShowcaseCard from "./TextOutput/TextOutputShowcaseCard";
-import ImageOutputShowcaseCard from "./ImageOutput/ImageOutputShowcaseCard";
-import BarGraphOutputShowCaseCard from "./BarGraphOutput/BarGraphOutputShowcaseCard";
-import ScatterGraphOutputShowCaseCard from "./ScatterGraphOutput/ScatterGraphOutputShowcaseCard";
-import PieChartOutputShowCaseCard from "./PieChartOutput/PieChartOutputShowcaseCard";
-import AreaGraphOutputShowCaseCard from "./AreaGraphOutput/AreaGraphOutputShowcaseCard";
+import TextOutputShowcaseCard from './TextOutput/TextOutputShowcaseCard';
+import ImageOutputShowcaseCard from './ImageOutput/ImageOutputShowcaseCard';
+import BarGraphOutputShowCaseCard from './BarGraphOutput/BarGraphOutputShowcaseCard';
+import ScatterGraphOutputShowCaseCard from './ScatterGraphOutput/ScatterGraphOutputShowcaseCard';
+import PieChartOutputShowCaseCard from './PieChartOutput/PieChartOutputShowcaseCard';
+import AreaGraphOutputShowCaseCard from './AreaGraphOutput/AreaGraphOutputShowcaseCard';
+import { Responsive, WidthProvider } from "react-grid-layout";
+const ResponsiveReactGridLayout = WidthProvider(Responsive);
+import '../../../../node_modules/react-grid-layout/css/styles.css';
 
-export function getOutputComponentById(
-  id,
-  outputComponentProps,
-  calling_context,
-  data
-) {
+export function getOutputComponentById(id, props, calling_context, data) {
   let headers = [];
-  outputComponentProps.map((header, index) => {
+  props.map((header, index) => {
     headers[index] = header;
   });
-  switch (id) {
-    case 1:
-      return (
-        <TextOutput
-          headers={headers}
-          calling_context={calling_context}
-          data={data}
-        />
-      );
-    case 2:
-      return (
-        <ImageOutput
-          headers={headers}
-          calling_context={calling_context}
-          data={data}
-        />
-      );
-    case 3:
-      return (
-        <BarGraphOutput
-          headers={headers}
-          calling_context={calling_context}
-          data={data}
-        />
-      );
-    case 4:
-      return (
-        <ScatterGraphOutput
-          headers={headers}
-          calling_context={calling_context}
-          data={data}
-        />
-      );
-    case 5:
-      return (
-        <PieChartOutput
-          headers={headers}
-          calling_context={calling_context}
-          data={data}
-        />
-      );
-    case 6:
-      return (
-        <AreaGraphOutput
-          headers={headers}
-          calling_context={calling_context}
-          data={data}
-        />
-      );
-    default:
-      return <div>Null</div>;
+
+  let fin = [];
+  let layout = [];
+  for (var i = 0; i < props.length; i++) {
+    let lab = {};
+    lab['id'] = props[i].id;
+    lab['label'] = props[i].label;
+    if ('layout' in props[i]) layout.push(props[i].layout);
+
+    switch (lab['id']) {
+      case 1:
+        fin.push(
+          <TextOutput
+            headers={lab['label']}
+            calling_context={calling_context}
+            data={data}
+          />
+        );
+        break;
+      case 2:
+        fin.push(
+          <ImageOutput
+            headers={lab['label']}
+            calling_context={calling_context}
+            data={data}
+          />
+        );
+        break;
+      case 3:
+        fin.push(
+          <BarGraphOutput
+            headers={lab['label']}
+            calling_context={calling_context}
+            data={data}
+          />
+        );
+        break;
+      case 4:
+        fin.push(
+          <ScatterGraphOutput
+            headers={lab['label']}
+            calling_context={calling_context}
+            data={data}
+          />
+        );
+        break;
+      case 5:
+        fin.push(
+          <PieChartOutput
+            headers={lab['label']}
+            calling_context={calling_context}
+            data={data}
+          />
+        );
+        break;
+      case 6:
+        fin.push(
+          <AreaGraphOutput
+            headers={lab['label']}
+            calling_context={calling_context}
+            data={data}
+          />
+        );
+        break;
+      default:
+        return <div>Null</div>;
+    }
+  }
+  if (calling_context == 'demo2') return fin;
+  else {
+    let layouts={'lg':layout};
+    let l = (
+     <ResponsiveReactGridLayout
+        rowHeight={50}
+        className="layout"
+        breakpoints={{lg: 768}}
+        cols={{lg: 10}}
+        verticalCompact={false}
+        layouts={layouts}
+        isDraggable={false}
+        isResizable={false}
+      >
+        {fin.map((value, index) => (
+          <div
+            key={index}
+            data-grid={{
+              x: layout[index]['x'],
+              y: layout[index]['y'],
+              w: layout[index]['w'],
+              h: layout[index]['h'],
+            }}
+          >
+            <br />
+            <br />
+            {value}
+          </div>
+        ))}
+      </ResponsiveReactGridLayout>
+    );
+
+    return l;
   }
 }
 
@@ -86,6 +134,6 @@ export function getAllOutputComponentsForShowcase(data) {
     <BarGraphOutputShowCaseCard key={Math.random()} demoProps={data} />,
     <ScatterGraphOutputShowCaseCard key={Math.random()} demoProps={data} />,
     <PieChartOutputShowCaseCard key={Math.random()} demoProps={data} />,
-    <AreaGraphOutputShowCaseCard key={Math.random()} demoProps={data} />
+    <AreaGraphOutputShowCaseCard key={Math.random()} demoProps={data} />,
   ];
 }

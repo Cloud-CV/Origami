@@ -1,10 +1,10 @@
-import React from "react";
-import { PropTypes } from "prop-types";
-import Dropzone from "react-dropzone";
-import DropboxChooser from "../../imports/DropboxChooser";
-import request from "superagent";
+import React from 'react';
+import { PropTypes } from 'prop-types';
+import Dropzone from 'react-dropzone';
+import DropboxChooser from '../../imports/DropboxChooser';
+import request from 'superagent';
 
-const appConfig = require("../../../../outCalls/config");
+const appConfig = require('../../../../outCalls/config');
 
 const singleInput = props => {
   function updateImage(index, file) {
@@ -20,16 +20,16 @@ const singleInput = props => {
 
   function onSelect(files) {
     let url = files[0].link.replace(
-      "www.dropbox.com",
-      "dl.dropboxusercontent.com"
+      'www.dropbox.com',
+      'dl.dropboxusercontent.com'
     );
     request
       .get(url)
-      .responseType("blob")
+      .responseType('blob')
       .end((err, res) => {
         if (!err) {
           let blob = new Blob([res.body], {
-            type: "image/png"
+            type: 'image/png',
           });
           props.updateFormData(blob, `input-image-${props.index}`);
           updateImage(props.index, blob);
@@ -37,19 +37,23 @@ const singleInput = props => {
       });
   }
 
+  const cl1 = null;
+  const cl2 =
+    'centered center aligned stretched row origami-demo-input-image-label-container';
+  const cl3 = 'ui blue segment origami-demo-input-image-label';
+  const height = props.calling_context == 'demo2' ? '20%' : '50%';
+  const width = props.calling_context == 'demo2' ? '20%' : '50%';
   return (
-    <div className="ui container grid origami-demo-input-image-component">
-      <div className="centered center aligned stretched row origami-demo-input-image-label-container">
-        <div className="ui blue segment origami-demo-input-image-label">
-          {props.label}
-        </div>
+    <div className={cl1} style={{ width: 'fit-content' }}>
+      <div className={cl2}>
+        <div className={cl3}>{props.label}</div>
       </div>
       <div className="centered row">
-        <div className="" style={{ height: "100%", cursor: "pointer" }}>
+        <div className="" style={{ height: height, cursor: 'pointer' }}>
           <Dropzone
             onDrop={onDrop}
             multiple={false}
-            style={{ height: "inherit" }}
+            style={{ height: 'inherit' }}
           >
             <div className="ui card">
               <div className="ui fluid image">
@@ -57,7 +61,7 @@ const singleInput = props => {
                   className="ui fluid medium bordered image"
                   src="/static/img/wireframe.png"
                   id={`input-image-preview-${props.index}`}
-                  style={{ width: "100%" }}
+                  style={{ width: width }}
                 />
               </div>
               <div className="content origami-demo-input-image-component-desc">
@@ -67,11 +71,11 @@ const singleInput = props => {
           </Dropzone>
         </div>
       </div>
-      {appConfig.DROPBOX_API_KEY !== "API_KEY" && (
+      {appConfig.DROPBOX_API_KEY !== 'API_KEY' && (
         <div>
           <div className="ui horizontal divider">Or</div>
           <div className="centered row">
-            <div className="" style={{ height: "100%", cursor: "pointer" }}>
+            <div className="" style={{ height: '100%', cursor: 'pointer' }}>
               <DropboxChooser
                 appKey={appConfig.DROPBOX_API_KEY}
                 success={files => onSelect(files)}
@@ -93,7 +97,7 @@ const singleInput = props => {
 singleInput.propTypes = {
   label: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
-  updateFormData: PropTypes.func.isRequired
+  updateFormData: PropTypes.func.isRequired,
 };
 
 export default singleInput;

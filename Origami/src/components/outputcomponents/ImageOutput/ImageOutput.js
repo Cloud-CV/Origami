@@ -4,29 +4,29 @@ import SingleOutput from "./SingleOutput";
 
 const ImageOutput = ({ headers, calling_context, data }) => {
   return (
+  <div className="ui centered center aligned grid">
     <div
       key={Math.random()}
       className="six wide stackable stretched grid container origami-demo-output-components"
     >
-      <br />
-      <br />
-      {headers.map((header, index) => [
+      <br /><br />
         <SingleOutput
           key={Math.random()}
           calling_context={calling_context}
-          index={index}
-          header={header}
-          data={data[index]}
-        />,
-        <br key={Math.random()} />,
+          header={headers}
+          data={data}
+        />
         <br key={Math.random()} />
-      ])}
+        <br key={Math.random()} />
+    
     </div>
+  </div>
+
   );
 };
 
 ImageOutput.propTypes = {
-  headers: PropTypes.array.isRequired,
+  headers: PropTypes.string.isRequired,
   calling_context: PropTypes.string.isRequired,
   data: PropTypes.array
 };

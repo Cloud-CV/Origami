@@ -1,10 +1,10 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { withRouter } from "react-router-dom";
+import { browserHistory } from "react-router";
 import CustomCard from "../../stateless/cards";
 import OutputShowcaseModifyDialog from "../BaseOutputComponent/OutputShowcaseModifyDialog";
 import OutputShowcaseCard from "../BaseOutputComponent/OutputShowcaseCard.js";
-import ScatterGraphOutputPreview from "./ScatterGraphOutputPreview";
+import { Draggable, Droppable } from 'react-drag-and-drop';
 import toastr from "toastr";
 
 class ScatterGraphOutputShowcaseCard extends OutputShowcaseCard {
@@ -27,12 +27,12 @@ class ScatterGraphOutputShowcaseCard extends OutputShowcaseCard {
   updateOutputComponentModel() {
     if (Object.keys(this.demoModel).length === 0) {
       toastr.error("Registration info not found! Register again");
-      this.props.history.push("/");
+      browserHistory.push("/");
     } else {
       let propsToStore = [];
       this.state.headers.map(header => {
-        if (typeof header === "object") {
-          propsToStore.push({ id: "", label: header.label });
+        if (typeof header == "object") {
+          propsToStore.push({ id: "", label: header["label"] });
         } else {
           propsToStore.push({ id: "", label: header });
         }
@@ -46,16 +46,16 @@ class ScatterGraphOutputShowcaseCard extends OutputShowcaseCard {
         })
         .then(() => {
           if (this.props.demoProps.params.type === "modify") {
-            this.props.history.push("/ngh/user");
+            browserHistory.push("/ngh/user");
           } else {
             if (this.forwardAddressAlternate) {
               if (this.demoModel.status === "input") {
-                this.props.history.push(this.forwardAddress);
+                browserHistory.push(this.forwardAddress);
               } else if (this.demoModel.status === "demo") {
-                this.props.history.push(this.forwardAddressAlternate);
+                browserHistory.push(this.forwardAddressAlternate);
               }
             } else {
-              this.props.history.push(this.forwardAddress);
+              browserHistory.push(this.forwardAddress);
             }
           }
         });
@@ -64,7 +64,8 @@ class ScatterGraphOutputShowcaseCard extends OutputShowcaseCard {
 
   render() {
     return (
-      <div>
+      <div key={Math.random()} style={{width: 'fit-content',margin: "auto"}}>
+      <Draggable type="l4" data="Scatter Graph Output">
         <CustomCard
           header="Scatter Graph Output"
           width="five"
@@ -72,41 +73,9 @@ class ScatterGraphOutputShowcaseCard extends OutputShowcaseCard {
           selected={this.selected}
           centeredParent
           centeredSegment
-          displayData={[`Number of Outputs: ${this.getHeaderRealLength()}`]}
-          buttonData={[
-            {
-              label: "Modify",
-              onDeployClick: () => this.showModifyDialog()
-            },
-            {
-              label: "Preview",
-              onDeployClick: () => this.showPreviewDialog()
-            },
-            {
-              label: "Save",
-              onDeployClick: () => this.updateOutputComponentModel()
-            }
-          ]}
+    
         />
-        {this.state.modifyDialogDisplay && (
-          <OutputShowcaseModifyDialog
-            functions={{
-              updateHeaders: this.updateHeaders,
-              hideModifyDialog: this.hideModifyDialog,
-              getHeaders: this.getHeaders
-            }}
-            title="Modify Scatter Graph Output Component"
-          />
-        )}
-
-        {this.state.previewDialogDisplay && (
-          <ScatterGraphOutputPreview
-            functions={{
-              getHeaders: this.getHeaders,
-              hidePreviewDialog: this.hidePreviewDialog
-            }}
-          />
-        )}
+      </Draggable>
       </div>
     );
   }
@@ -116,4 +85,4 @@ ScatterGraphOutputShowcaseCard.propTypes = {
   demoProps: PropTypes.object.isRequired
 };
 
-export default withRouter(ScatterGraphOutputShowcaseCard);
+export default ScatterGraphOutputShowcaseCard;

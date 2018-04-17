@@ -15,7 +15,11 @@ class singleOutput extends React.Component {
   }
 
   showImageFull() {
-    this.setState({ open: true });
+        let open=true
+    if(this.props.calling_context=="demo2")
+      open=false
+    this.setState({ open: open });
+ 
   }
 
   handleClose() {
@@ -23,16 +27,19 @@ class singleOutput extends React.Component {
   }
 
   render() {
+
+    const height=(this.props.calling_context=="demo2")?("50%"):("100%");
+    const width="100%";
     return (
       <div
         className="ui card centered origami-demo-output-image-component"
-        style={{ height: "100%", width: "75%" }}
+        style={{ height: height, width: width }}
         id={`output-text-${this.props.index}`}
       >
         <div className="content">
           <div className="header">
-            {typeof this.props.header === "object"
-              ? this.props.header.label
+            {typeof this.props.header == "object"
+              ? this.props.header["label"]
               : this.props.header}
           </div>
         </div>
@@ -41,7 +48,7 @@ class singleOutput extends React.Component {
             <div className="event">
               <div className="content">
                 <div className="center aligned summary">
-                  {this.props.data ? (
+                  {this.props.data.length ? (
                     <img
                       className="ui centered center aligned fluid large image origami-demo-output-image"
                       style={{ cursor: "pointer" }}
@@ -58,8 +65,8 @@ class singleOutput extends React.Component {
         </div>
         <Dialog
           title={
-            typeof this.props.header === "object"
-              ? this.props.header.label
+            typeof this.props.header == "object"
+              ? this.props.header["label"]
               : this.props.header
           }
           modal={false}
@@ -83,7 +90,6 @@ class singleOutput extends React.Component {
 singleOutput.propTypes = {
   header: PropTypes.string.isRequired,
   data: PropTypes.any,
-  index: PropTypes.number.isRequired
 };
 
 export default singleOutput;

@@ -1,14 +1,14 @@
-import React from "react";
-import { PropTypes } from "prop-types";
-import SingleInput from "./ImageSingleInput";
-import RaisedButton from "material-ui/RaisedButton";
-import toastr from "toastr";
+import React from 'react';
+import { PropTypes } from 'prop-types';
+import SingleInput from './ImageSingleInput';
+import RaisedButton from 'material-ui/RaisedButton';
+import toastr from 'toastr';
 
 class ImageInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      files: []
+      files: [],
     };
     this.sendRequest = this.sendRequest.bind(this);
     this.updateFormData = this.updateFormData.bind(this);
@@ -19,47 +19,47 @@ class ImageInput extends React.Component {
   }
 
   sendRequest(sendAddr, calling_context) {
-    $("#output-outer").animate(
+    $('#output-outer').animate(
       {
-        scrollTop: $("#output-div").offset().top
+        scrollTop: $('#output-div').offset().top,
       },
       1000
     );
 
-    let formData = new FormData($("#send-text")[0]);
+    let formData = new FormData($('#send-text')[0]);
     this.state.files.map(file => {
       formData.set(file.newfilename, file.newfile, file.newfilename);
     });
 
-    if (calling_context === "demo") {
-      let timeout1 = "";
-      let timeout2 = "";
-      let timeout3 = "";
-      $("#appbar-progress")
-        .css("visibility", "visible")
+    if (calling_context === 'demo') {
+      let timeout1 = '';
+      let timeout2 = '';
+      let timeout3 = '';
+      $('#appbar-progress')
+        .css('visibility', 'visible')
         .promise()
         .done(() => {
-          $("#appbar-progress").progress({
-            percent: "33%"
+          $('#appbar-progress').progress({
+            percent: '33%',
           });
           timeout1 = setTimeout(() => {
-            $("#appbar-progress").progress({
-              percent: "50%"
+            $('#appbar-progress').progress({
+              percent: '50%',
             });
           }, 300);
           timeout2 = setTimeout(() => {
-            $("#appbar-progress").progress({
-              percent: "65%"
+            $('#appbar-progress').progress({
+              percent: '65%',
             });
           }, 600);
           timeout3 = setTimeout(() => {
-            $("#appbar-progress").progress({
-              percent: "85%"
+            $('#appbar-progress').progress({
+              percent: '85%',
             });
           }, 1000);
         });
       $.ajax({
-        type: "POST",
+        type: 'POST',
         url: sendAddr,
         data: formData,
         contentType: false,
@@ -72,19 +72,19 @@ class ImageInput extends React.Component {
           clearTimeout(timeout3);
         },
         error: (xhr, textStatus, errorThrown) => {
-          $("#appbar-progress").css("visibility", "hidden");
-          $("#appbar-progress").progress({
-            percent: "0%"
+          $('#appbar-progress').css('visibility', 'hidden');
+          $('#appbar-progress').progress({
+            percent: '0%',
           });
-          toastr.error("Error occurred!");
-        }
+          toastr.error('Error occurred!');
+        },
       });
     }
   }
 
   updateFormData(newfile, newfilename) {
     this.setState({
-      files: [...this.state.files, { newfilename, newfile }]
+      files: [...this.state.files, { newfilename, newfile }],
     });
   }
 
@@ -103,15 +103,12 @@ class ImageInput extends React.Component {
                 calling_context={this.props.calling_context}
                 label={label}
               />,
-              <br key={Math.random()} />,
-              <br key={Math.random()} />
             ])}
             <input type="hidden" name="socket-id" value={this.props.socketId} />
           </div>
         </form>
         <div className="ui row">
           <pre className="ui centered center aligned">
-            <br />
             <RaisedButton
               label="Send"
               primary
@@ -134,7 +131,7 @@ ImageInput.propTypes = {
   labels: PropTypes.array.isRequired,
   calling_context: PropTypes.string.isRequired,
   sendAddr: PropTypes.string.isRequired,
-  socketId: PropTypes.string
+  socketId: PropTypes.string,
 };
 
 export default ImageInput;

@@ -1,18 +1,18 @@
-import React from "react";
-import { PropTypes } from "prop-types";
-import { withRouter } from "react-router";
-import { connect } from "react-redux";
-import { getInputComponentById } from "../../inputcomponents";
-import { getOutputComponentById } from "../../outputcomponents";
-import { getDeployed } from "../../../api/Nongh/getDeployed";
-import { modifyDeployed } from "../../../api/Nongh/modifyDeployed";
-import { getComponentDeployed } from "../../../api/CommonLocal/getComponentDeployed";
-import SampleInput from "../../sampleinput";
-import SampleImage from "../../sampleinput/SampleImage";
-import toastr from "toastr";
-import { Layout, Icon, Button, Card, Row, Col, Input, Select } from "antd";
+import React from 'react';
+import { PropTypes } from 'prop-types';
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
+import { getInputComponentById } from '../../inputcomponents';
+import { getOutputComponentById } from '../../outputcomponents';
+import { getDeployed } from '../../../api/Nongh/getDeployed';
+import { modifyDeployed } from '../../../api/Nongh/modifyDeployed';
+import { getComponentDeployed } from '../../../api/CommonLocal/getComponentDeployed';
+import SampleInput from '../../sampleinput';
+import SampleImage from '../../sampleinput/SampleImage';
+import toastr from 'toastr';
+import { Layout, Icon, Button, Card, Row, Col, Input, Select } from 'antd';
 const { Header, Content, Footer } = Layout;
-import request from "superagent";
+import request from 'superagent';
 
 toastr.options.closeButton = true;
 
@@ -33,7 +33,7 @@ class NGHDemoPage extends React.Component {
       imageInputCount: 0,
       files: [],
       index: 0,
-      resetBorder: false
+      resetBorder: false,
     };
     this.socket = this.context.socket;
     this.socketId = this.context.socketId;
@@ -43,46 +43,43 @@ class NGHDemoPage extends React.Component {
     this.updateFormData = this.updateFormData.bind(this);
   }
 
-  componentDidMount() {
-    $("body").css("overflow", "hidden");
-
+  componentWillMount() {
+    $('body').css('overflow', 'hidden');
     let socket = this.socket;
     socket.onmessage = function(response) {
       let data = JSON.parse(response.data);
-      const event = data.event;
-      data = data.data;
-      if (event === "injectOutputData") {
+      const event = data['event'];
+      data = data['data'];
+      if (event == 'injectOutputData') {
         if (data.data) {
           this.setState({
             outputData: Object.assign(
               Object.assign([], this.state.outputData),
               data.data
-            )
+            ),
           });
-          $("#appbar-progress").progress({
-            percent: "100%"
+          $('#appbar-progress').progress({
+            percent: '100%',
           });
           setTimeout(() => {
-            $("#appbar-progress").css("visibility", "hidden");
-            $("#appbar-progress").progress({
-              percent: "0%"
+            $('#appbar-progress').css('visibility', 'hidden');
+            $('#appbar-progress').progress({
+              percent: '0%',
             });
           }, 1000);
         }
         if (data.terminalData) {
           this.setState({
-            terminalData: [...data.terminalData, ...this.state.terminalData]
+            terminalData: [...data.terminalData, ...this.state.terminalData],
           });
         }
       }
     }.bind(this);
-    /*eslint-disable*/
     this.setState(
-      /*eslint-enable*/
       { demo_creator_id: parseInt(this.props.match.params.user_id, 10) },
       () => {
         this.setState(
-          { user_id: parseInt(localStorage.getItem("user_id")) },
+          { user_id: parseInt(localStorage.getItem('user_id')) },
           () => {
             if (this.state.user_id === this.state.demo_creator_id) {
               this.setState({ isCreator: true });
@@ -106,43 +103,37 @@ class NGHDemoPage extends React.Component {
               this.setState({ sampleinput: sampleinputs });
             }
           });
-          if (JSON.parse(data)[0].status === "input") {
+          if (JSON.parse(data)[0].status === 'input') {
             modifyDeployed(
               this.state.demo_creator_id,
-              Object.assign({}, JSON.parse(data)[0], { status: "demo" })
+              Object.assign({}, JSON.parse(data)[0], { status: 'demo' })
             ).then();
           }
         });
         getComponentDeployed(
           this.state.demo_creator_id,
           this.props.match.params.repoId,
-          "input"
+          'input'
         ).then(data => {
-          let pdata = JSON.parse(data);
-          if (pdata.text !== "Not Found") {
-            if (Object.keys(JSON.parse(data)).length) {
-              this.setState({ inputModel: JSON.parse(data)[0] }, () => {
-                let val = 0;
-                this.state.inputModel.props.map((prop, index) => {
-                  if (prop.id === "3") {
-                    val += 1;
-                  }
-                });
-                this.setState({ imageInputCount: val });
+          if (Object.keys(JSON.parse(data)).length) {
+            this.setState({ inputModel: JSON.parse(data)[0] }, () => {
+              let val = 0;
+              this.state.inputModel.props.map((prop, index) => {
+                if (prop['id'] === '3') {
+                  val += 1;
+                }
               });
-            }
+              this.setState({ imageInputCount: val });
+            });
           }
         });
         getComponentDeployed(
           this.state.demo_creator_id,
           this.props.match.params.repoId,
-          "output"
+          'output'
         ).then(data => {
-          let pdata = JSON.parse(data);
-          if (pdata.text !== "Not Found") {
-            if (Object.keys(JSON.parse(data)).length) {
-              this.setState({ outputModel: JSON.parse(data)[0] });
-            }
+          if (Object.keys(JSON.parse(data)).length) {
+            this.setState({ outputModel: JSON.parse(data)[0] });
           }
         });
       }
@@ -150,7 +141,7 @@ class NGHDemoPage extends React.Component {
   }
 
   componentWillUnmount() {
-    $("body").css("overflow", "auto");
+    $('body').css('overflow', 'auto');
   }
 
   toggleShowTerminal() {
@@ -159,48 +150,48 @@ class NGHDemoPage extends React.Component {
 
   sendRequest(sendAddr) {
     this.setState({ resetBorder: true });
-    $("#output-outer").animate(
+    $('#output-outer').animate(
       {
-        scrollTop: $("#output-div").offset().top
+        scrollTop: $('#output-div').offset().top,
       },
       1000
     );
     let formData = new FormData();
-    formData.set("socket-id", this.socketId);
+    formData.set('socket-id', this.socketId);
     this.state.files.map(file => {
       formData.set(file.newfilename, file.newfile, file.newfilename);
     });
     this.setState({ files: [] }, () => {
       this.setState({ index: 0 });
     });
-    let timeout1 = "";
-    let timeout2 = "";
-    let timeout3 = "";
-    $("#appbar-progress")
-      .css("visibility", "visible")
+    let timeout1 = '';
+    let timeout2 = '';
+    let timeout3 = '';
+    $('#appbar-progress')
+      .css('visibility', 'visible')
       .promise()
       .done(() => {
-        $("#appbar-progress").progress({
-          percent: "33%"
+        $('#appbar-progress').progress({
+          percent: '33%',
         });
         timeout1 = setTimeout(() => {
-          $("#appbar-progress").progress({
-            percent: "50%"
+          $('#appbar-progress').progress({
+            percent: '50%',
           });
         }, 300);
         timeout2 = setTimeout(() => {
-          $("#appbar-progress").progress({
-            percent: "65%"
+          $('#appbar-progress').progress({
+            percent: '65%',
           });
         }, 600);
         timeout3 = setTimeout(() => {
-          $("#appbar-progress").progress({
-            percent: "85%"
+          $('#appbar-progress').progress({
+            percent: '85%',
           });
         }, 1000);
       });
     $.ajax({
-      type: "POST",
+      type: 'POST',
       url: sendAddr,
       data: formData,
       contentType: false,
@@ -208,41 +199,41 @@ class NGHDemoPage extends React.Component {
       processData: false,
       async: true,
       success: data => {
-        $("#appbar-progress").progress({
-          percent: "100%"
+        $('#appbar-progress').progress({
+          percent: '100%',
         });
         clearTimeout(timeout1);
         clearTimeout(timeout2);
         clearTimeout(timeout3);
         setTimeout(() => {
-          $("#appbar-progress").css("visibility", "hidden");
-          $("#appbar-progress").progress({
-            percent: "0%"
+          $('#appbar-progress').css('visibility', 'hidden');
+          $('#appbar-progress').progress({
+            percent: '0%',
           });
         }, 1000);
       },
       error: (xhr, textStatus, errorThrown) => {
-        $("#appbar-progress").css("visibility", "hidden");
-        $("#appbar-progress").progress({
-          percent: "0%"
+        $('#appbar-progress').css('visibility', 'hidden');
+        $('#appbar-progress').progress({
+          percent: '0%',
         });
-        toastr.error("Error occurred!");
-      }
+        toastr.error('Error occurred!');
+      },
     });
   }
 
   updateFormData(newfile, newfilename) {
     this.setState({
-      files: [...this.state.files, { newfilename, newfile }]
+      files: [...this.state.files, { newfilename, newfile }],
     });
     this.setState(
       {
-        index: this.state.index + 1
+        index: this.state.index + 1,
       },
       () => {
-        if (this.state.index === this.state.imageInputCount) {
-          let sendAddr = `http://${this.state.demoModel.token.split(":")[1]}:${
-            this.state.demoModel.token.split(":")[4]
+        if (this.state.index == this.state.imageInputCount) {
+          let sendAddr = `http://${this.state.demoModel.token.split(':')[1]}:${
+            this.state.demoModel.token.split(':')[4]
           }/event`;
           this.sendRequest(sendAddr);
         }
@@ -257,12 +248,12 @@ class NGHDemoPage extends React.Component {
     let url = window.location.origin + path;
     request
       .get(url)
-      .responseType("blob")
+      .responseType('blob')
       .end((err, res) => {
         if (!err) {
           let file = new File([res.body], `input-image-${this.state.index}`, {
-            type: "image/png",
-            lastModified: Date.now()
+            type: 'image/png',
+            lastModified: Date.now(),
           });
           this.updateFormData(file, `input-image-${this.state.index}`);
         }
@@ -271,8 +262,8 @@ class NGHDemoPage extends React.Component {
 
   render() {
     const mainClassName = this.state.showTerminal
-      ? "ui twelve wide column grid"
-      : "ui sixteen wide column grid";
+      ? 'ui twelve wide column grid'
+      : 'ui sixteen wide column grid';
 
     return (
       <div>
@@ -282,7 +273,7 @@ class NGHDemoPage extends React.Component {
               className={mainClassName}
               style={{ visibility: this.state.showOutput }}
             >
-              {" "}
+              {' '}
               {!this.props.login && (
                 <Header id="layout-header">
                   <Row>
@@ -300,10 +291,10 @@ class NGHDemoPage extends React.Component {
                 className="sixteen wide column stretched centered row"
                 id="output-outer"
                 style={{
-                  maxHeight: "90vh",
-                  overflowY: "scroll",
-                  overflowX: "hidden",
-                  whiteSpace: "nowrap"
+                  maxHeight: '90vh',
+                  overflowY: 'scroll',
+                  overflowX: 'hidden',
+                  whiteSpace: 'nowrap',
                 }}
               >
                 {!this.state.showTerminal &&
@@ -314,7 +305,7 @@ class NGHDemoPage extends React.Component {
                         shape="circle"
                         icon="arrow-left"
                         size="large"
-                        style={{ float: "right", marginRight: "15px" }}
+                        style={{ float: 'right', marginRight: '15px' }}
                         ghost
                         onClick={() => this.toggleShowTerminal()}
                       />
@@ -333,12 +324,11 @@ class NGHDemoPage extends React.Component {
                   <Row>
                     <h3>Sample Inputs</h3>
                     <br />
-                    {this.state.sampleinput.map((row, index) => (
-                      <div key={index}>
+                    {this.state.sampleinput.map(row => (
+                      <div>
                         <Row>
-                          {row.map((input, index) => (
+                          {row.map(input => (
                             <SampleImage
-                              key={index}
                               onSelect={this.onSelect}
                               value={input.value}
                               resetBorder={this.state.resetBorder}
@@ -366,11 +356,11 @@ class NGHDemoPage extends React.Component {
                           getInputComponentById(
                             this.state.inputModel.base_component_id,
                             this.state.inputModel.props,
-                            "demo",
+                            'demo',
                             this.socketId,
                             `http://${
-                              this.state.demoModel.token.split(":")[1]
-                            }:${this.state.demoModel.token.split(":")[4]}/event`
+                              this.state.demoModel.token.split(':')[1]
+                            }:${this.state.demoModel.token.split(':')[4]}/event`
                           )}
                       </div>
                     </div>
@@ -386,7 +376,7 @@ class NGHDemoPage extends React.Component {
                 <div
                   id="appbar-progress"
                   className="ui bottom attached indicating progress"
-                  style={{ visibility: "hidden" }}
+                  style={{ visibility: 'hidden' }}
                 >
                   <div className="bar" />
                 </div>
@@ -401,14 +391,14 @@ class NGHDemoPage extends React.Component {
                           getOutputComponentById(
                             this.state.outputModel.base_component_id,
                             this.state.outputModel.props,
-                            "demo",
+                            'demo',
                             this.state.outputData
                           )}
 
                         {this.state.demoModel.footer_message && (
                           <div
                             className="ui fluid centered row"
-                            style={{ maxWidth: "100vw", overflowX: "auto" }}
+                            style={{ maxWidth: '100vw', overflowX: 'auto' }}
                           >
                             <h4>{this.state.demoModel.footer_message}</h4>
                           </div>
@@ -416,12 +406,10 @@ class NGHDemoPage extends React.Component {
 
                         <div
                           className="ui fluid centered row"
-                          style={{ minHeight: "5vh" }}
+                          
                         />
 
-                        <div className="ui fluid centered row">
-                          © CloudCV, 2017
-                        </div>
+
                       </div>
                     </div>
                   </div>
@@ -432,7 +420,7 @@ class NGHDemoPage extends React.Component {
 
           {this.state.showTerminal && (
             <div className="ui four wide column">
-              <h2 className="ui header grid" style={{ marginTop: "1vh" }}>
+              <h2 className="ui header grid" style={{ marginTop: '1vh' }}>
                 <div className="ui twelve wide column">
                   <div className="content">Terminal</div>
                 </div>
@@ -450,12 +438,12 @@ class NGHDemoPage extends React.Component {
               <div
                 className="ui padded segment"
                 style={{
-                  minHeight: "80vh",
-                  maxHeight: "80vh",
-                  backgroundColor: "black",
-                  color: "white",
-                  overflowY: "scroll",
-                  wordWrap: "break-word"
+                  minHeight: '80vh',
+                  maxHeight: '80vh',
+                  backgroundColor: 'black',
+                  color: 'white',
+                  overflowY: 'scroll',
+                  wordWrap: 'break-word',
                 }}
               >
                 {this.state.terminalData.map(data => (
@@ -469,14 +457,14 @@ class NGHDemoPage extends React.Component {
         <br />
         <Footer
           style={{
-            textAlign: "center",
-            background: "#fefefe",
-            color: "#455A64",
-            fontSize: "14px",
-            boxShadow: "0px -2px 5px #E0E0E0"
+            textAlign: 'center',
+            background: '#fefefe',
+            color: '#455A64',
+            fontSize: '14px',
+            boxShadow: '0px -2px 5px #E0E0E0',
           }}
         >
-          <strong>Origami</strong> - Created by{" "}
+          <strong>Origami</strong> - Created by{' '}
           <a href="http://cloudcv.org/">Team CloudCV</a>
           <br />
           <br />
@@ -493,12 +481,12 @@ NGHDemoPage.propTypes = {
   match: PropTypes.object.isRequired,
   nonghDemoModel: PropTypes.object.isRequired,
   outputComponentDemoModel: PropTypes.object.isRequired,
-  inputComponentDemoModel: PropTypes.object.isRequired
+  inputComponentDemoModel: PropTypes.object.isRequired,
 };
 
 NGHDemoPage.contextTypes = {
   socket: PropTypes.object.isRequired,
-  socketId: PropTypes.string.isRequired
+  socketId: PropTypes.string.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
@@ -507,14 +495,13 @@ function mapStateToProps(state, ownProps) {
     user: state.user,
     nonghDemoModel: state.nonghDemoModel,
     inputComponentDemoModel: state.inputComponentDemoModel,
-    outputComponentDemoModel: state.outputComponentDemoModel
+    outputComponentDemoModel: state.outputComponentDemoModel,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {};
 }
-
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(NGHDemoPage)
 );

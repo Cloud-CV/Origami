@@ -431,7 +431,7 @@ class CustomComponentControllerTests(TestCase):
         payload = {
             "id": 500,
             "base_component_id": 2,
-            "props": [{"id": "1", "label": "label"}],
+            "props": [{"id": "1", "label": "label","layout":[]}],
             "user_id": 100,
         }
         Demo.objects.create(name=self.demo["name"], id="500",
@@ -484,7 +484,7 @@ class CustomComponentControllerTests(TestCase):
     def test_modify_input_component(self):
         payload = self.input_component
         payload["base_component_id"] = 3
-        payload["props"] = [{"id": "1", "label": ""}]
+        payload["props"] = [{"id": "1", "label": "","layout":[]}]
         payload.pop("demo", None)
         url = '/api/inputcomponent/' + \
             str(payload["user_id"]) + '/' + str(payload["id"])
@@ -500,7 +500,7 @@ class CustomComponentControllerTests(TestCase):
     def test_put_without_id_and_userid(self):
         payload = self.input_component
         payload["base_component_id"] = 3
-        payload["props"] = [{"id": "1", "label": ""}]
+        payload["props"] = [{"id": "1", "label": "","layout":[]}]
         payload.pop("demo", None)
         url = '/api/inputcomponent/'
         response = self.client.put(url, json.dumps(payload),
@@ -559,7 +559,7 @@ class CustomComponentControllerTests(TestCase):
         payload = {
             "id": 500,
             "base_component_id": 2,
-            "props": [{"id": "1", "label": "label"}],
+            "props": [{"id": "1", "label": "label","layout":[]}],
             "user_id": 100,
         }
         Demo.objects.create(name=self.demo["name"], id="500",
@@ -585,7 +585,7 @@ class CustomComponentControllerTests(TestCase):
     def test_modify_output_component(self):
         payload = self.output_component
         payload["base_component_id"] = 3
-        payload["props"] = [{"id": "3", "label": ""}]
+        payload["props"] = [{"id": "3", "label": "","layout":[]}]
         payload.pop("demo", None)
         url = '/api/outputcomponent/' + \
             str(payload["user_id"]) + '/' + str(payload["id"])
