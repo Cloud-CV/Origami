@@ -26,8 +26,7 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 router.register(r'demo-view', DemoViewSet, r"demo-view")
 router.register(r'input-component', InputComponentViewSet, r"input-component")
-router.register(r'output-component',
-                OutputComponentViewSet, r"output-component")
+router.register(r'output-component', OutputComponentViewSet, r"output-component")
 router.register(r'get-permalink', PermalinkViewSet, r"get-permalink")
 router.register(r'root-settings', RootSettingsViewSet, r"root-settings")
 
@@ -42,19 +41,15 @@ urlpatterns = [
     url(r'api/getpermalink/([A-Za-z0-9]+)/?$', get_permalink),
     url(r'api/demo/user/(\d+)', get_all_user_demos),
     url(r'api/demos/$', get_all_demos),
-    url(r'api/(input|output)component/?(\d*)/?(\d*)',
-        custom_component_controller),
+    url(r'api/(input|output)component/?(\d*)/?(\d*)', custom_component_controller),
     url(r'^api/demo/(\d*)/?(\d*)', custom_demo_controller),
     url(r'^api/permalink/?(\d*)/?(\d*)', custom_permalink_controller),
     url(r'^api/', include(router.urls, namespace='api')),
     url(r'^inject$', inject),
-    url(r'^$',
-        generic.TemplateView.as_view(template_name='view1.html')),
+    url(r'^$', generic.TemplateView.as_view(template_name='view1.html')),
 ]
 
 if settings.DEBUG is True:
-    urlpatterns += static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-urlpatterns += url(r'^(?:.*)/?$',
-                   generic.TemplateView.as_view(template_name='view1.html')),
+urlpatterns += url(r'^(?:.*)/?$', generic.TemplateView.as_view(template_name='view1.html')),

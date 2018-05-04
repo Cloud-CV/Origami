@@ -20,17 +20,11 @@ def ws_message(message):
         Group(body["socketId"]).add(message.reply_channel)
 
     elif body["event"] == "fetchCurrentPort":
-        text = json.dumps({
-            "data": settings.PORT,
-                    "event": "fetchedCurrentPort"
-        })
+        text = json.dumps({"data": settings.PORT, "event": "fetchedCurrentPort"})
         message.reply_channel.send({"text": text})
 
     elif body["event"] == "getPublicIPaddress":
-        text = json.dumps({
-            "data": settings.HOST_NAME,
-                    "event": "gotPublicIP"
-        })
+        text = json.dumps({"data": settings.HOST_NAME, "event": "gotPublicIP"})
         message.reply_channel.send({"text": text})
 
 
@@ -39,9 +33,6 @@ def ws_message(message):
 def inject(request):
     if request.method == "POST":
         body = request.data
-        text = json.dumps({
-            "data": body,
-            "event": "injectOutputData"
-        })
+        text = json.dumps({"data": body, "event": "injectOutputData"})
         Group(body["socketId"]).send({"text": text})
         return Response(status=response_status.HTTP_200_OK)
