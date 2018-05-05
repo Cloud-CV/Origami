@@ -1,7 +1,11 @@
-# Origami
+<p align="center"><img width="30%" height="15%" src="origami_logo.png" /></p>
 
-<p align="center"><img width="45%" height="15%" src="origami.png" /></p>
+---------------------------------------
+<p align="center"><img width="75%" height="60%" src="origami.png" /></p>
+<h4 align="center">Artificial Intelligence as a Service</h4>
 
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 [![Build Status](https://travis-ci.org/Cloud-CV/Origami.svg?branch=master)](https://travis-ci.org/Cloud-CV/cvfy-frontend.svg?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/Cloud-CV/Origami/badge.svg?branch=master)](https://coveralls.io/github/Cloud-CV/Origami?branch=master)
 [![Dependency Status](https://david-dm.org/Cloud-CV/Origami.svg)](https://david-dm.org/Cloud-CV/cvfy-frontend)
@@ -12,9 +16,10 @@
 
 - The aim of this project is to create a framework that can help people create a web based demo out of their machine learning code and share it. Others can test the model without going into the implementation details. Usually testing models by other people involves a lot of preparation and setup. This project aims to cut that down.
 
+
 This app is presently under active development and we welcome contributions. Please check out our [issues thread](https://github.com/Cloud-CV/Origami/issues) to find things to work on, or ping us on [Gitter](https://gitter.im/Cloud-CV/Origami).
 
-## Getting Started
+## Installation Instructions
 
 ### Setting the environment variables
 
@@ -31,7 +36,11 @@ This app is presently under active development and we welcome contributions. Ple
 
 To create the file, `cp origami.env.sample origami.env` and edit the file with the above fields.
 
-* For adding Dropbox support for uploading images check step 3 of [configuring Origami](http://cloudcv-origami.readthedocs.io/en/latest/web-app.html#configuration) 
+* `Origami/outCalls/config.js` stores config variables needed by the UI.
+
+1. `CLIENT_IP` should be set to the same value as `HOST` in `origami.env`
+2. `CLIENT_PORT` should be set to the same value as `PORT` in `origami.env`
+3. For `DROPBOX_API_KEY` , check step 3 of [configuring Origami](http://cloudcv-origami.readthedocs.io/en/latest/web-app.html#configuration) 
 
 ## Production setup instructions 
 
@@ -95,7 +104,7 @@ python manage.py migrate
 4. Go to [localhost:8000](http://localhost:8000/)
   Visit [Read the docs](http://cloudcv-origami.readthedocs.io/en/latest/) for further instructions on Getting started
 
-### Contributing to Origami
+## Contributing to Origami
 
 1. Make sure your run tests on your changes before you push the code using:
 	* `python manage.py test`
