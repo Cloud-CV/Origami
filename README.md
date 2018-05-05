@@ -1,16 +1,14 @@
 <p align="center"><img width="30%" height="15%" src="origami_logo.png" /></p>
 
----------------------------------------
-<p align="center"><img width="75%" height="60%" src="origami.png" /></p>
-<h4 align="center">Artificial Intelligence as a Service</h4>
-
-
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 [![Build Status](https://travis-ci.org/Cloud-CV/Origami.svg?branch=master)](https://travis-ci.org/Cloud-CV/cvfy-frontend.svg?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/Cloud-CV/Origami/badge.svg?branch=master)](https://coveralls.io/github/Cloud-CV/Origami?branch=master)
 [![Dependency Status](https://david-dm.org/Cloud-CV/Origami.svg)](https://david-dm.org/Cloud-CV/cvfy-frontend)
 [![devDependency Status](https://david-dm.org/Cloud-CV/Origami/dev-status.svg)](https://david-dm.org/Cloud-CV/cvfy-frontend#info=devDependencies)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+
+<p align="center"><img width="75%" height="60%" src="origami.png" /></p>
+<h4 align="center">Artificial Intelligence as a Service</h4>
 
 - Origami is an AI-as-a-service that allows researchers to easily convert their deep learning models into an online service that is widely accessible to everyone without the need to setup the infrastructure, resolve the dependencies, and build a web service around the deep learning model. By lowering the barrier to entry to latest AI algorithms, we provide developers, researchers and students the ability to access any model using a simple REST API call.
 
