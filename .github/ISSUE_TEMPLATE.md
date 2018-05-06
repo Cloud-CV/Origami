@@ -3,7 +3,7 @@ For more information, see the [CONTRIBUTING Guide](https://github.com/Cloud-CV/O
 
 ## Description
 
-[Description of the bug or feature]</br>
+[Description of the bug or feature]
 If you'd like to propose a new feature:
 - Please describe, as clearly as possible, what you'd like to see
 - (If possible) include mockups/screenshots, if these would help convey the meaning better
