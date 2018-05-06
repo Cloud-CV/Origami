@@ -1,6 +1,20 @@
-Thanks for taking the time to report a bug in the Origami project, or propose a new feature! Before creating a new issue, please do a quick search to check that it hasn't already been filed on the [issue tracker](https://github.com/Cloud-CV/Origami/issues)._
+Thanks for taking the time to report a bug in the Origami project, or propose a new feature! Before creating a new issue, please do a quick search to check that it hasn't already been filed on the [issue tracker](https://github.com/Cloud-CV/Origami/issues).
+## Expected Behavior
 
-If you'd like to report a bug, please include the following information:
+
+## Actual Behavior
+
+
+## Steps to Reproduce the Problem
+
+  1.
+  1.
+  1.
+
+## Screenshots
+
+## Specifications(For bug reports)
+
 - Node version:
 - Python version:
 - npm version:
