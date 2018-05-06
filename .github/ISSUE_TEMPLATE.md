@@ -1,7 +1,7 @@
 Thanks for taking the time to report a bug in the Origami project, or propose a new feature! Before creating a new issue, please do a quick search to check that it hasn't already been filed on the [issue tracker](https://github.com/Cloud-CV/Origami/issues).
-For more information, see the `CONTRIBUTING` guide.
+For more information, see the [CONTRIBUTING Guide](https://github.com/Cloud-CV/Origami/blob/master/.github/CONTRIBUTING.md) 
 
-### Description
+## Description
 
 [Description of the bug or feature]
 if you'd like to propose a new feature:
@@ -17,8 +17,8 @@ if you'd like to propose a new feature:
 ## Steps to Reproduce the Problem
 
   1.
-  1.
-  1.
+  2.
+  3.
 
 ## Screenshots
 
