@@ -30,7 +30,6 @@ If you'd like to propose a new feature:
 - Other dependencies:
 - Operating system:
 - Command line used:
-- Steps to reproduce:
 
 
 Thanks!
