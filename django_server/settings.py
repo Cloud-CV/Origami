@@ -15,7 +15,6 @@ import sys
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = ')3e&&#5kho$n++t_t6ux043(yic7#y7gw*^(j6db^_a&d2e#v#'
 DEBUG = True
 
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', os.environ['HOST']]
-
 
 # Application definition
 
@@ -84,14 +82,11 @@ AUTHENTICATION_BACKENDS = (
 
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
-
 )
 
 WSGI_APPLICATION = 'django_server.wsgi.application'
 
-DEFAULT_AUTHENTICATION_CLASSES = (
-    'rest_framework.authentication.SessionAuthentication',
-)
+DEFAULT_AUTHENTICATION_CLASSES = ('rest_framework.authentication.SessionAuthentication', )
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -112,23 +107,18 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.' +
-                'UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation.' + 'UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.' +
-                'MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation.' + 'MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.' +
-                'CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.' + 'CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.' +
-                'NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.' + 'NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
@@ -142,7 +132,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
@@ -167,8 +156,8 @@ WEBPACK_LOADER = {
 }
 
 SITE_ID = 1
-if DEBUG :
-    ACCOUNT_UNIQUE_EMAIL=False
+if DEBUG:
+    ACCOUNT_UNIQUE_EMAIL = False
 
 CHANNEL_LAYERS = {
     "default": {
