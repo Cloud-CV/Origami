@@ -61,16 +61,16 @@ Coding is done on feature branches and merged into it once stable and reviewed. 
    - Please ensure that your code is well tested.Run the following tests before creating a pull request :
 	 * `python manage.py test`
 	 * `yarn run test`
-   - Fix lint issues with the code using:
-	 * `yarn run lint:fix`
+
         
    - We highly encourage to use `autopep8` to follow the PEP8 styling. Run the following command before creating the pull request:
 
             autopep8 --in-place --exclude env,docs --recursive .     
             git commit -a -m “{{commit_message}}”
             git push origin {{branch_name}}
-  - Also, For Pretifying the Frontend Code Use ```HTML/JS/CSS Pretifier```.
-  - For installing the Sublime Package Control Manager in Sublime-Text Editor use [this](https://packagecontrol.io/installation#st2) link. Also, If Sublime Package Control Manager is installed then install ```HTML/JS/CSS Pretifier```.
+  - We use [`ESLint plugin for prettier`](https://github.com/prettier/eslint-plugin-prettier) for fomatting our front end code. Make sure to run the following command whenever you do any front-end related code changes :
+  	 * `yarn run lint:fix`
+  	
   
   
   Run the following command before creating the pull request:
