@@ -730,7 +730,10 @@ class RegisterPage extends React.Component {
             </Row>
           </div>
         </Content>
-        <Footer style={styles.footer}>© CloudCV, 2016</Footer>
+        <Footer style={styles.footer}>
+          <strong>Origami</strong> - Created by{" "}
+          <a href="http://cloudcv.org/">Team CloudCV</a>
+        </Footer>
       </Layout>
     );
   }

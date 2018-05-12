@@ -29,6 +29,7 @@ import toastr from "toastr";
 import { SocialDialog } from "../social/SocialDialog";
 import { trimAndPad } from "../../utils/generalUtils";
 import { DEMO_CARD_DESCRIP_MAX_LEN } from "../../constants";
+import { red500, green500, grey900 } from "material-ui/styles/colors";
 
 const { Header, Content, Footer } = Layout;
 const Option = Select.Option;
@@ -336,11 +337,14 @@ class HomePage extends React.Component {
         </Content>
         <Footer
           style={{
-            textAlign: "center",
-            background: "#fefefe",
-            color: "#455A64",
-            fontSize: "14px",
-            boxShadow: "0px -2px 5px #E0E0E0"
+            textAlign: 'center',
+            color: 'white',
+            fontSize: '14px',
+            marginTop: "2vh",
+            backgroundColor: grey900,
+            height: "4rem",
+            zIndex: "2",
+            boxShadow: '0px -2px 5px #E0E0E0'
           }}
         >
           <strong>Origami</strong> - Created by{" "}

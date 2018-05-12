@@ -16,6 +16,7 @@ import { Layout, Icon, Button, Card, Row, Col, Input } from "antd";
 import Radium from "radium";
 import { trimAndPad } from "../../utils/generalUtils";
 import { DEMO_CARD_DESCRIP_MAX_LEN } from "../../constants";
+import { red500, green500, grey900 } from "material-ui/styles/colors";
 
 const { Header, Content, Footer, Sider } = Layout;
 const Search = Input.Search;
@@ -193,11 +194,14 @@ class NonGHUserProfileComponent extends React.Component {
         textAlign: "center"
       },
       footer: {
-        textAlign: "center",
-        background: "#fefefe",
-        color: "#455A64",
-        fontSize: "14px",
-        boxShadow: "0px -2px 5px #E0E0E0"
+          textAlign: 'center',
+          color: 'white',
+          fontSize: '14px',
+          marginTop: "2vh",
+          backgroundColor: grey900,
+          height: "4rem",
+          zIndex: "2",
+          boxShadow: '0px -2px 5px #E0E0E0'
       }
     };
   }

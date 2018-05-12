@@ -11,6 +11,8 @@ import SampleInput from "../../sampleinput";
 import SampleImage from "../../sampleinput/SampleImage";
 import toastr from "toastr";
 import { Layout, Icon, Button, Card, Row, Col, Input, Select } from "antd";
+import { red500, green500, grey900 } from "material-ui/styles/colors";
+
 const { Header, Content, Footer } = Layout;
 import request from "superagent";
 
@@ -419,9 +421,7 @@ class NGHDemoPage extends React.Component {
                           style={{ minHeight: "5vh" }}
                         />
 
-                        <div className="ui fluid centered row">
-                          © CloudCV, 2017
-                        </div>
+
                       </div>
                     </div>
                   </div>
@@ -465,15 +465,16 @@ class NGHDemoPage extends React.Component {
             </div>
           )}
         </div>
-        <br />
-        <br />
         <Footer
           style={{
-            textAlign: "center",
-            background: "#fefefe",
-            color: "#455A64",
-            fontSize: "14px",
-            boxShadow: "0px -2px 5px #E0E0E0"
+            textAlign: 'center',
+            color: 'white',
+            fontSize: '14px',
+            marginTop: "2vh",
+            backgroundColor: grey900,
+            height: "4rem",
+            zIndex: "2",
+            boxShadow: '0px -2px 5px #E0E0E0'
           }}
         >
           <strong>Origami</strong> - Created by{" "}
