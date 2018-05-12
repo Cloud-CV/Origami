@@ -215,7 +215,8 @@ class ShareProfileComponent extends React.Component {
           )}
         </Content>
 
-        <Footer style={styles.footer}>Origami - Created by Team CloudCV</Footer>
+        <Footer style={styles.footer}><strong>Origami</strong> - Created by{" "}
+          <a href="http://cloudcv.org/">Team CloudCV</a></Footer>
         <SocialDialog
           shareModalOpen={this.state.shareModalOpen}
           handleShareModal={this.handleShareModal.bind(this)}
