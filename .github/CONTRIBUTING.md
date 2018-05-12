@@ -1,6 +1,15 @@
-## Contributing guidelines
-
+# Contributing guidelines
 Thank you for your interest in contributing to Origami! Here are a few pointers about how you can help.
+
+## How to Contribute
+Origami is one of CloudCV’s first open source projects that is  under very active development. We’re still working out the kinks to make contributing to this project as easy and transparent as possible, but we’re not quite there yet. Hopefully this document makes the process for contributing clear and answers some questions that you may have.
+
+### Code of Conduct
+Origami has adopted a Code of Conduct that we expect project participants to adhere to. Please read the [full text](https://github.com/Cloud-CV/Origami/blob/master/CODE_OF_CONDUCT.md) so that you can understand what actions will and will not be tolerated.
+
+### Open Development
+All work on Origami happens directly on GitHub. Both core team members and external contributors send pull requests which go through the same review process.
+
 
 ### Setting things up
 
@@ -19,6 +28,19 @@ If it is already assigned to someone, but there is no sign of any work being don
 
 If neither of these seem appealing, please post on our [Gitter channel](https://gitter.im/Cloud-CV/Origami) and we will help find you something else to work on.
 
+
+### Your First Pull Request
+Working on your first Pull Request? You can learn how from this free video series:
+
+[How to Contribute to an Open Source Project on GitHub](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github)
+
+To help you get your feet wet and get you familiar with our contribution process, we have a list of good first issues that contain bugs that have a relatively limited scope. This is a great place to get started.
+
+If you decide to fix an issue, please be sure to check the comment thread in case somebody is already working on a fix. If nobody is working on it at the moment, please leave a comment stating that you intend to work on it so other people don’t accidentally duplicate your effort.
+
+If somebody claims an issue but doesn’t follow up for more than two weeks, it’s fine to take it over but you should still leave a comment.
+
+
 ### Instructions to submit code
 
 Before you submit code, please talk to us via the issue tracker so we know you are working on it.
@@ -34,9 +56,24 @@ Coding is done on feature branches and merged into it once stable and reviewed. 
 
 ### 2. Commit and push code to your branch:
 
-Commits should be self-contained and contain a descriptive commit message
-Please ensure that your code is well tested
-Run the following command before creating the pull request:
+   - Commits should be self-contained and contain a descriptive commit message.
+   - Please make sure your code is well-formatted and adheres to PEP8 conventions (for Python) and the airbnb style guide (for JavaScript). For others (Lua, prototxt etc.) please ensure that the code is well-formatted and the style consistent.
+   - Please ensure that your code is well tested.Run the following tests before creating a pull request :
+	 * `python manage.py test`
+	 * `yarn run test`
+
+        
+   - We highly encourage to use `autopep8` to follow the PEP8 styling. Run the following command before creating the pull request:
+
+            autopep8 --in-place --exclude env,docs --recursive .     
+            git commit -a -m “{{commit_message}}”
+            git push origin {{branch_name}}
+  - We use [`ESLint plugin for prettier`](https://github.com/prettier/eslint-plugin-prettier) for fomatting our front end code. Make sure to run the following command whenever you do any front-end related code changes :
+  	 * `yarn run lint:fix`
+  	
+  
+  
+  Run the following command before creating the pull request:
 
             git commit -a -m “{{commit_message}}”
             git push origin {{branch_name}}
@@ -56,3 +93,6 @@ If your checks have passed, your PR will be assigned a reviewer who will review 
 Once all comments are addressed, the reviewer will merge the PR.
 
 **Congratulations, you have successfully contributed to Project Origami!**
+
+So what are you waiting for? Go on and start contributing!  May the code be with you !
+
