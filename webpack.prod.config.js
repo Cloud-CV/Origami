@@ -3,7 +3,14 @@ import path from "path";
 import BundleTracker from "webpack-bundle-tracker";
 
 const GLOBALS = {
-  "process.env.NODE_ENV": JSON.stringify("production")
+  "process.env.NODE_ENV": JSON.stringify("production"),
+  "process.env.HOST": JSON.stringify(
+    process.env.HOST || "localhost"
+  ),
+
+  "process.env.PORT": JSON.stringify(
+    process.env.PORT || 8000
+  )
 };
 
 const config = {
