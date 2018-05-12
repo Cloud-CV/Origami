@@ -1,7 +1,7 @@
 <p align="center"><img width="30%" height="15%" src="origami_logo.png" /></p>
 
 <p align="center">
- <a href="https://travis-ci.org/Cloud-CV/Origami" title="styled with">
+ <a href="https://travis-ci.org/Cloud-CV/Origami">
 	<img src="https://travis-ci.org/Cloud-CV/Origami.svg?branch=master"/>
  </a>
  <a href='https://coveralls.io/github/Cloud-CV/Origami?branch=master'>
