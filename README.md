@@ -1,11 +1,22 @@
 <p align="center"><img width="30%" height="15%" src="origami_logo.png" /></p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-[![Build Status](https://travis-ci.org/Cloud-CV/Origami.svg?branch=master)](https://travis-ci.org/Cloud-CV/cvfy-frontend.svg?branch=master)
-[![Coverage Status](https://coveralls.io/repos/github/Cloud-CV/Origami/badge.svg?branch=master)](https://coveralls.io/github/Cloud-CV/Origami?branch=master)
-[![Dependency Status](https://david-dm.org/Cloud-CV/Origami.svg)](https://david-dm.org/Cloud-CV/cvfy-frontend)
-[![devDependency Status](https://david-dm.org/Cloud-CV/Origami/dev-status.svg)](https://david-dm.org/Cloud-CV/cvfy-frontend#info=devDependencies)
-[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+<p align="center">
+ <a href="https://travis-ci.org/Cloud-CV/Origami" title="styled with">
+	<img src="https://travis-ci.org/Cloud-CV/Origami.svg?branch=master"/>
+ </a>
+ <a href='https://coveralls.io/github/Cloud-CV/Origami?branch=master'>
+	<img src='https://coveralls.io/repos/github/Cloud-CV/Origami/badge.svg?branch=master' alt='Coverage Status' />
+ </a>
+ <a href="https://david-dm.org/Cloud-CV/cvfy-frontend" title="dependencies status">
+	<img src="https://david-dm.org/Cloud-CV/cvfy-frontend/status.svg"/>
+ </a>
+ <a href="https://david-dm.org/Cloud-CV/cvfy-frontend?type=dev" title="devDependencies status">
+	<img src="https://david-dm.org/Cloud-CV/cvfy-frontend/dev-status.svg"/>
+ </a>
+ <a href="https://github.com/prettier/prettier" title="styled with">
+	<img src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square"/>
+ </a>
+</p>
 
 <p align="center"><img width="80%" height="60%" src="origami.png" /></p>
 <h4 align="center">Artificial Intelligence as a Service</h4>
