@@ -1,9 +1,16 @@
 pipeline {
-	 agent any
+	 agent {
+	     docker {
+	         image 'fristonio/origami_base'  
+	     }
+	 }
 	 stages {
 	 	stage('Build') {
 			       steps {
 			       	     sh 'echo "This is the build step"'
+				     sh 'node --version'
+				     sh 'yarn --version'
+				     sh 'python -V'
 			       }
 		}
 
