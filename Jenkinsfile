@@ -1,7 +1,7 @@
 pipeline {
 	 agent {
 	     docker {
-	         image 'fristonio/origami_base'  
+	         image 'fristonio/origami_base:0.1'  
 	     }
 	 }
 	 stages {
