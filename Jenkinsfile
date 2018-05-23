@@ -2,16 +2,24 @@ pipeline {
     agent {
         docker {
          image 'fristonio/origami_base:0.1'
+         args '-u root'
         }
+    }
+    environment { 
+        HOST = 'localhost'
+        PORT = '8000'
+        DB_NAME = 'origami'
+        DB_USER = 'origamiuser'
+        DB_PASS = 'password'
+        DB_USER_EMAIL = 'test@test.com'
+        DB_HOST = 'localhost'
+        REDIS_HOST = 'redis'
     }
     stages {
         stage('Build') {
             steps {
-                sh 'jenkins-ci/install-deps.sh'
-                sh 'docker/postgres/init-user-db.sh'
-                sh 'echo "This is the build step"'
-                sh 'pip install -r requirements.txt'
-                sh 'yarn install'
+                sh 'jenkins/init.sh'
+                sh '/etc/init.d/postgresql start'
                 sh 'yarn build'
                 sh 'python manage.py makemigrations'
                 sh 'python manage.py migrate'
@@ -27,7 +35,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh 'Finally deploying'
+                echo "Finally deploying"
             }
         }
     }
