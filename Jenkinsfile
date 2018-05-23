@@ -19,7 +19,6 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'jenkins/init.sh'
-                sh '/etc/init.d/postgresql start'
                 sh 'yarn build'
                 sh 'python manage.py makemigrations'
                 sh 'python manage.py migrate'
@@ -36,6 +35,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo "Finally deploying"
+                // Add deployment step here
             }
         }
     }
@@ -43,7 +43,7 @@ pipeline {
     post {
         success {
             echo "Pipeline succeded"
-            // Send notificatio to slack here
+            // Send notification to slack here
         }
 
         unstable {

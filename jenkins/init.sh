@@ -13,8 +13,6 @@ psql -c "ALTER ROLE $DB_USER SET default_transaction_isolation TO 'read committe
 psql -c "ALTER ROLE $DB_USER SET timezone TO 'UTC'" -U postgres
 psql -c "ALTER USER $DB_USER CREATEDB" -U postgres
 
-psql -U postgres -lqt | cut -d \| -f 1 
-
 pip install -r requirements.txt
 pip install service_identity
 yarn install
