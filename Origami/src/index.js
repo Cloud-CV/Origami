@@ -14,6 +14,12 @@ import getMuiTheme from "material-ui/styles/getMuiTheme";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import "../../node_modules/toastr/build/toastr.min.css";
 import "../../node_modules/antd/dist/antd.css";
+import '@coreui/icons/css/coreui-icons.min.css';
+import 'flag-icon-css/css/flag-icon.min.css';
+
+import 'simple-line-icons/css/simple-line-icons.css';
+import './ui/src/scss/style.css';
+require('font-awesome/css/font-awesome.css');
 import { LocaleProvider } from "antd";
 import enUS from "antd/lib/locale-provider/en_US";
 const store = configureStore();

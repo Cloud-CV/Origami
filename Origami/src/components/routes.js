@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route,Redirect } from "react-router-dom";
 
 import PageNotfoundHandler from "./PageNotfoundHandler";
 import HomePageComponent from "./home/HomePage";
@@ -16,15 +16,26 @@ import SelectInputComponentsNonGHPageComponent from "./deployment/UsePrebuiltPro
 import SelectOutputComponentsNonGHPageComponent from "./deployment/UsePrebuiltProject/selectOutputComponentPage";
 import NGHDemoPageComponent from "./deployment/UsePrebuiltProject/nghDemoPage";
 import NGHDemoFrameComponent from "./deployment/UsePrebuiltProject/nghDemoFrame";
+import DefaultLayout from "../ui/src/containers/DefaultLayout" 
+import Loadable from 'react-loadable'
+
+
+function Loading() {
+  return <div>Loading...</div>;
+}
 
 export default (
   <Switch>
-    <Route exact path="/" component={HomePageComponent} />
-
+  
+    <Route  path="/" component={DefaultLayout} />
+    <Route exact path="/home" component={HomePageComponent} />
+    <Route exact path="/profile" component={LoginComponent} />
     <Route exact path="/ngh/user" component={NonGHUserProfileComponent} />
+
+
     <Route
       exact
-      path="/ngh/user/register"
+      path="/demo_register"
       component={RegisterNonGHPageComponent}
     />
     <Route
@@ -55,3 +66,6 @@ export default (
     <Route path="*" component={PageNotfoundHandler} />
   </Switch>
 );
+
+
+
