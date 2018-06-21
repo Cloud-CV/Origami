@@ -29,17 +29,14 @@ constructor(props, context) {
 }
 
 
-componentWillMount() {
 
-  if(window.location.pathname==="/")
-  {
-    window.location="/home"
-  }
-
-  }
 
 
   render() {
+      if(window.location.pathname==="/")
+  {
+    return <Redirect to='/home'  />
+  }
     return (
       <div className="app">
         <AppHeader fixed>
@@ -61,7 +58,7 @@ componentWillMount() {
                         <route.component {...props} />
                       )} />)
                       : (null);
-                  },
+                  }
                 )}
 
               </Switch>
