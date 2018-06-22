@@ -29,7 +29,9 @@ constructor(props, context) {
 }
 
 
-
+click(){
+  console.log("clicked")
+}
 
 
   render() {
@@ -64,8 +66,8 @@ constructor(props, context) {
               </Switch>
             </Container>
           </main>
-          <AppAside fixed hidden>
-            <DefaultAside />
+          <AppAside fixed hidden onClick={this.click.bind(this)}>
+            <DefaultAside onClick={this.click.bind(this)}/>
           </AppAside>
         </div>
         <AppFooter>
