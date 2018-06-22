@@ -44,13 +44,9 @@ class DefaultAside extends Component {
           <TabPane tabId="1">
             <ListGroup className="list-group-accent">
               <ListGroupItem className="list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">My profile</ListGroupItem>
-              <Profile/>
-              
+              <Profile/>            
             </ListGroup>
-          </TabPane>
-   
-
-            
+          </TabPane>            
         </TabContent>
       </React.Fragment>
     );
