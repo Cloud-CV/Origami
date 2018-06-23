@@ -7,7 +7,7 @@ import URLShortenerComponent from "./urlShortener";
 import NGHDemoPageComponent from "./deployment/UsePrebuiltProject/nghDemoPage";
 import RegisterNonGHPageComponent from "./deployment/UsePrebuiltProject/registerPage";
 import ShareProfile from "./user/userShareProfile";
-
+import InstructionsPage from './deployment/UsePrebuiltProject/instructionsPage'
 
 const routes = [
   { path: '/home', name: 'Dashboard', component: HomePageComponent },
@@ -17,7 +17,7 @@ const routes = [
   { path: '/demo_register', exact: true, name: 'Create demo', component: RegisterNonGHPageComponent },
   { path: '/login*', name: 'login', component: LoginComponent },
   { path: '/ngh/user',exact: true,name:'My Demo', component:NonGHUserProfileComponent },
-
+  { path: '/instructions',exact: true, component:InstructionsPage },
 ];
 
 export default routes;
