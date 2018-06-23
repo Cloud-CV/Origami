@@ -1,33 +1,25 @@
-import React from "react";
-import { PropTypes } from "prop-types";
-import { Link, withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import CircularProgress from "material-ui/CircularProgress";
-import * as nonghDemoModelActions from "../../../actions/nonghDemoModelActions";
-import rangeCheck from "range_check";
-import { getDeployed } from "../../../api/Nongh/getDeployed";
-import { getComponentDeployed } from "../../../api/CommonLocal/getComponentDeployed";
-import {
-  getSinglePermalink,
-  getAllPermalink,
-  addPermalink,
-  modifyPermalink
-} from "../../../api/Nongh/permalink";
-import { getWebAppStatus } from "../../../api/Generic/getWebAppStatus";
-import RaisedButton from "material-ui/RaisedButton";
-import StopNow from "material-ui/svg-icons/action/pan-tool";
-import Dropzone from "react-dropzone";
-import Checkbox from "material-ui/Checkbox";
-import GoAhead from "material-ui/svg-icons/action/check-circle";
-import { red500, green500, grey900 } from "material-ui/styles/colors";
-import TextField from "material-ui/TextField";
-import request from "superagent";
-import { Step, Stepper, StepLabel } from "material-ui/Stepper";
-import toastr from "toastr";
-import { Layout, Row, Col } from "antd";
-import { ORIGAMI_READ_THE_DOCS } from "../../../constants";
-
+import React from 'react';
+import { PropTypes } from 'prop-types';
+import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import CircularProgress from 'material-ui/CircularProgress';
+import rangeCheck from 'range_check';
+import { getWebAppStatus } from '../../../api/Generic/getWebAppStatus';
+import RaisedButton from 'material-ui/RaisedButton';
+import StopNow from 'material-ui/svg-icons/action/pan-tool';
+import Dropzone from 'react-dropzone';
+import Checkbox from 'material-ui/Checkbox';
+import GoAhead from 'material-ui/svg-icons/action/check-circle';
+import { red500, green500, grey900 } from 'material-ui/styles/colors';
+import TextField from 'material-ui/TextField';
+import request from 'superagent';
+import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
+import toastr from 'toastr';
+import { Layout, Row, Col } from 'antd';
+import { ORIGAMI_READ_THE_DOCS } from '../../../constants';
+import { Card, Icon, Image, Button, Dimmer, Header } from 'semantic-ui-react';
+import Cards from '../../stateless/task_cards';
 
 const { Content, Footer } = Layout;
 
@@ -37,321 +29,29 @@ class RegisterPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      showOutput: "hidden",
-      id: Math.floor(Math.random() * 10000000).toString(),
-      user_id: parseInt(localStorage.getItem("user_id"), 10),
-      currentProject: {},
-      nonghDemoModel: {},
-      name: "",
-      description: "",
-      nameErrorText: "",
-      addressErrorText: "",
-      portErrorText: "",
-      address: "",
-      port: "",
-      currentPort: "",
-      webappaddress: "",
-      tempwebaddress: "",
-      footer_message: "",
-      cover_image: "",
-      deploymentBoxSelectedStatus: false,
-      status: "",
-      webappUnreachableErrorText: "",
-      webappLocalUnreachableErrorText: "",
-      showLocalDeploymentCheckBox: true,
+      description: '',
+      cover_image: '',
       showTerminal: false,
-      returning: false,
-      inputComponentStepperHighlight: false,
-      outputComponentStepperHighlight: false,
-      permalinkObject: {}
+      active: 0,
+      btnactive: 0,
+      btnclicked: 0,
+      subhover: 0,
+      python: 0,
+      os: 0,
+      cuda: 0,
     };
-    this.socket = this.context.socket;
-    this.toggleShow = this.toggleShow.bind(this);
-    this.updateDemoModelData = this.updateDemoModelData.bind(this);
-    this.onLocalDeploymentCheckBoxCheck = this.onLocalDeploymentCheckBoxCheck.bind(
-      this
-    );
-    this.updateDescription = this.updateDescription.bind(this);
-    this.updateAddress = this.updateAddress.bind(this);
     this.updateName = this.updateName.bind(this);
-    this.updatePort = this.updatePort.bind(this);
-    this.updatefooter_message = this.updatefooter_message.bind(this);
+    this.updateDescription = this.updateDescription.bind(this);
     this.onDrop = this.onDrop.bind(this);
     this.toggleTerminal = this.toggleTerminal.bind(this);
-    this.validateTempwebaddress = this.validateTempwebaddress.bind(this);
-    this.validateIP = this.validateIP.bind(this);
-    this.validatePort = this.validatePort.bind(this);
     this.getStyles = this.getStyles.bind(this);
-  }
-
-  componentWillMount() {
-    getDeployed(this.state.user_id, this.props.match.params.repoId)
-      .then(singleRepo => {
-        if (this.props.match.params.repoId) {
-          if (JSON.parse(singleRepo).length !== 0) {
-            this.setState({ returning: true });
-            this.setState({
-              tempwebaddress: JSON.parse(singleRepo)[0].token.split(":")[1]
-            });
-            if (JSON.parse(singleRepo)[0].token.split(":")[1] === "0.0.0.0") {
-              this.setState({ showLocalDeploymentCheckBox: true });
-            }
-            this.setState({ id: JSON.parse(singleRepo)[0].id });
-            this.setState({ name: JSON.parse(singleRepo)[0].name });
-            this.setState({ status: JSON.parse(singleRepo)[0].status });
-            this.setState({
-              address: JSON.parse(singleRepo)[0].token.split(":")[1]
-            });
-            this.setState({
-              tempwebaddress: JSON.parse(singleRepo)[0].token.split(":")[5]
-            });
-            this.setState({
-              port: JSON.parse(singleRepo)[0].token.split(":")[4]
-            });
-            this.setState({
-              description: JSON.parse(singleRepo)[0].description
-            });
-            this.setState({
-              footer_message: JSON.parse(singleRepo)[0].footer_message
-            });
-            this.setState({
-              cover_image: JSON.parse(singleRepo)[0].cover_image
-            });
-            this.setState({ showTerminal: JSON.parse(singleRepo)[0].terminal });
-            if (JSON.parse(singleRepo)[0].token.split(":")[5] === "0.0.0.0") {
-              this.setState({ deploymentBoxSelectedStatus: true });
-            }
-          }
-        }
-      })
-      .then(() => {
-        if (this.props.match.params.repoId) {
-          getComponentDeployed(
-            this.state.user_id,
-            this.props.match.params.repoId,
-            "input"
-          ).then(inputComponentSeedData => {
-            if (JSON.parse(inputComponentSeedData).length !== 0) {
-              this.setState({ inputComponentStepperHighlight: true });
-            }
-          });
-        }
-      })
-      .then(() => {
-        if (this.props.match.params.repoId) {
-          getComponentDeployed(
-            this.state.user_id,
-            this.props.match.params.repoId,
-            "output"
-          ).then(outputComponentSeedData => {
-            if (JSON.parse(outputComponentSeedData).length !== 0) {
-              this.setState({ outputComponentStepperHighlight: true });
-            }
-          });
-        }
-      })
-      .then(() => {
-        if (this.props.match.params.repoId) {
-          getSinglePermalink(
-            this.state.user_id,
-            this.props.match.params.repoId
-          ).then(data => {
-            if (JSON.parse(data).text !== "Not Found") {
-              this.setState({ permalinkObject: JSON.parse(data) });
-            }
-          });
-        }
-        let socket = this.socket;
-        socket.send(
-          JSON.stringify({
-            event: "fetchCurrentPort"
-          })
-        );
-        socket.send(
-          JSON.stringify({
-            event: "getPublicIPaddress"
-          })
-        );
-        socket.onmessage = function(response) {
-          let data = JSON.parse(response.data);
-          const event = data.event;
-          data = data.data;
-          if (event === "fetchedCurrentPort") {
-            this.setState({ currentPort: data });
-          } else if (event === "gotPublicIP") {
-            this.setState({ webappaddress: data }, () => {
-              if (this.state.tempwebaddress.length === 0) {
-                this.setState({ tempwebaddress: this.state.webappaddress });
-              }
-            });
-            getWebAppStatus(data)
-              .then(() => {})
-              .catch(err => {
-                this.setState({
-                  webappUnreachableErrorText:
-                    "This WebApp cannot be reached on it's public IP"
-                });
-              });
-            this.toggleShow();
-          }
-        }.bind(this);
-        this.setState({ showLocalDeploymentCheckBox: true });
-      });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.state.nonghDemoModel !== nextProps.nonghDemoModel) {
-      this.setState({ nonghDemoModel: nextProps.nonghDemoModel });
-    }
-  }
-
-  onLocalDeploymentCheckBoxCheck(e) {
-    if (!this.state.deploymentBoxSelectedStatus) {
-      getWebAppStatus(window.location.hostname)
-        .then(() => {})
-        .catch(err => {
-          this.setState({
-            webappLocalUnreachableErrorText: `This WebApp cannot be reached on ${
-              window.location.host
-            }`
-          });
-        });
-    }
-    let selectionPool = [window.location.host, this.state.webappaddress];
-    this.setState({
-      tempwebaddress:
-        selectionPool[this.state.deploymentBoxSelectedStatus ? 1 : 0]
-    });
-    this.setState({
-      deploymentBoxSelectedStatus: !this.state.deploymentBoxSelectedStatus
-    });
-  }
-
-  updateDemoModelData() {
-    if (!this.validateIP()) {
-      this.setState({ addressErrorText: "Invalid IP address" });
-    } else {
-      this.setState({ addressErrorText: "" });
-    }
-    if (!this.validatePort(this.state.port)) {
-      this.setState({ portErrorText: "Invalid port number" });
-    } else {
-      this.setState({ portErrorText: "" });
-    }
-    if (
-      this.state.name.length === 0 ||
-      /*eslint-disable*/
-      /[~`!#$%\^&*+=\-\[\]\\';,/{}|":<>\?]/g.test(this.state.name)
-      /*eslint-enable*/
-    ) {
-      this.setState({ nameErrorText: "Invalid Project Name" });
-    } else {
-      this.setState({ nameErrorText: "" });
-    }
-    if (
-      this.state.name.length > 0 &&
-      /*eslint-disable*/
-      !/[~`!#$%\^&*+=\-\[\]\\';,/{}|":<>\?]/g.test(this.state.name) &&
-      /*eslint-enable*/
-      this.validateIP() &&
-      this.validatePort(this.state.port)
-    ) {
-      let dataToPut = {
-        name: this.state.name,
-        id: this.state.id,
-        user_id: this.state.user_id,
-        address: this.state.address,
-        description: this.state.description,
-        footer_message: this.state.footer_message,
-        cover_image: this.state.cover_image,
-        terminal: this.state.showTerminal,
-        timestamp: Date.now(),
-        token: `nongh:${this.state.address}:${this.state.id}:${
-          this.state.currentPort
-        }:${this.state.port}:${this.state.tempwebaddress}`,
-        status: this.state.status || "input"
-      };
-      this.props.nonghModelActions.addToDBNonGHDemoModel(dataToPut).then(() => {
-        this.props.nonghModelActions
-          .updateNonGHDemoModel(dataToPut)
-          .then(() => {
-            if (Object.keys(this.state.permalinkObject).length > 0) {
-              const permaLinkDataToPut = Object.assign(
-                {},
-                this.state.permalinkObject,
-                {
-                  full_relative_url: `/ngh/user/${dataToPut.user_id}/${
-                    dataToPut.name
-                  }/${dataToPut.id}/demo`
-                }
-              );
-
-              modifyPermalink(permaLinkDataToPut)
-                .then(() => {
-                  if (this.props.match.params.type === "modify") {
-                    this.props.history.push("/ngh/user");
-                  } else {
-                    this.props.history.push(
-                      `/ngh/user/${this.state.name}/${
-                        this.state.id
-                      }/inputcomponent`
-                    );
-                  }
-                })
-                .catch(err => {
-                  toastr.error(
-                    `Error occured in creating shortened URL: ${permaLinkDataToPut}`
-                  );
-                });
-            } else {
-              const permaLinkDataToPut = {
-                short_relative_url: `/p/${Math.random()
-                  .toString(36)
-                  .substring(2, 11)}`,
-                full_relative_url: `/ngh/user/${dataToPut.user_id}/${
-                  dataToPut.name
-                }/${dataToPut.id}/demo`,
-                user_id: dataToPut.user_id,
-                project_id: dataToPut.id
-              };
-
-              addPermalink(permaLinkDataToPut)
-                .then(() => {
-                  if (this.props.match.params.type === "modify") {
-                    this.props.history.push("/ngh/user");
-                  } else {
-                    this.props.history.push(
-                      `/ngh/user/${this.state.name}/${
-                        this.state.id
-                      }/inputcomponent`
-                    );
-                  }
-                })
-                .catch(err => {
-                  toastr.error(
-                    `Error occured in creating shortened URL: ${permaLinkDataToPut}`
-                  );
-                });
-            }
-          });
-      });
-    }
+    this.hover = this.hover.bind(this);
+    this.exit = this.exit.bind(this);
+    this.btnEnter = this.btnEnter.bind(this);
   }
 
   updateDescription(e) {
     this.setState({ description: e.target.value });
-  }
-
-  updatefooter_message(e) {
-    this.setState({ footer_message: e.target.value });
-  }
-
-  updateAddress(e) {
-    this.setState({ address: e.target.value });
-  }
-
-  updatePort(e) {
-    this.setState({ port: e.target.value });
   }
 
   updateName(e) {
@@ -360,10 +60,10 @@ class RegisterPage extends React.Component {
 
   onDrop(files) {
     if (files[0].size > 5242880) {
-      alert("File size should be < 5MB");
+      alert('File size should be < 5MB');
     } else {
       document.getElementById(
-        "input-image-preview"
+        'input-image-preview'
       ).src = window.URL.createObjectURL(files[0]);
       const reader = new FileReader();
       reader.onload = () => {
@@ -378,360 +78,565 @@ class RegisterPage extends React.Component {
     this.setState({ showTerminal: !this.state.showTerminal });
   }
 
-  validateTempwebaddress() {
-    if (
-      this.state.webappUnreachableErrorText.length > 0 &&
-      this.state.tempwebaddress === this.state.webappaddress
-    ) {
-      return false;
-    }
-    if (
-      this.state.webappLocalUnreachableErrorText.length > 0 &&
-      this.state.tempwebaddress === "0.0.0.0"
-    ) {
-      return false;
-    }
-
-    return true;
-  }
-
-  validateIP() {
-    if (this.state.address.split(".").length <= 2) {
-      return false;
-    } else {
-      return rangeCheck.validIp(this.state.address);
-    }
-  }
-
-  validatePort(port) {
-    function isNumeric(value) {
-      return /^\d+$/.test(value);
-    }
-
-    if (isNumeric(port)) {
-      const portNumber = parseInt(port);
-      return !!(portNumber >= 1024 && portNumber <= 65535);
-    } else {
-      return false;
-    }
-  }
-
-  toggleShow() {
-    this.setState({
-      showOutput: this.state.showOutput === "visible" ? "hidden" : "visible"
-    });
-  }
-
   getStyles() {
     return {
       layout: {
-        background: "#FFFFFF"
+        background: '#F7F7F7',
       },
       content: {
-        margin: "24px 0 0",
-        overflow: "initial"
+        margin: '24px 0 0 12px',
+        overflow: 'initial',
       },
       contentDiv: {
-        padding: "12px 0",
-        background: "#FFFFFF"
+        padding: '5px 0',
+        background: '#F7F7F7',
       },
-      footer: {
-        backgroundColor: grey900,
-        color: "white",
-        textAlign: "center",
-        marginTop: "4vh",
-        height: "4rem",
-        zIndex: "2"
-      }
+      tag: {
+        color: '#606470',
+        paddingTop: '5px',
+        fontFamily: '"Open Sans", "Helvetica", sans-serif',
+        fontSize: '1.6em',
+      },
+      tagOs: {
+        color: '#606470',
+        paddingTop: '5px',
+        fontFamily: '"Open Sans", "Helvetica", sans-serif',
+        fontSize: '1.6em',
+        paddingLeft: '7px',
+      },
+      btn: {
+        borderStyle: 'Solid',
+        borderColor: '#949494',
+        color: '#6C6666',
+        width: '100%',
+        backgroundColor: 'White',
+        borderWidth: '2px',
+        borderRadius: '30px',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.16), 0 1px 3px rgba(0,0,0,0.23)',
+        transition: 'all 0.3s',
+      },
+      txt: {
+        fontFamily: '"Open Sans", "Helvetica", sans-serif',
+        fontSize: '1em',
+      },
+      active: {
+        borderStyle: 'Solid',
+        borderColor: '#eaeaea',
+        borderWidth: '2px',
+        transition: '.3s ease',
+        backfaceVisibility: 'hidden',
+        opacity: '0.8',
+        boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
+      },
+      btnactive: {
+        borderStyle: 'Solid',
+        width: '100%',
+        borderWidth: '2px',
+        borderRadius: '30px',
+        backgroundColor: '#443E3E',
+        color: 'White',
+        boxShadow: '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
+        transition: 'all 0.3s',
+      },
+
+      parentBox: {
+        flexGrow: '5.75',
+        minWidth: '300px',
+        padding: '30px',
+        backgroundColor: '#fffff',
+      },
+      box: {
+        border: '1px solid #F3F2F2',
+        backgroundColor: 'White',
+        borderRadius: '10px',
+        padding: '10px',
+      },
+
+      sub: {
+        borderStyle: 'Solid',
+        width: '100%',
+        borderWidth: '2px',
+        borderRadius: '30px',
+        backgroundColor: '#443E3E',
+        color: 'White',
+        boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
+        transition: 'all 0.3s',
+      },
+
+      subhover: {
+        borderStyle: 'Solid',
+        width: '100%',
+        borderWidth: '2px',
+        borderRadius: '30px',
+        backgroundColor: '#443E3E',
+        color: 'White',
+        boxShadow: '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
+        transition: 'all 0.3s',
+      },
+      logo: {
+        marginRight: '13px',
+      },
     };
   }
 
-  helpDirect() {
-    window.location= ORIGAMI_READ_THE_DOCS ;
+  hover(e) {
+    this.setState({ active: e });
+  }
+  btnEnter(e) {
+    this.setState({ btnactive: e });
   }
 
-  render() {
-    let tokenClassName =
-      this.validateTempwebaddress() &&
-      this.validateIP() &&
-      this.validatePort(this.state.port)
-        ? "ui positive message"
-        : "ui negative message";
-    let styles = this.getStyles();
-    return (
-      <Layout style={styles.layout}>
-        {this.state.showOutput === "hidden" && (
-          <div className="centered row" style={{ marginTop: "30vh" }}>
-            <CircularProgress size={89.25} />
-          </div>
-        )}
-        <Content style={styles.content}>
-          <div style={styles.contentDiv}>
-            <Row>
-              <div
-                style={{
-                  visibility: this.state.showOutput,
-                  width: "100%",
-                  maxWidth: 700,
-                  margin: "auto"
-                }}
-              >
-                <Stepper linear={false}>
-                  <Step active>
-                    <StepLabel>
-                      <b style={{ fontSize: "large" }}>Register Application</b>
-                    </StepLabel>
-                  </Step>
-                  <Step active={this.state.inputComponentStepperHighlight}>
-                    <StepLabel>Select Input Component</StepLabel>
-                  </Step>
-                  <Step active={this.state.outputComponentStepperHighlight}>
-                    <StepLabel>Select Output Component</StepLabel>
-                  </Step>
-                </Stepper>
-              </div>
+  btnclicked(x, y) {
+    let python = this.state.python,
+      os = this.state.os,
+      cuda = this.state.cuda;
 
-              <div
-                className="sixteen wide column stretched"
-                style={{ visibility: this.state.showOutput }}
-              >
-                <h1
+    switch (x) {
+      case 1:
+        os = y;
+        break;
+      case 2:
+        python = y;
+        break;
+      case 3:
+        cuda = y;
+        break;
+    }
+    this.setState({ python: python, os: os, cuda: cuda });
+  }
+
+  exit() {
+    this.setState({ active: 0, btnactive: 0, subhover: 0 });
+  }
+  sub(e) {
+    this.setState({ subhover: e });
+  }
+
+  helpDirect() {
+    window.location = ORIGAMI_READ_THE_DOCS;
+  }
+
+  submit() {
+    this.props.history.push('/instructions');
+  }
+    checkbox(event){
+    let current=this.state.checked;
+    this.setState({checked:!current})
+  }
+
+
+  render() {
+    const { active } = this.state;
+    let styles = this.getStyles();
+    const content = (
+      <div>
+        <Header className="ui small">Know More</Header>
+      </div>
+    );
+
+    const head = ['Style Transfer', 'VQA', 'Clssification', 'GradCam'];
+    const tasks = [];
+    for (var i = 1; i < 5; i++) {
+      tasks.push(<Cards header={head[i]} count={i} />);
+    }
+
+    return (
+      <div style={{ backgroundColor: '#F7F7F7' }}>
+        <Layout style={styles.layout}>
+          {this.state.showOutput === 'hidden' && (
+            <div className="centered row" style={{ marginTop: '30vh' }}>
+              <CircularProgress size={89.25} />
+            </div>
+          )}
+          <Content style={styles.content}>
+            <div style={styles.contentDiv}>
+              <Row>
+                <div
                   style={{
-                    textAlign: "center",
-                    margin: "25px 0 40px"
+                    visibility: this.state.showOutput,
+                    width: '100%',
+                    maxWidth: 700,
+                    margin: 'auto',
+                    marginTop: '5px',
                   }}
                 >
-                  Register Application
-                </h1>
-
-                <div
-                  className="ui grid container"
-                  style={{ position: "relative" }}
-                >
-                  <div className="ui grid container">
-                    <hr className="ui grid container" />
-                  </div>
-                  <div className="ui grid container">
-                    <div
-                      className="column aligned"
-                      style={{ flexGrow: "5.75", minWidth: "300px" }}
-                    >
-                      <TextField
-                        hintText="MyApp"
-                        floatingLabelText="Appname"
-                        value={this.state.name}
-                        errorText={this.state.nameErrorText}
-                        onChange={this.updateName}
-                      />&nbsp;&nbsp;&nbsp;&nbsp;
-                      <TextField
-                        hintText="0.0.0.0"
-                        errorText={this.state.addressErrorText}
-                        floatingLabelText="IP of service (no http://)"
-                        value={this.state.address}
-                        onChange={this.updateAddress}
-                      />
-                      <br />
-                      <TextField
-                        hintText="Description"
-                        floatingLabelText="Description"
-                        value={this.state.description}
-                        onChange={this.updateDescription}
-                        multiLine
-                        rows={2}
-                        rowsMax={8}
-                      />&nbsp;&nbsp;&nbsp;&nbsp;
-                      <TextField
-                        hintText="Footer Message"
-                        floatingLabelText="Footer Message"
-                        value={this.state.footer_message}
-                        onChange={this.updatefooter_message}
-                        multiLine
-                        rows={2}
-                        rowsMax={8}
-                      />
-                      <br />
-                      <TextField
-                        hintText="8000"
-                        errorText={this.state.portErrorText}
-                        floatingLabelText="Port for service"
-                        value={this.state.port}
-                        onChange={this.updatePort}
-                      />
-                      <br />
-                      <br />
-                      <div
-                        className=""
-                        style={{ cursor: "pointer", maxWidth: "50%" }}
-                      >
-                        <Dropzone
-                          onDrop={this.onDrop}
-                          multiple={false}
-                          style={{ height: "inherit" }}
-                        >
-                          <div className="ui card">
-                            <div className="ui fluid image">
-                              <img
-                                className="ui fluid medium bordered image"
-                                src={
-                                  this.state.cover_image ||
-                                  "/static/img/wireframe.png"
-                                }
-                                id={"input-image-preview"}
-                              />
-                            </div>
-                            <div className="content">
-                              Drag and Drop or Click to upload cover image
-                            </div>
-                          </div>
-                        </Dropzone>
-                      </div>
-                      <div className="" style={{ maxWidth: "50%" }}>
-                        <Checkbox
-                          checked={this.state.showTerminal}
-                          onCheck={this.toggleTerminal}
-                          label="Show Terminal on demo page"
-                        />
-                        <br />
-                      </div>
-                      {this.state.webappUnreachableErrorText.length > 0 && (
-                        <div
-                          className="ui raised compact centered red segment"
-                          style={{ color: "red" }}
-                        >
-                          {this.state.webappUnreachableErrorText}
-                          <br />
-                        </div>
-                      )}
-                      {this.state.webappLocalUnreachableErrorText.length > 0 &&
-                        this.state.deploymentBoxSelectedStatus && (
-                          <div
-                            className="ui raised compact centered red segment"
-                            style={{ color: "red" }}
-                          >
-                            {this.state.webappLocalUnreachableErrorText}
-                            <br />
-                          </div>
-                        )}
-                      {this.state.showLocalDeploymentCheckBox && (
-                        <div className="" style={{ maxWidth: "45%" }}>
-                          <Checkbox
-                            checked={this.state.deploymentBoxSelectedStatus}
-                            disabled={this.state.returning}
-                            onCheck={this.onLocalDeploymentCheckBoxCheck}
-                            label="WebApp is running locally"
-                          />
-                        </div>
-                      )}
-                      <br />
-                      <RaisedButton
-                        label="Save"
-                        primary
-                        onClick={this.updateDemoModelData}
-                      />
-                    </div>
-
-                    <div className="ui vertical internal divider">
-                      <hr />
-                    </div>
-                    <div
-                      className="column"
+                  <div
+                    className="sixteen wide column stretched"
+                    style={{ visibility: this.state.showOutput }}
+                  >
+                    <h1
                       style={{
-                        minWidth: "350px",
-                        flexGrow: "4.25",
-                        padding: 0
+                        textAlign: 'center',
+                        fontSize: '20px',
+                        fontWeight: 'bold',
                       }}
                     >
-                      <div className="ui raise fluid very padded container text">
+                      Register Application
+                    </h1>
+                  </div>
+                  <Stepper linear={false}>
+                    <Step active>
+                      <StepLabel>
+                        <b>Register Application</b>
+                      </StepLabel>
+                    </Step>
+                    <Step active={this.state.inputComponentStepperHighlight}>
+                      <StepLabel>Configure bundled code </StepLabel>
+                    </Step>
+                  </Stepper>
+                </div>
+              </Row>
+              <div>
+                <div
+                  className="ui grid container"
+                  style={{ position: 'relative' }}
+                >
+                  <div className="ui grid container">
+                    <div className="column aligned" style={styles.parentBox}>
+                      <div style={styles.box}>
+                        <a style={{ marginLeft: '40%', fontSize: '18px' }}>
+                          <span>
+                            <a style={styles.logo}>
+                              <img src={require('../../assets/details.png')} />
+                            </a>
+                          </span>{' '}
+                          Demo Details
+                        </a>
+                        <hr
+                          style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
+                        />
+                        <div class="ui grid">
+                          <div class="two wide column" />
+                          <div class="four wide column">
+                            <TextField
+                              hintText="MyApp"
+                              floatingLabelText="Appname"
+                              value={this.state.name}
+                              errorText={this.state.nameErrorText}
+                              onChange={this.updateName}
+                            />
+                          </div>
+                          <div class="three wide column" />
+                          <div class="four wide column">
+                            <TextField
+                              hintText="Description"
+                              floatingLabelText="Description"
+                              value={this.state.description}
+                              onChange={this.updateDescription}
+                            />
+                          </div>
+                        </div>
                         <br />
-                        <div className="ui relaxed grid container segment">
+                      </div>
+                      <br />
+                      <br />
+
+                      <div style={styles.box}>
+                        <a style={{ marginLeft: '40%', fontSize: '18px' }}>
+                          <span>
+                            <a style={styles.logo}>
+                              <img src={require('../../assets/task.png')} />
+                            </a>
+                          </span>Choose your Task
+                        </a>
+                        <hr
+                          style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
+                        />
+                        <br />
+
+                        <div className="ui grid">
+                          <div class="two wide column" />
+
+                          <div className=" three wide column">
+                            <Cards header={'VQA'} count={1} />
+                          </div>
+                          <div className=" three wide column">
+                            <Cards header={'Style Transfer'} count={2} />
+                          </div>
+                          <div className=" three wide column">
+                            <Cards header={'Grad Cam'} count={2} />
+                          </div>
+                          <div className=" three wide column">
+                            <Cards header={'Classification'} count={2} />
+                          </div>
+                        </div>
+                        <br />
+                        <br />
+                      </div>
+                      <br />
+                      <br />
+
+                      <div style={styles.box}>
+                        <a style={{ marginLeft: '35%', fontSize: '18px' }}>
+                          <span>
+                            <a style={styles.logo}>
+                              <img src={require('../../assets/tools.png')} />
+                            </a>
+                          </span>Select System Configuration
+                        </a>
+                        <hr
+                          style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
+                        />
+                        <br />
+                        <br />
+                        <div className="ui grid">
+                          <div className="three wide column" />
+                          <div className="one wide column">
+                            <text style={styles.tagOs}>OS </text>
+                          </div>
+                          <div className="one wide column" />
+                          <div className="four wide column">
+                            <Button
+                              onMouseEnter={this.btnEnter.bind(this, 11)}
+                              onClick={this.btnclicked.bind(this, 1, 1)}
+                              onMouseLeave={this.exit}
+                              style={
+                                this.state.btnactive == 11 || this.state.os == 1
+                                  ? styles.btnactive
+                                  : styles.btn
+                              }
+                            >
+                              <text style={styles.txt}>Ubuntu 14.04</text>
+                            </Button>
+                          </div>
+                          <div className="four wide column">
+                            <Button
+                              onMouseEnter={this.btnEnter.bind(this, 12)}
+                              onClick={this.btnclicked.bind(this, 1, 2)}
+                              onMouseLeave={this.exit}
+                              style={
+                                this.state.btnactive == 12 || this.state.os == 2
+                                  ? styles.btnactive
+                                  : styles.btn
+                              }
+                            >
+                              <text style={styles.txt}>Ubuntu 16.04</text>
+                            </Button>
+                          </div>
+                        </div>
+
+                        <div className="ui grid">
+                          <div className="three wide column" />
+                          <div className="one wide column">
+                            <h2 style={styles.tag}> Python </h2>
+                          </div>
+                          <div className="one wide column" />
+                          <div className="four wide column">
+                            <Button
+                              onMouseEnter={this.btnEnter.bind(this, 21)}
+                              onClick={this.btnclicked.bind(this, 2, 1)}
+                              onMouseLeave={this.exit}
+                              style={
+                                this.state.btnactive == 21 ||
+                                this.state.python == 1
+                                  ? styles.btnactive
+                                  : styles.btn
+                              }
+                            >
+                              <text style={styles.txt}>2.7</text>
+                            </Button>
+                          </div>
+                          <div className="four wide column">
+                            <Button
+                              onMouseEnter={this.btnEnter.bind(this, 22)}
+                              onClick={this.btnclicked.bind(this, 2, 2)}
+                              onMouseLeave={this.exit}
+                              style={
+                                this.state.btnactive == 22 ||
+                                this.state.python == 2
+                                  ? styles.btnactive
+                                  : styles.btn
+                              }
+                            >
+                              <text style={styles.txt}>3.5</text>
+                            </Button>
+                          </div>
+                        </div>
+
+                        <div className="ui grid">
+                          <div className="three wide column" />
+                          <div className="one wide column">
+                            <h2 style={styles.tag}> CUDA </h2>
+                          </div>
+                          <div className="one wide column" />
+                          <div className="four wide column">
+                            <Button
+                              onMouseEnter={this.btnEnter.bind(this, 31)}
+                              onClick={this.btnclicked.bind(this, 3, 1)}
+                              onMouseLeave={this.exit}
+                              style={
+                                this.state.btnactive == 31 ||
+                                this.state.cuda == 1
+                                  ? styles.btnactive
+                                  : styles.btn
+                              }
+                            >
+                              <text style={styles.txt}>7.0 - runtime</text>
+                            </Button>
+                          </div>
+                          <div className="four wide column">
+                            <Button
+                              onMouseEnter={this.btnEnter.bind(this, 32)}
+                              onClick={this.btnclicked.bind(this, 3, 2)}
+                              onMouseLeave={this.exit}
+                              style={
+                                this.state.btnactive == 32 ||
+                                this.state.cuda == 2
+                                  ? styles.btnactive
+                                  : styles.btn
+                              }
+                            >
+                              <text style={styles.txt}>8.0 - runtime</text>
+                            </Button>
+                          </div>
+                        </div>
+                        <br />
+                        <br />
+                      </div>
+                      <br />
+                      <br />
+
+                      <div style={styles.box}>
+                        <a style={{ marginLeft: '35%', fontSize: '18px' }}>
+                          <span>
+                            <a style={styles.logo}>
+                              <img src={require('../../assets/settings.png')} />
+                            </a>
+                          </span>{' '}
+                          Optional configurations{' '}
+                        </a>
+                        <hr
+                          style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
+                        />
+
+                        <br />
+                        <div className="ui grid">
                           <div className="two column row">
-                            <div className="thirteen wide column">
+                            <div
+                              className="column"
+                              style={{ paddingLeft: '13%' }}
+                            >
                               <div
-                                className={tokenClassName}
-                                style={{ wordWrap: "break-word" }}
+                                className=""
+                                style={{ cursor: 'pointer', maxWidth: '75%' }}
                               >
-                                <u>Token:</u>
-                                <b>
-                                  <p style={{ fontSize: "90%" }}>
-                                    {`nongh:${this.state.address}:${
-                                      this.state.id
-                                    }:${this.state.currentPort}:` +
-                                      `${this.state.port}:${
-                                        this.state.tempwebaddress
-                                      }`}
-                                  </p>
-                                </b>
+                                <Dropzone
+                                  onDrop={this.onDrop}
+                                  multiple={false}
+                                  style={{ height: 'inherit' }}
+                                >
+                                  <div className="ui card">
+                                    <div className="ui fluid image">
+                                      <img
+                                        className="ui fluid medium  image"
+                                        src={
+                                          this.state.cover_image ||
+                                          '/static/img/placeholder.jpg'
+                                        }
+                                        id={'input-image-preview'}
+                                      />
+                                    </div>
+                                    <div
+                                      className="content"
+                                      style={{
+                                        fontSize: '15px',
+                                        color: '#323643',
+                                      }}
+                                    >
+                                      Drag and Drop or Click to upload cover
+                                      image
+                                    </div>
+                                  </div>
+                                </Dropzone>
                               </div>
                             </div>
-                            <div className="three wide column">
-                              {this.validateTempwebaddress() &&
-                              this.validateIP() &&
-                              this.validatePort(this.state.port) ? (
-                                <GoAhead
-                                  style={{ height: "", width: "" }}
-                                  color={green500}
-                                />
-                              ) : (
-                                <StopNow
-                                  style={{ height: "", width: "" }}
-                                  color={red500}
-                                />
-                              )}
-                            </div>
-                          </div>
-                          <div className="one column row">
-                            <div className="sixteen wide column">
-                              <div className="ui info message">
-                                <div className="header">Steps</div>
-                                <ul className="list">
-                                  <li>
-                                    "IP of service" is the public IP address of
-                                    the machine where the ML evaluation code is
-                                    running (or will be run) with the help of
-                                    cvfy lib.
-                                  </li>
-                                  <li>
-                                    "Port of service" is the port of the above
-                                    mentioned service.
-                                  </li>
-                                  <li>
-                                    Enter the application details and copy the
-                                    Token.
-                                  </li>
-                                  <li>
-                                    Use this Token to do registration with the
-                                    cvfy lib. See  <a onClick={this.helpDirect}> Getting Started
+
+                            <div
+                              className="column"
+                              style={{ paddingLeft: '5%' }}
+                            >
+                              <br />
+                              <div className="row">
+
+                                <Checkbox
+                                    checked={this.state.showTerminal}
+                                    onCheck={this.toggleTerminal}
+                                    label="Show Terminal on demo page"
+                                    style={{
+                                      fontSize: '15px',
+                                      color: '#323643',
+                                      fontWeight:'Normal'
+                                    }}
+                                  />
+
+                              </div>
+                              <br />
+                              <div className="row">
+                                <div class="four wide column">
+                                  <span>
+                                    <a style={styles.logo}>
+                                      <img
+                                        src={require('../../assets/code .png')}
+                                      />
                                     </a>
-                                    .
-                                  </li>
-                                </ul>
-                              </div>
-                              {(this.state.webappUnreachableErrorText.length >
-                                0 ||
-                                this.state.webappLocalUnreachableErrorText
-                                  .length > 0) && (
-                                <div className="ui orange message">
-                                  <p>
-                                    If this is a local deployment (your machine
-                                    is not reachable on it's public IP), you
-                                    must select the "Webapp is running locally"
-                                    option.
-                                  </p>
+                                  </span>
+                                  <TextField
+                                    hintText="https://github.com/"
+                                    floatingLabelText="Link to Source Code"
+                                    value={this.state.name}
+                                    errorText={this.state.nameErrorText}
+                                    onChange={this.updateName}
+                                  />
                                 </div>
-                              )}
+                              </div>
                             </div>
                           </div>
+                        </div>
+                      </div>
+
+                      <br />
+                      <br />
+                      <div className="ui grid">
+                        <div className="three wide column" />
+                        <div className="three wide column">
+                          <Button
+                            onMouseEnter={this.sub.bind(this, 1)}
+                            onMouseLeave={this.exit}
+                            style={
+                              this.state.subhover == 1
+                                ? styles.subhover
+                                : styles.sub
+                            }
+                          >
+                            <text style={styles.txt}>Reset</text>
+                          </Button>
+                        </div>
+
+                        <div className="two wide column" />
+                        <div className="three wide column">
+                          <Button
+                            primary
+                            onMouseEnter={this.sub.bind(this, 2)}
+                            onMouseLeave={this.exit}
+                            onClick={this.submit.bind(this)}
+                            style={
+                              this.state.subhover == 2
+                                ? styles.subhover
+                                : styles.sub
+                            }
+                          >
+                            <text style={styles.txt}>Submit</text>
+                          </Button>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </Row>
-          </div>
-        </Content>
-        <Footer style={styles.footer}>© CloudCV, 2016</Footer>
-      </Layout>
+            </div>
+          </Content>
+        </Layout>
+      </div>
     );
   }
 }
@@ -741,28 +646,17 @@ RegisterPage.propTypes = {
   user: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  nonghDemoModel: PropTypes.object.isRequired,
-  nonghModelActions: PropTypes.object.isRequired
 };
 
 RegisterPage.contextTypes = {
-  socket: PropTypes.object.isRequired
+  socket: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     login: state.login,
     user: state.user,
-    nonghDemoModel: state.nonghDemoModel
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    nonghModelActions: bindActionCreators(nonghDemoModelActions, dispatch)
-  };
-}
-
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(RegisterPage)
-);
+export default withRouter(connect(mapStateToProps)(RegisterPage));
