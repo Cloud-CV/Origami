@@ -8,6 +8,7 @@ import NGHDemoPageComponent from "./deployment/UsePrebuiltProject/nghDemoPage";
 import RegisterNonGHPageComponent from "./deployment/UsePrebuiltProject/registerPage";
 import ShareProfile from "./user/userShareProfile";
 import InstructionsPage from './deployment/UsePrebuiltProject/instructionsPage'
+import DemoPage from './deployment/UsePrebuiltProject/demoPage'
 
 const routes = [
   { path: '/home', name: 'Dashboard', component: HomePageComponent },
@@ -18,6 +19,7 @@ const routes = [
   { path: '/login*', name: 'login', component: LoginComponent },
   { path: '/ngh/user',exact: true,name:'My Demo', component:NonGHUserProfileComponent },
   { path: '/instructions',exact: true, component:InstructionsPage },
+  { path: '/demo', component:DemoPage },
 ];
 
 export default routes;

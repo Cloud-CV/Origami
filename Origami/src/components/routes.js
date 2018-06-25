@@ -19,7 +19,7 @@ import NGHDemoFrameComponent from "./deployment/UsePrebuiltProject/nghDemoFrame"
 import DefaultLayout from "../ui/src/containers/DefaultLayout" 
 import Loadable from 'react-loadable'
 import InstructionsPage from './deployment/UsePrebuiltProject/instructionsPage'
-
+import DemoPage from './deployment/UsePrebuiltProject/demoPage'
 function Loading() {
   return <div>Loading...</div>;
 }
@@ -36,6 +36,10 @@ export default (
     <Route
       exact
       path="/demo_register"
+      component={RegisterNonGHPageComponent}
+    />
+      <Route
+      path="/demo"
       component={RegisterNonGHPageComponent}
     />
     <Route

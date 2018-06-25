@@ -81,8 +81,11 @@ class InstructionsPage extends React.Component {
     this.props.history.push('/demo_register');
   }
 
+  forward() {
+    this.props.history.push('/demo');
+  }
+
   render() {
-    console.log('aaya');
     let styles = this.getStyles();
 
     return (
@@ -226,6 +229,7 @@ class InstructionsPage extends React.Component {
                             <img
                               src={require('../../assets/forward.png')}
                               style={{ height: '49px', width: '49px' }}
+                              onClick={this.forward.bind(this)}
                             />
                           </div>
                         </div>
