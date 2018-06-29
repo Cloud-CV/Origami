@@ -9,12 +9,19 @@ import { getDeployed } from "../../../api/Nongh/getDeployed";
 import SampleImage from "../../sampleinput/SampleImage";
 import TextSingleInput from "../../inputcomponents/TextInput/TextSingleInput";
 import ImageSingleInput from "../../inputcomponents/ImageInput/ImageSingleInput";
-import TextOutput from "../../outputcomponents/TextOutput/SingleOutput"
-const photos = [
+import TextOutput from "../../outputcomponents/TextOutput/SingleOutput";
+
+const server = [
   { src: require('../../assets/wire.png')},
   {src: require('../../assets/wire.png')},
   {src: require('../../assets/wire.png')},
   {src: require('../../assets/wire.png')},
+  {src: require('../../assets/wire.png')}
+
+];
+
+const demo = [
+  { src: require('../../assets/wire.png')},
   {src: require('../../assets/wire.png')}
 
 ];
@@ -33,13 +40,15 @@ class DemoPage extends React.Component {
       outputModel: {},
       demoModel: {},
       isCreator: false,
-      sampleinputs: [],
+      cloudcv: [],
+      demo_creator: [],
       imageInputCount: 0,
       files: [],
       index: 0,
       resetBorder: false,
       files:[],
       subhover: 0,
+      active:1
     }
     this.onSelect = this.onSelect.bind(this);
     this.updateFormData=this.updateFormData.bind(this);
@@ -51,14 +60,21 @@ class DemoPage extends React.Component {
   }
 
   componentWillMount(){
-    console.log("mounted")
+    console.log("mounted",server.length)
   
-    let tmp = photos;
-    let sampleinputs = [];
+    let tmp = server
+    let tmp2 = demo
+    let cloudcv = [];
+    let demo_creator =[];
+    console.log("state change")
     while (tmp.length) {
-      sampleinputs.push(tmp.splice(0, 3));
+      cloudcv.push(tmp.splice(0, 3));
     }
-    this.setState({sampleinputs:sampleinputs});
+    while (tmp2.length) {
+      demo_creator.push(tmp2.splice(0, 3));
+    }
+
+    this.setState({cloudcv:cloudcv,demo_creator:demo_creator});
   
   }
 
@@ -179,13 +195,17 @@ class DemoPage extends React.Component {
   sub(e) {
     this.setState({ subhover: e });
   }
-    submit() {
+  submit() {
     console.log("submit")
+  }
+  sample(e){
+  	console.log("clicked")
+    this.setState({active:e});  	
   }
 
   render() {
     let styles = this.getStyles();
-    let sampleinputs=this.state.sampleinputs;
+    let sampleinputs=this.state.active == 1?this.state.cloudcv:this.state.demo_creator
      return (
       <div style={{ backgroundColor: '#F7F7F7' }}>
         <Layout style={styles.layout}>
@@ -277,49 +297,35 @@ class DemoPage extends React.Component {
                           style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
                         />
                         <div className="row" style={{marginLeft:'8%'}}>
-                        {sampleinputs.map((row,index)) =>(
+                        {sampleinputs.map((row,index) => (
+                        <div>
                           <div className="row">
-                         {row.map(value,index) => (
+                         {row.map((value,index) => (
                           <SampleImage
                               key={index}
                               value={value.src}
                               onSelect={this.onSelect}
+                              
                             />
-                          )}
-                          </div>  
-                          <br/>                       
-                          )}
-                       <div className="row" style={{marginLeft:'8%'}}>
-                       <div className="row">
-                          <SampleImage
-                              key={1}
-                              value={require('../../assets/ll.jpg')}
-                              onSelect={this.onSelect}
-                            />
-  
-                          <SampleImage
-                              key={2}
-                              value={require('../../assets/bb.jpg')}
-                              onSelect={this.onSelect}
-                            />
-                          <SampleImage
-                              key={3}
-                              value={require('../../assets/VQA.png')}
-                              onSelect={this.onSelect}
-                            />
+                          ))}
+
+                          </div> 
+                          <br/>
+                          <br/> 
+                          </div>
+                                               
+                          ))} 
+                          </div> 
 
 
-
-                       </div> 
-                       </div>                      
                           <br/>
                            <br/>
                            <br/>
   
                          <div className='row' style={{marginLeft:'35%'}}>
                         <div class="btn-group btn-toggle"> 
-                            <button class="btn btn-default" style={{backgroundColor:'#  F7F7F7'}}>By CloudCV</button>
-                            <button class="btn btn-primary active">By Demo Creator</button>
+                            <button class={this.state.active == 1?"btn btn-primary active":"btn btn-default"}  onClick={this.sample.bind(this,1)}>By CloudCV</button>
+                            <button class={this.state.active == 2?"btn btn-primary active":"btn btn-default"} onClick={this.sample.bind(this,2)}>By Demo Creator</button>
                         </div>                         
                          </div>  
 
