@@ -8,7 +8,7 @@ const singleInput = props => {
       placeholder={props.label}
       name={`input-text-${props.index}`}
       type="text"
-      style={{ width: "30vw",borderWidth:'1px',borderColor:'#606470' }}
+      style={{ width: "25vw" }}
     />
   );
 };

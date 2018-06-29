@@ -10,7 +10,7 @@ const singleOutput = props => {
     >
       <div className="content">
         <div className="header">
-          {typeof props.header === "object" ? props.header.label : props.header}
+          Output
         </div>
       </div>
       <div className="content">

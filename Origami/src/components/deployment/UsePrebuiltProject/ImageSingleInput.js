@@ -38,8 +38,13 @@ const singleInput = props => {
   }
 
   return (
-    <div>
-      <div>
+    <div className="ui container grid origami-demo-input-image-component">
+      <div className="centered center aligned stretched row origami-demo-input-image-label-container">
+        <div className="ui blue segment origami-demo-input-image-label">
+          {props.label}
+        </div>
+      </div>
+      <div className="centered row">
         <div className="" style={{ height: "100%", cursor: "pointer" }}>
           <Dropzone
             onDrop={onDrop}
@@ -49,10 +54,10 @@ const singleInput = props => {
             <div className="ui card">
               <div className="ui fluid image">
                 <img
-                  className="ui fluid medium image"
-                  src="/static/img/placeholder.jpg"
+                  className="ui fluid medium bordered image"
+                  src="/static/img/wireframe.png"
                   id={`input-image-preview-${props.index}`}
-                  style={{ width: "100%",borderWidth:'0px' }}
+                  style={{ width: "100%" }}
                 />
               </div>
               <div className="content origami-demo-input-image-component-desc">

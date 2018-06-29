@@ -16,7 +16,7 @@ const TextOutput = ({ headers, calling_context, data }) => {
           key={Math.random()}
           calling_context={calling_context}
           index={index}
-          header={header}
+          header={"Output"}
           data={data[index] || <LinearProgress mode="indeterminate" />}
         />,
         <br key={Math.random()} />,
