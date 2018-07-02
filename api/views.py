@@ -149,6 +149,8 @@ def is_cloudcv(request):
     return Response(serialize.data, status=response_status.HTTP_200_OK)
 
 
+
+
 @api_view(['GET'])
 def get_all_user_demos(request, id):
     """
@@ -234,6 +236,7 @@ def custom_component_controller(request, type_req, user_id, demoid):
                 try:
                     component = model.objects.get(user_id=user_id, demo=demo)
                 except Exception:
+                    print("aaya")
                     return Response({"text": "Not Found"})
 
                 serialize = serializer(component)
@@ -287,6 +290,13 @@ def alive(request):
     """Returns a status 200 if the server is running and 404 otherwise"""
     return HttpResponse(status=200)
 
+@api_view(['POST'])
+def bundleup(request,user_id,id):
+    print("aaya")
+    body=request.data
+    print("body ==",body)
+
+
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def custom_demo_controller(request, user_id, id):
@@ -331,31 +341,35 @@ def custom_demo_controller(request, user_id, id):
             return Response(data, status=response_status.HTTP_200_OK)
     elif request.method == "POST":
         body = request.data
+        print("body ==",body)
+        print("\n")
         name = body["name"]
         id = body["id"]
         user_id = body["user_id"]
-        address = body["address"]
         description = body["description"]
-        footer_message = body["footer_message"]
         cover_image = body["cover_image"]
+        os = body["os"]
+        cuda = body["cuda"]
+        python = body["python"]
+        task = body["task"]
+        source = body["source"]
         if not cover_image:
             cover_image = DEFAULT_IMAGE
         terminal = body["terminal"]
-        timestamp = body["timestamp"]
-        token = body["token"]
-        status = body["status"]
         demo = Demo.objects.create(
             name=name,
             id=id,
             user_id=user_id,
-            address=address,
             description=description,
-            footer_message=footer_message,
             cover_image=cover_image,
+            os=os,
+            python=python,
+            cuda=cuda,
             terminal=terminal,
-            timestamp=timestamp,
-            token=token,
-            status=status)
+            source_code=source,
+            task=task
+            )
+
         serialize = DemoSerializer(demo)
         return Response(serialize.data, status=response_status.HTTP_201_CREATED)
 

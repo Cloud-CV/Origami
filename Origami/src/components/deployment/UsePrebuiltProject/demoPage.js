@@ -17,7 +17,6 @@ const server = [
   {src: require('../../assets/wire.png')},
   {src: require('../../assets/wire.png')},
   {src: require('../../assets/wire.png')}
-
 ];
 
 const demo = [

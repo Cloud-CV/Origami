@@ -8,6 +8,7 @@ import { red500, green500, grey900 } from 'material-ui/styles/colors';
 class InstructionsPage extends React.Component {
   constructor(props, context) {
     super(props, context);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   getStyles() {
@@ -84,7 +85,10 @@ class InstructionsPage extends React.Component {
   forward() {
     this.props.history.push('/demo');
   }
-
+  handleChange(selectorFiles: FileList)
+  {
+      console.log(selectorFiles);
+  }
   render() {
     let styles = this.getStyles();
 
@@ -193,7 +197,8 @@ class InstructionsPage extends React.Component {
                             <div style={styles.dwnbtm} />
                           </div>
                           <div className="column" style={{ marginLeft: '30%' }}>
-                            <Button primary style={styles.upload}>
+                          <input id="myInput" type="file" ref={(ref) => this.upload = ref} style={{ display: 'none' }} onChange={ (e) => this.handleChange(e.target.files) }/>
+                            <Button type="submit" primary style={styles.upload} onClick={(e) => this.upload.click() }>
                               <text style={styles.txt}>
                                 Upload
                                 <span>

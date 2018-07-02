@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import CircularProgress from 'material-ui/CircularProgress';
 import rangeCheck from 'range_check';
 import { getWebAppStatus } from '../../../api/Generic/getWebAppStatus';
+import * as nonghDemoModelActions from "../../../actions/nonghDemoModelActions";
 import RaisedButton from 'material-ui/RaisedButton';
 import StopNow from 'material-ui/svg-icons/action/pan-tool';
 import Dropzone from 'react-dropzone';
@@ -39,6 +40,10 @@ class RegisterPage extends React.Component {
       python: 0,
       os: 0,
       cuda: 0,
+      id: Math.floor(Math.random() * 10000000).toString(),
+      user_id: parseInt(localStorage.getItem("user_id"), 10),
+      task:0,
+      source:''
     };
     this.updateName = this.updateName.bind(this);
     this.updateDescription = this.updateDescription.bind(this);
@@ -48,6 +53,7 @@ class RegisterPage extends React.Component {
     this.hover = this.hover.bind(this);
     this.exit = this.exit.bind(this);
     this.btnEnter = this.btnEnter.bind(this);
+    this.updateSource =this.updateSource.bind(this);
   }
 
   updateDescription(e) {
@@ -56,6 +62,10 @@ class RegisterPage extends React.Component {
 
   updateName(e) {
     this.setState({ name: e.target.value });
+  }
+  updateSource(e) {
+    console.log("this source",this.state.source)
+    this.setState({ source: e.target.value });
   }
 
   onDrop(files) {
@@ -217,11 +227,61 @@ class RegisterPage extends React.Component {
   }
 
   submit() {
+
+  let task=this.state.task
+  let task_in=''
+    switch (task) {
+      case 1:
+        task_in= 'VQA';
+        break;
+      case 2:
+        task_in= 'Style Transfer';
+        break;
+      case 3:
+        task_in = 'Grad Cam';
+        break;
+      case 4:
+        task_in = 'Classification';
+        break;
+
+    }
+
+   let dataToPut = {
+    name: this.state.name,
+    id: this.state.id,
+    user_id: this.state.user_id,
+    description: this.state.description,
+    cover_image: this.state.cover_image,
+    terminal: this.state.showTerminal,
+    task: task_in,
+    os:this.state.os,
+    python:this.state.python,
+    cuda:this.state.python,
+    source:this.state.source
+  };   
+  this.props.nonghModelActions.addToDBNonGHDemoModel(dataToPut).then(() => {
+    this.props.nonghModelActions
+      .updateNonGHDemoModel(dataToPut)
+      .then(() => {
+          console.log("hua")
+          })
+
+
+  })
+    .catch(err => {
+      console.log("error",err)
+    });
+
     this.props.history.push('/instructions');
-  }
+}
     checkbox(event){
     let current=this.state.checked;
     this.setState({checked:!current})
+  }
+
+  tasks(e){
+    console.log("clicked before",e,this.state.task)
+    this.setState({task:e})
   }
 
 
@@ -234,11 +294,7 @@ class RegisterPage extends React.Component {
       </div>
     );
 
-    const head = ['Style Transfer', 'VQA', 'Clssification', 'GradCam'];
-    const tasks = [];
-    for (var i = 1; i < 5; i++) {
-      tasks.push(<Cards header={head[i]} count={i} />);
-    }
+
 
     return (
       <div style={{ backgroundColor: '#F7F7F7' }}>
@@ -348,16 +404,16 @@ class RegisterPage extends React.Component {
                           <div class="two wide column" />
 
                           <div className=" three wide column">
-                            <Cards header={'VQA'} count={1} />
+                            <Cards header={'VQA'} count={1} onClick={this.tasks.bind(this,1)} clicked={this.state.task==1?true:false} />
                           </div>
                           <div className=" three wide column">
-                            <Cards header={'Style Transfer'} count={2} />
+                            <Cards header={'Style Transfer'} count={2} onClick={this.tasks.bind(this,2)} clicked={this.state.task==2?true:false} />
                           </div>
                           <div className=" three wide column">
-                            <Cards header={'Grad Cam'} count={2} />
+                            <Cards header={'Grad Cam'} count={2} onClick={this.tasks.bind(this,3)} clicked={this.state.task==3?true:false} />
                           </div>
                           <div className=" three wide column">
-                            <Cards header={'Classification'} count={2} />
+                            <Cards header={'Classification'} count={2} onClick={this.tasks.bind(this,4)} clicked={this.state.task==4?true:false} />
                           </div>
                         </div>
                         <br />
@@ -583,9 +639,9 @@ class RegisterPage extends React.Component {
                                   <TextField
                                     hintText="https://github.com/"
                                     floatingLabelText="Link to Source Code"
-                                    value={this.state.name}
+                                    value={this.state.source}
                                     errorText={this.state.nameErrorText}
-                                    onChange={this.updateName}
+                                    onChange={this.updateSource}
                                   />
                                 </div>
                               </div>
@@ -625,7 +681,7 @@ class RegisterPage extends React.Component {
                                 : styles.sub
                             }
                           >
-                            <text style={styles.txt}>Submit</text>
+                            <text style={styles.txt} >Submit</text>
                           </Button>
                         </div>
                       </div>
@@ -646,6 +702,8 @@ RegisterPage.propTypes = {
   user: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
+  nonghDemoModel: PropTypes.object.isRequired,
+  nonghModelActions: PropTypes.object.isRequired 
 };
 
 RegisterPage.contextTypes = {
@@ -656,7 +714,14 @@ function mapStateToProps(state, ownProps) {
   return {
     login: state.login,
     user: state.user,
+    nonghDemoModel: state.nonghDemoModel
+  };
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    nonghModelActions: bindActionCreators(nonghDemoModelActions, dispatch)
   };
 }
 
-export default withRouter(connect(mapStateToProps)(RegisterPage));
+
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(RegisterPage));

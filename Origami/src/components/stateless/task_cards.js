@@ -2,10 +2,19 @@ import React from 'react';
 
 import img from '../assets/wireframe.png';
 
-const Cards = ({ header, choice }) => {
+const Cards = ({ header,count,onClick,clicked }) => {
+  console.log("clicked=",clicked)
+  let styles={};
+  if(clicked == true){
+    styles={
+      borderStyle:'Solid',
+      borderWidth:'2px',
+      borderColor:'#606470'
+    }
+  }
   return (
-    <div class="ui special cards">
-      <div class="card">
+    <div class="ui special cards" onClick={onClick} >
+      <div class="card" style={styles}>
         <div class="blurring dimmable image">
           <div class="ui dimmer">
             <div class="content">
