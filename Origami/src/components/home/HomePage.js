@@ -191,6 +191,7 @@ class HomePage extends React.Component {
   getDocs() {
     window.location =
       'http://cloudcv-origami.readthedocs.io/en/latest/index.html';
+
   }
   Loaded() {
     this.setState({ loaded: true });
@@ -276,6 +277,7 @@ class HomePage extends React.Component {
                                   {' '}
                                   {demo.username}{' '}
                                 </span>
+
                               </div>
                               <div class="small image">
                                 <img
