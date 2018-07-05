@@ -256,14 +256,14 @@ class RegisterPage extends React.Component {
     task: task_in,
     os:this.state.os,
     python:this.state.python,
-    cuda:this.state.python,
+    cuda:this.state.cuda,
     source:this.state.source
   };   
   this.props.nonghModelActions.addToDBNonGHDemoModel(dataToPut).then(() => {
     this.props.nonghModelActions
       .updateNonGHDemoModel(dataToPut)
       .then(() => {
-          console.log("hua")
+          console.log("Done")
           })
 
 
@@ -272,7 +272,7 @@ class RegisterPage extends React.Component {
       console.log("error",err)
     });
 
-    this.props.history.push('/instructions');
+    this.props.history.push('/instructions/'+dataToPut.user_id+"/"+dataToPut.id+'/bundle');
 }
     checkbox(event){
     let current=this.state.checked;

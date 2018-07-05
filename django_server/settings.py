@@ -75,6 +75,8 @@ TEMPLATES = [
     },
 ]
 
+CORS_ALLOW_CREDENTIALS = True
+
 AUTHENTICATION_BACKENDS = (
 
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -147,6 +149,8 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
+
+
 
 WEBPACK_LOADER = {
     'DEFAULT': {

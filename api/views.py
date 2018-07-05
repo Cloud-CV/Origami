@@ -20,7 +20,16 @@ import datetime
 import json
 from collections import OrderedDict
 import sys
-
+from django.views.decorators.csrf import csrf_exempt
+from pprint import pprint
+import ast
+from django.utils.encoding import smart_unicode
+import zipfile
+import StringIO
+import wget
+import md5
+from shutil import copyfile
+import requests
 
 class DemoViewSet(ModelViewSet):
     """
@@ -291,11 +300,86 @@ def alive(request):
     return HttpResponse(status=200)
 
 @api_view(['POST'])
-def bundleup(request,user_id,id):
-    print("aaya")
-    body=request.data
-    print("body ==",body)
+def bundleup(request,id,user_id):
+    file=request.FILES['file']
+    hash_=md5.new()
+    key=id+user_id
+    hash_.update(key)
+    hex=hash_.hexdigest()  
+    os.chdir(settings.MEDIA_ROOT+'bundles/'+hex)  
+    zf=zipfile.ZipFile(file)
+    zf.extractall()
+    zf.close
+    url='http://localhost:9002/deploy_trigger/'+id
+    data={"bundle_path":settings.MEDIA_ROOT+'bundles/'+hex+'.zip'}
+    r = requests.post(url = url, data = data)
+    print("r===",r)
 
+    data={'success':True}
+    return Response(data, status=response_status.HTTP_200_OK)
+
+@api_view(['GET'])
+def bundledown(request,id,user_id):
+    demo = Demo.objects.get(id=id, user_id=user_id)
+    _os=demo.os
+    cuda=demo.cuda
+    python=demo.python
+    tag=''
+    if(_os=="1"):
+        _os="ubuntu14.04"
+        tag=tag+'ub14.04'
+    else:
+        _os="ubuntu16.04"
+        tag=tag+'ub16.04'
+    tag=tag+'-'
+    if(python=="1"):
+        python="python2.7"
+        tag=tag+'py2.7'
+    else:
+        python="python3.5"
+        tag=tag+'py3.5'
+    tag=tag+'-'
+    if(cuda=="1"):
+        cuda="cuda7.0-runtime"
+        tag=tag+'cu7.0'
+    else:
+        cuda="cuda8.0-runtime"
+        tag=tag+'cu8.0'
+    url="https://raw.githubusercontent.com/Cloud-CV/Dockerfiles/master/"+_os+"/"+python+"/"+cuda+"/Dockerfile"
+    hash_=md5.new()
+    key=id+user_id
+    hash_.update(key)
+    hex=hash_.hexdigest()
+    directory=settings.MEDIA_ROOT+'bundles/'+hex
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+    docker_path=directory+'/Dockerfile'
+    if not os.path.exists(docker_path):
+        with open(settings.MEDIA_ROOT+'bundles/template/Dockerfile') as f:
+            lines = f.readlines()
+        lines[0]='FROM teamcloudcv/origami:'+tag
+        with open(docker_path, "w") as f:
+            f.writelines(lines)
+
+    os.chdir(settings.MEDIA_ROOT+'bundles/')
+    if not os.path.exists(hex+'/requirements.txt'):    
+        requirements=copyfile('template/requirements.txt', directory+'/requirements.txt')
+    if not os.path.exists(hex+'/origami.env'):
+        print("aaya")
+        f= open(hex+'/origami.env',"w+")    
+        f.close()
+    if not os.path.exists(hex+'/main.py'):  
+        main=copyfile('template/main.py', directory+'/main.py')
+
+    l=['/Dockerfile','/requirements.txt','/main.py','/origami.env']
+    zipped=zipfile.ZipFile(hex+'.zip','w')
+    for i in l: 
+        zipped.write(hex+i,os.path.basename(hex+i))
+    zipped.close()
+    file_path=settings.MEDIA_ROOT+'bundles/'+hex+'.zip'
+    resp=HttpResponse(open(file_path, 'rb'), content_type='application/zip')
+    return resp    
 
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
@@ -341,8 +425,6 @@ def custom_demo_controller(request, user_id, id):
             return Response(data, status=response_status.HTTP_200_OK)
     elif request.method == "POST":
         body = request.data
-        print("body ==",body)
-        print("\n")
         name = body["name"]
         id = body["id"]
         user_id = body["user_id"]

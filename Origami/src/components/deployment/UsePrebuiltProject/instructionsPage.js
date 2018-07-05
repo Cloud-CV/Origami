@@ -4,11 +4,15 @@ import { Layout, Icon, Button, Card, Row, Col, Input, Select } from 'antd';
 const { Header, Content, Footer } = Layout;
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
 import { red500, green500, grey900 } from 'material-ui/styles/colors';
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
 
 class InstructionsPage extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.handleChange = this.handleChange.bind(this);
+    this.upload_bundle = this.upload_bundle.bind(this);
+    this.download_bundle = this.download_bundle.bind(this);
   }
 
   getStyles() {
@@ -85,12 +89,59 @@ class InstructionsPage extends React.Component {
   forward() {
     this.props.history.push('/demo');
   }
-  handleChange(selectorFiles: FileList)
+  upload_bundle(selectorFiles: FileList)
   {
-      console.log(selectorFiles);
+    let formData = new FormData();
+    let id=this.props.match.params.repoId
+    let user_id=this.props.match.params.user_id
+    let url='/bundleup/'+id+'/'+user_id+'/'
+    formData.append('file',selectorFiles[0]);  
+        
+
+  fetch(url, { // Your POST endpoint
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      "X-CSRFToken":cookies.get("csrftoken"),
+    },
+    body:formData
+ 
+   
+  }).then(function(response) {
+    console.log("response",response)
+  })
+  .catch(
+    error => console.log(error) // Handle the error response object
+  );
+
   }
+
+  download_bundle()
+  {
+    let download = require("downloadjs")    
+    let id=this.props.match.params.repoId
+    let user_id=this.props.match.params.user_id
+    let url='/bundledown/'+id+'/'+user_id+'/'
+  fetch(url, { // Your POST endpoint
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      "X-CSRFToken":cookies.get("csrftoken"),
+    },
+  }).then(function(resp) {
+    return resp.blob();
+  }).then(function(blob) {
+    download(blob,'Origami.zip');
+  })
+  .catch(
+    error => console.log(error) // Handle the error response object
+  );
+}
+
+
   render() {
     let styles = this.getStyles();
+    console.log("props =",this.props)
 
     return (
       <div style={{ backgroundColor: '#F7F7F7' }}>
@@ -181,7 +232,7 @@ class InstructionsPage extends React.Component {
                           style={{ paddingTop: '30px', marginLeft: '7%' }}
                         >
                           <div className="column">
-                            <Button primary style={styles.download}>
+                            <Button primary style={styles.download} onClick={this.download_bundle}>
                               <text style={styles.txt}>
                                 Download
                                 <span>
@@ -197,7 +248,8 @@ class InstructionsPage extends React.Component {
                             <div style={styles.dwnbtm} />
                           </div>
                           <div className="column" style={{ marginLeft: '30%' }}>
-                          <input id="myInput" type="file" ref={(ref) => this.upload = ref} style={{ display: 'none' }} onChange={ (e) => this.handleChange(e.target.files) }/>
+                          <form>
+                          <input id="myInput" type="file" ref={(ref) => this.upload = ref} style={{ display: 'none' }} onChange={ (e) => this.upload_bundle(e.target.files) }/>
                             <Button type="submit" primary style={styles.upload} onClick={(e) => this.upload.click() }>
                               <text style={styles.txt}>
                                 Upload
@@ -211,6 +263,7 @@ class InstructionsPage extends React.Component {
                               </text>
                             </Button>
                             <div style={styles.upldbtm} />
+                          </form>
                           </div>
                         </div>
                         <br />

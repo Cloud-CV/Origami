@@ -46,7 +46,8 @@ urlpatterns = [
     url(r'^api/permalink/?(\d*)/?(\d*)', custom_permalink_controller),
     url(r'^api/', include(router.urls, namespace='api')),
     url(r'^inject$', inject),
-    url(r'^bundleup/?(\d*)/?(\d*)',bundleup)
+    url(r'^bundleup/(\d*)/?(\d*)',bundleup),
+    url(r'^bundledown/(\d*)/?(\d*)',bundledown),
     url(r'^$', generic.TemplateView.as_view(template_name='view1.html')),
 ]
 

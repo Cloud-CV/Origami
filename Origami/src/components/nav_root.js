@@ -18,7 +18,7 @@ const routes = [
   { path: '/demo_register', exact: true, name: 'Create demo', component: RegisterNonGHPageComponent },
   { path: '/login*', name: 'login', component: LoginComponent },
   { path: '/ngh/user',exact: true,name:'My Demo', component:NonGHUserProfileComponent },
-  { path: '/instructions',exact: true, component:InstructionsPage },
+  { path: '/instructions/:user_id/:repoId/bundle',exact: true, component:InstructionsPage },
   { path: '/demo', component:DemoPage },
 ];
 
