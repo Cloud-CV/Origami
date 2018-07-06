@@ -30,6 +30,7 @@ import wget
 import md5
 from shutil import copyfile
 import requests
+import datetime
 
 class DemoViewSet(ModelViewSet):
     """
@@ -302,6 +303,7 @@ def alive(request):
 @api_view(['POST'])
 def bundleup(request,id,user_id):
     file=request.FILES['file']
+
     hash_=md5.new()
     key=id+user_id
     hash_.update(key)
@@ -310,7 +312,13 @@ def bundleup(request,id,user_id):
     zf=zipfile.ZipFile(file)
     zf.extractall()
     zf.close
+    os.chdir(settings.MEDIA_ROOT+'bundles/')
+    l=['/Dockerfile','/requirements.txt','/main.py','/origami.env']
+    zipped=zipfile.ZipFile(hex+'.zip','w')
+    for i in l: 
+        zipped.write(hex+i,os.path.basename(hex+i))
     url='http://localhost:9002/deploy_trigger/'+id
+
     data={"bundle_path":settings.MEDIA_ROOT+'bundles/'+hex+'.zip'}
     r = requests.post(url = url, data = data)
     print("r===",r)
@@ -425,9 +433,12 @@ def custom_demo_controller(request, user_id, id):
             return Response(data, status=response_status.HTTP_200_OK)
     elif request.method == "POST":
         body = request.data
+
         name = body["name"]
         id = body["id"]
         user_id = body["user_id"]
+        username=SocialAccount.objects.get(uid=user_id)
+        username=username.user.username.encode('utf-8')
         description = body["description"]
         cover_image = body["cover_image"]
         os = body["os"]
@@ -438,9 +449,12 @@ def custom_demo_controller(request, user_id, id):
         if not cover_image:
             cover_image = DEFAULT_IMAGE
         terminal = body["terminal"]
+        date=datetime.datetime.now().strftime("%D")
+
         demo = Demo.objects.create(
             name=name,
             id=id,
+            username=username,
             user_id=user_id,
             description=description,
             cover_image=cover_image,
@@ -449,7 +463,8 @@ def custom_demo_controller(request, user_id, id):
             cuda=cuda,
             terminal=terminal,
             source_code=source,
-            task=task
+            task=task,
+            date=date
             )
 
         serialize = DemoSerializer(demo)

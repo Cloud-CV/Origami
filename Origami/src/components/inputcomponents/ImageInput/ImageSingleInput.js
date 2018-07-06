@@ -7,15 +7,8 @@ import request from "superagent";
 const appConfig = require("../../../../outCalls/config");
 
 const singleInput = props => {
-  function updateImage(index, file) {
-    document.getElementById(
-      `input-image-preview-${index}`
-    ).src = window.URL.createObjectURL(file);
-  }
-
   function onDrop(files) {
-    props.updateFormData(files[0], `input-image-${props.index}`);
-    updateImage(props.index, files[0]);
+    props.updateFormData(files[0], `input-image-1`);
   }
 
   function onSelect(files) {
@@ -50,8 +43,8 @@ const singleInput = props => {
               <div className="ui fluid image">
                 <img
                   className="ui fluid medium image"
-                  src="/static/img/placeholder.jpg"
-                  id={`input-image-preview-${props.index}`}
+                  src={props.src||"/static/img/placeholder.jpg"}
+                  id={'input-image-preview-1'}
                   style={{ width: "100%",borderWidth:'0px' }}
                 />
               </div>
@@ -87,8 +80,9 @@ const singleInput = props => {
 
 singleInput.propTypes = {
   label: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired,
-  updateFormData: PropTypes.func.isRequired
+  index: PropTypes.number,
+  updateFormData: PropTypes.func.isRequired,
+  src:PropTypes.string.isRequired
 };
 
 export default singleInput;

@@ -294,7 +294,7 @@ class RegisterPage extends React.Component {
       </div>
     );
 
-
+    console.log("this.state.cover_image =",this.state.cover_image)
     return (
       <div style={{ backgroundColor: '#F7F7F7' }}>
         <Layout style={styles.layout}>

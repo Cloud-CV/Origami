@@ -27,6 +27,7 @@ class Demo(models.Model):
     """
     name = models.CharField(max_length=100)
     id = models.IntegerField(primary_key=True)
+    username=models.CharField(max_length=30,default="not known")
     user_id = models.IntegerField()
     cover_image = models.TextField(blank=False, null=False)
     description = models.CharField(max_length=1000)
@@ -36,7 +37,7 @@ class Demo(models.Model):
     os = models.CharField(max_length=30,blank=False)
     python = models.CharField(max_length=30,blank=False)
     cuda = models.CharField(max_length = 30,blank=False)
-    timestamp = models.DateTimeField(auto_now_add=True, blank=True),
+    date = models.CharField(max_length=30,default="01/01/01")
 
 
 class InputComponent(models.Model):

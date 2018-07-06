@@ -19,7 +19,7 @@ const routes = [
   { path: '/login*', name: 'login', component: LoginComponent },
   { path: '/ngh/user',exact: true,name:'My Demo', component:NonGHUserProfileComponent },
   { path: '/instructions/:user_id/:repoId/bundle',exact: true, component:InstructionsPage },
-  { path: '/demo', component:DemoPage },
+  { path: '/demo/:user_id/:repoId/page', component:DemoPage },
 ];
 
 export default routes;

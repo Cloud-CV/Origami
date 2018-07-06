@@ -30,7 +30,7 @@ class DemoPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      demo_creator_id: 0,
+      repo_id: 0,
       user_id: 0,
       outputData: [],
       showTerminal: false,
@@ -47,7 +47,12 @@ class DemoPage extends React.Component {
       resetBorder: false,
       files:[],
       subhover: 0,
-      active:1
+      active:1,
+      task:'',
+      name:'',
+      date:'',
+      source_code:'',
+      src:''
     }
     this.onSelect = this.onSelect.bind(this);
     this.updateFormData=this.updateFormData.bind(this);
@@ -59,13 +64,10 @@ class DemoPage extends React.Component {
   }
 
   componentWillMount(){
-    console.log("mounted",server.length)
-  
     let tmp = server
     let tmp2 = demo
     let cloudcv = [];
     let demo_creator =[];
-    console.log("state change")
     while (tmp.length) {
       cloudcv.push(tmp.splice(0, 3));
     }
@@ -77,19 +79,39 @@ class DemoPage extends React.Component {
   
   }
 
+  componentDidMount(){
+    let id=this.props.match.params.repoId
+    let user_id=this.props.match.params.user_id 
+    getDeployed(
+          user_id,
+          id
+        ).then(data => {
+          data=JSON.parse(data)[0];
+          let name = data.name
+          let terminal=data.terminal
+          let task=data.task
+          let date=data.date
+          let source=data.source_code
+          let username = data.username
+          this.setState({user_id:user_id,repo_id:id,source_code:source,date:date,showTerminal:terminal,task:task,name:name,username:username})
+        })
+    
+  }
+
 
 
     onSelect(path) {
     if (this.state.resetBorder) {
       this.setState({ resetBorder: false });
     }
-    console.log("lol")
   }
     updateFormData(newfile, newfilename) {
-      console.log("kcuh aaya bhai",newfile,newfilename)
     this.setState({
-      files: [...this.state.files, { newfilename, newfile }]
+      files: [...this.state.files, { newfilename, newfile }],
+      src:newfile.preview
     });
+
+    
   }
 
 
@@ -120,33 +142,33 @@ class DemoPage extends React.Component {
         padding: '10px',
       },
        txt: {
-        fontFamily: '"Open Sans", "Helvetica", sans-serif',
+        fontFamily: "'Roboto', sans-serif",
         fontSize: '2em',
-        marginLeft:'40%',
+        marginLeft:'45%',
         fontWeight:'Bold',
         color:'#323643',
       },
             txt2: {
-        fontFamily: '"Open Sans", "Helvetica", sans-serif',
+        fontFamily: "'Roboto', sans-serif",
         fontSize: '1em',
       },
 
       task:{
-        fontFamily: '"Open Sans", "Helvetica", sans-serif',
+        fontFamily: "'Roboto', sans-serif",
         fontSize: '1.3em',
         color:'#323643',      	
       },
       task2:{
-        fontFamily: '"Open Sans", "Helvetica", sans-serif',
+        fontFamily: "'Roboto', sans-serif",
         fontSize: '1.3em',
         color:'#323643', 
-        marginLeft:"40%"     	
+        marginLeft:"45%" ,    	
       },
             source:{
-        fontFamily: '"Open Sans", "Helvetica", sans-serif',
+        fontFamily: "'Roboto', sans-serif",
         fontSize: '1.3em',
         color:'#323643', 
-        marginLeft:"36%"     	
+        marginLeft:"32%"     	
       },
 
 
@@ -154,8 +176,9 @@ class DemoPage extends React.Component {
         marginRight: '13px',
       },
       heading:{
+          fontFamily: "'Roboto', sans-serif",
       	 marginLeft: '41%',
-      	 fontFamily: '"Open Sans", "Helvetica", sans-serif',
+      	 fontFamily: "'Roboto', sans-serif",
       	 color:'#323643', 
       	 fontSize: '18px'
       },
@@ -166,6 +189,7 @@ class DemoPage extends React.Component {
         borderRadius: '30px',
         backgroundColor: '#443E3E',
         color: 'White',
+        fontFamily: "'Roboto', sans-serif",
         boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
         transition: 'all 0.3s',
       },
@@ -195,7 +219,9 @@ class DemoPage extends React.Component {
     this.setState({ subhover: e });
   }
   submit() {
-    console.log("submit")
+  console.log("socketid=",this.context.socketId)
+  var formData = new FormData();
+  formData.append("socket-id", this.props.socketId)
   }
   sample(e){
   	console.log("clicked")
@@ -217,7 +243,7 @@ class DemoPage extends React.Component {
                   style={{ position: 'relative' }}
                 >   
                 <div style={styles.txt}>
-			          <span  > Demo Name</span>
+			          <span  > {this.state.name}</span>
             		</div>
             		<br/>
             		<br/>
@@ -245,7 +271,7 @@ class DemoPage extends React.Component {
                               <img src={require('../../assets/details.png')} />
                             </a>
                           </span>
-                       Task Name  :
+                       Task : {this.state.name}
                        </div>
 
                        <div className="column" style={styles.task2}>
@@ -254,7 +280,7 @@ class DemoPage extends React.Component {
                               <img src={require('../../assets/profile2.png')} />
                             </a>
                           </span>
-                       Creator  :
+                       Creator  : {this.state.username}
                        </div>
                        </div>
                        <br/>
@@ -265,7 +291,7 @@ class DemoPage extends React.Component {
                               <img src={require('../../assets/event.png')} />
                             </a>
                           </span>
-                       Date of Creation  :
+                       Date of Creation  : {this.state.date}
                        </div>
 
                        <div className="column" style={styles.source}>
@@ -274,7 +300,7 @@ class DemoPage extends React.Component {
                               <img src={require('../../assets/code .png')} />
                             </a>
                           </span>
-                       Source Code :
+                       Source Code : <a href={this.state.source_code}>Link</a>
                        </div>
                        </div>                       
 
@@ -322,7 +348,7 @@ class DemoPage extends React.Component {
                            <br/>
                            <br/>
   
-                         <div className='row' style={{marginLeft:'35%'}}>
+                         <div className='row' style={{marginLeft:'40%'}}>
                         <div class="btn-group btn-toggle"> 
                             <button class={this.state.active == 1?"btn btn-primary active":"btn btn-default"}  onClick={this.sample.bind(this,1)}>By CloudCV</button>
                             <button class={this.state.active == 2?"btn btn-primary active":"btn btn-default"} onClick={this.sample.bind(this,2)}>By Demo Creator</button>
@@ -353,6 +379,7 @@ class DemoPage extends React.Component {
                               updateFormData={this.updateFormData}
                               calling_context={"demo"}
                               label={""}
+                              src={this.state.src}
                           />
                         </div>
                         <div className="column" style={{paddingLeft:'10%',paddingTop:'7%'}}>

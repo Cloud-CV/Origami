@@ -87,7 +87,9 @@ class InstructionsPage extends React.Component {
   }
 
   forward() {
-    this.props.history.push('/demo');
+    let id=this.props.match.params.repoId
+    let user_id=this.props.match.params.user_id 
+    this.props.history.push('/demo/'+user_id+'/'+id+'/page');
   }
   upload_bundle(selectorFiles: FileList)
   {

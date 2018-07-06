@@ -40,7 +40,7 @@ export default (
       component={RegisterNonGHPageComponent}
     />
       <Route
-      path="/demo"
+      path="/demo/:user_id/:repoId/page"
       component={RegisterNonGHPageComponent}
     />
     <Route
