@@ -86,7 +86,7 @@ class DemoPage extends React.Component {
     console.log("lol")
   }
     updateFormData(newfile, newfilename) {
-      console.log("kcuh aaya bhai")
+      console.log("kcuh aaya bhai",newfile,newfilename)
     this.setState({
       files: [...this.state.files, { newfilename, newfile }]
     });
@@ -203,6 +203,7 @@ class DemoPage extends React.Component {
   }
 
   render() {
+
     let styles = this.getStyles();
     let sampleinputs=this.state.active == 1?this.state.cloudcv:this.state.demo_creator
      return (
@@ -449,6 +450,11 @@ class DemoPage extends React.Component {
 );
     }
 }
+
+DemoPage.contextTypes = {
+  socket: PropTypes.object.isRequired,
+  socketId: PropTypes.string.isRequired
+};
 
 
 export default DemoPage;

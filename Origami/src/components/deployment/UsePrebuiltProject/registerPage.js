@@ -295,7 +295,6 @@ class RegisterPage extends React.Component {
     );
 
 
-
     return (
       <div style={{ backgroundColor: '#F7F7F7' }}>
         <Layout style={styles.layout}>
@@ -708,6 +707,7 @@ RegisterPage.propTypes = {
 
 RegisterPage.contextTypes = {
   socket: PropTypes.object.isRequired,
+  socketId: PropTypes.string.isRequired
 };
 
 function mapStateToProps(state, ownProps) {

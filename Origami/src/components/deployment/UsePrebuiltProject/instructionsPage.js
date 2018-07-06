@@ -141,7 +141,7 @@ class InstructionsPage extends React.Component {
 
   render() {
     let styles = this.getStyles();
-    console.log("props =",this.props)
+    console.log("props =",this.context.socket)
 
     return (
       <div style={{ backgroundColor: '#F7F7F7' }}>
