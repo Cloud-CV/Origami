@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { AppSwitch } from '@coreui/react';
 import Profile from '../../../../components/user/user_github_profile'
 
+
 const propTypes = {
   children: PropTypes.node,
 };
@@ -23,7 +24,6 @@ class DefaultAside extends Component {
   }
 
   toggle(tab) {
-    console.log("tab hua")
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab,

@@ -29,11 +29,6 @@ constructor(props, context) {
 }
 
 
-click(){
-  console.log("clicked")
-}
-
-
   render() {
       if(window.location.pathname==="/")
   {
@@ -66,8 +61,8 @@ click(){
               </Switch>
             </Container>
           </main>
-          <AppAside fixed hidden onClick={this.click.bind(this)}>
-            <DefaultAside onClick={this.click.bind(this)}/>
+          <AppAside fixed hidden>
+            <DefaultAside />
           </AppAside>
         </div>
         <AppFooter>
