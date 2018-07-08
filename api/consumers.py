@@ -32,7 +32,9 @@ def ws_message(message):
 @api_view(['POST'])
 def inject(request):
     if request.method == "POST":
+        print("req data",request)
         body = request.data
+        print("body aaya re =",body)
         text = json.dumps({"data": body, "event": "injectOutputData"})
         Group(body["socketId"]).send({"text": text})
         return Response(status=response_status.HTTP_200_OK)

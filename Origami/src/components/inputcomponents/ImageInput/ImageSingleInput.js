@@ -33,13 +33,13 @@ const singleInput = props => {
   return (
     <div>
       <div>
-        <div className="" style={{ height: "100%", cursor: "pointer" }}>
+        <div className="" style={{ height: "100%", cursor: "pointer"}}>
           <Dropzone
             onDrop={onDrop}
             multiple={false}
-            style={{ height: "inherit" }}
+            style={{ height: "100%" }}
           >
-            <div className="ui card">
+            <div className="ui card" style={{width:'90%'}}>
               <div className="ui fluid image">
                 <img
                   className="ui fluid medium image"

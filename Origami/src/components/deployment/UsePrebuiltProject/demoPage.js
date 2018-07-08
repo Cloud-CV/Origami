@@ -52,7 +52,9 @@ class DemoPage extends React.Component {
       name:'',
       date:'',
       source_code:'',
-      src:''
+      src:'',
+      value:'',
+      return_data:''
     }
     this.onSelect = this.onSelect.bind(this);
     this.updateFormData=this.updateFormData.bind(this);
@@ -60,6 +62,7 @@ class DemoPage extends React.Component {
     this.sub=this.sub.bind(this);
     this.submit=this.submit.bind(this);
     this.toggleShowTerminal = this.toggleShowTerminal.bind(this);
+    this.ws=null
 
   }
 
@@ -100,12 +103,28 @@ class DemoPage extends React.Component {
 
 
 
+
     onSelect(path) {
     if (this.state.resetBorder) {
       this.setState({ resetBorder: false });
     }
   }
     updateFormData(newfile, newfilename) {
+      var ws;
+      var formData = new FormData();
+      console.log("socket-ID ==",this.context.socketId)
+      formData.append("socket-id",this.context.socketId)
+      formData.set(newfilename, newfile, newfilename);
+      fetch('http://localhost:9001/event', {
+       body: formData,
+       method: 'POST'
+     })
+     .then(function(response) {
+       console.log("ho gya")
+
+     })
+
+
     this.setState({
       files: [...this.state.files, { newfilename, newfile }],
       src:newfile.preview
@@ -184,7 +203,7 @@ class DemoPage extends React.Component {
       },
             sub: {
         borderStyle: 'Solid',
-        width: '50%',
+        width: '150%',
         borderWidth: '2px',
         borderRadius: '30px',
         backgroundColor: '#443E3E',
@@ -196,7 +215,7 @@ class DemoPage extends React.Component {
 
       subhover: {
         borderStyle: 'Solid',
-        width: '50%',
+        width: '150%',
         borderWidth: '2px',
         borderRadius: '30px',
         backgroundColor: '#443E3E',
@@ -218,14 +237,35 @@ class DemoPage extends React.Component {
   sub(e) {
     this.setState({ subhover: e });
   }
+
   submit() {
-  console.log("socketid=",this.context.socketId)
-  var formData = new FormData();
-  formData.append("socket-id", this.props.socketId)
+  let ws = new WebSocket("ws://localhost:9001/websocket");
+  let socket=this.context.socketId
+  let value=this.state.value
+  var _self=this
+  ws.onopen = function() {
+  ws.send(JSON.stringify({
+   "socket-id": socket,
+   "data":value
+}))}
+
+  let val=''
+ ws.onmessage = function (evt) {
+  val=evt.data
+  _self.setState({return_data:val})
+  
+};
+
   }
   sample(e){
   	console.log("clicked")
     this.setState({active:e});  	
+  }
+
+  textChange(e){
+    this.setState({value: e.target.value})
+    console.log("chane =",e.target.value)
+
   }
 
   render() {
@@ -371,8 +411,8 @@ class DemoPage extends React.Component {
                         <hr
                           style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
                         />
-                        <div className="two column row" style={{marginLeft:"5%"}}>
-                        <div className="column">
+                        <div className="ui grid" style={{marginLeft:"1px"}}>
+                        <div className="eight wide column">
                           <ImageSingleInput
                               key={Math.random()}
                               index={1}
@@ -382,18 +422,21 @@ class DemoPage extends React.Component {
                               src={this.state.src}
                           />
                         </div>
-                        <div className="column" style={{paddingLeft:'10%',paddingTop:'7%'}}>
-                        <div >
-                          <form id="send-text" className="six wide stackable stretched ui input">                        
-                          <TextSingleInput
-                            key={Math.random()}
-                            index={1}
-                            calling_context={"demo"}
-                            label={"textinput"}
-                          />    
+                        <div className="two wide column" style={{paddingLeft:'3%',paddingTop:'7%'}}>
+                        <div className="row" >
+                          <form id="send-text" className="six wide stackable stretched ui input">                          
+                            <input
+                              className="origami-demo-input-text-component"
+                              name={`input-text-1`}
+                              type="text"
+                              style={{ width: "30vw",borderWidth:'1px',borderColor:'#606470',fontSize:'17px' }}
+                              value={this.state.value}
+                              onChange={this.textChange.bind(this)}
+                            />                            
                         </form>
-                        <div style={{marginLeft:'37%','paddingTop':'20px'}}>
-                        <div className="ui column centered"  >
+                        </div> 
+                        <div className="row" style={{'paddingTop':'20px'}}>
+                        <div style={{paddingLeft:'100%'}} >
                           <Button
                             primary
                             onMouseEnter={this.sub.bind(this, 2)}
@@ -409,7 +452,7 @@ class DemoPage extends React.Component {
                           </Button>
                         </div>
                         </div>
-                        </div>                   
+                                          
                         </div>
                         </div>
 
@@ -459,7 +502,7 @@ class DemoPage extends React.Component {
                 <TextOutput
                 headers={"output"}
                 calling_context={"demo"}
-                data={"phuck"}
+                data={this.state.return_data}
               />
             </div>
 
