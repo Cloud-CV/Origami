@@ -7,7 +7,8 @@ const TextOutput = ({ headers, calling_context, data }) => {
   return (
     <div
       key={Math.random()}
-      className="six wide stackable stretched grid container origami-demo-output-components"
+      className="ten wide stackable stretched grid container origami-demo-output-components"
+      
     >
       <br />
       <br />

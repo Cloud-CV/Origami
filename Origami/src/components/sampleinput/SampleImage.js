@@ -20,21 +20,25 @@ class SampleImage extends React.Component {
     }
   }
 
-  onSelect(path) {
+  onSelect(path,key) {
+    if(this.props.id != key)
+    {
+      this.setState({reset:true})
+    }
     this.setState({ clicked: !this.state.clicked });
-    this.props.onSelect(path);
+    this.props.onSelect(path,key);
   }
 
   render() {
     return (
-      <Col span={5} offset={1}>
-        {this.state.clicked ? (
+      <Col span={6} offset={1}>
+        {this.props.id==this.props.clicked ? (
           <img
             key={Math.random()}
             className="ui fluid medium bordered image"
-            style={{ border: "2px solid black", width: "100%" }}
+            style={{ border: "4px solid black", width: "100%" }}
             src={this.props.value}
-            onClick={() => this.onSelect(this.props.value)}
+            onClick={() => this.onSelect(this.props.value,this.props.id)}
           />
         ) : (
           <img
@@ -42,7 +46,7 @@ class SampleImage extends React.Component {
             className="ui fluid medium bordered image"
             style={{ width: "100%" }}
             src={this.props.value}
-            onClick={() => this.onSelect(this.props.value)}
+            onClick={() => this.onSelect(this.props.value,this.props.id)}
           />
         )}
       </Col>

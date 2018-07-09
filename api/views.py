@@ -31,6 +31,7 @@ import md5
 from shutil import copyfile
 import requests
 import datetime
+import shutil
 
 class DemoViewSet(ModelViewSet):
     """
@@ -308,15 +309,16 @@ def bundleup(request,id,user_id):
     key=id+user_id
     hash_.update(key)
     hex=hash_.hexdigest()  
-    os.chdir(settings.MEDIA_ROOT+'bundles/'+hex)  
+    os.chdir(settings.MEDIA_ROOT+'bundles/') 
+    shutil.rmtree(hex) 
     zf=zipfile.ZipFile(file)
-    zf.extractall()
+    zf.extractall(hex)
     zf.close
-    os.chdir(settings.MEDIA_ROOT+'bundles/')
-    l=['/Dockerfile','/requirements.txt','/main.py','/origami.env']
-    zipped=zipfile.ZipFile(hex+'.zip','w')
-    for i in l: 
-        zipped.write(hex+i,os.path.basename(hex+i))
+    ziph=zipfile.ZipFile(hex+'.zip', 'w', zipfile.ZIP_DEFLATED)
+    for root, dirs, files in os.walk(settings.MEDIA_ROOT+'bundles/'+hex):
+        for file in files:
+            ziph.write(os.path.join(root, file),os.path.basename(file))
+    ziph.close()
     url='http://localhost:9002/deploy_trigger/'+id
 
     data={"bundle_path":settings.MEDIA_ROOT+'bundles/'+hex+'.zip'}
@@ -325,6 +327,7 @@ def bundleup(request,id,user_id):
 
     data={'success':True}
     return Response(data, status=response_status.HTTP_200_OK)
+
 
 @api_view(['GET'])
 def bundledown(request,id,user_id):

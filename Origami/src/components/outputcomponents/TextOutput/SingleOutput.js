@@ -16,7 +16,7 @@ const singleOutput = props => {
       <div className="content">
         <div className="ui small feed">
           <div className="event">
-            <div className="content">
+            <div className="content" style={{height:'5vh'}}>
               <div className="summary">{props.data}</div>
             </div>
           </div>

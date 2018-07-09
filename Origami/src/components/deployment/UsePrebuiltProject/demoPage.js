@@ -11,19 +11,6 @@ import TextSingleInput from "../../inputcomponents/TextInput/TextSingleInput";
 import ImageSingleInput from "../../inputcomponents/ImageInput/ImageSingleInput";
 import TextOutput from "../../outputcomponents/TextOutput/SingleOutput";
 
-const server = [
-  { src: require('../../assets/wire.png')},
-  {src: require('../../assets/wire.png')},
-  {src: require('../../assets/wire.png')},
-  {src: require('../../assets/wire.png')},
-  {src: require('../../assets/wire.png')}
-];
-
-const demo = [
-  { src: require('../../assets/wire.png')},
-  {src: require('../../assets/wire.png')}
-
-];
 
 
 class DemoPage extends React.Component {
@@ -54,7 +41,8 @@ class DemoPage extends React.Component {
       source_code:'',
       src:'',
       value:'',
-      return_data:''
+      return_data:'',
+      clicked:''
     }
     this.onSelect = this.onSelect.bind(this);
     this.updateFormData=this.updateFormData.bind(this);
@@ -63,12 +51,24 @@ class DemoPage extends React.Component {
     this.submit=this.submit.bind(this);
     this.toggleShowTerminal = this.toggleShowTerminal.bind(this);
     this.ws=null
+    this.server= [
+                    { src: require('../../assets/1.jpg')},
+                    {src: require('../../assets/2.jpg')},
+                    {src: require('../../assets/3.jpg')},
+                    {src: require('../../assets/4.jpg')},
+                    {src: require('../../assets/5.jpg')}
+                  ]
+    this.demo = [
+                    { src: require('../../assets/wire.png')},
+                    {src: require('../../assets/wire.png')}
+
+                  ];
 
   }
 
   componentWillMount(){
-    let tmp = server
-    let tmp2 = demo
+    let tmp = this.server
+    let tmp2 = this.demo
     let cloudcv = [];
     let demo_creator =[];
     while (tmp.length) {
@@ -104,14 +104,26 @@ class DemoPage extends React.Component {
 
 
 
-    onSelect(path) {
-    if (this.state.resetBorder) {
-      this.setState({ resetBorder: false });
+    onSelect(path,key) {
+      if(key==this.state.clicked)
+      {
+      this.setState({src:"",clicked:''})
     }
+    else{
+      this.setState({src:path,clicked:key},this.updateFormData(path,"input-image-0"))
+
+    }
+      if (this.state.resetBorder) {
+        this.setState({ resetBorder: false ,src:path});
+      }
+    
+
+
   }
     updateFormData(newfile, newfilename) {
       var ws;
       var formData = new FormData();
+      let _self=this
       console.log("socket-ID ==",this.context.socketId)
       formData.append("socket-id",this.context.socketId)
       formData.set(newfilename, newfile, newfilename);
@@ -120,7 +132,8 @@ class DemoPage extends React.Component {
        method: 'POST'
      })
      .then(function(response) {
-       console.log("ho gya")
+      console.log("resp==",response)
+       
 
      })
 
@@ -223,6 +236,17 @@ class DemoPage extends React.Component {
         boxShadow: '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
         transition: 'all 0.3s',
       },
+      terminal:{
+        height: "40vh",
+        width: "40vw",
+        backgroundColor: "#323643",
+        color: "white",
+        overflowY: "scroll",
+        wordWrap: "break-word"
+      },
+      terminalDisable:{
+        display:'None'
+      }
    	
     
     }
@@ -239,18 +263,19 @@ class DemoPage extends React.Component {
   }
 
   submit() {
-  let ws = new WebSocket("ws://localhost:9001/websocket");
+  this.ws = new WebSocket("ws://localhost:9001/websocket");
   let socket=this.context.socketId
   let value=this.state.value
   var _self=this
-  ws.onopen = function() {
-  ws.send(JSON.stringify({
+
+  this.ws.onopen = function() {
+  _self.ws.send(JSON.stringify({
    "socket-id": socket,
    "data":value
 }))}
 
   let val=''
- ws.onmessage = function (evt) {
+ this.ws.onmessage = function (evt) {
   val=evt.data
   _self.setState({return_data:val})
   
@@ -350,7 +375,7 @@ class DemoPage extends React.Component {
                        <br/>
                        <br/>
 
-                    <div style={styles.box1}>
+                    <div style={styles.box1} id="outersample">
                         <a style={styles.heading}>
                         <span>
                             <a style={styles.logo}>
@@ -362,16 +387,17 @@ class DemoPage extends React.Component {
                         <hr
                           style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
                         />
-                        <div className="row" style={{marginLeft:'8%'}}>
+                        <div className="row" style={{marginLeft:'6%'}}>
                         {sampleinputs.map((row,index) => (
                         <div>
                           <div className="row">
-                         {row.map((value,index) => (
+                         {row.map((value,ind) => (
                           <SampleImage
-                              key={index}
+                              key={ind}
                               value={value.src}
                               onSelect={this.onSelect}
-                              
+                              clicked={this.state.clicked}
+                              id={index.toString()+""+ind.toString()}
                             />
                           ))}
 
@@ -399,7 +425,7 @@ class DemoPage extends React.Component {
 
                        <br/>
                        <br/>
-                       <div style={styles.box1}>
+                       <div style={styles.box1} id="outerdemo">
                         <a style={styles.heading}>
                         <span>
                             <a style={styles.logo}>
@@ -435,8 +461,8 @@ class DemoPage extends React.Component {
                             />                            
                         </form>
                         </div> 
-                        <div className="row" style={{'paddingTop':'20px'}}>
-                        <div style={{paddingLeft:'100%'}} >
+                        <div className="row" style={{'paddingTop':'20px',paddingLeft:'80%',width: "30vw"}}>
+                        <div  >
                           <Button
                             primary
                             onMouseEnter={this.sub.bind(this, 2)}
@@ -463,17 +489,17 @@ class DemoPage extends React.Component {
               <div className="ui four wide column" style={{marginTop:'6vh',marginLeft:"25%",}}>
               <h2 className="ui header grid">
 
-                <div className="ui grid" style={{backgroundColor:'#F7F7F7',width: "39vw",borderRadius:'10%'}}>
+                <div className="ui grid" style={{backgroundColor:'#F7F7F7',width: "44vw",borderRadius:'10%'}}>
                 <div className="two column row" >
                 <div className="column" style={{color:'#323643',fontSize:'16px',paddingLeft:'3%'}} >
                 Terminal
                 </div>
-                <div className="column">
+                <div className="column" >
                 <div style={{paddingLeft:'90%'}}>
                   <Button
                     type="danger"
                     shape="circle"
-                    icon="close"
+                    icon={this.state.showTerminal?"up":"down"}
                     size="small"
                     ghost
                     onClick={() => this.toggleShowTerminal()}
@@ -485,15 +511,11 @@ class DemoPage extends React.Component {
               </h2>
               <div
                 className="ui four column centered"
-                style={{
-                  height: "30vh",
-                  width: "35vw",
-                  backgroundColor: "#323643",
-                  color: "white",
-                  overflowY: "scroll",
-                  wordWrap: "break-word"
-                }}
+                style={this.state.showTerminal?styles.terminal:styles.terminalDisable}
               >
+              <div style={{paddingTop:'15px',paddingLeft:'10px',fontSize:'13px'}}>
+                Processing ....
+          </div>
               </div>
             </div>
 
@@ -505,6 +527,7 @@ class DemoPage extends React.Component {
                 data={this.state.return_data}
               />
             </div>
+
 
 
                 </div>

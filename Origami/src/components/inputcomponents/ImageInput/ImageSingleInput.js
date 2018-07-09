@@ -7,6 +7,9 @@ import request from "superagent";
 const appConfig = require("../../../../outCalls/config");
 
 const singleInput = props => {
+
+  
+
   function onDrop(files) {
     props.updateFormData(files[0], `input-image-1`);
   }
