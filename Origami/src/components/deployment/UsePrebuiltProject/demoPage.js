@@ -187,8 +187,9 @@ class DemoPage extends React.Component {
 
       task:{
         fontFamily: "'Roboto', sans-serif",
-        fontSize: '1.3em',
-        color:'#323643',      	
+        fontSize: '1.4em',
+        color:'#323643',
+
       },
       task2:{
         fontFamily: "'Roboto', sans-serif",
@@ -413,7 +414,9 @@ class DemoPage extends React.Component {
                           <br/>
                            <br/>
                            <br/>
-  
+                            <hr
+                          style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
+                        />
                          <div className='row' style={{marginLeft:'40%'}}>
                         <div class="btn-group btn-toggle"> 
                             <button class={this.state.active == 1?"btn btn-primary active":"btn btn-default"}  onClick={this.sample.bind(this,1)}>By CloudCV</button>
