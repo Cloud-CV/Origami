@@ -42,7 +42,8 @@ class DemoPage extends React.Component {
       src:'',
       value:'',
       return_data:'',
-      clicked:''
+      clicked:'',
+      text:''
     }
     this.onSelect = this.onSelect.bind(this);
     this.updateFormData=this.updateFormData.bind(this);
@@ -78,7 +79,7 @@ class DemoPage extends React.Component {
       demo_creator.push(tmp2.splice(0, 3));
     }
 
-    this.setState({cloudcv:cloudcv,demo_creator:demo_creator});
+    this.setState({cloudcv:cloudcv,demo_creator:demo_creator,text:'Please send the Image inputs'});
   
   }
 
@@ -124,17 +125,25 @@ class DemoPage extends React.Component {
       var ws;
       var formData = new FormData();
       let _self=this
-      console.log("socket-ID ==",this.context.socketId)
+      if(this.ws){
+        this.ws.close()
+        this.ws = null
+      }
       formData.append("socket-id",this.context.socketId)
       formData.set(newfilename, newfile, newfilename);
       fetch('http://localhost:9001/event', {
        body: formData,
-       method: 'POST'
+       method: 'POST',
+       mode:'cors'
      })
      .then(function(response) {
+      _self.setState({text:"New Image data uploaded."})
       console.log("resp==",response)
        
-
+     })
+     .catch(function(err) {
+      _self.setState({text:err.toString()})
+      console.log("error",err)
      })
 
 
@@ -176,7 +185,7 @@ class DemoPage extends React.Component {
        txt: {
         fontFamily: "'Roboto', sans-serif",
         fontSize: '2em',
-        marginLeft:'45%',
+        margin:'auto',
         fontWeight:'Bold',
         color:'#323643',
       },
@@ -219,11 +228,11 @@ class DemoPage extends React.Component {
         borderStyle: 'Solid',
         width: '150%',
         borderWidth: '2px',
-        borderRadius: '30px',
+        borderRadius: '20px',
         backgroundColor: '#443E3E',
         color: 'White',
         fontFamily: "'Roboto', sans-serif",
-        boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
+        boxShadow: '0 3px 6px , 0 3px 6px ',
         transition: 'all 0.3s',
       },
 
@@ -231,10 +240,10 @@ class DemoPage extends React.Component {
         borderStyle: 'Solid',
         width: '150%',
         borderWidth: '2px',
-        borderRadius: '30px',
+        borderRadius: '20px',
         backgroundColor: '#443E3E',
         color: 'White',
-        boxShadow: '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
+        boxShadow: '0 14px 28px , 0 10px 10px ',
         transition: 'all 0.3s',
       },
       terminal:{
@@ -243,10 +252,37 @@ class DemoPage extends React.Component {
         backgroundColor: "#323643",
         color: "white",
         overflowY: "scroll",
-        wordWrap: "break-word"
+        wordWrap: "break-word",
+        transition: 'all 0.3s',
       },
       terminalDisable:{
-        display:'None'
+        height:'0',
+        width:'40vw',
+        transition: 'all 0.3s',
+      },
+      sample:{
+        borderBottom:'3px solid #73C2FB',
+        fontSize:'16px',
+        fontFamily: "'Roboto', sans-serif",
+
+
+      },
+      sample1:{
+        paddingRight:'5px',
+        fontSize:'15px',
+        fontFamily: "'Roboto', sans-serif",
+        color: "#323643",
+        width:'10vw',
+        textAlign:'center'
+      },
+      sample2:{
+        marginLeft:'5px',
+        fontSize:'15px',
+        fontFamily: "'Roboto', sans-serif",
+        color: "#323643",
+        width:'10vw',
+        textAlign:'center'
+
       }
    	
     
@@ -278,7 +314,7 @@ class DemoPage extends React.Component {
   let val=''
  this.ws.onmessage = function (evt) {
   val=evt.data
-  _self.setState({return_data:val})
+  _self.setState({return_data:val,text:'Task completed \n Results '+val.toString()})
   
 };
 
@@ -337,7 +373,7 @@ class DemoPage extends React.Component {
                               <img src={require('../../assets/details.png')} />
                             </a>
                           </span>
-                       Task : {this.state.name}
+                       Task : {this.state.task}
                        </div>
 
                        <div className="column" style={styles.task2}>
@@ -388,6 +424,16 @@ class DemoPage extends React.Component {
                         <hr
                           style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
                         />
+                        <div className='two column row' style={{marginLeft:'36%'}}>
+                        <div className="column" style={styles.sample1}> 
+                            <div style={this.state.active == 1?styles.sample:{}}  onClick={this.sample.bind(this,1)}>CloudCV</div>
+                        </div>
+                        <div className="column" style={styles.sample2}>
+                        <div style={this.state.active == 2?styles.sample:{}} onClick={this.sample.bind(this,2)}> Demo Creator</div>
+                        </div>                        
+                         </div> 
+                         <br/>
+                         <br/>
                         <div className="row" style={{marginLeft:'6%'}}>
                         {sampleinputs.map((row,index) => (
                         <div>
@@ -411,18 +457,9 @@ class DemoPage extends React.Component {
                           </div> 
 
 
-                          <br/>
-                           <br/>
-                           <br/>
-                            <hr
-                          style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
-                        />
-                         <div className='row' style={{marginLeft:'40%'}}>
-                        <div class="btn-group btn-toggle"> 
-                            <button class={this.state.active == 1?"btn btn-primary active":"btn btn-default"}  onClick={this.sample.bind(this,1)}>By CloudCV</button>
-                            <button class={this.state.active == 2?"btn btn-primary active":"btn btn-default"} onClick={this.sample.bind(this,2)}>By Demo Creator</button>
-                        </div>                         
-                         </div>  
+
+
+ 
 
                        </div>
 
@@ -495,6 +532,11 @@ class DemoPage extends React.Component {
                 <div className="ui grid" style={{backgroundColor:'#F7F7F7',width: "44vw",borderRadius:'10%'}}>
                 <div className="two column row" >
                 <div className="column" style={{color:'#323643',fontSize:'16px',paddingLeft:'3%'}} >
+                <span>
+                <a style={styles.logo}>
+                  <img src={require('../../assets/terminal.png')} />
+                </a>
+              </span>  
                 Terminal
                 </div>
                 <div className="column" >
@@ -517,7 +559,7 @@ class DemoPage extends React.Component {
                 style={this.state.showTerminal?styles.terminal:styles.terminalDisable}
               >
               <div style={{paddingTop:'15px',paddingLeft:'10px',fontSize:'13px'}}>
-                Processing ....
+               {this.state.showTerminal?this.state.text:""}
           </div>
               </div>
             </div>

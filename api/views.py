@@ -310,7 +310,8 @@ def bundleup(request,id,user_id):
     hash_.update(key)
     hex=hash_.hexdigest()  
     os.chdir(settings.MEDIA_ROOT+'bundles/') 
-    shutil.rmtree(hex) 
+    if os.path.exists(hex):
+        shutil.rmtree(hex) 
     zf=zipfile.ZipFile(file)
     zf.extractall(hex)
     zf.close

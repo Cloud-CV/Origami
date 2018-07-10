@@ -1,0 +1,1 @@
+git+git://github.com/cloud-cv/origami-lib.git@cd9ab65bb5cedf823c1831d40feee7ab0b75b446

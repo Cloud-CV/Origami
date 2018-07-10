@@ -247,7 +247,7 @@ class HomePage extends React.Component {
                     <div key={Math.random()}>
                       <Row>
                         {row.map(demo => (
-                          <Col span={6} offset={1} key={demo.id}>
+                          <Col span={6} offset={2} key={demo.id}>
                             <div
                               class="ui card"
                               style={{

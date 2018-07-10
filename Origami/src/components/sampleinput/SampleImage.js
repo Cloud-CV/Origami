@@ -36,7 +36,7 @@ class SampleImage extends React.Component {
           <img
             key={Math.random()}
             className="ui fluid medium bordered image"
-            style={{ border: "4px solid black", width: "100%",boxShadow: '0 1px 5px rgba(0, 0, 0, 0.15)' }}
+            style={{ border: "5px solid #0080FF",borderRadius:'5px',transition: 'all 0.3s', width: "100%",boxShadow: '0 1px 5px rgba(0, 0, 0, 0.15)' }}
             src={this.props.value}
             onClick={() => this.onSelect(this.props.value,this.props.id)}
           />
@@ -44,7 +44,7 @@ class SampleImage extends React.Component {
           <img
             key={Math.random()}
             className="ui fluid medium bordered image"
-            style={{ width: "100%",boxShadow: '0 1px 5px rgba(0, 0, 0, 0.15)' }}
+            style={{ width: "100%",transition: 'all 0.3s',boxShadow: '0 1px 5px rgba(0, 0, 0, 0.15),' }}
             src={this.props.value}
             onClick={() => this.onSelect(this.props.value,this.props.id)}
           />
