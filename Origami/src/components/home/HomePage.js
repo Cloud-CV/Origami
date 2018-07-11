@@ -188,6 +188,10 @@ class HomePage extends React.Component {
     }
   }
 
+  clicked(id,user_id){
+    this.props.history.push('/demo/'+user_id+'/'+id+'/page');
+  }
+
   getDocs() {
     window.location =
       'http://cloudcv-origami.readthedocs.io/en/latest/index.html';
@@ -241,12 +245,13 @@ class HomePage extends React.Component {
                 <BounceLoader color={'#33aadd'} size={80} />
               </div>
             ) : (
-              <Row s>
+              <Row >
                 {Object.keys(this.state.allDeployed).length > 0 ? (
                   this.state.allDeployed.map(row => (
                     <div key={Math.random()}>
                       <Row>
                         {row.map(demo => (
+
                           <Col span={6} offset={2} key={demo.id}>
                             <div
                               class="ui card"
@@ -307,6 +312,7 @@ class HomePage extends React.Component {
                                   color: 'White',
                                   borderWidth: '0px',
                                 }}
+                                onClick={this.clicked.bind(this,demo.id,demo.user_id)}
                               >
                                 <span>Demo</span> <Icon type="rocket" />
                               </div>

@@ -10,7 +10,7 @@ import SampleImage from "../../sampleinput/SampleImage";
 import TextSingleInput from "../../inputcomponents/TextInput/TextSingleInput";
 import ImageSingleInput from "../../inputcomponents/ImageInput/ImageSingleInput";
 import TextOutput from "../../outputcomponents/TextOutput/SingleOutput";
-
+import request from "superagent";
 
 
 class DemoPage extends React.Component {
@@ -43,7 +43,8 @@ class DemoPage extends React.Component {
       value:'',
       return_data:'',
       clicked:'',
-      text:''
+      text:'',
+      blb:''
     }
     this.onSelect = this.onSelect.bind(this);
     this.updateFormData=this.updateFormData.bind(this);
@@ -53,11 +54,11 @@ class DemoPage extends React.Component {
     this.toggleShowTerminal = this.toggleShowTerminal.bind(this);
     this.ws=null
     this.server= [
-                    { src: require('../../assets/1.jpg')},
-                    {src: require('../../assets/2.jpg')},
-                    {src: require('../../assets/3.jpg')},
-                    {src: require('../../assets/4.jpg')},
-                    {src: require('../../assets/5.jpg')}
+                    { src: '/static/img/1.jpg'},
+                    {src: '/static/img/2.jpg'},
+                    {src: '/static/img/3.jpg'},
+                    {src: '/static/img/4.jpg'},
+                    {src: '/static/img/5.jpg'}
                   ]
     this.demo = [
                     { src: require('../../assets/wire.png')},
@@ -111,8 +112,7 @@ class DemoPage extends React.Component {
       this.setState({src:"",clicked:''})
     }
     else{
-      this.setState({src:path,clicked:key},this.updateFormData(path,"input-image-0"))
-
+      this.setState({src:path,clicked:key},this.getBlobfromURl.bind(this,path))
     }
       if (this.state.resetBorder) {
         this.setState({ resetBorder: false ,src:path});
@@ -121,16 +121,43 @@ class DemoPage extends React.Component {
 
 
   }
+
+  getBlobfromURl(newfile){
+    let _self=this
+      fetch(newfile,{
+        method:'GET',
+        mode:'cors',
+      })
+      .then(function(response){
+        return response.blob()
+      })
+      .then(function(blob) {
+     
+      _self.updateFormData(blob,"input-image-1")
+      })
+      .catch(function(err){
+        console.log("errpr while creating blob =",err)
+      })
+  }
+
+
+
     updateFormData(newfile, newfilename) {
+      let _self=this
       var ws;
       var formData = new FormData();
-      let _self=this
+      
       if(this.ws){
         this.ws.close()
         this.ws = null
       }
+      let prev=''
+      if(newfile.preview){
+        prev=newfile.preview
+      }
+      let newf=new File([newfile], "image.png", { type: "image/jpeg", lastModified: Date.now() })
       formData.append("socket-id",this.context.socketId)
-      formData.set(newfilename, newfile, newfilename);
+      formData.set(newfilename, newf, newfilename);
       fetch('http://localhost:9001/event', {
        body: formData,
        method: 'POST',
@@ -138,18 +165,15 @@ class DemoPage extends React.Component {
      })
      .then(function(response) {
       _self.setState({text:"New Image data uploaded."})
-      console.log("resp==",response)
-       
      })
      .catch(function(err) {
       _self.setState({text:err.toString()})
-      console.log("error",err)
      })
 
-
+    prev=prev?prev:this.state.src
     this.setState({
       files: [...this.state.files, { newfilename, newfile }],
-      src:newfile.preview
+      src:prev
     });
 
     
@@ -320,13 +344,11 @@ class DemoPage extends React.Component {
 
   }
   sample(e){
-  	console.log("clicked")
     this.setState({active:e});  	
   }
 
   textChange(e){
     this.setState({value: e.target.value})
-    console.log("chane =",e.target.value)
 
   }
 
