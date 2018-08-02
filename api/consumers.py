@@ -15,8 +15,10 @@ def ws_connect(message):
 
 
 def ws_message(message):
+    print("msg aaega =",message)
     body = json.loads(message.content['text'])
     if body["event"] == "ConnectionEstablished":
+        print("establish")
         Group(body["socketId"]).add(message.reply_channel)
 
     elif body["event"] == "fetchCurrentPort":

@@ -275,7 +275,7 @@ class NGHDemoPage extends React.Component {
       : "ui sixteen wide column grid";
 
     return (
-      <div>
+      <div style={{marginTop:'10px'}}>
         <div className="ui relaxed stackable grid fluid">
           {this.state.demoModel && (
             <div

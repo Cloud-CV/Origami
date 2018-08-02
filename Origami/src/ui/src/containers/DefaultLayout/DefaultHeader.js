@@ -23,10 +23,27 @@ import toastr from "toastr";
 const propTypes = {
   children: PropTypes.node,
 };
+import ReactDOM from 'react-dom';
 
 const defaultProps = {};
 
 class DefaultHeader extends Component {
+
+  constructor(props) {
+    super(props);
+    this.asideTogglerRef = React.createRef();
+  }
+
+  componentDidMount() {
+    console.log("props=",this.props)
+    ReactDOM.findDOMNode(this.asideTogglerRef.current).addEventListener('click', this.props.click);
+  }
+
+  componentWillUnmount() {
+    ReactDOM.findDOMNode(this.asideTogglerRef.current).removeEventListener('click', this.props.click);
+  }  
+
+
 
   render() {
 
@@ -49,7 +66,7 @@ class DefaultHeader extends Component {
             <DropdownToggle nav/>
           </AppHeaderDropdown>
         </Nav>
-        <AppAsideToggler className="d-md-down-none" />
+        <AppAsideToggler className="d-md-down-none" ref={this.asideTogglerRef} />
         {/*<AppAsideToggler className="d-lg-none" mobile />*/}
       </React.Fragment>
     );

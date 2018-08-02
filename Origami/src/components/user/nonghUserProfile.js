@@ -125,6 +125,7 @@ class NonGHUserProfileComponent extends React.Component {
   }
 
   deleteDemo() {
+    console.log("aaya")
     const project_id = this.state.projectBeingDeletedId;
     this.toggleDeleteConfirmationDialog();
     this.props.nonghModelActions
@@ -137,12 +138,7 @@ class NonGHUserProfileComponent extends React.Component {
             while (tmp.length) {
               allDeployed.push(tmp.splice(0, 3));
             }
-            this.setState({ allDeployed }, () => {
-              deletePermalink({
-                user_id: this.props.user.id,
-                project_id,
-              }).then();
-            });
+            this.setState({ allDeployed })
           })
           .catch(err => {
             toastr.error(err);
@@ -198,16 +194,25 @@ class NonGHUserProfileComponent extends React.Component {
     this.props.history.push('/ngh/user/register');
   }
 
+  clicked(id,user_id){
+    this.props.history.push('/demo/'+user_id+'/'+id+'/page');
+  }
+  
+
   getStyles() {
     return {
-      layout: {},
+      layout: {
+        backgroundColor:'#FFFFFF'
+      },
       content: {
         margin: '24px 16px 0',
         overflow: 'initial',
+        backgroundColor:'#FFFFFF'
       },
       contentDiv: {
-        padding: 12,
+        padding: 16,
         textAlign: 'center',
+        backgroundColor:'#FFFFFF'
       },
       footer: {
         textAlign: 'center',
@@ -233,19 +238,19 @@ class NonGHUserProfileComponent extends React.Component {
         key="0"
         label="Cancel"
         primary
-        onTouchTap={this.toggleDeleteConfirmationDialog}
+        onClick={this.toggleDeleteConfirmationDialog}
       />,
       <span key="2">&nbsp;</span>,
       <RaisedButton
         label="Delete"
         key="3"
         primary
-        onTouchTap={this.deleteDemo}
+        onClick={this.deleteDemo}
       />,
     ];
 
     return (
-      <Layout>
+      <Layout >
         <Header id="layout-header">
           <Row>
             <Col span={18} offset={1}>
@@ -260,7 +265,7 @@ class NonGHUserProfileComponent extends React.Component {
             <BounceLoader color={'#33aadd'} size={80} />
           </div>
         ) : (
-          <Content>
+          <Content style={{paddingTop:'5px'}}>
             {this.state.user && (
               <div style={styles.contentDiv}>
                 <Row>
@@ -292,26 +297,34 @@ class NonGHUserProfileComponent extends React.Component {
                                 </span>
 
                               </div>
-                              <div class="small image">
+                              <div className="small image">
                                 <img
                                   src={demo.cover_image}
                                   style={{ height: '24vh' }}
                                 />
                               </div>
-                              <div class="content">
-                                <span
-                                  style={{ margin: 'auto', fontSize: '13px' }}
-                                >
-                                  Description
-                                </span>
+                              <div   >
+                            <div class="ui buttons" style={{width:'100%'}} >
+                              <button class="ui button" style={{color:'#323643',backgroundColor:'White'}} >
+                              Modify
+                              </button>
+                              <button class="ui button" style={{color:'#323643',backgroundColor:'White'}}                                     onClick={() =>
+                                      this.toggleDeleteConfirmationDialog(
+                                        demo.id
+                                      )
+                                    }
+
+                                    >Delete</button>
+                            </div>
                               </div>
                               <div
-                                class="extra content"
+                                className="extra content"
                                 style={{
                                   backgroundColor: '#606470',
                                   color: 'White',
                                   borderWidth: '0px',
                                 }}
+                                onClick={this.clicked.bind(this,demo.id,demo.user_id)}
                               >
                                 <span>Demo</span> <Icon type="rocket" />
                               </div>

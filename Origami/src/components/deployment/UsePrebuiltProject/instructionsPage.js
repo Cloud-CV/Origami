@@ -5,6 +5,7 @@ const { Header, Content, Footer } = Layout;
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
 import { red500, green500, grey900 } from 'material-ui/styles/colors';
 import Cookies from "universal-cookie";
+import toastr from "toastr";
 
 const cookies = new Cookies();
 
@@ -106,15 +107,18 @@ class InstructionsPage extends React.Component {
     headers: {
       "X-CSRFToken":cookies.get("csrftoken"),
     },
-    body:formData
- 
-   
+    body:formData  
   }).then(function(response) {
+
+    if(response.status==200)
+    toastr.success("Demo is running !");
+    else
+    toastr.error(response.statusText);
     console.log("response",response)
   })
-  .catch(
-    error => console.log(error) // Handle the error response object
-  );
+  .catch(function(error){
+     toastr.error("Error occurred!");
+  });
 
   }
 

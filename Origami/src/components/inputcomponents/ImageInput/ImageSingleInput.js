@@ -49,11 +49,15 @@ const singleInput = props => {
                   className="ui fluid medium image"
                   src={props.src||"/static/img/placeholder.jpg"}
                   id={'input-image-preview-1'}
-                  style={{ width: "100%",borderWidth:'0px' }}
+                  style={{ width: "100%",borderWidth:'0px',height:"90%" }}
                 />
               </div>
-              <div className="content origami-demo-input-image-component-desc">
-                Drag and Drop or Click to upload
+              <div className="content origami-demo-input-image-component-desc" style={{ 
+            fontSize:'15px',
+            textAlign:'center',
+            fontFamily: "'Roboto', sans-serif",
+            color: "#323643",}}>
+                {props.label||"Drag and Drop or Click to upload"}
               </div>
             </div>
           </Dropzone>

@@ -164,7 +164,7 @@ class App extends React.Component {
     return (
       <Layout
         id="layout"
-        style={{ height: '100vh', width: '100%', backgroundColor: '#F7F7F7' }}
+        style={{ height: '100vh', width: '100%'}}
       >
         {Routes}
       </Layout>

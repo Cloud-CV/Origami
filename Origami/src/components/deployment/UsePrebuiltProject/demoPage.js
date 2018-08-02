@@ -11,6 +11,13 @@ import TextSingleInput from "../../inputcomponents/TextInput/TextSingleInput";
 import ImageSingleInput from "../../inputcomponents/ImageInput/ImageSingleInput";
 import TextOutput from "../../outputcomponents/TextOutput/SingleOutput";
 import request from "superagent";
+import Dropzone from "react-dropzone";
+import DropboxChooser from "../../imports/DropboxChooser";
+import toastr from "toastr";
+import VQA from "../../tasks/VQA";
+import Classification from "../../tasks/classification";
+import ImageOutput from "../../outputcomponents/ImageOutput/ImageOutput";
+import Style from "../../tasks/Style";
 
 
 class DemoPage extends React.Component {
@@ -39,12 +46,14 @@ class DemoPage extends React.Component {
       name:'',
       date:'',
       source_code:'',
-      src:'',
+      src1:'',
+      src2:'',
       value:'',
       return_data:'',
       clicked:'',
       text:'',
-      blb:''
+      blb:'',
+      last:2,
     }
     this.onSelect = this.onSelect.bind(this);
     this.updateFormData=this.updateFormData.bind(this);
@@ -52,7 +61,15 @@ class DemoPage extends React.Component {
     this.sub=this.sub.bind(this);
     this.submit=this.submit.bind(this);
     this.toggleShowTerminal = this.toggleShowTerminal.bind(this);
-    this.ws=null
+    this.ws=new WebSocket(`ws://${window.location.host}/chat/`);;
+    this.socket=this.context.socketId;
+    this.ws.onopen = function() {
+      this.ws.send(
+        JSON.stringify({
+          event: 'ConnectionEstablished',
+          socketId:this.socket,
+        })
+      );}.bind(this);
     this.server= [
                     { src: '/static/img/1.jpg'},
                     {src: '/static/img/2.jpg'},
@@ -109,10 +126,14 @@ class DemoPage extends React.Component {
     onSelect(path,key) {
       if(key==this.state.clicked)
       {
-      this.setState({src:"",clicked:''})
+      this.setState({src1:"",clicked:''})
     }
     else{
-      this.setState({src:path,clicked:key},this.getBlobfromURl.bind(this,path))
+      if(this.state.src1){
+      this.setState({src2:path,clicked:key},this.getBlobfromURl.bind(this,path))}
+      else{
+        this.setState({src1:path,clicked:key},this.getBlobfromURl.bind(this,path))
+      }
     }
       if (this.state.resetBorder) {
         this.setState({ resetBorder: false ,src:path});
@@ -136,7 +157,7 @@ class DemoPage extends React.Component {
       _self.updateFormData(blob,"input-image-1")
       })
       .catch(function(err){
-        console.log("errpr while creating blob =",err)
+        console.log("error while creating blob =",err)
       })
   }
 
@@ -145,16 +166,15 @@ class DemoPage extends React.Component {
     updateFormData(newfile, newfilename) {
       let _self=this
       var ws;
-      var formData = new FormData();
-      
-      if(this.ws){
-        this.ws.close()
-        this.ws = null
-      }
+      if(this.state.task=="Style Transfer" && (!this.state.src2)){
+        toastr.success("uploaded context image")
+        return;}
+      var formData = new FormData();      
       let prev=''
       if(newfile.preview){
         prev=newfile.preview
       }
+      console.log("Src =",this.state.src1);
       let newf=new File([newfile], "image.png", { type: "image/jpeg", lastModified: Date.now() })
       formData.append("socket-id",this.context.socketId)
       formData.set(newfilename, newf, newfilename);
@@ -164,11 +184,22 @@ class DemoPage extends React.Component {
        mode:'cors'
      })
      .then(function(response) {
-      _self.setState({text:"New Image data uploaded."})
+      _self.setState({text:"New Image data uploaded."});
+      
      })
      .catch(function(err) {
       _self.setState({text:err.toString()})
      })
+     toastr.success(" Style Image Uploaded!")
+
+
+    this.context.socket.onmessage = function (evt) {
+      let k=evt.data;
+      k=JSON.parse(k);
+      k=k.data.data;
+      _self.setState({return_data:k})
+      
+    };
 
     prev=prev?prev:this.state.src
     this.setState({
@@ -184,6 +215,7 @@ class DemoPage extends React.Component {
     return {
       layout: {
         background: '#F7F7F7',
+        borderRadius:'15px'
       },
       content: {
         margin: '24px 0 0 12px',
@@ -222,13 +254,14 @@ class DemoPage extends React.Component {
         fontFamily: "'Roboto', sans-serif",
         fontSize: '1.4em',
         color:'#323643',
+        width:'30%',
 
       },
       task2:{
         fontFamily: "'Roboto', sans-serif",
         fontSize: '1.3em',
         color:'#323643', 
-        marginLeft:"45%" ,    	
+        marginLeft:"32%"    	
       },
             source:{
         fontFamily: "'Roboto', sans-serif",
@@ -288,6 +321,8 @@ class DemoPage extends React.Component {
         borderBottom:'3px solid #73C2FB',
         fontSize:'16px',
         fontFamily: "'Roboto', sans-serif",
+        paddingBottom:'4px',
+        
 
 
       },
@@ -307,7 +342,18 @@ class DemoPage extends React.Component {
         width:'10vw',
         textAlign:'center'
 
-      }
+      },
+      share:{
+        paddingLeft:'39%',
+     
+      },
+      share1:{
+        float:'Left',
+        fontSize:'15px',
+        fontFamily: "'Roboto', sans-serif",
+        color: "#323643",
+      },
+
    	
     
     }
@@ -355,9 +401,49 @@ class DemoPage extends React.Component {
   render() {
 
     let styles = this.getStyles();
-    let sampleinputs=this.state.active == 1?this.state.cloudcv:this.state.demo_creator
+    let demo_creator=[]
+    let input;
+    switch(this.state.task){
+      case "VQA":
+            input=(<VQA src={this.state.src1} updateFormData={this.updateFormData} value={this.state.value} valChange={this.textChange.bind(this)} styles={styles} submit={this.submit.bind(this)} subhover={this.state.subhover} sub={this.sub.bind(this,2)} exit={this.exit} />)
+            break;
+      case "Style Transfer":
+            input=(<Style src1={this.state.src1} src2={this.state.src2} updateFormData={this.updateFormData} value={this.state.value} valChange={this.textChange.bind(this)} styles={styles} submit={this.submit.bind(this)} subhover={this.state.subhover} sub={this.sub.bind(this,2)} exit={this.exit} />)
+            break;
+      case "Classification":
+            input=(<Classification src={this.state.src} updateFormData={this.updateFormData} value={this.state.value} valChange={this.textChange.bind(this)} styles={styles} submit={this.submit.bind(this)} subhover={this.state.subhover} sub={this.sub.bind(this,2)} exit={this.exit} />)
+            break;                  
+    };
+    demo_creator.push(
+    
+      <div>
+        <div className="" style={{ height: "50%", cursor: "pointer"}}>
+          <Dropzone
+            multiple={false}
+            style={{ height: "50%" }}
+          >
+            <div className="ui card" style={{width:'90%'}}>
+              <div className="ui fluid image">
+                <img
+                  className="ui fluid medium image"
+                  src={"/static/img/placeholder.jpg"}
+                  id={'input-image-preview-1'}
+                  style={{ width: "100%",borderWidth:'0px' }}
+                />
+              </div>
+              <div className="content origami-demo-input-image-component-desc">
+                Drag and Drop or Click to upload
+              </div>
+            </div>
+          </Dropzone>
+        </div>
+      </div>
+      )
+    let fin=[]
+    fin.push(demo_creator)
+    let sampleinputs=this.state.active == 1?this.state.cloudcv:fin
      return (
-      <div style={{ backgroundColor: '#F7F7F7' }}>
+      <div style={{ backgroundColor: '#F7F7F7',marginTop:'10px',borderRadius:'40px'}}>
         <Layout style={styles.layout}>
           <Content style={styles.content}>
             <div style={styles.contentDiv}>
@@ -446,7 +532,7 @@ class DemoPage extends React.Component {
                         <hr
                           style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
                         />
-                        <div className='two column row' style={{marginLeft:'36%'}}>
+                        <div className='two column row' style={{marginLeft:'36%',cursor: "pointer"}}>
                         <div className="column" style={styles.sample1}> 
                             <div style={this.state.active == 1?styles.sample:{}}  onClick={this.sample.bind(this,1)}>CloudCV</div>
                         </div>
@@ -457,7 +543,7 @@ class DemoPage extends React.Component {
                          <br/>
                          <br/>
                         <div className="row" style={{marginLeft:'6%'}}>
-                        {sampleinputs.map((row,index) => (
+                        {this.state.active==1 && sampleinputs.map((row,index) => (
                         <div>
                           <div className="row">
                          {row.map((value,ind) => (
@@ -467,6 +553,7 @@ class DemoPage extends React.Component {
                               onSelect={this.onSelect}
                               clicked={this.state.clicked}
                               id={index.toString()+""+ind.toString()}
+                              style={{borderStyle:'Solid'}}
                             />
                           ))}
 
@@ -475,14 +562,33 @@ class DemoPage extends React.Component {
                           <br/> 
                           </div>
                                                
-                          ))} 
+                          ))}
+                          {this.state.active == 2 && 
+
+                            <div>
+                              <div className="" style={{ height: "50%", cursor: "pointer"}}>
+                                <Dropzone
+                                  multiple={false}
+                                  style={{ height: "50%" }}
+                                >
+                                  <div className="ui card" style={{width:'35%',borderWidth:'0px'}}>
+                                    <div className="ui fluid image">
+                                      <img
+                                        className="ui fluid medium image"
+                                        src={"/static/img/placeholder.jpg"}
+                                        id={'input-image-preview-1'}
+                                        style={{ width: "100%",borderWidth:'0px' }}
+                                      />
+                                    </div>
+                                    <div className="content origami-demo-input-image-component-desc">
+                                      Drag and Drop or Click to upload a Sample Image
+                                    </div>
+                                  </div>
+                                </Dropzone>
+                              </div>
+                            </div>
+                          } 
                           </div> 
-
-
-
-
- 
-
                        </div>
 
                        <br/>
@@ -499,51 +605,7 @@ class DemoPage extends React.Component {
                         <hr
                           style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
                         />
-                        <div className="ui grid" style={{marginLeft:"1px"}}>
-                        <div className="eight wide column">
-                          <ImageSingleInput
-                              key={Math.random()}
-                              index={1}
-                              updateFormData={this.updateFormData}
-                              calling_context={"demo"}
-                              label={""}
-                              src={this.state.src}
-                          />
-                        </div>
-                        <div className="two wide column" style={{paddingLeft:'3%',paddingTop:'7%'}}>
-                        <div className="row" >
-                          <form id="send-text" className="six wide stackable stretched ui input">                          
-                            <input
-                              className="origami-demo-input-text-component"
-                              name={`input-text-1`}
-                              type="text"
-                              style={{ width: "30vw",borderWidth:'1px',borderColor:'#606470',fontSize:'17px' }}
-                              value={this.state.value}
-                              onChange={this.textChange.bind(this)}
-                            />                            
-                        </form>
-                        </div> 
-                        <div className="row" style={{'paddingTop':'20px',paddingLeft:'80%',width: "30vw"}}>
-                        <div  >
-                          <Button
-                            primary
-                            onMouseEnter={this.sub.bind(this, 2)}
-                            onMouseLeave={this.exit}
-                            onClick={this.submit.bind(this)}
-                            style={
-                              this.state.subhover == 2
-                                ? styles.subhover
-                                : styles.sub
-                            }
-                          >
-                            <text style={styles.txt2}>Send</text>
-                          </Button>
-                        </div>
-                        </div>
-                                          
-                        </div>
-                        </div>
-
+                       {input}
                         <br/>
                         <br/>
 
@@ -588,16 +650,43 @@ class DemoPage extends React.Component {
 
             <br/>
             <br/>
-                <TextOutput
+                <ImageOutput
                 headers={"output"}
                 calling_context={"demo"}
                 data={this.state.return_data}
               />
+            
+              <br/>
+              <hr/>
+              <div style={styles.share}>
+
+              <a  target="_blank" class="share-btn share">
+                  <img src={require('../../assets/share.png')} style={{height:'30px'}} />
+              </a>
+              
+              <a href={"http://www.facebook.com/sharer/sharer.php?u="+window.location} target="_blank" class="share-btn share">
+                  <img src={require('../../assets/fb.png')} style={{height:'30px'}} />
+              </a>
+
+              <a href="http://twitter.com/share?url=<URL>&text=<TEXT>&via=<VIA>" target="_blank" class="share-btn twitter">
+                <img src={require('../../assets/twitter.jpg')} style={{height:'30px'}} />
+              </a>
+
+          
+              <a href={"https://plus.google.com/share?url="+window.location} target="_blank" class="share-btn google-plus">
+                 <img src={require('../../assets/google.jpeg')} style={{height:'30px'}} />
+              </a>
+
+             
+              <a href={"http://www.facebook.com/sharer/sharer.php?u="+window.location} target="_blank" class="share-btn facebook">
+                <img src={require('../../assets/linkedin.png')} style={{height:'30px'}} />
+              </a>
+              </div>
+              
+
+              
             </div>
-
-
-
-                </div>
+            </div>
 
                 </div>
                    </div>
