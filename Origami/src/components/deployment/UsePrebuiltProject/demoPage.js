@@ -174,7 +174,6 @@ class DemoPage extends React.Component {
       if(newfile.preview){
         prev=newfile.preview
       }
-      console.log("Src =",this.state.src1);
       let newf=new File([newfile], "image.png", { type: "image/jpeg", lastModified: Date.now() })
       formData.append("socket-id",this.context.socketId)
       formData.set(newfilename, newf, newfilename);

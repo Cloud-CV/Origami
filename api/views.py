@@ -247,7 +247,6 @@ def custom_component_controller(request, type_req, user_id, demoid):
                 try:
                     component = model.objects.get(user_id=user_id, demo=demo)
                 except Exception:
-                    print("aaya")
                     return Response({"text": "Not Found"})
 
                 serialize = serializer(component)
@@ -304,7 +303,6 @@ def alive(request):
 @api_view(['POST'])
 def bundleup(request,id,user_id):
     file=request.FILES['file']
-
     hash_=md5.new()
     key=id+user_id
     hash_.update(key)
@@ -321,11 +319,8 @@ def bundleup(request,id,user_id):
             ziph.write(os.path.join(root, file),os.path.basename(file))
     ziph.close()
     url='http://localhost:9002/deploy_trigger/'+id
-
     data={"bundle_path":settings.MEDIA_ROOT+'bundles/'+hex+'.zip'}
     r = requests.post(url = url, data = data)
-    print("r===",r)
-
     data={'success':True}
     return Response(data, status=response_status.HTTP_200_OK)
 
