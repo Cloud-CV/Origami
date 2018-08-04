@@ -319,6 +319,10 @@ class DemoPage extends React.Component {
         width: '40vw',
         transition: 'all 0.3s',
       },
+      send: {
+        fontFamily: "'Roboto', sans-serif",
+        fontSize: '1em',
+      },
       sample: {
         borderBottom: '3px solid #73C2FB',
         fontSize: '16px',

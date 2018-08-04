@@ -53,7 +53,7 @@ return(
             : styles.sub
         }
       >
-        <text style={styles.txt2}>Send</text>
+        <text style={styles.send}>Send</text>
       </Button>
     </div>
     </div>
