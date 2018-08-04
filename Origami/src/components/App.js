@@ -72,6 +72,36 @@ class App extends React.Component {
     } else {
       this.setState({ displayLogin: '' });
     }
+
+    rootApi
+      .checkRootSettings()
+      .then(data => {
+        if (
+          window.location.pathname !== "/initialsetup" &&
+          JSON.parse(data).root_user_github_login_id === null
+        ) {
+          window.location = "/initialsetup";
+        }
+        if (
+          JSON.parse(data).root_user_github_login_name ===
+          localStorage.getItem("username")
+        ) {
+          this.setState({ isRoot: true });
+        }
+      })
+      .catch(err => {
+        toastr.error("Unauthorized");
+        setTimeout(() => {
+          $("#appbar-progress").css("visibility", "hidden");
+          $("#appbar-progress").progress({
+            percent: "0%"
+          });
+        }, 600);
+      });
+
+
+    
+
   }
 
   componentDidMount() {
