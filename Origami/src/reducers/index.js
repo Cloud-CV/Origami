@@ -6,13 +6,15 @@ import user from "./userReducer";
 import nonghDemoModel from "./nonghDemoModelReducer";
 import inputComponentDemoModel from "./inputComponentDemoModelReducer";
 import outputComponentDemoModel from "./outputComponentDemoModelReducer";
+import activeUser from "./activeUser"
 
 const rootReducer = combineReducers({
   login,
   user,
   nonghDemoModel,
   inputComponentDemoModel,
-  outputComponentDemoModel
+  outputComponentDemoModel,
+  activeUser
 });
 
 export default rootReducer;

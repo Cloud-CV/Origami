@@ -22,6 +22,8 @@ import '@coreui/icons/css/coreui-icons.min.css';
 import 'flag-icon-css/css/flag-icon.min.css';
 import 'simple-line-icons/css/simple-line-icons.css';
 import 'font-awesome/css/font-awesome.min.css';
+import  Profile from './user/user_github_profile';
+
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -71,6 +73,7 @@ class App extends React.Component {
     } else {
       this.setState({ displayLogin: '' });
     }
+
     rootApi
       .checkRootSettings()
       .then(data => {

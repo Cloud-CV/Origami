@@ -29,7 +29,8 @@ import toastr from 'toastr';
 import { SocialDialog } from '../social/SocialDialog';
 import { trimAndPad } from '../../utils/generalUtils';
 import { DEMO_CARD_DESCRIP_MAX_LEN } from '../../constants';
-
+import { selectUser } from '../../actions/user_profile_action';
+import userApi from '../../api/Github/userApi';
 
 const { Header, Content, Footer } = Layout;
 const Option = Select.Option;
@@ -58,6 +59,8 @@ class HomePage extends React.Component {
       searchBy: 'demo',
       demoLoading: true,
       logged: false,
+      profile: {},
+      loaded: false,
     };
 
     this.handleShareModal = this.handleShareModal.bind(this);
@@ -73,11 +76,21 @@ class HomePage extends React.Component {
       .then(alldeployedRepos => {
         let tmp = JSON.parse(alldeployedRepos);
         let allDeployed = [];
+        let profile = {};
+        for (let i = 0; i < tmp.length; i++) {
+          let uname = tmp[i].username;
+          userApi.userProfileFromName(uname).then(user => {
+            user = JSON.parse(user);
+            let username = user['login'];
+            let avatar = user['avatar_url'];
+            profile[username] = avatar;
+          });
+        }
         while (tmp.length) {
-          allDeployed.push(tmp.splice(0, 4));
+          allDeployed.push(tmp.splice(0, 3));
         }
         this.setState({ allDeployed });
-        this.setState({ demoLoading: false });
+        this.setState({ demoLoading: false, profile: profile });
       })
       .then(() => {
         const stateToPut = {};
@@ -139,7 +152,7 @@ class HomePage extends React.Component {
           let tmp = JSON.parse(allRepos);
           let allDeployed = [];
           while (tmp.length) {
-            allDeployed.push(tmp.splice(0, 4));
+            allDeployed.push(tmp.splice(0, 3));
           }
           this.setState({
             allDeployed,
@@ -178,11 +191,17 @@ class HomePage extends React.Component {
   getDocs() {
     window.location =
       'http://cloudcv-origami.readthedocs.io/en/latest/index.html';
+
+  }
+  Loaded() {
+    this.setState({ loaded: true });
+    this.forceUpdate();
   }
 
   render() {
+    const profile = this.state.profile;
     return (
-      <Layout style={{ background: '#FEFEFE' }}>
+      <Layout style={{ backgroundColor: '#FEFEFE' }}>
         <Header id="layout-header">
           <Row>
             <Col span={3} offset={1}>
@@ -212,78 +231,97 @@ class HomePage extends React.Component {
 
         <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
           <div
-            style={{ padding: 12, background: '#FEFEFE', textAlign: 'center' }}
+            style={{
+              padding: 12,
+              textAlign: 'center',
+              fontFamily: '"Open Sans", "Helvetica", sans-serif',
+            }}
           >
             {this.state.demoLoading ? (
               <div className="demoSpinner" style={demoSpinnerStyle}>
                 <BounceLoader color={'#33aadd'} size={80} />
               </div>
             ) : (
-              <Row>
+              <Row s>
                 {Object.keys(this.state.allDeployed).length > 0 ? (
                   this.state.allDeployed.map(row => (
                     <div key={Math.random()}>
                       <Row>
                         {row.map(demo => (
-                          <Col span={5} offset={1} key={demo.id}>
-                            <Card
-                              style={{ width: '100%' }}
-                              bodyStyle={{ padding: 0 }}
+                          <Col span={6} offset={1} key={demo.id}>
+                            <div
+                              class="ui card"
+                              style={{
+                                width: '80%',
+                                borderWidth: '0px',
+                                borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
+                                boxShadow: '0 1px 5px rgba(0, 0, 0, 0.15)',
+                              }}
                             >
-                              <div className="custom-card">
-                                <br />
-                                <h3>{demo.name}</h3>
-                                <h4
+                              <div class="content" style={{ color: '#323643' }}>
+                                <img
+                                  class="ui avatar image"
+                                  src={profile[demo.username]}
+                                  onLoad={this.Loaded.bind(this)}
+                                  onClick={this.props.userclick.bind(
+                                    this,
+                                    demo.username
+                                  )}
+                                />
+                                <span
+                                  style={{
+                                    paddingLeft: '5px',
+                                    fontSize: '14px',
+                                  }}
                                 >
                                   {' '}
-                                  - {demo.username}
-                                </h4>
+                                  {demo.username}{' '}
+                                </span>
+
+                              </div>
+                              <div class="small image">
+                                <img
+                                  src={demo.cover_image}
+                                  style={{ height: '24vh' }}
+                                />
+                              </div>
+                              <div class="content">
+                                <span
+                                  style={{
+                                    margin: 'auto',
+                                    fontSize: '17px',
+                                    fontWeight: 'Bold',
+                                  }}
+                                >
+                                  {demo.name}
+                                </span>
                                 <br />
-                                <p />
+                                <span
+                                  style={{ margin: 'auto', fontSize: '13px' }}
+                                >
+                                  Description
+                                </span>
                               </div>
-                              <div className="custom-image">
-                                <img width="100%" src={demo.cover_image} />
+                              <div
+                                class="extra content"
+                                style={{
+                                  backgroundColor: '#606470',
+                                  color: 'White',
+                                  borderWidth: '0px',
+                                }}
+                              >
+                                <span>Demo</span> <Icon type="rocket" />
                               </div>
-                              <div className="custom-card">
-                                <p>
-                                  {trimAndPad(
-                                    demo.description,
-                                    DEMO_CARD_DESCRIP_MAX_LEN
-                                  )}
-                                </p>
-                                <br />
-                                <Row>
-                                  <Col span={11} offset={1}>
-                                    <Button
-                                      type="primary"
-                                      id="launchButton"
-                                      style={{ marginBottom: '5%' }}
-                                      onClick={() => this.goToDemoPage(demo)}
-                                    >
-                                      Demo<Icon type="rocket" />
-                                    </Button>
-                                  </Col>
-                                  <Col span={10} offset={1}>
-                                    <Button
-                                      type="primary"
-                                      style={{ width: '100%' }}
-                                      onClick={() =>
-                                        this.handleShareModal(demo)
-                                      }
-                                    >
-                                      Share<Icon type="share-alt" />
-                                    </Button>
-                                  </Col>
-                                </Row>
-                              </div>
-                            </Card>
+                            </div>
                           </Col>
                         ))}
                       </Row>
                       <br />
+                      <br />
+                      <br />
                     </div>
                   ))
-                ) : (
+                ) :(
                   <Col span={24} style={{ width: '100%' }}>
                     <h4> Demo not found. Try Searching for another demo</h4>
                   </Col>
@@ -317,7 +355,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    loginactions: bindActionCreators(loginActions, dispatch)
+    loginactions: bindActionCreators(loginActions, dispatch),
+    userclick: bindActionCreators(selectUser, dispatch),
   };
 }
 

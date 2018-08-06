@@ -1,7 +1,3 @@
-body {
-  margin: 0;
-  padding: 0;
-}
 
 #layout {
   background: #FEFEFE;
@@ -16,6 +12,14 @@ body {
 #logo-title{
   margin-top: 15px;
   
+}
+.follow{
+    background-color:#FC563B;
+    height: 80px;
+    cursor:pointer;
+}
+.line{
+    border-bottom : 2px solid #F32D27;
 }
 
 #logo{
@@ -35,4 +39,127 @@ body {
   background: #FEFEFE; 
   padding: 0; 
   border-bottom: 1px solid #E0E0E0;
+}
+
+.fon {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 15px;
+}
+
+.im {
+  border-radius: 3%;
+  height:250px;
+  width:100%;
+  box-shadow: 10px 10px 30px grey;
+
+}
+/***
+User Profile Sidebar by @keenthemes
+A component of Metronic Theme - #1 Selling Bootstrap 3 Admin Theme in Themeforest: http://j.mp/metronictheme
+Licensed under MIT
+***/
+
+
+/* Profile container */
+.profile {
+  margin: 3px 0;
+}
+
+/* Profile sidebar */
+.profile-sidebar {
+  padding: 2px 0 3px 0;
+  background: #fff;
+}
+
+.profile-userpic img {
+  float: none;
+  margin: 0 auto;
+  width: 80%;
+  height: 70%;
+  -webkit-border-radius: 50% !important;
+  -moz-border-radius: 50% !important;
+  border-radius: 50% !important;
+}
+
+.profile-usertitle {
+  text-align: center;
+  margin-top: 5px;
+}
+
+.profile-usertitle-name {
+  color: #5a7391;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+
+.profile-usertitle-job {
+  text-transform: uppercase;
+  color: #5b9bd1;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.profile-userbuttons {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.profile-userbuttons .btn {
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 3px 7px;
+  margin-right: 5px;
+}
+
+.profile-userbuttons .btn:last-child {
+  margin-right: 0px;
+}
+    
+.profile-usermenu {
+  margin-top: 30px;
+}
+.btn-group {
+  padding: 3px 7px;
+  margin-right: 5px; 
+}
+
+.profile-usermenu ul li {
+  border-bottom: 1px solid #f0f4f7;
+}
+
+.profile-usermenu ul li:last-child {
+  border-bottom: none;
+}
+
+.profile-usermenu ul li a {
+  color: #124658;
+  font-size: 14px;
+  font-weight: 450;
+}
+
+.profile-usermenu ul li a i {
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+
+
+.profile-usermenu ul li.active {
+  border-bottom: none;
+}
+
+.profile-usermenu ul li.active a {
+  color: #5b9bd1;
+  background-color: #f6f9fb;
+  border-left: 2px solid #5b9bd1;
+  margin-left: -2px;
+}
+
+/* Profile Content */
+.profile-content {
+  padding: 3px;
+  background: #fff;
 }

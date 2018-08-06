@@ -3,6 +3,7 @@ import { Nav, NavItem, NavLink, Progress, TabContent, TabPane, ListGroup, ListGr
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { AppSwitch } from '@coreui/react';
+import Profile from '../../../../components/user/user_github_profile'
 
 const propTypes = {
   children: PropTypes.node,
@@ -29,25 +30,22 @@ class DefaultAside extends Component {
     }
   }
 
+
   render() {
 
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
 
     return (
-      <React.Fragment>
+      <React.Fragment >
 
-        <TabContent activeTab={this.state.activeTab} style={{ background: '#F1F3FA'}}>
+        <TabContent activeTab={this.state.activeTab} style={{ background: '#F1F3FA'}} >
           <TabPane tabId="1">
             <ListGroup className="list-group-accent">
               <ListGroupItem className="list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">My profile</ListGroupItem>
-              
-              
+              <Profile/>            
             </ListGroup>
-          </TabPane>
-   
-
-            
+          </TabPane>            
         </TabContent>
       </React.Fragment>
     );

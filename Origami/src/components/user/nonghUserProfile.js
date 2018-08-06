@@ -267,55 +267,113 @@ class NonGHUserProfileComponent extends React.Component {
                   {this.state.allDeployed.map(row => (
                     <div key={Math.random()}>
                       <Row>
-                        {row.map(demo => (
-
-              <Col span={6} offset={1} key={demo.id}>
-                            <div
-                              class="ui card"
-                              style={{
-                                width: '80%',
-                                borderWidth: '0px',
-                                borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
-                                boxShadow: '0 1px 5px rgba(0, 0, 0, 0.15)',
-                              }}
+                        {row.map(project => (
+                          <Col span={5} offset={1} key={project.id}>
+                            <Card
+                              style={{ width: '100%' }}
+                              bodyStyle={{ padding: 0 }}
                             >
-                              <div class="content" style={{ color: '#323643' }}>
-                                <span
-                                  style={{
-                                    paddingLeft: '5px',
-                                    fontSize: '17px',
-                                    fontWeight:'Bold'
-                                  }}
-                                >
-                                  {' '}
-                                  {demo.name}{' '}
-                                </span>
-
+                              <div className="custom-card">
+                                <br />
+                                <h3>{project.name}</h3>
                               </div>
-                              <div class="small image">
-                                <img
-                                  src={demo.cover_image}
-                                  style={{ height: '24vh' }}
-                                />
+                              <div className="custom-image">
+                                <img width="100%" src={project.cover_image} />
                               </div>
-                              <div class="content">
-                                <span
-                                  style={{ margin: 'auto', fontSize: '13px' }}
-                                >
-                                  Description
-                                </span>
+                              <div className="custom-card">
+                                <p>
+                                  {trimAndPad(
+                                    project.description,
+                                    DEMO_CARD_DESCRIP_MAX_LEN
+                                  )}
+                                </p>
+                                <br />
+                                IP: {project.token.split(':')[1]} <br />
+                                Port: {project.token.split(':')[4]} <br />
+                                <br />
+                                <Row>
+                                  <Col span={22} offset={1}>
+                                    <Button
+                                      type="primary"
+                                      style={{ width: '100%' }}
+                                      ghost
+                                      onClick={() => this.goToDemoPage(project)}
+                                    >
+                                      Demo<Icon type="rocket" />
+                                    </Button>
+                                  </Col>
+                                </Row>
+                                <br />
+                                <Row>
+                                  <Col span={11} offset={1}>
+                                    <Button
+                                      type="primary"
+                                      style={{ width: '100%' }}
+                                      ghost
+                                      onClick={() =>
+                                        this.modifyProject(project)
+                                      }
+                                    >
+                                      Modify<Icon type="edit" />
+                                    </Button>
+                                  </Col>
+                                  <Col span={10} offset={1}>
+                                    <Button
+                                      type="primary"
+                                      style={{ width: '100%' }}
+                                      ghost
+                                      onClick={() =>
+                                        this.toggleShowDataDialog({
+                                          type: 'token',
+                                          content: project.token,
+                                        })
+                                      }
+                                    >
+                                      Token<Icon type="bars" />
+                                    </Button>
+                                  </Col>
+                                </Row>
+                                <br />
+                                <Row>
+                                  <Col span={11} offset={1}>
+                                    <Button
+                                      type="primary"
+                                      style={{ width: '100%' }}
+                                      ghost
+                                      onClick={() =>
+                                        this.toggleShowDataDialog({
+                                          type: 'permalink',
+                                          content: `${
+                                            window.location.protocol
+                                          }//${window.location.host}${
+                                            this.state.permalinkHolder[
+                                              this.state.user.id
+                                            ][project.id].short_relative_url
+                                          }`,
+                                        })
+                                      }
+                                    >
+                                      Permalink<Icon type="link" />
+                                    </Button>
+                                  </Col>
+                                  <Col span={10} offset={1}>
+                                    <Button
+                                      type="danger"
+                                      style={{ width: '100%' }}
+                                      ghost
+                                      onClick={() =>
+                                        this.toggleDeleteConfirmationDialog(
+                                          project.id
+                                        )
+                                      }
+                                    >
+                                      Delete <Icon type="delete" />
+                                    </Button>
+                                  </Col>
+                                </Row>
+                                <br />
                               </div>
-                              <div
-                                class="extra content"
-                                style={{
-                                  backgroundColor: '#606470',
-                                  color: 'White',
-                                  borderWidth: '0px',
-                                }}
-                              >
-                                <span>Demo</span> <Icon type="rocket" />
-                              </div>
-                            </div>
+                            </Card>
                           </Col>
                         ))}
                       </Row>

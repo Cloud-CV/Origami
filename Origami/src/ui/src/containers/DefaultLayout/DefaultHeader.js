@@ -46,16 +46,7 @@ class DefaultHeader extends Component {
 
         <Nav className="ml-auto" navbar>
           <AppHeaderDropdown direction="down">
-            <DropdownToggle nav>
-          
-            </DropdownToggle>
-            <DropdownMenu right style={{ right: 'auto' }}>
-              <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
-              <DropdownItem><i className="fa fa-bell-o"></i> Updates<Badge color="info">42</Badge></DropdownItem>
-              <DropdownItem><i className="fa fa-envelope-o"></i> Messages<Badge color="success">42</Badge></DropdownItem>
-              <DropdownItem><i className="fa fa-tasks"></i> Tasks<Badge color="danger">42</Badge></DropdownItem>
-              <DropdownItem><i className="fa fa-comments"></i> Comments<Badge color="warning">42</Badge></DropdownItem>
-            </DropdownMenu>
+            <DropdownToggle nav/>
           </AppHeaderDropdown>
         </Nav>
         <AppAsideToggler className="d-md-down-none" />
