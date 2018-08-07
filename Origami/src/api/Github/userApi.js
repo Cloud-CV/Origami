@@ -20,7 +20,7 @@ class userApi {
   static userProfileFromName(username) {
     return new Promise((resolve, reject) => {
       request
-        .get(`https://api.github.com/users/${username}`)
+        .get(`https://api.github.com/users/${username}?s=48`)
         .set("Accept", "application/json")
         .end((err, res) => {
           if (err) {

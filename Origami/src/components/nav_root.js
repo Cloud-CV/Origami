@@ -10,6 +10,7 @@ import ShareProfile from "./user/userShareProfile";
 import InstructionsPage from './deployment/UsePrebuiltProject/instructionsPage'
 import DemoPage from './deployment/UsePrebuiltProject/demoPage'
 import InitialSetupComponent from "./initialSetupPage";
+import SelectDemoCompare from "./compare/select";
 
 const routes = [
   { path: '/home', name: 'Dashboard', component: HomePageComponent },
@@ -22,6 +23,7 @@ const routes = [
   { path: '/instructions/:user_id/:repoId/bundle',exact: true, component:InstructionsPage },
   { path: '/demo/:user_id/:repoId/page', component:DemoPage },
   { path: '/initialsetup',exact:true, component:InitialSetupComponent },
+  { path: '/compare_select',exact:true, component:SelectDemoCompare },
 ];
 
 export default routes;

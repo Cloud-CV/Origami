@@ -186,12 +186,16 @@ def get_all_demos(request):
     demos = []
     if search_by == "demo":
         demos = Demo.objects.filter(name__icontains=search_term)
-    else:
-        try:
-            user = User.objects.get(username__iexact=search_term)
-            demos = Demo.objects.filter(user_id=user.id)
-        except User.DoesNotExist:
-            demos = []
+    else: 
+        if search_by == "task":
+            print("aaya")
+            demos=Demo.objects.filter(task=search_term)
+        else:
+            try:
+                user = User.objects.get(username__iexact=search_term)
+                demos = Demo.objects.filter(user_id=user.id)
+            except User.DoesNotExist:
+                demos = []
     serialize = DemoSerializer(demos, many=True)
     data = serialize.data
     for x in range(len(demos)):

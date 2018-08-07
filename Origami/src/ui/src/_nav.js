@@ -14,8 +14,14 @@ export default {
 
     },      
     {
-      name: 'Create demo',
+      name: 'Create Demo',
       url: '/demo_register',
+      icon: 'fas fa-pen-square'
+
+    },
+    {
+      name: 'Demo Compare',
+      url: '/compare_select',
       icon: 'fas fa-pen-square'
 
     },

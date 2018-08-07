@@ -14,7 +14,6 @@ const VQA=({
 	exit,
 
 }) =>{
-
 return(
     <div className="ui grid" style={{marginLeft:"1px"}}>
     <div className="eight wide column">
