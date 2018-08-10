@@ -16,48 +16,21 @@ class SelectDemoCompare extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state={
-    	value:'',
-    	allDeployed:[],
-    	demoLoading:true,
-    	profile:{},
-    	clicked:{}
+      value:'',
+      allDeployed:[],
+      demoLoading:true,
+      profile:{},
+      clicked:{}
     }
     this.handleChange=this.handleChange.bind(this);
-	}
+  }
 
 
 
-	componentDidMount() {
-		let profile = {};
-    getAllDeployed()
-      .then(alldeployedRepos => {
-        let tmp = JSON.parse(alldeployedRepos);
-        let allDeployed = [];
-        
-     	let state_profile=this.state.profile;
-        for (let i = 0; i < tmp.length; i++) {
-          let uname = tmp[i].username;
-          if(state_profile[uname])
-          	continue;
-          userApi.userProfileFromName(uname).then(user => {
-            user = JSON.parse(user);
-            let username = user['login'];
-            let avatar = user['avatar_url'];
-            
-            profile[username] = avatar+"&s=48";
-            console.log("url ==",profile[username])
-          });
-        }
-        this.setState({ demoLoading: false, profile: profile });
-      })
-       .catch(err => {
-        toastr.error(err);
-      });
-       console.log("vpn1997 =",profile["vpn1997"]);
-	}
 
-	findDemo(task){
-	getSearchedDemos("task", task)
+
+  findDemo(task){
+  getSearchedDemos("task", task)
       .then(allRepos => {
         if (Object.keys(JSON.parse(allRepos)).length > 0) {
           let tmp = JSON.parse(allRepos);
@@ -79,23 +52,23 @@ class SelectDemoCompare extends React.Component {
       
 
 
-	}
+  }
 
-	reset(){
-		var deployed=this.state.allDeployed;
-		console.log("depoyed=",deployed);
-	}
-	handleChange(e){
-		console.log("value =",e)
-	this.findDemo(e);
-	 this.setState({ value:e })}
+  reset(){
+    var deployed=this.state.allDeployed;
+    console.log("depoyed=",deployed);
+  }
+  handleChange(e){
+    console.log("value =",e)
+  this.findDemo(e);
+   this.setState({ value:e })}
 
-	Loaded() {
+  Loaded() {
     this.setState({ loaded: true });
     this.forceUpdate();
   }
 
-	getStyles() {
+  getStyles() {
     return {
       layout: {
         background: '#F7F7F7',
@@ -223,47 +196,46 @@ class SelectDemoCompare extends React.Component {
         paddingLeft: '39%',
       },
       radio:{
-      	display: 'inline-block', 
-      	width: 'auto',
-      	paddingRight:'8%',
-      	fontWeight:'Bold'
+        display: 'inline-block', 
+        width: 'auto',
+        paddingRight:'8%',
+        fontWeight:'Bold'
       },
       demo:{
-      	
-		width: '80%',
-		borderWidth: '0px',
-		borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
-		boxShadow: '0 1px 5px rgba(0, 0, 0, 0.15)',
-		transition: 'all 1s',
+        
+    width: '80%',
+    borderWidth: '0px',
+    borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
+    boxShadow: '0 1px 5px rgba(0, 0, 0, 0.15)',
+    transition: 'all 1s',
       },
       clicked:{
-		width: '80%',
-		
-		borderWidth: '5px',
-		borderStyle:'Solid',
-		transition: 'all 1s',
+    width: '80%',
+    borderWidth: '3px',
+    borderStyle:'Solid',
+    borderColor:'#323643',
+    transition: 'all 1s',
       }
     };
   }
 
   clicked(e){
-  	var clicked=this.state.clicked;
-  	if(this.state.clicked[e]){
-  		clicked[e]=""
-  		this.setState({clicked:clicked});
-  	}
-  	else{
-  	clicked[e]=true;
-  	this.setState({clicked:clicked});
+    var clicked=this.state.clicked;
+    if(this.state.clicked[e]){
+      clicked[e]=""
+      this.setState({clicked:clicked});
+    }
+    else{
+    clicked[e]=true;
+    this.setState({clicked:clicked});
   }
   }
 
-	render(){
-		const profile = this.state.profile;
-		let styles = this.getStyles();
-		return(
-			<div>
-		      <Layout style={{ backgroundColor: '#FEFEFE' }}>
+  render(){
+    let styles = this.getStyles();
+    return(
+      <div>
+          <Layout style={{ backgroundColor: '#FEFEFE' }}>
         <Header id="layout-header">
           <Row>
             <Col span={5} offset={10}>
@@ -289,49 +261,49 @@ class SelectDemoCompare extends React.Component {
                         style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
                       />
                       <div style={{paddingLeft:'16%'}}>
-				      <Form >
-				        <Form.Field  style={styles.radio}>
-				          <Radio
-				            label='VQA'
-				            name='radioGroup'
-				            value='this'
-				            style={{fontSize:'17px'}}
-				            checked={this.state.value === 'VQA'}
-				            onClick={this.handleChange.bind(this,"VQA")}
-				          />
-				        </Form.Field>
-				        <Form.Field  style={styles.radio}>
-				          <Radio
-				            label='Style Transfer'
-				            name='radioGroup'
-				            value='that'
-				            style={{fontSize:'17px'}}
-				            checked={this.state.value === 'Style Transfer'}
-				            onChange={this.handleChange.bind(this,"Style Transfer")}
-				          />
-				        </Form.Field>
-				      	<Form.Field  style={styles.radio}>
-				          <Radio
-				            label='Classification'
-				            name='radioGroup'
-				            value='that'
-				            style={{fontSize:'17px'}}
-				            checked={this.state.value === 'Classification'}
-				            onChange={this.handleChange.bind(this,"Classification")}
-				          />
-				        </Form.Field>
-				  		<Form.Field  style={styles.radio}>
-				          <Radio
-				            label='Grad Cam'
-				            name='radioGroup'
-				            value='that'
-				            style={{fontSize:'17px'}}
-				            checked={this.state.value === 'Grad Cam'}
-				            onChange={this.handleChange.bind(this,"Grad Cam")}
-				          />
-				        </Form.Field>
-				      </Form>
-				      </div>
+              <Form >
+                <Form.Field  style={styles.radio}>
+                  <Radio
+                    label='VQA'
+                    name='radioGroup'
+                    value='this'
+                    style={{fontSize:'17px'}}
+                    checked={this.state.value === 'VQA'}
+                    onClick={this.handleChange.bind(this,"VQA")}
+                  />
+                </Form.Field>
+                <Form.Field  style={styles.radio}>
+                  <Radio
+                    label='Style Transfer'
+                    name='radioGroup'
+                    value='that'
+                    style={{fontSize:'17px'}}
+                    checked={this.state.value === 'Style Transfer'}
+                    onChange={this.handleChange.bind(this,"Style Transfer")}
+                  />
+                </Form.Field>
+                <Form.Field  style={styles.radio}>
+                  <Radio
+                    label='Classification'
+                    name='radioGroup'
+                    value='that'
+                    style={{fontSize:'17px'}}
+                    checked={this.state.value === 'Classification'}
+                    onChange={this.handleChange.bind(this,"Classification")}
+                  />
+                </Form.Field>
+              <Form.Field  style={styles.radio}>
+                  <Radio
+                    label='Grad Cam'
+                    name='radioGroup'
+                    value='that'
+                    style={{fontSize:'17px'}}
+                    checked={this.state.value === 'Grad Cam'}
+                    onChange={this.handleChange.bind(this,"Grad Cam")}
+                  />
+                </Form.Field>
+              </Form>
+              </div>
 
                     </div>
 
@@ -369,12 +341,7 @@ class SelectDemoCompare extends React.Component {
 
                             >
                               <div class="content" style={{ color: '#323643' }}>
-                                <img
-                                  class="ui avatar image"
-                                  src={profile[demo.username]}
-                                  onLoad={this.Loaded.bind(this)}
-
-                                />
+    
                                 <span
                                   style={{
                                     paddingLeft: '5px',
@@ -441,14 +408,14 @@ class SelectDemoCompare extends React.Component {
 
 
         </Layout>
-			</div>
+      </div>
 
-			);
-
-
+      );
 
 
-	}
+
+
+  }
 
 
 
