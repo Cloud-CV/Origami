@@ -19,6 +19,10 @@
   "author": "Ashish Chaudhary",
   "license": "AGPL-3.0",
   "dependencies": {
+    "@coreui/coreui": "^2.0.1",
+    "@coreui/coreui-plugin-chartjs-custom-tooltips": "^1.2.0",
+    "@coreui/icons": "^0.1.1",
+    "@coreui/react": "^2.0.0",
     "@fortawesome/fontawesome": "^1.1.8",
     "@fortawesome/fontawesome-free-webfonts": "^1.0.9",
     "@material-ui/core": "^1.0.0",
@@ -47,6 +51,7 @@
     "mongoose": "^4.13.6",
     "portfinder": "^1.0.13",
     "prop-types": "^15.6.0",
+    "query-string": "^6.1.0",
     "radium": "^0.19.6",
     "range_check": "^1.4.0",
     "react": "^16.2.0",

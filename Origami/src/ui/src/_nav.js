@@ -20,7 +20,7 @@ export default {
 
     },
     {
-      name: 'Demo Compare',
+      name: 'Compare Demo',
       url: '/compare_select',
       icon: 'fas fa-pen-square'
 

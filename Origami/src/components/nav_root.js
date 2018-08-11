@@ -11,6 +11,7 @@ import InstructionsPage from './deployment/UsePrebuiltProject/instructionsPage'
 import DemoPage from './deployment/UsePrebuiltProject/demoPage'
 import InitialSetupComponent from "./initialSetupPage";
 import SelectDemoCompare from "./compare/select";
+import DemoCompare from "./compare/demo_compare";
 
 const routes = [
   { path: '/home', name: 'Dashboard', component: HomePageComponent },
@@ -24,6 +25,7 @@ const routes = [
   { path: '/demo/:user_id/:repoId/page', component:DemoPage },
   { path: '/initialsetup',exact:true, component:InitialSetupComponent },
   { path: '/compare_select',exact:true, component:SelectDemoCompare },
+  { path: '/demo_compare', component:DemoCompare },
 ];
 
 export default routes;

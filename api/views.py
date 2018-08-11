@@ -188,7 +188,6 @@ def get_all_demos(request):
         demos = Demo.objects.filter(name__icontains=search_term)
     else: 
         if search_by == "task":
-            print("aaya")
             demos=Demo.objects.filter(task=search_term)
         else:
             try:
@@ -201,6 +200,7 @@ def get_all_demos(request):
     for x in range(len(demos)):
         data[x]["username"] = User.objects.get(id=data[x]["user_id"]).username
     return Response(data, status=response_status.HTTP_200_OK)
+
 
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])

@@ -20,12 +20,12 @@ class SelectDemoCompare extends React.Component {
       allDeployed:[],
       demoLoading:true,
       profile:{},
-      clicked:{}
+      clicked:{},
+      selected:[],
+      subhover:''
     }
     this.handleChange=this.handleChange.bind(this);
   }
-
-
 
 
 
@@ -38,12 +38,14 @@ class SelectDemoCompare extends React.Component {
           while (tmp.length) {
             allDeployed.push(tmp.splice(0, 3));
           }
-          console.log("dplyd =",allDeployed);
+          
           this.setState({
-            allDeployed
-          },this.reset());
+            allDeployed:allDeployed,
+            clicked:{},
+            selected:[]
+          });
         } else {
-          this.setState({ allDeployed: [] },this.reset());
+          this.setState({ allDeployed: [],clicked:{},selected:[] });
         }
       })
       .catch(err => {
@@ -54,12 +56,8 @@ class SelectDemoCompare extends React.Component {
 
   }
 
-  reset(){
-    var deployed=this.state.allDeployed;
-    console.log("depoyed=",deployed);
-  }
+
   handleChange(e){
-    console.log("value =",e)
   this.findDemo(e);
    this.setState({ value:e })}
 
@@ -132,7 +130,7 @@ class SelectDemoCompare extends React.Component {
       },
       sub: {
         borderStyle: 'Solid',
-        width: '150%',
+        width: '75%',
         borderWidth: '2px',
         borderRadius: '20px',
         backgroundColor: '#443E3E',
@@ -144,7 +142,7 @@ class SelectDemoCompare extends React.Component {
 
       subhover: {
         borderStyle: 'Solid',
-        width: '150%',
+        width: '75%',
         borderWidth: '2px',
         borderRadius: '20px',
         backgroundColor: '#443E3E',
@@ -218,17 +216,42 @@ class SelectDemoCompare extends React.Component {
       }
     };
   }
+  exit() {
+    this.setState({ active: 0, btnactive: 0, subhover: 0 });
+  }
+    sub(e) {
+    this.setState({ subhover: e });
+  }
 
   clicked(e){
     var clicked=this.state.clicked;
+    var selected=this.state.selected;
     if(this.state.clicked[e]){
       clicked[e]=""
-      this.setState({clicked:clicked});
+      var index=selected.indexOf(e);
+      if(index>-1){
+        selected.splice(index,1);
+      }
+      this.setState({clicked:clicked,selected:selected});
     }
     else{
     clicked[e]=true;
-    this.setState({clicked:clicked});
+    selected.push(e);
+    this.setState({clicked:clicked,selected:selected});
   }
+  }
+
+  submit(){
+    var selected=this.state.selected;
+    var url="/demo_compare/?";
+    for(var i=0;i<selected.length;i++){
+      if(i==0)
+      url+="demo[]="+selected[i];
+      else
+        url+="&demo[]="+selected[i];
+    }
+    console.log("url ==",url)
+    this.props.history.push(url)
   }
 
   render(){
@@ -333,9 +356,8 @@ class SelectDemoCompare extends React.Component {
                           <Col span={6} offset={2} key={demo.id}>
                             <div
                               class="ui card"
-                              style={this.state.clicked[indx1.toString() + '' + indx2.toString()] ? styles.clicked:styles.demo}
-                              id={indx1.toString() + '' + indx2.toString()}
-                              onClick={this.clicked.bind(this,indx1.toString() + '' + indx2.toString())}
+                              style={this.state.clicked[demo.id] ? styles.clicked:styles.demo}
+                              onClick={this.clicked.bind(this,demo.id)}
                               
                               
 
@@ -390,15 +412,49 @@ class SelectDemoCompare extends React.Component {
                       <br />
                     </div>
                   ))}
+                                    <hr
+                        style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
+                      />
+                        <br/>
+
+                      <div className="ui grid">
+                        <div className="four wide column" />
+                        <div className="three wide column">
+                          <Button
+                            onMouseEnter={this.sub.bind(this, 1)}
+                            onMouseLeave={this.exit}
+                            style={
+                              this.state.subhover == 1
+                                ? styles.subhover
+                                : styles.sub
+                            }
+                          >
+                            <text style={styles.txt}>Reset</text>
+                          </Button>
+                        </div>
+
+                        <div className="two wide column" />
+                        <div className="three wide column">
+                          <Button
+                            primary
+                            onMouseEnter={this.sub.bind(this, 2)}
+                            onMouseLeave={this.exit}
+                            onClick={this.submit.bind(this)}
+                            style={
+                              this.state.subhover == 2
+                                ? styles.subhover
+                                : styles.sub
+                            }
+                          >
+                            <text style={styles.txt} >Compare</text>
+                          </Button>
+                        </div>
+                      </div>
                 
               </Row>
-           
-
-
-
-
-                      </div>
+               </div>
                   }
+                  
                       
 
                     </div>

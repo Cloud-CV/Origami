@@ -10,14 +10,19 @@ const singleOutput = props => {
     >
       <div className="content">
         <div className="header">
-          Output
+        <div>
+        <div style={{fontWeight:'Normal',fontSize:'15px'}}>
+          VQA  <span style={{float:'Right',marginLeft:'10%'}}>  {props.creator} </span>
+        </div>
+        
+        </div>
         </div>
       </div>
       <div className="content">
         <div className="ui small feed">
           <div className="event">
             <div className="content" style={{height:'5vh'}}>
-              <div className="summary">{props.data}</div>
+              <div className="summary" style={{fontWeight:'Bold',fontSize:'14px'}}>{props.data}</div>
             </div>
           </div>
         </div>
@@ -27,9 +32,9 @@ const singleOutput = props => {
 };
 
 singleOutput.propTypes = {
-  header: PropTypes.string.isRequired,
+  header: PropTypes.string,
   data: PropTypes.any,
-  index: PropTypes.number.isRequired
+  index: PropTypes.number
 };
 
 export default singleOutput;
