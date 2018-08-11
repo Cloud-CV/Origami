@@ -24,6 +24,7 @@ import 'simple-line-icons/css/simple-line-icons.css';
 import 'font-awesome/css/font-awesome.min.css';
 import  Profile from './user/user_github_profile';
 
+
 const { Header, Content, Footer, Sider } = Layout;
 
 class App extends React.Component {
