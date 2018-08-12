@@ -191,6 +191,11 @@ class HomePage extends React.Component {
   getDocs() {
     window.location =
       'http://cloudcv-origami.readthedocs.io/en/latest/index.html';
+
+  }
+  Loaded() {
+    this.setState({ loaded: true });
+    this.forceUpdate();
   }
   Loaded() {
     this.setState({ loaded: true });
@@ -319,7 +324,7 @@ class HomePage extends React.Component {
                       <br />
                     </div>
                   ))
-                ) : (
+                ) :(
                   <Col span={24} style={{ width: '100%' }}>
                     <h4> Demo not found. Try Searching for another demo</h4>
                   </Col>
