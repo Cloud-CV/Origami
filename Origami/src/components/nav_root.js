@@ -9,6 +9,7 @@ import RegisterNonGHPageComponent from "./deployment/UsePrebuiltProject/register
 import ShareProfile from "./user/userShareProfile";
 import InstructionsPage from './deployment/UsePrebuiltProject/instructionsPage'
 
+
 const routes = [
   { path: '/home', name: 'Dashboard', component: HomePageComponent },
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
@@ -21,3 +22,4 @@ const routes = [
 ];
 
 export default routes;
+

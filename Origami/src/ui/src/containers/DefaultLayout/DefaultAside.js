@@ -23,7 +23,7 @@ class DefaultAside extends Component {
   }
 
   toggle(tab) {
-    console.log("tab hua")
+
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab,
