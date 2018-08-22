@@ -22,11 +22,36 @@ import DefaultAside from './DefaultAside';
 import DefaultFooter from './DefaultFooter';
 import DefaultHeader from './DefaultHeader';
 import HomePage from '../../../../components/home/HomePage'
+import ReactDOM from 'react-dom';
 
 class DefaultLayout extends Component {
 constructor(props, context) {
   super(props, context);
+  this.state={
+    mounted:false,
+    open:false
+  }
+  this.minimizerRef = React.createRef();
+
 }
+
+ComponentDidMount(){
+  this.setState({mounted:true})
+}
+
+
+click(){
+  console.log("clicked")
+}
+
+  simulateClick() {
+    this.minimizerRef.current.handleClick()
+  
+    
+  }
+  handleClick(){
+    this.setState({open:!open},this.simulateClick())
+  }
 
   render() {
       if(window.location.pathname==="/")
@@ -36,15 +61,15 @@ constructor(props, context) {
     return (
       <div className="app">
         <AppHeader fixed>
-          <DefaultHeader />
+          <DefaultHeader click={this.handleClick.bind(this)}/>
         </AppHeader>
         <div className="app-body">
           <AppSidebar fixed display="lg">
             <AppSidebarHeader  />
             <AppSidebarForm />
-            <AppSidebarNav navConfig={navigation} {...this.props} />
+            <AppSidebarNav className="nav-side" navConfig={navigation} {...this.props} />
             <AppSidebarFooter />
-            <AppSidebarMinimizer />
+            <AppSidebarMinimizer ref={this.minimizerRef}   />
           </AppSidebar>
           <main className="main">
             <Container fluid>
@@ -60,8 +85,8 @@ constructor(props, context) {
               </Switch>
             </Container>
           </main>
-          <AppAside fixed hidden>
-            <DefaultAside />
+          <AppAside fixed hidden onClick={this.click.bind(this)}>
+            <DefaultAside onClick={this.click.bind(this)}/>
           </AppAside>
         </div>
         <AppFooter>

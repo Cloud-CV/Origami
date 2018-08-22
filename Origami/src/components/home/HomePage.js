@@ -188,10 +188,13 @@ class HomePage extends React.Component {
     }
   }
 
+  clicked(id,user_id){
+    this.props.history.push('/demo/'+user_id+'/'+id+'/page');
+  }
+
   getDocs() {
     window.location =
       'http://cloudcv-origami.readthedocs.io/en/latest/index.html';
-
   }
   Loaded() {
     this.setState({ loaded: true });
@@ -242,13 +245,14 @@ class HomePage extends React.Component {
                 <BounceLoader color={'#33aadd'} size={80} />
               </div>
             ) : (
-              <Row s>
+              <Row >
                 {Object.keys(this.state.allDeployed).length > 0 ? (
                   this.state.allDeployed.map(row => (
                     <div key={Math.random()}>
                       <Row>
                         {row.map(demo => (
-                          <Col span={6} offset={1} key={demo.id}>
+
+                          <Col span={6} offset={2} key={demo.id}>
                             <div
                               class="ui card"
                               style={{
@@ -277,7 +281,6 @@ class HomePage extends React.Component {
                                   {' '}
                                   {demo.username}{' '}
                                 </span>
-
                               </div>
                               <div class="small image">
                                 <img
@@ -309,6 +312,7 @@ class HomePage extends React.Component {
                                   color: 'White',
                                   borderWidth: '0px',
                                 }}
+                                onClick={this.clicked.bind(this,demo.id,demo.user_id)}
                               >
                                 <span>Demo</span> <Icon type="rocket" />
                               </div>
@@ -321,7 +325,7 @@ class HomePage extends React.Component {
                       <br />
                     </div>
                   ))
-                ) :(
+                ) : (
                   <Col span={24} style={{ width: '100%' }}>
                     <h4> Demo not found. Try Searching for another demo</h4>
                   </Col>

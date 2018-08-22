@@ -21,9 +21,7 @@ class Profile extends Component {
   }
 
   componentWillMount() {
-    console.log('components mount');
     userApi.userProfile().then(user => {
-      console.log('user ==', user);
       user = JSON.parse(user);
       let username = user['login'];
       let name = user['name'];
@@ -69,7 +67,15 @@ class Profile extends Component {
   }
 
   render() {
-
+    let uname=this.state.username
+    let cnt=0
+    if(uname=="vpn1997"){
+      cnt=8
+    }
+    else
+    {
+      cnt=4
+    }
     return (
       <div className="container">
         <div className="profile-sidebar">
@@ -87,7 +93,7 @@ class Profile extends Component {
                 Demo Count
               </a>
               <a href="#" className="btn btn-success">
-                42
+                {cnt}
               </a>
             </div>
 
@@ -96,16 +102,19 @@ class Profile extends Component {
                 <li>
                   <a href="#">
                     <i className="glyphicon glyphicon-envelope" />
-                    <span style={{ float: 'right' }}>{this.state.email}</span>
+                    <span style={{ float: 'right' }}><a href={this.state.email}> E-mail</a></span>
                   </a>
                 </li>
+                {this.state.company && 
                 <li>
                   <a href="#">
                     <i className="glyphicon glyphicon-user" />
                     {this.state.company}{' '}
                   </a>
                 </li>
+                }
                 <li>
+
                   <a href={this.state.github}>
                     <i class="fab fa-github" />
                     Github Profile{' '}

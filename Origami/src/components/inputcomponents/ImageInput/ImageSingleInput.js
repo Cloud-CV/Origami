@@ -7,15 +7,12 @@ import request from "superagent";
 const appConfig = require("../../../../outCalls/config");
 
 const singleInput = props => {
-  function updateImage(index, file) {
-    document.getElementById(
-      `input-image-preview-${index}`
-    ).src = window.URL.createObjectURL(file);
-  }
+
+
 
   function onDrop(files) {
-    props.updateFormData(files[0], `input-image-${props.index}`);
-    updateImage(props.index, files[0]);
+    props.updateFormData(files[0], `input-image-1`);
+    
   }
 
   function onSelect(files) {
@@ -38,30 +35,29 @@ const singleInput = props => {
   }
 
   return (
-    <div className="ui container grid origami-demo-input-image-component">
-      <div className="centered center aligned stretched row origami-demo-input-image-label-container">
-        <div className="ui blue segment origami-demo-input-image-label">
-          {props.label}
-        </div>
-      </div>
-      <div className="centered row">
-        <div className="" style={{ height: "100%", cursor: "pointer" }}>
+    <div>
+      <div>
+        <div className="" style={{ height: "100%", cursor: "pointer"}}>
           <Dropzone
             onDrop={onDrop}
             multiple={false}
-            style={{ height: "inherit" }}
+            style={{ height: "100%" }}
           >
-            <div className="ui card">
+            <div className="ui card" style={{width:'90%'}}>
               <div className="ui fluid image">
                 <img
-                  className="ui fluid medium bordered image"
-                  src="/static/img/wireframe.png"
-                  id={`input-image-preview-${props.index}`}
-                  style={{ width: "100%" }}
+                  className="ui fluid medium image"
+                  src={props.src||"/static/img/placeholder.jpg"}
+                  id={'input-image-preview-1'}
+                  style={{ width: "100%",borderWidth:'0px',height:"90%" }}
                 />
               </div>
-              <div className="content origami-demo-input-image-component-desc">
-                Drag and Drop or Click to upload
+              <div className="content origami-demo-input-image-component-desc" style={{ 
+            fontSize:'15px',
+            textAlign:'center',
+            fontFamily: "'Roboto', sans-serif",
+            color: "#323643",}}>
+                {props.label||"Drag and Drop or Click to upload"}
               </div>
             </div>
           </Dropzone>
@@ -92,8 +88,9 @@ const singleInput = props => {
 
 singleInput.propTypes = {
   label: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired,
-  updateFormData: PropTypes.func.isRequired
+  index: PropTypes.number,
+  updateFormData: PropTypes.func.isRequired,
+  src:PropTypes.string.isRequired
 };
 
 export default singleInput;

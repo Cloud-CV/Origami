@@ -204,14 +204,16 @@ class NonGHUserProfileComponent extends React.Component {
   getStyles() {
     return {
       layout: {
+     
       },
       content: {
         margin: "24px 16px 0",
-        overflow: "initial"
+        overflow: "initial",
       },
       contentDiv: {
         padding: 12,
-        textAlign: "center"
+        textAlign: "center",
+        
       },
       footer: {
         textAlign: "center",

@@ -68,7 +68,7 @@ class NonGHUserProfileComponent extends React.Component {
               let tmp = JSON.parse(alldeployedRepos);
               let allDeployed = [];
               while (tmp.length) {
-                allDeployed.push(tmp.splice(0, 4));
+                allDeployed.push(tmp.splice(0, 3));
               }
               this.setState({ allDeployed });
               this.setState({ demoLoading: false });
@@ -125,6 +125,7 @@ class NonGHUserProfileComponent extends React.Component {
   }
 
   deleteDemo() {
+    console.log("aaya")
     const project_id = this.state.projectBeingDeletedId;
     this.toggleDeleteConfirmationDialog();
     this.props.nonghModelActions
@@ -135,14 +136,9 @@ class NonGHUserProfileComponent extends React.Component {
             let tmp = JSON.parse(alldeployedRepos);
             let allDeployed = [];
             while (tmp.length) {
-              allDeployed.push(tmp.splice(0, 4));
+              allDeployed.push(tmp.splice(0, 3));
             }
-            this.setState({ allDeployed }, () => {
-              deletePermalink({
-                user_id: this.props.user.id,
-                project_id,
-              }).then();
-            });
+            this.setState({ allDeployed })
           })
           .catch(err => {
             toastr.error(err);
@@ -198,16 +194,25 @@ class NonGHUserProfileComponent extends React.Component {
     this.props.history.push('/ngh/user/register');
   }
 
+  clicked(id,user_id){
+    this.props.history.push('/demo/'+user_id+'/'+id+'/page');
+  }
+  
+
   getStyles() {
     return {
-      layout: {},
+      layout: {
+        backgroundColor:'#FFFFFF'
+      },
       content: {
         margin: '24px 16px 0',
         overflow: 'initial',
+        backgroundColor:'#FFFFFF'
       },
       contentDiv: {
-        padding: 12,
+        padding: 16,
         textAlign: 'center',
+        backgroundColor:'#FFFFFF'
       },
       footer: {
         textAlign: 'center',
@@ -233,19 +238,19 @@ class NonGHUserProfileComponent extends React.Component {
         key="0"
         label="Cancel"
         primary
-        onTouchTap={this.toggleDeleteConfirmationDialog}
+        onClick={this.toggleDeleteConfirmationDialog}
       />,
       <span key="2">&nbsp;</span>,
       <RaisedButton
         label="Delete"
         key="3"
         primary
-        onTouchTap={this.deleteDemo}
+        onClick={this.deleteDemo}
       />,
     ];
 
     return (
-      <Layout>
+      <Layout >
         <Header id="layout-header">
           <Row>
             <Col span={18} offset={1}>
@@ -260,123 +265,75 @@ class NonGHUserProfileComponent extends React.Component {
             <BounceLoader color={'#33aadd'} size={80} />
           </div>
         ) : (
-          <Content>
+          <Content style={{paddingTop:'5px'}}>
             {this.state.user && (
               <div style={styles.contentDiv}>
                 <Row>
                   {this.state.allDeployed.map(row => (
                     <div key={Math.random()}>
                       <Row>
-                        {row.map(project => (
-                          <Col span={5} offset={1} key={project.id}>
-                            <Card
-                              style={{ width: '100%' }}
-                              bodyStyle={{ padding: 0 }}
+                        {row.map(demo => (
+
+              <Col span={6} offset={2} key={demo.id}>
+                            <div
+                              class="ui card"
+                              style={{
+                                width: '80%',
+                                borderWidth: '0px',
+                                borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
+                                boxShadow: '0 1px 5px rgba(0, 0, 0, 0.15)',
+                              }}
                             >
-                              <div className="custom-card">
-                                <br />
-                                <h3>{project.name}</h3>
+                              <div class="content" style={{ color: '#323643' }}>
+                                <span
+                                  style={{
+                                    paddingLeft: '5px',
+                                    fontSize: '17px',
+                                    fontWeight:'Bold'
+                                  }}
+                                >
+                                  {' '}
+                                  {demo.name}{' '}
+                                </span>
+
                               </div>
-                              <div className="custom-image">
-                                <img width="100%" src={project.cover_image} />
+                              <div className="small image">
+                                <img
+                                  src={demo.cover_image}
+                                  style={{ height: '24vh' }}
+                                />
                               </div>
-                              <div className="custom-card">
-                                <p>
-                                  {trimAndPad(
-                                    project.description,
-                                    DEMO_CARD_DESCRIP_MAX_LEN
-                                  )}
-                                </p>
-                                <br />
-                                IP: {project.token.split(':')[1]} <br />
-                                Port: {project.token.split(':')[4]} <br />
-                                <br />
-                                <Row>
-                                  <Col span={22} offset={1}>
-                                    <Button
-                                      type="primary"
-                                      style={{ width: '100%' }}
-                                      ghost
-                                      onClick={() => this.goToDemoPage(project)}
-                                    >
-                                      Demo<Icon type="rocket" />
-                                    </Button>
-                                  </Col>
-                                </Row>
-                                <br />
-                                <Row>
-                                  <Col span={11} offset={1}>
-                                    <Button
-                                      type="primary"
-                                      style={{ width: '100%' }}
-                                      ghost
-                                      onClick={() =>
-                                        this.modifyProject(project)
-                                      }
-                                    >
-                                      Modify<Icon type="edit" />
-                                    </Button>
-                                  </Col>
-                                  <Col span={10} offset={1}>
-                                    <Button
-                                      type="primary"
-                                      style={{ width: '100%' }}
-                                      ghost
-                                      onClick={() =>
-                                        this.toggleShowDataDialog({
-                                          type: 'token',
-                                          content: project.token,
-                                        })
-                                      }
-                                    >
-                                      Token<Icon type="bars" />
-                                    </Button>
-                                  </Col>
-                                </Row>
-                                <br />
-                                <Row>
-                                  <Col span={11} offset={1}>
-                                    <Button
-                                      type="primary"
-                                      style={{ width: '100%' }}
-                                      ghost
-                                      onClick={() =>
-                                        this.toggleShowDataDialog({
-                                          type: 'permalink',
-                                          content: `${
-                                            window.location.protocol
-                                          }//${window.location.host}${
-                                            this.state.permalinkHolder[
-                                              this.state.user.id
-                                            ][project.id].short_relative_url
-                                          }`,
-                                        })
-                                      }
-                                    >
-                                      Permalink<Icon type="link" />
-                                    </Button>
-                                  </Col>
-                                  <Col span={10} offset={1}>
-                                    <Button
-                                      type="danger"
-                                      style={{ width: '100%' }}
-                                      ghost
-                                      onClick={() =>
-                                        this.toggleDeleteConfirmationDialog(
-                                          project.id
-                                        )
-                                      }
-                                    >
-                                      Delete <Icon type="delete" />
-                                    </Button>
-                                  </Col>
-                                </Row>
-                                <br />
+                              <div   >
+                            <div class="ui buttons" style={{width:'100%'}} >
+                              <button class="ui button" style={{color:'#323643',backgroundColor:'White'}} >
+                              Modify
+                              </button>
+                              <button class="ui button" style={{color:'#323643',backgroundColor:'White'}}                                     onClick={() =>
+                                      this.toggleDeleteConfirmationDialog(
+                                        demo.id
+                                      )
+                                    }
+
+                                    >Delete</button>
+                            </div>
                               </div>
-                            </Card>
+                              <div
+                                className="extra content"
+                                style={{
+                                  backgroundColor: '#606470',
+                                  color: 'White',
+                                  borderWidth: '0px',
+                                }}
+                                onClick={this.clicked.bind(this,demo.id,demo.user_id)}
+                              >
+                                <span>Demo</span> <Icon type="rocket" />
+                              </div>
+                            </div>
                           </Col>
                         ))}
                       </Row>
+                      <br/>
+                      <br/>
                     </div>
                   ))}
                 </Row>

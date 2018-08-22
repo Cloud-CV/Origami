@@ -1,16 +1,23 @@
+.nav-side{
+  font-size: 1.2em;
+  font-family: 'Roboto', sans-serif;
+  color: blue;
+}
 
 #layout {
-  background: #FEFEFE;
+  background: #FFFFFF;
 }
 
 #layout-header {
-  background: #FEFEFE; 
+  background: #FFFFFF; 
   padding: 0; 
   box-shadow: 0px 2px 5px #E0E0E0;
 }
 
 #logo-title{
   margin-top: 15px;
+  font-size: 1.8em;
+  font-family: 'Roboto', sans-serif;
   
 }
 .follow{
@@ -163,3 +170,36 @@ Licensed under MIT
   padding: 3px;
   background: #fff;
 }
+
+
+.share-btn {
+    display: inline-block;
+    color: #ffffff;
+    border: none;
+    padding: 0.5em;
+    width: 4em;
+    outline: none;
+    text-align: center;
+    font-size: 1.1em;
+    
+}
+
+.share-btn:hover {
+  color: #eeeeee;
+}
+
+.share-btn:active {
+  position: relative;
+  top: 2px;
+  box-shadow: none;
+  color: #e2e2e2;
+  outline: none;
+}
+
+.sample:hover{
+  background-color: #FFFFFF;
+}
+
+
+
+

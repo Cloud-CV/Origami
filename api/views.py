@@ -20,7 +20,18 @@ import datetime
 import json
 from collections import OrderedDict
 import sys
-
+from django.views.decorators.csrf import csrf_exempt
+from pprint import pprint
+import ast
+from django.utils.encoding import smart_unicode
+import zipfile
+import StringIO
+import wget
+import md5
+from shutil import copyfile
+import requests
+import datetime
+import shutil
 
 class DemoViewSet(ModelViewSet):
     """
@@ -147,6 +158,8 @@ def is_cloudcv(request):
     settings = RootSettings.objects.all().first()
     serialize = RootSettingsSerializer(settings)
     return Response(serialize.data, status=response_status.HTTP_200_OK)
+
+
 
 
 @api_view(['GET'])
@@ -287,6 +300,94 @@ def alive(request):
     """Returns a status 200 if the server is running and 404 otherwise"""
     return HttpResponse(status=200)
 
+@api_view(['POST'])
+def bundleup(request,id,user_id):
+    file=request.FILES['file']
+    hash_=md5.new()
+    key=id+user_id
+    hash_.update(key)
+    hex=hash_.hexdigest()  
+    os.chdir(settings.MEDIA_ROOT+'bundles/') 
+    if os.path.exists(hex):
+        shutil.rmtree(hex) 
+    zf=zipfile.ZipFile(file)
+    zf.extractall(hex)
+    zf.close
+    ziph=zipfile.ZipFile(hex+'.zip', 'w', zipfile.ZIP_DEFLATED)
+    for root, dirs, files in os.walk(settings.MEDIA_ROOT+'bundles/'+hex):
+        for file in files:
+            ziph.write(os.path.join(root, file),os.path.basename(file))
+    ziph.close()
+    url='http://localhost:9002/deploy_trigger/'+id
+    data={"bundle_path":settings.MEDIA_ROOT+'bundles/'+hex+'.zip'}
+    r = requests.post(url = url, data = data)
+    data={'success':True}
+    return Response(data, status=response_status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def bundledown(request,id,user_id):
+    demo = Demo.objects.get(id=id, user_id=user_id)
+    _os=demo.os
+    cuda=demo.cuda
+    python=demo.python
+    tag=''
+    if(_os=="1"):
+        _os="ubuntu14.04"
+        tag=tag+'ub14.04'
+    else:
+        _os="ubuntu16.04"
+        tag=tag+'ub16.04'
+    tag=tag+'-'
+    if(python=="1"):
+        python="python2.7"
+        tag=tag+'py2.7'
+    else:
+        python="python3.5"
+        tag=tag+'py3.5'
+    tag=tag+'-'
+    if(cuda=="1"):
+        cuda="cuda7.0-runtime"
+        tag=tag+'cu7.0'
+    else:
+        cuda="cuda8.0-runtime"
+        tag=tag+'cu8.0'
+    url="https://raw.githubusercontent.com/Cloud-CV/Dockerfiles/master/"+_os+"/"+python+"/"+cuda+"/Dockerfile"
+    hash_=md5.new()
+    key=id+user_id
+    hash_.update(key)
+    hex=hash_.hexdigest()
+    directory=settings.MEDIA_ROOT+'bundles/'+hex
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+    docker_path=directory+'/Dockerfile'
+    if not os.path.exists(docker_path):
+        with open(settings.MEDIA_ROOT+'bundles/template/Dockerfile') as f:
+            lines = f.readlines()
+        lines[0]='FROM teamcloudcv/origami:'+tag
+        with open(docker_path, "w") as f:
+            f.writelines(lines)
+
+    os.chdir(settings.MEDIA_ROOT+'bundles/')
+    if not os.path.exists(hex+'/requirements.txt'):    
+        requirements=copyfile('template/requirements.txt', directory+'/requirements.txt')
+    if not os.path.exists(hex+'/origami.env'):
+        print("aaya")
+        f= open(hex+'/origami.env',"w+")    
+        f.close()
+    if not os.path.exists(hex+'/main.py'):  
+        main=copyfile('template/main.py', directory+'/main.py')
+
+    l=['/Dockerfile','/requirements.txt','/main.py','/origami.env']
+    zipped=zipfile.ZipFile(hex+'.zip','w')
+    for i in l: 
+        zipped.write(hex+i,os.path.basename(hex+i))
+    zipped.close()
+    file_path=settings.MEDIA_ROOT+'bundles/'+hex+'.zip'
+    resp=HttpResponse(open(file_path, 'rb'), content_type='application/zip')
+    return resp    
+
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def custom_demo_controller(request, user_id, id):
@@ -331,31 +432,40 @@ def custom_demo_controller(request, user_id, id):
             return Response(data, status=response_status.HTTP_200_OK)
     elif request.method == "POST":
         body = request.data
+
         name = body["name"]
         id = body["id"]
         user_id = body["user_id"]
-        address = body["address"]
+        username=SocialAccount.objects.get(uid=user_id)
+        username=username.user.username.encode('utf-8')
         description = body["description"]
-        footer_message = body["footer_message"]
         cover_image = body["cover_image"]
+        os = body["os"]
+        cuda = body["cuda"]
+        python = body["python"]
+        task = body["task"]
+        source = body["source"]
         if not cover_image:
             cover_image = DEFAULT_IMAGE
         terminal = body["terminal"]
-        timestamp = body["timestamp"]
-        token = body["token"]
-        status = body["status"]
+        date=datetime.datetime.now().strftime("%D")
+
         demo = Demo.objects.create(
             name=name,
             id=id,
+            username=username,
             user_id=user_id,
-            address=address,
             description=description,
-            footer_message=footer_message,
             cover_image=cover_image,
+            os=os,
+            python=python,
+            cuda=cuda,
             terminal=terminal,
-            timestamp=timestamp,
-            token=token,
-            status=status)
+            source_code=source,
+            task=task,
+            date=date
+            )
+
         serialize = DemoSerializer(demo)
         return Response(serialize.data, status=response_status.HTTP_201_CREATED)
 
@@ -403,71 +513,6 @@ def get_permalink(request, shorturl):
     return Response([serialize.data], status=response_status.HTTP_200_OK)
 
 
-@api_view(['GET', 'POST', 'PUT', 'DELETE'])
-def custom_permalink_controller(request, user_id, project_id):
-    """
-    Gets properties of, adds, updates, or deletes a Permalink
-    object given a GET, POST, PUT, or DELETE request respectively.
-
-    A GET request returns the Permalink corresponding to the
-    given user_id and project_id, if they are both specified.
-    A GET request returns all Permalink objects otherwise.
-
-    Keyword arguments:
-        user_id (str): The id of the user
-        project_id (str): The id of the project
-    """
-    if request.method == "GET":
-        if user_id and project_id:
-            try:
-                permalink = Permalink.objects.get(project_id=project_id, user_id=user_id)
-
-            except Exception:
-                return Response({"text": "Not Found"})
-            serialize = PermalinkSerializer(permalink)
-            return Response(serialize.data, status=response_status.HTTP_200_OK)
-        else:
-            try:
-                permalinks = Permalink.objects.all()
-
-            except Exception:
-                return Response({"text": "Not Found"})
-            serialize = PermalinkSerializer(permalinks, many=True)
-            return Response(serialize.data, status=response_status.HTTP_200_OK)
-
-    elif request.method == "POST":
-        body = request.data
-        short_relative_url = body["short_relative_url"]
-        full_relative_url = body["full_relative_url"]
-        project_id = body["project_id"]
-        user_id = body["user_id"]
-        permalink = Permalink.objects.create(
-            short_relative_url=short_relative_url,
-            full_relative_url=full_relative_url,
-            project_id=project_id,
-            user_id=user_id)
-        serialize = PermalinkSerializer(permalink)
-        return Response(serialize.data, status=response_status.HTTP_201_CREATED)
-
-    elif request.method == "PUT":
-        if user_id and project_id:
-            body = request.data
-            perm = Permalink.objects.get(user_id=user_id, project_id=project_id)
-            perm.short_relative_url = body["short_relative_url"]
-            perm.full_relative_url = body["full_relative_url"]
-            perm.save()
-            serialize = PermalinkSerializer(perm)
-            return Response(serialize.data, status=response_status.HTTP_200_OK)
-        else:
-            return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
-
-    elif request.method == "DELETE":
-        if user_id and project_id:
-            Permalink.objects.get(project_id=project_id, user_id=user_id).delete()
-            return Response({"removed": True}, status=response_status.HTTP_200_OK)
-        else:
-            return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
-    return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['GET', 'POST'])

@@ -24,7 +24,6 @@ import 'simple-line-icons/css/simple-line-icons.css';
 import 'font-awesome/css/font-awesome.min.css';
 import  Profile from './user/user_github_profile';
 
-
 const { Header, Content, Footer, Sider } = Layout;
 
 class App extends React.Component {
@@ -73,7 +72,6 @@ class App extends React.Component {
     } else {
       this.setState({ displayLogin: '' });
     }
-
     rootApi
       .checkRootSettings()
       .then(data => {
@@ -166,7 +164,7 @@ class App extends React.Component {
     return (
       <Layout
         id="layout"
-        style={{ height: '100vh', width: '100%', backgroundColor: '#F7F7F7' }}
+        style={{ height: '100vh', width: '100%'}}
       >
         {Routes}
       </Layout>
