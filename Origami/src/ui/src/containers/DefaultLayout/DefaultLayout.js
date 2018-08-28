@@ -28,6 +28,7 @@ constructor(props, context) {
   super(props, context);
 }
 
+
   render() {
       if(window.location.pathname==="/")
   {

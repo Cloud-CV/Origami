@@ -197,6 +197,10 @@ class HomePage extends React.Component {
     this.setState({ loaded: true });
     this.forceUpdate();
   }
+  Loaded() {
+    this.setState({ loaded: true });
+    this.forceUpdate();
+  }
 
   render() {
     const profile = this.state.profile;
@@ -277,7 +281,6 @@ class HomePage extends React.Component {
                                   {' '}
                                   {demo.username}{' '}
                                 </span>
-
                               </div>
                               <div class="small image">
                                 <img
