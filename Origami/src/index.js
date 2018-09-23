@@ -1,7 +1,6 @@
 /*eslint-disable  import/default */
 
 import "babel-polyfill";
-import injectTapEventPlugin from "react-tap-event-plugin";
 import React from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
@@ -23,7 +22,7 @@ require('font-awesome/css/font-awesome.css');
 import { LocaleProvider } from "antd";
 import enUS from "antd/lib/locale-provider/en_US";
 const store = configureStore();
-injectTapEventPlugin();
+
 
 const muiTheme = getMuiTheme({
   appBar: {
