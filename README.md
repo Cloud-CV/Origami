@@ -115,7 +115,7 @@ python manage.py migrate
 
 ## Contributing to Origami
 
-1. Make sure your run tests on your changes before you push the code using:
+1. Make sure you run tests on your changes before you push the code using:
 	* `python manage.py test`
 	* `yarn run test`
 
