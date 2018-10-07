@@ -324,7 +324,9 @@ class HomePage extends React.Component {
                       <br />
                     </div>
                   ))
-                ) :(
+
+                ) : (
+
                   <Col span={24} style={{ width: '100%' }}>
                     <h4> Demo not found. Try Searching for another demo</h4>
                   </Col>

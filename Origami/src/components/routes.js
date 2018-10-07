@@ -18,6 +18,7 @@ import NGHDemoPageComponent from "./deployment/UsePrebuiltProject/nghDemoPage";
 import NGHDemoFrameComponent from "./deployment/UsePrebuiltProject/nghDemoFrame";
 import DefaultLayout from "../ui/src/containers/DefaultLayout" 
 import Loadable from 'react-loadable'
+import InstructionsPage from './deployment/UsePrebuiltProject/instructionsPage'
 
 
 function Loading() {

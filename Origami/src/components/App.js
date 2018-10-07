@@ -74,6 +74,7 @@ class App extends React.Component {
       this.setState({ displayLogin: '' });
     }
 
+
     rootApi
       .checkRootSettings()
       .then(data => {
