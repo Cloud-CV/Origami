@@ -13,64 +13,69 @@ UNSUCCESS=0
 
 PYTHONFILES=$(find . -name "*.py" -type f)
 
-# Converts all python files
-
 echo ''
+read -p "$(echo -e $YELLOW"Do you want to convert all Python Files [y/n] "$WHITE)" CONVERTINPUT
 
-for i in $PYTHONFILES
-do
-  if 2to3 -w $i > /dev/null 2>&1;
-  then
-    echo $GREEN ✓ $i Converted $WHITE
-    (( SUCCESS=SUCCESS+1 ))
-  else
-    echo $RED ❌ $i Could not be Converted $WHITE
-    echo ''
-    echo $YELLOW Output: $WHITE
-    2to3 -w $i
-    echo ''
-    (( UNSUCCESS=UNSUCCESS+1 ))
+if [ "${CONVERTINPUT,,}" = "y" ] || [ "${CONVERTINPUT,,}" = "yes" ]
+then
+  # Converts all python files
+  for i in $PYTHONFILES
+  do
+    if 2to3 -w $i > /dev/null 2>&1; # No Output
+    then
+      echo $GREEN ✓ $i "Converted" $WHITE
+      (( SUCCESS=SUCCESS+1 ))
+    else
+      echo $RED ❌ $i "Could not be Converted" $WHITE
+      echo ''
+      echo $YELLOW Output: $WHITE
+      2to3 -w $i
+      echo ''
+      (( UNSUCCESS=UNSUCCESS+1 ))
+    fi
+  done
+
+  # Outputs how successful the conversions were
+  echo ''
+  if [ "${SUCCESS}" -gt 0 ] && [ "${UNSUCCESS}" != 0 ]; then
+    echo $GREEN $SUCCESS "Successful Conversions" $WHITE
+    echo $RED $UNSUCCESS "Unsucessful Conversions" $WHITE
   fi
-done
+  if [ "${SUCCESS}" == 0 ]; then
+    echo $RED "No Successful Conversions" $WHITE
+  fi
+  if [ "${UNSUCCESS}" == 0 ]; then
+    echo $GREEN "All Conversions Successful" $WHITE
+  fi
+  echo ''
 
-# Outputs how successful the conversions were
-
-echo ''
-if [ "${SUCCESS}" -gt 0 ] && [ "${UNSUCCESS}" != 0 ]; then
-  echo $GREEN $SUCCESS Successful Conversions $WHITE
-  echo $RED $UNSUCCESS Unsucessful Conversions $WHITE
+elif [ "${CONVERTINPUT,,}" = "n" ] || [ "${CONVERTINPUT,,}" = "no" ]
+then
+  echo "No Files Converted"
+else
+  echo "Invalid Input"
+  echo "No Files Converted"
 fi
-if [ "${SUCCESS}" == 0 ]; then
-  echo $RED No Successful Conversions $WHITE
-fi
-if [ "${UNSUCCESS}" == 0 ]; then
-  echo $GREEN All Conversions Successful $WHITE
-fi
-echo ''
-
-# Deletes backup files if asked to do so
 
 BACKUPFILES=$(find . -name "*.py.bak" -type f)
 DELETEDFILES=0
 
-echo $YELLOW Do you want to delete the backup files? [y/n] $WHITE
-read -r DELETEINPUT
-echo ''
+read -p "$(echo -e $YELLOW"Do you want to delete any Backup Files? [y/n] "$WHITE)" DELETEINPUT
 
 if [ "${DELETEINPUT,,}" = "y" ] || [ "${DELETEINPUT,,}" = "yes" ]
 then
   for i in $BACKUPFILES
   do
-    echo  $BLUE Deleting $i $WHITE
-    rm -rf $i
+    echo  $BLUE "Deleting" $i $WHITE
+    rm -rf $i # Deletes Backup Files
     (( DELETEDFILES=DELETEDFILES+1 ))
   done
 elif [ "${DELETEINPUT,,}" = "n" ] || [ "${DELETEINPUT,,}" = "no" ]
 then
-  echo $BLUE Backup Files Saved $WHITE
+  echo $BLUE "Backup Files Saved" $WHITE
 else
-  echo $RED Invalid Input $WHITE
+  echo $RED "Invalid Input" $WHITE
 fi
 
-echo $GREEN $DELETEDFILES Deleted
+echo $GREEN $DELETEDFILES "Deleted" $WHITE # Outputs how many files were deleted
 echo ''

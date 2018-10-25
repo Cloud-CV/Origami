@@ -1,4 +1,3 @@
-from django.template.response import TemplateResponse
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import detail_route
@@ -18,7 +17,6 @@ from rest_framework import status as response_status
 from api.constants import DEFAULT_IMAGE
 import datetime
 import json
-from collections import OrderedDict
 import sys
 
 
