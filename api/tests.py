@@ -31,11 +31,12 @@ class CustomDemoControllerViewTests(TestCase):
             "timestamp": datetime.datetime.now().isoformat(),
             "token": "token",
             "status": "input",
-            "username": "testname"
+            "username": "testname",
         }
 
         self.test_user = User.objects.create_user(
-            username=self.demo["username"], email="email@email.com", password="password")
+            username=self.demo["username"], email="email@email.com", password="password"
+        )
         # use the id assigned to test_user
         self.demo["user_id"] = self.test_user.id
         Demo.objects.create(
@@ -49,7 +50,8 @@ class CustomDemoControllerViewTests(TestCase):
             terminal=self.demo["terminal"],
             timestamp=self.demo["timestamp"],
             token=self.demo["token"],
-            status=self.demo["status"])
+            status=self.demo["status"],
+        )
         self.demo2 = {
             "name": "test2",
             "id": 999,
@@ -62,11 +64,14 @@ class CustomDemoControllerViewTests(TestCase):
             "timestamp": datetime.datetime.now().isoformat(),
             "token": "token2",
             "status": "input2",
-            "username": "testname2"
+            "username": "testname2",
         }
 
         self.test_user_2 = User.objects.create_user(
-            username=self.demo2["username"], email="email2@email.com", password="password2")
+            username=self.demo2["username"],
+            email="email2@email.com",
+            password="password2",
+        )
 
         # creating 2nd user
         self.demo2["user_id"] = self.test_user.id + 1
@@ -81,68 +86,83 @@ class CustomDemoControllerViewTests(TestCase):
             terminal=self.demo2["terminal"],
             timestamp=self.demo2["timestamp"],
             token=self.demo2["token"],
-            status=self.demo2["status"])
+            status=self.demo2["status"],
+        )
 
     def test_get_redir_user_demo(self):
         payload = {"user": {"username": self.demo["username"]}}
         self.client.login(username=payload["user"]["username"], password="password")
-        sapp = SocialApp(provider='github', name='Github', client_id='<test>', secret='<test>')
+        sapp = SocialApp(
+            provider="github", name="Github", client_id="<test>", secret="<test>"
+        )
         sapp.save()
         sacc = SocialAccount(uid=1001, user=self.test_user, provider="github")
         sacc.save()
         stoken = SocialToken(app=sapp, account=sacc, token="test_token")
         stoken.save()
-        response = self.client.post('/accounts/profile', follow=True)
+        response = self.client.post("/accounts/profile", follow=True)
         first_url, first_response = response.redirect_chain[0]
-        self.assertEqual(first_url, "/login?status=passed&token=test_token&username=testname&user_id=1001")
+        self.assertEqual(
+            first_url,
+            "/login?status=passed&token=test_token&username=testname&user_id=1001",
+        )
         self.client.login(username=payload["user"]["username"], password="password")
         stoken = SocialToken(app=sapp, account=sacc, token="test_token")
         stoken.save()
-        response = self.client.post('/accounts/profile', follow=True)
+        response = self.client.post("/accounts/profile", follow=True)
         first_url, first_response = response.redirect_chain[0]
-        self.assertEqual(first_url, "/login?status=passed&token=test_token&username=testname&user_id=1001")
+        self.assertEqual(
+            first_url,
+            "/login?status=passed&token=test_token&username=testname&user_id=1001",
+        )
 
     def test_get_all_user_demos(self):
-        response = self.client.get('/api/demo/user/%d' % (self.demo["user_id"]))
-        responses = json.loads(response.content.decode('utf-8'))
+        response = self.client.get("/api/demo/user/%d" % (self.demo["user_id"]))
+        responses = json.loads(response.content.decode("utf-8"))
         response = responses[0]
         self.assertEqual(response["id"], self.demo["id"])
         self.assertEqual(response["user_id"], self.demo["user_id"])
-        response = self.client.get('/api/demo/user/%d' % (1000000001))
+        response = self.client.get("/api/demo/user/%d" % (1000000001))
         self.assertEqual(response.status_code, 200)
 
     def test_get_all_demos_by_name(self):
-        response = self.client.get('/api/demos/', {'search_by': 'demo', 'search_term': self.demo["name"]})
-        responses = json.loads(response.content.decode('utf-8'))
+        response = self.client.get(
+            "/api/demos/", {"search_by": "demo", "search_term": self.demo["name"]}
+        )
+        responses = json.loads(response.content.decode("utf-8"))
         self.assertEqual(len(responses), 2)
         response = responses[0]
         self.assertEqual(response["id"], self.demo["id"])
         self.assertEqual(response["user_id"], self.demo["user_id"])
 
     def test_get_all_demos_by_username(self):
-        response = self.client.get('/api/demos/', {'search_term': self.demo["username"]})
-        responses = json.loads(response.content.decode('utf-8'))
+        response = self.client.get(
+            "/api/demos/", {"search_term": self.demo["username"]}
+        )
+        responses = json.loads(response.content.decode("utf-8"))
         response = responses[0]
         self.assertEqual(response["id"], self.demo["id"])
         self.assertEqual(response["user_id"], self.demo["user_id"])
 
     def test_get_all_demos_none_search_term(self):
-        response = self.client.get('/api/demos/', {'search_by': 'demo', 'search_term': 'not_exist'})
-        responses = json.loads(response.content.decode('utf-8'))
+        response = self.client.get(
+            "/api/demos/", {"search_by": "demo", "search_term": "not_exist"}
+        )
+        responses = json.loads(response.content.decode("utf-8"))
         self.assertEqual(len(responses), 0)
 
     def test_get_all_demos_none_search_by_none_search_term(self):
-        response = self.client.get('/api/demos/')
-        responses = json.loads(response.content.decode('utf-8'))
+        response = self.client.get("/api/demos/")
+        responses = json.loads(response.content.decode("utf-8"))
         self.assertEqual(len(responses), 0)
 
     def test_get_one_demo_with_id(self):
         payload = self.demo
-        url = '/api/demo/' + str(payload["user_id"]) + '/' + str(payload["id"])
+        url = "/api/demo/" + str(payload["user_id"]) + "/" + str(payload["id"])
         responses = self.client.get(url)
         # It returns a list containing a single demo object belonging to that
         # particular id
-        response = json.loads(responses.content.decode('utf-8'))[0]
+        response = json.loads(responses.content.decode("utf-8"))[0]
         self.assertEqual(response["name"], payload["name"])
         self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["user_id"], payload["user_id"])
@@ -157,22 +177,23 @@ class CustomDemoControllerViewTests(TestCase):
     def test_get_demo_with_Sample_inputs(self):
 
         payload = self.demo
-        with open('api/sample_image.png', 'rb') as f:
-            response1 = self.client.post("/upload_sample_input", {"demo_id": self.demo["id"], "sample-image": f})
-            url = '/api/demo/' + \
-                str(payload["user_id"]) + '/' + str(payload["id"])
+        with open("api/sample_image.png", "rb") as f:
+            response1 = self.client.post(
+                "/upload_sample_input", {"demo_id": self.demo["id"], "sample-image": f}
+            )
+            url = "/api/demo/" + str(payload["user_id"]) + "/" + str(payload["id"])
             response = self.client.get(url)
-            response = json.loads(response.content.decode('utf-8'))
-            response1 = json.loads(response1.content.decode('utf-8'))
+            response = json.loads(response.content.decode("utf-8"))
+            response1 = json.loads(response1.content.decode("utf-8"))
 
             self.assertEqual(response[0]["sampleinput"], response1)
 
     def test_get_one_demo_without_id(self):
         payload = self.demo
-        url = '/api/demo/' + str(payload["user_id"]) + '/' + str(None)
+        url = "/api/demo/" + str(payload["user_id"]) + "/" + str(None)
         responses = self.client.get(url)
         # It returns a list containing all the demo of that user
-        response = json.loads(responses.content.decode('utf-8'))[0]
+        response = json.loads(responses.content.decode("utf-8"))[0]
         self.assertEqual(response["name"], payload["name"])
         self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["user_id"], payload["user_id"])
@@ -187,10 +208,12 @@ class CustomDemoControllerViewTests(TestCase):
     def test_get_one_demo_without_id_and_userid(self):
         payload = self.demo
         payload2 = self.demo2  # so now there are 2 different demo of 2 diff users
-        url = '/api/demo/' + str(None) + '/' + str(None)
+        url = "/api/demo/" + str(None) + "/" + str(None)
         responses = self.client.get(url)
         # It returns a list containing all the demos preset in the database
-        response = json.loads(responses.content.decode('utf-8'))[0]  # returns 1st demo config
+        response = json.loads(responses.content.decode("utf-8"))[
+            0
+        ]  # returns 1st demo config
         self.assertEqual(response["name"], payload["name"])
         self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["user_id"], payload["user_id"])
@@ -202,7 +225,9 @@ class CustomDemoControllerViewTests(TestCase):
         self.assertEqual(response["token"], payload["token"])
         self.assertEqual(response["status"], payload["status"])
 
-        response2 = json.loads(responses.content.decode('utf-8'))[1]  # return second user config
+        response2 = json.loads(responses.content.decode("utf-8"))[
+            1
+        ]  # return second user config
         self.assertEqual(response2["name"], payload2["name"])
         self.assertEqual(response2["id"], payload2["id"])
         self.assertEqual(response2["user_id"], payload2["user_id"])
@@ -217,10 +242,9 @@ class CustomDemoControllerViewTests(TestCase):
     def test_demo_not_found(self):
         payload = self.demo
         payload2 = self.demo2
-        url = '/api/demo/' + \
-            str(payload["user_id"]) + '/' + str(payload2["id"])
+        url = "/api/demo/" + str(payload["user_id"]) + "/" + str(payload2["id"])
         responses = self.client.get(url)
-        response = json.loads(responses.content.decode('utf-8'))
+        response = json.loads(responses.content.decode("utf-8"))
         self.assertEqual(response["text"], "Not Found")
 
     def test_create_demo(self):
@@ -235,10 +259,12 @@ class CustomDemoControllerViewTests(TestCase):
             "terminal": True,
             "timestamp": datetime.datetime.now().isoformat(),
             "token": "nongh",
-            "status": "input"
+            "status": "input",
         }
-        response = self.client.post('/api/demo/100', json.dumps(payload), content_type="application/json")
-        response = json.loads(response.content.decode('utf-8'))
+        response = self.client.post(
+            "/api/demo/100", json.dumps(payload), content_type="application/json"
+        )
+        response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response["name"], payload["name"])
         self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["user_id"], payload["user_id"])
@@ -253,9 +279,11 @@ class CustomDemoControllerViewTests(TestCase):
     def test_put_demo(self):
         payload = self.demo
         payload["name"] = "Not Test"
-        url = '/api/demo/' + str(payload["user_id"]) + '/' + str(payload["id"])
-        response = self.client.put(url, json.dumps(payload), content_type="application/json")
-        response = json.loads(response.content.decode('utf-8'))
+        url = "/api/demo/" + str(payload["user_id"]) + "/" + str(payload["id"])
+        response = self.client.put(
+            url, json.dumps(payload), content_type="application/json"
+        )
+        response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response["name"], payload["name"])
         self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["user_id"], payload["user_id"])
@@ -271,9 +299,11 @@ class CustomDemoControllerViewTests(TestCase):
         payload = self.demo
         payload["name"] = "Not Test"
         payload["cover_image"] = ""
-        url = '/api/demo/' + str(payload["user_id"]) + '/' + str(payload["id"])
-        response = self.client.put(url, json.dumps(payload), content_type="application/json")
-        response = json.loads(response.content.decode('utf-8'))
+        url = "/api/demo/" + str(payload["user_id"]) + "/" + str(payload["id"])
+        response = self.client.put(
+            url, json.dumps(payload), content_type="application/json"
+        )
+        response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response["name"], payload["name"])
         self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["user_id"], payload["user_id"])
@@ -289,23 +319,25 @@ class CustomDemoControllerViewTests(TestCase):
         payload = self.demo
         payload["name"] = "Not Test"
         payload["cover_image"] = ""
-        url = '/api/demo/'
-        response = self.client.put(url, json.dumps(payload), content_type="application/json")
-        response = json.loads(response.content.decode('utf-8'))
+        url = "/api/demo/"
+        response = self.client.put(
+            url, json.dumps(payload), content_type="application/json"
+        )
+        response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response, "Invalid URL")
 
     def test_delete_demo(self):
         payload = self.demo
-        url = '/api/demo/' + str(payload["user_id"]) + '/' + str(payload["id"])
+        url = "/api/demo/" + str(payload["user_id"]) + "/" + str(payload["id"])
         response = self.client.delete(url)
-        response = json.loads(response.content.decode('utf-8'))
+        response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response["removed"], True)
 
     def test_delete_without_id_and_user_id(self):
         payload = self.demo
-        url = '/api/demo/'
+        url = "/api/demo/"
         response = self.client.delete(url)
-        response = json.loads(response.content.decode('utf-8'))
+        response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response, "Invalid URL")
 
 
@@ -323,7 +355,7 @@ class CustomComponentControllerTests(TestCase):
             "terminal": True,
             "timestamp": datetime.datetime.now().isoformat(),
             "token": "token",
-            "status": "input"
+            "status": "input",
         }
         self.demo_object = Demo.objects.create(
             name=self.demo["name"],
@@ -336,14 +368,15 @@ class CustomComponentControllerTests(TestCase):
             terminal=self.demo["terminal"],
             timestamp=self.demo["timestamp"],
             token=self.demo["token"],
-            status=self.demo["status"])
+            status=self.demo["status"],
+        )
 
         self.input_component = {
             "id": self.demo_object.id,
             "base_component_id": 1,
             "props": json.dumps([{}]),
             "user_id": 99,
-            "demo": self.demo_object
+            "demo": self.demo_object,
         }
 
         self.input_component_object = InputComponent.objects.create(
@@ -351,14 +384,15 @@ class CustomComponentControllerTests(TestCase):
             base_component_id=self.input_component["base_component_id"],
             props=self.input_component["props"],
             user_id=self.input_component["user_id"],
-            demo=self.input_component["demo"])
+            demo=self.input_component["demo"],
+        )
 
         self.output_component = {
             "id": self.demo_object.id,
             "base_component_id": 1,
             "props": json.dumps([{}]),
             "user_id": 99,
-            "demo": self.demo_object
+            "demo": self.demo_object,
         }
 
         self.output_component_object = OutputComponent.objects.create(
@@ -366,29 +400,31 @@ class CustomComponentControllerTests(TestCase):
             base_component_id=self.input_component["base_component_id"],
             props=self.input_component["props"],
             user_id=self.input_component["user_id"],
-            demo=self.input_component["demo"])
+            demo=self.input_component["demo"],
+        )
 
     def test_get_one_input_component(self):
         payload = self.input_component
-        url = '/api/inputcomponent/' + \
-            str(payload["user_id"]) + '/' + str(payload["id"])
+        url = (
+            "/api/inputcomponent/" + str(payload["user_id"]) + "/" + str(payload["id"])
+        )
         responses = self.client.get(url)
         # It returns a list containing a single demo object
-        response = json.loads(responses.content.decode('utf-8'))[0]
+        response = json.loads(responses.content.decode("utf-8"))[0]
         self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["base_component_id"], payload["base_component_id"])
         self.assertEqual(json.dumps(response["props"]), payload["props"])
         self.assertEqual(response["user_id"], payload["user_id"])
-        url = '/api/inputcomponent/101/99'
+        url = "/api/inputcomponent/101/99"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_get_all_input_component_one_user(self):
         payload = self.input_component
-        url = '/api/inputcomponent/' + str(payload["user_id"])
+        url = "/api/inputcomponent/" + str(payload["user_id"])
         responses = self.client.get(url)
         # It returns a list containing a single demo object
-        response = json.loads(responses.content.decode('utf-8'))[0]
+        response = json.loads(responses.content.decode("utf-8"))[0]
         self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["base_component_id"], payload["base_component_id"])
         self.assertEqual(json.dumps(response["props"]), payload["props"])
@@ -398,10 +434,7 @@ class CustomComponentControllerTests(TestCase):
         payload = {
             "id": 500,
             "base_component_id": 2,
-            "props": [{
-                "id": "1",
-                "label": "label"
-            }],
+            "props": [{"id": "1", "label": "label"}],
             "user_id": 100,
         }
         Demo.objects.create(
@@ -415,22 +448,20 @@ class CustomComponentControllerTests(TestCase):
             terminal=self.demo["terminal"],
             timestamp=self.demo["timestamp"],
             token=self.demo["token"],
-            status=self.demo["status"])
-        url = '/api/inputcomponent/'
-        response = self.client.post(url, json.dumps(payload), content_type="application/json")
-        response = json.loads(response.content.decode('utf-8'))
+            status=self.demo["status"],
+        )
+        url = "/api/inputcomponent/"
+        response = self.client.post(
+            url, json.dumps(payload), content_type="application/json"
+        )
+        response = json.loads(response.content.decode("utf-8"))
         response["props"] = json.loads(response["props"])
         self.assertEqual(response["base_component_id"], payload["base_component_id"])
         self.assertEqual(response["props"], payload["props"])
         self.assertEqual(response["user_id"], payload["user_id"])
 
     def test_create_input_component_with_no_props(self):
-        payload = {
-            "id": 500,
-            "base_component_id": 2,
-            "props": [{}],
-            "user_id": 100,
-        }
+        payload = {"id": 500, "base_component_id": 2, "props": [{}], "user_id": 100}
         Demo.objects.create(
             name=self.demo["name"],
             id="500",
@@ -442,11 +473,14 @@ class CustomComponentControllerTests(TestCase):
             terminal=self.demo["terminal"],
             timestamp=self.demo["timestamp"],
             token=self.demo["token"],
-            status=self.demo["status"])
-        url = '/api/inputcomponent/'
-        response = self.client.post(url, json.dumps(payload), content_type="application/json")
-        response = json.loads(response.content.decode('utf-8'))
-        props = json.loads(response["props"].encode("ascii", "ignore").decode('utf8'))
+            status=self.demo["status"],
+        )
+        url = "/api/inputcomponent/"
+        response = self.client.post(
+            url, json.dumps(payload), content_type="application/json"
+        )
+        response = json.loads(response.content.decode("utf-8"))
+        props = json.loads(response["props"].encode("ascii", "ignore").decode("utf8"))
 
         self.assertEqual(props, payload["props"])
         self.assertEqual(response["user_id"], payload["user_id"])
@@ -456,10 +490,13 @@ class CustomComponentControllerTests(TestCase):
         payload["base_component_id"] = 3
         payload["props"] = [{"id": "1", "label": ""}]
         payload.pop("demo", None)
-        url = '/api/inputcomponent/' + \
-            str(payload["user_id"]) + '/' + str(payload["id"])
-        response = self.client.put(url, json.dumps(payload), content_type="application/json")
-        response = json.loads(response.content.decode('utf-8'))
+        url = (
+            "/api/inputcomponent/" + str(payload["user_id"]) + "/" + str(payload["id"])
+        )
+        response = self.client.put(
+            url, json.dumps(payload), content_type="application/json"
+        )
+        response = json.loads(response.content.decode("utf-8"))
         response["props"] = json.loads(response["props"])
         self.assertEqual(response["base_component_id"], payload["base_component_id"])
         self.assertEqual(response["props"], payload["props"])
@@ -470,33 +507,37 @@ class CustomComponentControllerTests(TestCase):
         payload["base_component_id"] = 3
         payload["props"] = [{"id": "1", "label": ""}]
         payload.pop("demo", None)
-        url = '/api/inputcomponent/'
-        response = self.client.put(url, json.dumps(payload), content_type="application/json")
-        response = json.loads(response.content.decode('utf-8'))
+        url = "/api/inputcomponent/"
+        response = self.client.put(
+            url, json.dumps(payload), content_type="application/json"
+        )
+        response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response, "Invalid URL")
 
     def test_delete_input_component(self):
         payload = self.input_component
-        url = '/api/inputcomponent/' + \
-            str(payload["user_id"]) + '/' + str(payload["id"])
+        url = (
+            "/api/inputcomponent/" + str(payload["user_id"]) + "/" + str(payload["id"])
+        )
         response = self.client.delete(url)
-        response = json.loads(response.content.decode('utf-8'))
+        response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response["removed"], True)
 
     def test_delete_without_id_and_userid(self):
         payload = self.input_component
-        url = '/api/inputcomponent/'
+        url = "/api/inputcomponent/"
         response = self.client.delete(url)
-        response = json.loads(response.content.decode('utf-8'))
+        response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response, "Invalid URL")
 
     def test_get_one_output_component(self):
         payload = self.output_component
-        url = '/api/outputcomponent/' + \
-            str(payload["user_id"]) + '/' + str(payload["id"])
+        url = (
+            "/api/outputcomponent/" + str(payload["user_id"]) + "/" + str(payload["id"])
+        )
         responses = self.client.get(url)
         # It returns a list containing a single demo object
-        response = json.loads(responses.content.decode('utf-8'))[0]
+        response = json.loads(responses.content.decode("utf-8"))[0]
         self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["base_component_id"], payload["base_component_id"])
         self.assertEqual(json.dumps(response["props"]), payload["props"])
@@ -504,10 +545,10 @@ class CustomComponentControllerTests(TestCase):
 
     def test_get_all_output_component_one_user(self):
         payload = self.output_component
-        url = '/api/outputcomponent/' + str(payload["user_id"])
+        url = "/api/outputcomponent/" + str(payload["user_id"])
         responses = self.client.get(url)
         # It returns a list containing a single demo object
-        response = json.loads(responses.content.decode('utf-8'))[0]
+        response = json.loads(responses.content.decode("utf-8"))[0]
         self.assertEqual(response["id"], payload["id"])
         self.assertEqual(response["base_component_id"], payload["base_component_id"])
         self.assertEqual(json.dumps(response["props"]), payload["props"])
@@ -515,19 +556,16 @@ class CustomComponentControllerTests(TestCase):
 
     def test_output_component_with_no_userid(self):
         payload = self.output_component
-        url = '/api/outputcomponent/'
+        url = "/api/outputcomponent/"
         responses = self.client.get(url)
-        response = json.loads(responses.content.decode('utf-8'))
+        response = json.loads(responses.content.decode("utf-8"))
         self.assertEqual(response, "Invalid URL")
 
     def test_create_output_component(self):
         payload = {
             "id": 500,
             "base_component_id": 2,
-            "props": [{
-                "id": "1",
-                "label": "label"
-            }],
+            "props": [{"id": "1", "label": "label"}],
             "user_id": 100,
         }
         Demo.objects.create(
@@ -541,10 +579,13 @@ class CustomComponentControllerTests(TestCase):
             terminal=self.demo["terminal"],
             timestamp=self.demo["timestamp"],
             token=self.demo["token"],
-            status=self.demo["status"])
-        url = '/api/outputcomponent/'
-        response = self.client.post(url, json.dumps(payload), content_type="application/json")
-        response = json.loads(response.content.decode('utf-8'))
+            status=self.demo["status"],
+        )
+        url = "/api/outputcomponent/"
+        response = self.client.post(
+            url, json.dumps(payload), content_type="application/json"
+        )
+        response = json.loads(response.content.decode("utf-8"))
         response["props"] = json.loads(response["props"])
         self.assertEqual(response["base_component_id"], payload["base_component_id"])
         self.assertEqual(response["props"], payload["props"])
@@ -555,10 +596,13 @@ class CustomComponentControllerTests(TestCase):
         payload["base_component_id"] = 3
         payload["props"] = [{"id": "3", "label": ""}]
         payload.pop("demo", None)
-        url = '/api/outputcomponent/' + \
-            str(payload["user_id"]) + '/' + str(payload["id"])
-        response = self.client.put(url, json.dumps(payload), content_type="application/json")
-        response = json.loads(response.content.decode('utf-8'))
+        url = (
+            "/api/outputcomponent/" + str(payload["user_id"]) + "/" + str(payload["id"])
+        )
+        response = self.client.put(
+            url, json.dumps(payload), content_type="application/json"
+        )
+        response = json.loads(response.content.decode("utf-8"))
         response["props"] = json.loads(response["props"])
         self.assertEqual(response["base_component_id"], payload["base_component_id"])
         self.assertEqual(response["props"], payload["props"])
@@ -569,10 +613,13 @@ class CustomComponentControllerTests(TestCase):
         payload["base_component_id"] = 3
         payload["props"] = [{}]
         payload.pop("demo", None)
-        url = '/api/outputcomponent/' + \
-            str(payload["user_id"]) + '/' + str(payload["id"])
-        response = self.client.put(url, json.dumps(payload), content_type="application/json")
-        response = json.loads(response.content.decode('utf-8'))
+        url = (
+            "/api/outputcomponent/" + str(payload["user_id"]) + "/" + str(payload["id"])
+        )
+        response = self.client.put(
+            url, json.dumps(payload), content_type="application/json"
+        )
+        response = json.loads(response.content.decode("utf-8"))
         response["props"] = json.loads(response["props"])
         self.assertEqual(response["base_component_id"], payload["base_component_id"])
         self.assertEqual(response["props"], payload["props"])
@@ -580,10 +627,11 @@ class CustomComponentControllerTests(TestCase):
 
     def test_delete_output_component(self):
         payload = self.output_component
-        url = '/api/outputcomponent/' + \
-            str(payload["user_id"]) + '/' + str(payload["id"])
+        url = (
+            "/api/outputcomponent/" + str(payload["user_id"]) + "/" + str(payload["id"])
+        )
         response = self.client.delete(url)
-        response = json.loads(response.content.decode('utf-8'))
+        response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response["removed"], True)
 
 
@@ -593,21 +641,22 @@ class CustomPermalinkControllerTests(TestCase):
             "short_relative_url": "/p/1az",
             "full_relative_url": "/qwerty/zxcvb/demo",
             "project_id": 20,
-            "user_id": 20
+            "user_id": 20,
         }
         Permalink.objects.create(
             short_relative_url=self.permalink["short_relative_url"],
             full_relative_url=self.permalink["full_relative_url"],
             project_id=self.permalink["project_id"],
-            user_id=self.permalink["user_id"])
+            user_id=self.permalink["user_id"],
+        )
 
     def test_getpermalink_fn(self):
         payload = self.permalink
-        payload["short_relative_url"] = payload["short_relative_url"].split('/')[-1]
-        url = '/api/getpermalink/' + payload["short_relative_url"]
+        payload["short_relative_url"] = payload["short_relative_url"].split("/")[-1]
+        url = "/api/getpermalink/" + payload["short_relative_url"]
         responses = self.client.get(url)
         # It returns a list containing a single demo object
-        response = json.loads(responses.content.decode('utf-8'))[0]
+        response = json.loads(responses.content.decode("utf-8"))[0]
         self.assertEqual(response["user_id"], payload["user_id"])
         self.assertEqual(response["project_id"], payload["project_id"])
         self.assertEqual(response["short_relative_url"], payload["short_relative_url"])
@@ -616,17 +665,21 @@ class CustomPermalinkControllerTests(TestCase):
     def test_getpermalink_text_not_found(self):
         payload = self.permalink
         payload["short_relative_url"] = "abchdafwf"
-        url = '/api/getpermalink/' + payload["short_relative_url"]
+        url = "/api/getpermalink/" + payload["short_relative_url"]
         responses = self.client.get(url)
-        responses = json.loads(responses.content.decode('utf-8'))
+        responses = json.loads(responses.content.decode("utf-8"))
         self.assertEqual(responses["text"], "Not Found")
 
     def test_get_one_permalink(self):
         payload = self.permalink
-        url = '/api/permalink/' + \
-            str(payload["user_id"]) + '/' + str(payload["project_id"])
+        url = (
+            "/api/permalink/"
+            + str(payload["user_id"])
+            + "/"
+            + str(payload["project_id"])
+        )
         response = self.client.get(url)
-        response = json.loads(response.content.decode('utf-8'))
+        response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response["user_id"], payload["user_id"])
         self.assertEqual(response["project_id"], payload["project_id"])
         self.assertEqual(response["short_relative_url"], payload["short_relative_url"])
@@ -634,17 +687,16 @@ class CustomPermalinkControllerTests(TestCase):
 
     def test_get_permalink_text_not_found(self):
         payload = self.permalink
-        url = '/api/permalink/' + \
-            str(payload["user_id"]) + '/' + str(58)
+        url = "/api/permalink/" + str(payload["user_id"]) + "/" + str(58)
         response = self.client.get(url)
-        response = json.loads(response.content.decode('utf-8'))
+        response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response["text"], "Not Found")
 
     def test_get_all_user_permalink(self):
         payload = self.permalink
-        url = '/api/permalink/' + str(payload["user_id"])
+        url = "/api/permalink/" + str(payload["user_id"])
         responses = self.client.get(url)
-        response = json.loads(responses.content.decode('utf-8'))[0]
+        response = json.loads(responses.content.decode("utf-8"))[0]
         self.assertEqual(response["user_id"], payload["user_id"])
         self.assertEqual(response["project_id"], payload["project_id"])
         self.assertEqual(response["short_relative_url"], payload["short_relative_url"])
@@ -655,11 +707,13 @@ class CustomPermalinkControllerTests(TestCase):
             "short_relative_url": "/p/ppoqw",
             "full_relative_url": "/asdfgh/lkjh/demo",
             "project_id": 10,
-            "user_id": 10
+            "user_id": 10,
         }
-        url = '/api/permalink/'
-        response = self.client.post(url, json.dumps(payload), content_type="application/json")
-        response = json.loads(response.content.decode('utf-8'))
+        url = "/api/permalink/"
+        response = self.client.post(
+            url, json.dumps(payload), content_type="application/json"
+        )
+        response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response["user_id"], payload["user_id"])
         self.assertEqual(response["project_id"], payload["project_id"])
         self.assertEqual(response["short_relative_url"], payload["short_relative_url"])
@@ -667,11 +721,17 @@ class CustomPermalinkControllerTests(TestCase):
 
     def test_modify_permalink(self):
         payload = self.permalink
-        payload["short_relative_url"] = '/p/qazxsw'
-        url = '/api/permalink/' + \
-            str(payload["user_id"]) + '/' + str(payload["project_id"])
-        response = self.client.put(url, json.dumps(payload), content_type="application/json")
-        response = json.loads(response.content.decode('utf-8'))
+        payload["short_relative_url"] = "/p/qazxsw"
+        url = (
+            "/api/permalink/"
+            + str(payload["user_id"])
+            + "/"
+            + str(payload["project_id"])
+        )
+        response = self.client.put(
+            url, json.dumps(payload), content_type="application/json"
+        )
+        response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response["user_id"], payload["user_id"])
         self.assertEqual(response["project_id"], payload["project_id"])
         self.assertEqual(response["short_relative_url"], payload["short_relative_url"])
@@ -679,18 +739,24 @@ class CustomPermalinkControllerTests(TestCase):
 
     def test_modify_permalink_text_not_found(self):
         payload = self.permalink
-        payload["short_relative_url"] = '/p/qazxsw'
-        url = '/api/permalink/'
-        response = self.client.put(url, json.dumps(payload), content_type="application/json")
-        response = json.loads(response.content.decode('utf-8'))
+        payload["short_relative_url"] = "/p/qazxsw"
+        url = "/api/permalink/"
+        response = self.client.put(
+            url, json.dumps(payload), content_type="application/json"
+        )
+        response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response, "Invalid URL")
 
     def test_delete_permalink(self):
         payload = self.permalink
-        url = '/api/permalink/' + \
-            str(payload["user_id"]) + '/' + str(payload["project_id"])
+        url = (
+            "/api/permalink/"
+            + str(payload["user_id"])
+            + "/"
+            + str(payload["project_id"])
+        )
         response = self.client.delete(url)
-        response = json.loads(response.content.decode('utf-8'))
+        response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response["removed"], True)
 
 
@@ -708,7 +774,7 @@ class CustomUploadSampleInputControllerTests(TestCase):
             "terminal": True,
             "timestamp": datetime.datetime.now().isoformat(),
             "token": "token",
-            "status": "input"
+            "status": "input",
         }
         Demo.objects.create(
             name=self.demo["name"],
@@ -721,17 +787,22 @@ class CustomUploadSampleInputControllerTests(TestCase):
             terminal=self.demo["terminal"],
             timestamp=self.demo["timestamp"],
             token=self.demo["token"],
-            status=self.demo["status"])
+            status=self.demo["status"],
+        )
 
     def test_upload_sample_input_nofile(self):
-        response = self.client.post("/upload_sample_input", {"demo_id": self.demo["id"]})
-        self.assertContains(response, '', None, 200)
+        response = self.client.post(
+            "/upload_sample_input", {"demo_id": self.demo["id"]}
+        )
+        self.assertContains(response, "", None, 200)
 
     def test_upload_sample_input(self):
-        with open('api/sample_image.png', 'rb') as f:
-            response = self.client.post("/upload_sample_input", {"demo_id": self.demo["id"], "sample-image": f})
-            self.assertContains(response, '', None, 200)
-            response = json.loads(response.content.decode('utf-8'))
+        with open("api/sample_image.png", "rb") as f:
+            response = self.client.post(
+                "/upload_sample_input", {"demo_id": self.demo["id"], "sample-image": f}
+            )
+            self.assertContains(response, "", None, 200)
+            response = json.loads(response.content.decode("utf-8"))
             response = response[0]
             self.assertEqual(int(response["type_of_input"]), 3, str(dir(response)))
 
@@ -747,39 +818,45 @@ class CustomRootSettingsControllerClass(TestCase):
             "is_cloudcv": True,
             "allow_new_logins": True,
             "app_ip": "0.0.0.0",
-            "port": "80"
+            "port": "80",
         }
         RootSettings.objects.create(
             root_user_github_login_id=self.root_settings["root_user_github_login_id"],
-            root_user_github_login_name=self.root_settings["root_user_github_login_name"],
+            root_user_github_login_name=self.root_settings[
+                "root_user_github_login_name"
+            ],
             client_id=self.root_settings["client_id"],
             client_secret=self.root_settings["client_secret"],
             is_cloudcv=self.root_settings["is_cloudcv"],
             allow_new_logins=self.root_settings["allow_new_logins"],
             app_ip=self.root_settings["app_ip"],
-            port=self.root_settings["port"])
+            port=self.root_settings["port"],
+        )
 
     def test_get_root_settings(self):
-        response = self.client.get('/api/rootsettings')
-        response = json.loads(response.content.decode('utf-8'))
+        response = self.client.get("/api/rootsettings")
+        response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response["client_id"], self.root_settings["client_id"])
-        self.assertEqual(response["root_user_github_login_id"], self.root_settings["root_user_github_login_id"])
+        self.assertEqual(
+            response["root_user_github_login_id"],
+            self.root_settings["root_user_github_login_id"],
+        )
 
     def test_create_root_settings(self):
         # create social app for rootsetting object
-        response = self.client.post('/api/rootsettings', self.root_settings)
-        self.assertContains(response, '', None, 200)
+        response = self.client.post("/api/rootsettings", self.root_settings)
+        self.assertContains(response, "", None, 200)
         # updates rootsetting object
         changeID = "ClientID2"
         self.root_settings["client_id"] = changeID
-        response = self.client.post('/api/rootsettings', self.root_settings)
-        self.assertContains(response, '', None, 200)
-        response = json.loads(response.content.decode('utf-8'))
+        response = self.client.post("/api/rootsettings", self.root_settings)
+        self.assertContains(response, "", None, 200)
+        response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response["client_id"], changeID)
 
     def test_is_cloudcv(self):
-        response = self.client.get('/api/is_cloudcv/')
-        response = json.loads(response.content.decode('utf-8'))
+        response = self.client.get("/api/is_cloudcv/")
+        response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response["is_cloudcv"], self.root_settings["is_cloudcv"])
 
 
@@ -797,7 +874,7 @@ class DemoViewSetTests(TestCase):
             "terminal": True,
             "timestamp": datetime.datetime.now().isoformat(),
             "token": "token",
-            "status": "input"
+            "status": "input",
         }
 
         self.instance = Demo.objects.create(
@@ -811,20 +888,21 @@ class DemoViewSetTests(TestCase):
             terminal=self.demo["terminal"],
             timestamp=self.demo["timestamp"],
             token=self.demo["token"],
-            status=self.demo["status"])
+            status=self.demo["status"],
+        )
         self.input_component = {
             "id": 99,
             "base_component_id": 1,
             "props": json.dumps([{}]),
             "demo": self.instance,
-            "user_id": 99
+            "user_id": 99,
         }
         self.output_component = {
             "id": 99,
             "base_component_id": 1,
             "props": json.dumps([{}]),
             "demo": self.instance,
-            "user_id": 99
+            "user_id": 99,
         }
 
         self.input_component_object = InputComponent.objects.create(
@@ -832,72 +910,88 @@ class DemoViewSetTests(TestCase):
             base_component_id=self.input_component["base_component_id"],
             props=self.input_component["props"],
             user_id=self.input_component["user_id"],
-            demo=self.input_component["demo"])
+            demo=self.input_component["demo"],
+        )
         self.output_component_object = OutputComponent.objects.create(
             id=self.output_component["id"],
             base_component_id=self.output_component["base_component_id"],
             props=self.output_component["props"],
             user_id=self.output_component["user_id"],
-            demo=self.output_component["demo"])
+            demo=self.output_component["demo"],
+        )
 
     def test_Demo_View_Set(self):
         demo = self.demo
-        response = self.client.get('/api/demo-view/')
-        response = json.loads(response.content.decode('utf-8'))[0]
+        response = self.client.get("/api/demo-view/")
+        response = json.loads(response.content.decode("utf-8"))[0]
         self.assertEqual(response["id"], demo["id"])
         self.assertEqual(response["user_id"], demo["user_id"])
 
     def test_Input_Component_View_Set(self):
         input_component = self.input_component
-        response = self.client.get('/api/input-component/')
-        response = json.loads(response.content.decode('utf-8'))[0]
+        response = self.client.get("/api/input-component/")
+        response = json.loads(response.content.decode("utf-8"))[0]
         self.assertEqual(response["user_id"], input_component["user_id"])
         self.assertEqual(response["props"], input_component["props"])
-        self.assertEqual(response["base_component_id"], input_component["base_component_id"])
+        self.assertEqual(
+            response["base_component_id"], input_component["base_component_id"]
+        )
 
     def test_user_input_component(self):
         input_component = self.input_component
-        url = "/api/input-component/{}/user_input_component/{}/".format(input_component["base_component_id"],
-                                                                        input_component["user_id"])
+        url = "/api/input-component/{}/user_input_component/{}/".format(
+            input_component["base_component_id"], input_component["user_id"]
+        )
         response = self.client.get(url)
-        response = json.loads(response.content.decode('utf-8'))
+        response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response["user_id"], input_component["user_id"])
         self.assertEqual(response["props"], input_component["props"])
-        self.assertEqual(response["base_component_id"], input_component["base_component_id"])
+        self.assertEqual(
+            response["base_component_id"], input_component["base_component_id"]
+        )
 
     def test_user_input_component_404(self):
         input_component = self.input_component
-        url = "/api/input-component/{}/user_input_component/{}/".format(input_component["base_component_id"], 12345)
+        url = "/api/input-component/{}/user_input_component/{}/".format(
+            input_component["base_component_id"], 12345
+        )
         response = self.client.get(url)
         status = response.status_code
-        response = json.loads(response.content.decode('utf-8'))
+        response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(status, 404)
         self.assertEqual(response["error"], "Error 404")
 
     def test_Output_Component_View_Set(self):
         output_component = self.output_component
-        response = self.client.get('/api/output-component/')
-        response = json.loads(response.content.decode('utf-8'))[0]
+        response = self.client.get("/api/output-component/")
+        response = json.loads(response.content.decode("utf-8"))[0]
         self.assertEqual(response["user_id"], output_component["user_id"])
         self.assertEqual(response["props"], output_component["props"])
-        self.assertEqual(response["base_component_id"], output_component["base_component_id"])
+        self.assertEqual(
+            response["base_component_id"], output_component["base_component_id"]
+        )
 
     def test_user_output_component(self):
         output_component = self.output_component
-        url = "/api/output-component/{}/user_output_component/{}/".format(output_component["base_component_id"],
-                                                                          output_component["user_id"])
+        url = "/api/output-component/{}/user_output_component/{}/".format(
+            output_component["base_component_id"], output_component["user_id"]
+        )
         response = self.client.get(url)
-        response = json.loads(response.content.decode('utf-8'))
+        response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response["user_id"], output_component["user_id"])
         self.assertEqual(response["props"], output_component["props"])
-        self.assertEqual(response["base_component_id"], output_component["base_component_id"])
+        self.assertEqual(
+            response["base_component_id"], output_component["base_component_id"]
+        )
 
     def test_user_output_component_404(self):
         output_component = self.output_component
-        url = "/api/output-component/{}/user_output_component/{}/".format(output_component["base_component_id"], 12345)
+        url = "/api/output-component/{}/user_output_component/{}/".format(
+            output_component["base_component_id"], 12345
+        )
         response = self.client.get(url)
         status = response.status_code
-        response = json.loads(response.content.decode('utf-8'))
+        response = json.loads(response.content.decode("utf-8"))
         self.assertEqual(status, 404)
         self.assertEqual(response["error"], "Error 404")
 
@@ -905,18 +999,23 @@ class DemoViewSetTests(TestCase):
 class ChannelTests(ChannelTestCase):
     def test_ws_connect(self):
         client = WSClient()
-        client.send_and_consume('websocket.connect')
+        client.send_and_consume("websocket.connect")
         self.assertIsNone(client.receive())
 
     def test_ws_message(self):
         client = WSClient()
-        client.send_and_consume('websocket.receive', text={'event': 'ConnectionEstablished', 'socketId': '54'})
+        client.send_and_consume(
+            "websocket.receive",
+            text={"event": "ConnectionEstablished", "socketId": "54"},
+        )
         self.assertIsNone(client.receive())
 
-        client.send_and_consume('websocket.receive', text={'event': 'fetchCurrentPort'})
+        client.send_and_consume("websocket.receive", text={"event": "fetchCurrentPort"})
         receive = client.receive()["data"]
         self.assertEqual(receive, settings.PORT)
 
-        client.send_and_consume('websocket.receive', text={'event': 'getPublicIPaddress'})
+        client.send_and_consume(
+            "websocket.receive", text={"event": "getPublicIPaddress"}
+        )
         receive = client.receive()["data"]
         self.assertEqual(receive, settings.HOST_NAME)

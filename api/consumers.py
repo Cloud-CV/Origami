@@ -15,7 +15,7 @@ def ws_connect(message):
 
 
 def ws_message(message):
-    body = json.loads(message.content['text'])
+    body = json.loads(message.content["text"])
     if body["event"] == "ConnectionEstablished":
         Group(body["socketId"]).add(message.reply_channel)
 
@@ -29,7 +29,7 @@ def ws_message(message):
 
 
 @csrf_exempt
-@api_view(['POST'])
+@api_view(["POST"])
 def inject(request):
     if request.method == "POST":
         body = request.data

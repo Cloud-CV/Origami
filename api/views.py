@@ -1,4 +1,3 @@
-
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import detail_route
 from django.http import HttpResponse, HttpResponseRedirect
@@ -25,7 +24,8 @@ class DemoViewSet(ModelViewSet):
     Contains information about inputs/outputs of a single program
     that may be used in Universe workflows.
     """
-    lookup_field = 'id'
+
+    lookup_field = "id"
     serializer_class = DemoSerializer
 
     def get_queryset(self):
@@ -37,13 +37,14 @@ class InputComponentViewSet(ModelViewSet):
     Contains information about inputs/outputs of a single program
     that may be used in Universe workflows.
     """
-    lookup_field = 'id'
+
+    lookup_field = "id"
     serializer_class = InputComponentSerializer
 
     def get_queryset(self):
         return InputComponent.objects.all()
 
-    @detail_route(methods=['get'], url_path='user_input_component/(?P<user_id>[0-9]+)')
+    @detail_route(methods=["get"], url_path="user_input_component/(?P<user_id>[0-9]+)")
     def user_input_component(self, request, id, user_id=None):
         data = None
         status = None
@@ -59,7 +60,7 @@ class InputComponentViewSet(ModelViewSet):
         return Response(data, status=status)
 
 
-user_input_component = InputComponentViewSet.as_view({'get': 'user_input_component'})
+user_input_component = InputComponentViewSet.as_view({"get": "user_input_component"})
 
 
 class OutputComponentViewSet(ModelViewSet):
@@ -67,13 +68,14 @@ class OutputComponentViewSet(ModelViewSet):
     Contains information about inputs/outputs of a single program
     that may be used in Universe workflows.
     """
-    lookup_field = 'id'
+
+    lookup_field = "id"
     serializer_class = OutputComponentSerializer
 
     def get_queryset(self):
         return OutputComponent.objects.all()
 
-    @detail_route(methods=['get'], url_path='user_output_component/(?P<user_id>[0-9]+)')
+    @detail_route(methods=["get"], url_path="user_output_component/(?P<user_id>[0-9]+)")
     def user_output_component(self, request, id, user_id):
         data = None
         status = None
@@ -89,7 +91,7 @@ class OutputComponentViewSet(ModelViewSet):
         return Response(data, status=status)
 
 
-user_output_component = OutputComponentViewSet.as_view({'get': 'user_output_component'})
+user_output_component = OutputComponentViewSet.as_view({"get": "user_output_component"})
 
 
 class PermalinkViewSet(ModelViewSet):
@@ -97,7 +99,8 @@ class PermalinkViewSet(ModelViewSet):
     Contains information about inputs/outputs of a single program
     that may be used in Universe workflows.
     """
-    lookup_field = 'id'
+
+    lookup_field = "id"
     serializer_class = PermalinkSerializer
 
     def get_queryset(self):
@@ -109,7 +112,8 @@ class RootSettingsViewSet(ModelViewSet):
     Contains information about inputs/outputs of a single program
     that may be used in Universe workflows.
     """
-    lookup_field = 'id'
+
+    lookup_field = "id"
     serializer_class = RootSettingsSerializer
 
     def get_queryset(self):
@@ -132,12 +136,24 @@ def redirect_login(req):
         acc.user = tmp
         acc.save()
         return HttpResponseRedirect(
-            '/login?status=passed&token=' + token.token + '&username=' + tmp.username + '&user_id=' + str(tmp.id))
+            "/login?status=passed&token="
+            + token.token
+            + "&username="
+            + tmp.username
+            + "&user_id="
+            + str(tmp.id)
+        )
     return HttpResponseRedirect(
-        '/login?status=passed&token=' + token.token + '&username=' + user.username + '&user_id=' + str(user.id))
+        "/login?status=passed&token="
+        + token.token
+        + "&username="
+        + user.username
+        + "&user_id="
+        + str(user.id)
+    )
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def is_cloudcv(request):
     """
     Returns all fields in the current RootSettings object.
@@ -147,7 +163,7 @@ def is_cloudcv(request):
     return Response(serialize.data, status=response_status.HTTP_200_OK)
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def get_all_user_demos(request, id):
     """
     Returns properties of all demos for the
@@ -158,7 +174,7 @@ def get_all_user_demos(request, id):
     return Response(serialize.data, status=response_status.HTTP_200_OK)
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def get_all_demos(request):
     """
     If the request parameter search_by is demo,
@@ -166,8 +182,8 @@ def get_all_demos(request):
     otherwise returns all demos belonging to the user having the
     username matching the given search_term.
     """
-    search_by = request.query_params.get('search_by', None)
-    search_term = request.query_params.get('search_term', None)
+    search_by = request.query_params.get("search_by", None)
+    search_term = request.query_params.get("search_term", None)
     demos = []
     if search_by == "demo":
         demos = Demo.objects.filter(name__icontains=search_term)
@@ -184,7 +200,7 @@ def get_all_demos(request):
     return Response(data, status=response_status.HTTP_200_OK)
 
 
-@api_view(['GET', 'POST', 'PUT', 'DELETE'])
+@api_view(["GET", "POST", "PUT", "DELETE"])
 def custom_component_controller(request, type_req, user_id, demoid):
     """
     Gets the properties of, adds, updates, or removes an
@@ -214,15 +230,23 @@ def custom_component_controller(request, type_req, user_id, demoid):
         props = []
         for prop in body["props"]:
             if prop:
-                props.append({
-                    "id": prop["id"].encode("ascii", "ignore").decode('utf-8'),
-                    "label": prop["label"].encode("ascii", "ignore").decode('utf-8')
-                })
+                props.append(
+                    {
+                        "id": prop["id"].encode("ascii", "ignore").decode("utf-8"),
+                        "label": prop["label"]
+                        .encode("ascii", "ignore")
+                        .decode("utf-8"),
+                    }
+                )
             else:
                 props.append({})
         user_id = body["user_id"]
         component = model.objects.create(
-            demo=demo, base_component_id=base_comp_id, props=json.dumps(props), user_id=user_id)
+            demo=demo,
+            base_component_id=base_comp_id,
+            props=json.dumps(props),
+            user_id=user_id,
+        )
         serialize = serializer(component)
         return Response(serialize.data, status=response_status.HTTP_201_CREATED)
     elif request.method == "GET":
@@ -236,7 +260,9 @@ def custom_component_controller(request, type_req, user_id, demoid):
 
                 serialize = serializer(component)
                 data = serialize.data
-                data["props"] = json.loads(data["props"].encode("ascii", "ignore").decode('utf8'))
+                data["props"] = json.loads(
+                    data["props"].encode("ascii", "ignore").decode("utf8")
+                )
                 data["demo"] = DemoSerializer(component.demo).data
                 data["id"] = component.demo.id
                 return Response([data], status=response_status.HTTP_200_OK)
@@ -245,7 +271,9 @@ def custom_component_controller(request, type_req, user_id, demoid):
                 serialize = serializer(components, many=True)
                 data = serialize.data
                 for x in range(len(data)):
-                    data[x]["props"] = json.loads(data[x]["props"].encode("ascii", "ignore").decode('utf8'))
+                    data[x]["props"] = json.loads(
+                        data[x]["props"].encode("ascii", "ignore").decode("utf8")
+                    )
                     data[x]["demo"] = DemoSerializer(components[x].demo).data
                     data[x]["id"] = components[x].demo.id
                 return Response(serialize.data, status=response_status.HTTP_200_OK)
@@ -260,10 +288,14 @@ def custom_component_controller(request, type_req, user_id, demoid):
             props = []
             for prop in body["props"]:
                 if prop:
-                    props.append({
-                        "id": prop["id"].encode("ascii", "ignore").decode('utf-8'),
-                        "label": prop["label"].encode("ascii", "ignore").decode('utf-8')
-                    })
+                    props.append(
+                        {
+                            "id": prop["id"].encode("ascii", "ignore").decode("utf-8"),
+                            "label": prop["label"]
+                            .encode("ascii", "ignore")
+                            .decode("utf-8"),
+                        }
+                    )
                 else:
                     props.append({})
             component.props = json.dumps(props)
@@ -286,7 +318,7 @@ def alive(request):
     return HttpResponse(status=200)
 
 
-@api_view(['GET', 'POST', 'PUT', 'DELETE'])
+@api_view(["GET", "POST", "PUT", "DELETE"])
 def custom_demo_controller(request, user_id, id):
     """
     Gets the properties of, adds, updates, or removes a demo or
@@ -313,7 +345,9 @@ def custom_demo_controller(request, user_id, id):
             except Exception:
                 sample_inputs = None
             if sample_inputs:
-                sample_inputs_serialize = SampleInputSerializer(sample_inputs, many=True).data
+                sample_inputs_serialize = SampleInputSerializer(
+                    sample_inputs, many=True
+                ).data
                 serialize["sampleinput"] = sample_inputs_serialize
             return Response([serialize], status=response_status.HTTP_200_OK)
         elif user_id and not id:
@@ -353,7 +387,8 @@ def custom_demo_controller(request, user_id, id):
             terminal=terminal,
             timestamp=timestamp,
             token=token,
-            status=status)
+            status=status,
+        )
         serialize = DemoSerializer(demo)
         return Response(serialize.data, status=response_status.HTTP_201_CREATED)
 
@@ -387,21 +422,21 @@ def custom_demo_controller(request, user_id, id):
     return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def get_permalink(request, shorturl):
     """Returns the permalink corresponding to the given shorturl."""
     try:
-        permalink = Permalink.objects.get(short_relative_url='/p/' + shorturl)
+        permalink = Permalink.objects.get(short_relative_url="/p/" + shorturl)
 
     except Exception:
         return Response({"text": "Not Found"})
 
-    permalink.short_relative_url = permalink.short_relative_url.split('/')[-1]
+    permalink.short_relative_url = permalink.short_relative_url.split("/")[-1]
     serialize = PermalinkSerializer(permalink)
     return Response([serialize.data], status=response_status.HTTP_200_OK)
 
 
-@api_view(['GET', 'POST', 'PUT', 'DELETE'])
+@api_view(["GET", "POST", "PUT", "DELETE"])
 def custom_permalink_controller(request, user_id, project_id):
     """
     Gets properties of, adds, updates, or deletes a Permalink
@@ -418,7 +453,9 @@ def custom_permalink_controller(request, user_id, project_id):
     if request.method == "GET":
         if user_id and project_id:
             try:
-                permalink = Permalink.objects.get(project_id=project_id, user_id=user_id)
+                permalink = Permalink.objects.get(
+                    project_id=project_id, user_id=user_id
+                )
 
             except Exception:
                 return Response({"text": "Not Found"})
@@ -443,7 +480,8 @@ def custom_permalink_controller(request, user_id, project_id):
             short_relative_url=short_relative_url,
             full_relative_url=full_relative_url,
             project_id=project_id,
-            user_id=user_id)
+            user_id=user_id,
+        )
         serialize = PermalinkSerializer(permalink)
         return Response(serialize.data, status=response_status.HTTP_201_CREATED)
 
@@ -468,7 +506,7 @@ def custom_permalink_controller(request, user_id, project_id):
     return Response("Invalid URL", status=response_status.HTTP_404_NOT_FOUND)
 
 
-@api_view(['GET', 'POST'])
+@api_view(["GET", "POST"])
 def root_settings(request):
     """
     A GET request returns the RootSettings object.
@@ -485,8 +523,7 @@ def root_settings(request):
     if request.method == "POST":
         if root and app:
             root.root_user_github_login_id = body["root_user_github_login_id"]
-            root.root_user_github_login_name = \
-                body["root_user_github_login_name"]
+            root.root_user_github_login_name = body["root_user_github_login_name"]
             root.client_id = body["client_id"]
             root.client_secret = body["client_secret"]
             root.is_cloudcv = body["is_cloudcv"]
@@ -506,12 +543,14 @@ def root_settings(request):
                 is_cloudcv=body["is_cloudcv"],
                 allow_new_logins=body["allow_new_logins"],
                 app_ip=body["app_ip"],
-                port=body["port"])
+                port=body["port"],
+            )
             app = SocialApp.objects.create(
-                provider='github',
+                provider="github",
                 name=str(datetime.datetime.now().isoformat()),
                 client_id=body["client_id"],
-                secret=body["client_secret"])
+                secret=body["client_secret"],
+            )
         site = Site.objects.get(id=1)
         app.sites.add(site)
         app.save()
@@ -519,7 +558,7 @@ def root_settings(request):
     return Response(serialize.data, status=response_status.HTTP_200_OK)
 
 
-@api_view(['POST'])
+@api_view(["POST"])
 def upload_sample_input(request):
     """
     Creates a sample input. Only image input is supported currently.
@@ -535,11 +574,15 @@ def upload_sample_input(request):
     for key, value in list(data.items()):
         if key.startswith("sample-image"):
             img = request.FILES[key]
-            absolute_path = default_storage.save(settings.MEDIA_ROOT, ContentFile(img.read()))
-            relative_path = '/media/' + absolute_path.split('media/')[-1]
-            sample_input = SampleInput.objects.create(demo=demo, type_of_input=3, value=relative_path)
+            absolute_path = default_storage.save(
+                settings.MEDIA_ROOT, ContentFile(img.read())
+            )
+            relative_path = "/media/" + absolute_path.split("media/")[-1]
+            sample_input = SampleInput.objects.create(
+                demo=demo, type_of_input=3, value=relative_path
+            )
             serialize = SampleInputSerializer(sample_input)
-            if ("test" in sys.argv):
+            if "test" in sys.argv:
                 os.remove(absolute_path)
     sample_inputs = SampleInput.objects.filter(demo=demo)
     serialize = SampleInputSerializer(sample_inputs, many=True)

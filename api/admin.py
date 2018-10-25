@@ -2,7 +2,14 @@
 
 
 from django.contrib import admin
-from api.models import Demo, InputComponent, OutputComponent, RootSettings, Permalink, SampleInput
+from api.models import (
+    Demo,
+    InputComponent,
+    OutputComponent,
+    RootSettings,
+    Permalink,
+    SampleInput,
+)
 
 # Register your models here.
 

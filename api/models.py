@@ -25,6 +25,7 @@ class Demo(models.Model):
             '(gh|nongh)':Address:Id:Current_Port:Port:Temp_Web_Address
         status: string, either "demo" or "input"
     """
+
     name = models.CharField(max_length=100)
     id = models.IntegerField(primary_key=True)
     user_id = models.IntegerField()
@@ -50,6 +51,7 @@ class InputComponent(models.Model):
         demo: Foreign key to the demo the object belongs to
         user_id: ID of the user the demo belongs to
     """
+
     base_component_id = models.IntegerField()
     props = models.TextField()
     demo = models.OneToOneField(Demo)
@@ -75,6 +77,7 @@ class OutputComponent(models.Model):
         demo: Foreign key to the demo the object belongs to
         user_id: ID of the user the demo belongs to
     """
+
     base_component_id = models.IntegerField()
     props = models.TextField()
     demo = models.OneToOneField(Demo)
@@ -98,6 +101,7 @@ class Permalink(models.Model):
         project_id: ID of the project the permalink belongs to
         user_id: ID of the user the project belongs to
     """
+
     short_relative_url = models.CharField(max_length=100)
     full_relative_url = models.CharField(max_length=300)
     project_id = models.IntegerField()
@@ -119,6 +123,7 @@ class RootSettings(models.Model):
         app_ip: IP where origami-lib is running
         port: port for origami-lib to run
     """
+
     root_user_github_login_id = models.IntegerField()
     root_user_github_login_name = models.CharField(max_length=30)
     client_id = models.CharField(max_length=40)
@@ -139,6 +144,7 @@ class SampleInput(models.Model):
         type_of_input: 3 for an image, the rest are not defined yet
         value: Path to the image file
     """
+
     demo = models.ForeignKey(Demo)
     type_of_input = models.IntegerField()
     value = models.CharField(max_length=300)

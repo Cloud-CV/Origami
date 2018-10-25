@@ -1,5 +1,12 @@
 from rest_framework import serializers
-from api.models import Demo, InputComponent, OutputComponent, Permalink, RootSettings, SampleInput
+from api.models import (
+    Demo,
+    InputComponent,
+    OutputComponent,
+    Permalink,
+    RootSettings,
+    SampleInput,
+)
 
 
 class DemoSerializer(serializers.ModelSerializer):
@@ -7,7 +14,7 @@ class DemoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Demo
-        fields = '__all__'
+        fields = "__all__"
 
 
 class InputComponentSerializer(serializers.ModelSerializer):
@@ -15,7 +22,7 @@ class InputComponentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = InputComponent
-        fields = ('base_component_id', 'user_id', 'props')
+        fields = ("base_component_id", "user_id", "props")
 
 
 class OutputComponentSerializer(serializers.ModelSerializer):
@@ -23,7 +30,7 @@ class OutputComponentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OutputComponent
-        fields = ('base_component_id', 'user_id', 'props')
+        fields = ("base_component_id", "user_id", "props")
 
 
 class PermalinkSerializer(serializers.ModelSerializer):
@@ -31,7 +38,7 @@ class PermalinkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Permalink
-        fields = '__all__'
+        fields = "__all__"
 
 
 class RootSettingsSerializer(serializers.ModelSerializer):
@@ -39,7 +46,7 @@ class RootSettingsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RootSettings
-        fields = '__all__'
+        fields = "__all__"
 
 
 class SampleInputSerializer(serializers.ModelSerializer):
@@ -47,4 +54,4 @@ class SampleInputSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SampleInput
-        fields = ('id', 'type_of_input', 'value')
+        fields = ("id", "type_of_input", "value")
