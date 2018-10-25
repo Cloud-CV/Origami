@@ -75,7 +75,7 @@ class Profile extends Component {
         <div className="profile-sidebar">
           <div>
             <div className="profile-userpic">
-              <img src={this.state.avatar} class="img-responsive" alt="" />
+              <img src={this.state.avatar} className="img-responsive" alt="" />
             </div>
             <div className="profile-usertitle">
               <div className="profile-usertitle-name">{this.state.name}</div>
@@ -107,7 +107,7 @@ class Profile extends Component {
                 </li>
                 <li>
                   <a href={this.state.github}>
-                    <i class="fab fa-github" />
+                    <i className="fab fa-github" />
                     Github Profile{' '}
                   </a>
                 </li>
