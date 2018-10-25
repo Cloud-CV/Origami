@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import { Container } from 'reactstrap';
+import React, { Component } from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
+import { Container } from "reactstrap";
 
 import {
   AppAside,
@@ -12,28 +12,26 @@ import {
   AppSidebarForm,
   AppSidebarHeader,
   AppSidebarMinimizer,
-  AppSidebarNav,
-} from '@coreui/react';
+  AppSidebarNav
+} from "@coreui/react";
 // sidebar nav config
-import navigation from '../../_nav';
+import navigation from "../../_nav";
 // routes config
-import routes from '../../../../components/nav_root';
-import DefaultAside from './DefaultAside';
-import DefaultFooter from './DefaultFooter';
-import DefaultHeader from './DefaultHeader';
-import HomePage from '../../../../components/home/HomePage'
+import routes from "../../../../components/nav_root";
+import DefaultAside from "./DefaultAside";
+import DefaultFooter from "./DefaultFooter";
+import DefaultHeader from "./DefaultHeader";
+import HomePage from "../../../../components/home/HomePage";
 
 class DefaultLayout extends Component {
-constructor(props, context) {
-  super(props, context);
-}
-
+  constructor(props, context) {
+    super(props, context);
+  }
 
   render() {
-      if(window.location.pathname==="/")
-  {
-    return <Redirect to='/home'  />
-  }
+    if (window.location.pathname === "/") {
+      return <Redirect to="/home" />;
+    }
     return (
       <div className="app">
         <AppHeader fixed>
@@ -41,7 +39,7 @@ constructor(props, context) {
         </AppHeader>
         <div className="app-body">
           <AppSidebar fixed display="lg">
-            <AppSidebarHeader  />
+            <AppSidebarHeader />
             <AppSidebarForm />
             <AppSidebarNav navConfig={navigation} {...this.props} />
             <AppSidebarFooter />
@@ -51,13 +49,16 @@ constructor(props, context) {
             <Container fluid>
               <Switch>
                 {routes.map((route, idx) => {
-                    return route.component ? (<Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (
-                        <route.component {...props} />
-                      )} />)
-                      : (null);
-                  }
-                )}
-
+                  return route.component ? (
+                    <Route
+                      key={idx}
+                      path={route.path}
+                      exact={route.exact}
+                      name={route.name}
+                      render={props => <route.component {...props} />}
+                    />
+                  ) : null;
+                })}
               </Switch>
             </Container>
           </main>

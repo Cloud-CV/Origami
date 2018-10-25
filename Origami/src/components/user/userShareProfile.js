@@ -12,12 +12,11 @@ import { getAllPermalink, deletePermalink } from "../../api/Nongh/permalink";
 import Dialog from "material-ui/Dialog";
 import RaisedButton from "material-ui/RaisedButton";
 import toastr from "toastr";
-import { Layout, Icon, Button, Card, Row, Col, Input,Modal } from "antd";
+import { Layout, Icon, Button, Card, Row, Col, Input, Modal } from "antd";
 import Radium from "radium";
 import { trimAndPad } from "../../utils/generalUtils";
 import { DEMO_CARD_DESCRIP_MAX_LEN } from "../../constants";
 import { BounceLoader } from "react-spinners";
-
 
 const { Header, Content, Footer, Sider } = Layout;
 const Search = Input.Search;
@@ -43,7 +42,7 @@ class NonGHUserProfileComponent extends React.Component {
     };
     this.socket = this.context.socket;
     this.success = this.success.bind(this);
-    this.initiateLogin=this.initiateLogin.bind(this);
+    this.initiateLogin = this.initiateLogin.bind(this);
     this.deleteDemo = this.deleteDemo.bind(this);
     this.modifyProject = this.modifyProject.bind(this);
     this.getDisplayForDemoButton = this.getDisplayForDemoButton.bind(this);
@@ -60,42 +59,41 @@ class NonGHUserProfileComponent extends React.Component {
   componentWillMount() {
     this.initiateLogin();
 
-    if(this.props.login)
-    {
-    this.props.useractions
-      .LoadUser()
-      .then(() => {
-        getDeployed(this.props.user.id)
-          .then(alldeployedRepos => {
-            let tmp = JSON.parse(alldeployedRepos);
-            let allDeployed = [];
-            while (tmp.length) {
-              allDeployed.push(tmp.splice(0, 4));
-            }
-            this.setState({ allDeployed });
-            this.setState({ demoLoading: false });
-          })
-          .then(() => {
-            const stateToPut = {};
-            getAllPermalink().then(data => {
-              JSON.parse(data).map(perma => {
-                if (!stateToPut[perma.user_id]) {
-                  stateToPut[perma.user_id] = {};
-                }
-                stateToPut[perma.user_id][perma.project_id] = perma;
-                this.setState({
-                  permalinkHolder: Object.assign({}, stateToPut)
+    if (this.props.login) {
+      this.props.useractions
+        .LoadUser()
+        .then(() => {
+          getDeployed(this.props.user.id)
+            .then(alldeployedRepos => {
+              let tmp = JSON.parse(alldeployedRepos);
+              let allDeployed = [];
+              while (tmp.length) {
+                allDeployed.push(tmp.splice(0, 4));
+              }
+              this.setState({ allDeployed });
+              this.setState({ demoLoading: false });
+            })
+            .then(() => {
+              const stateToPut = {};
+              getAllPermalink().then(data => {
+                JSON.parse(data).map(perma => {
+                  if (!stateToPut[perma.user_id]) {
+                    stateToPut[perma.user_id] = {};
+                  }
+                  stateToPut[perma.user_id][perma.project_id] = perma;
+                  this.setState({
+                    permalinkHolder: Object.assign({}, stateToPut)
+                  });
                 });
               });
+            })
+            .catch(err => {
+              toastr.error(err);
             });
-          })
-          .catch(err => {
-            toastr.error(err);
-          });
-      })
-      .catch(err => {
-        toastr.error(`Error: ${err}`);
-      });
+        })
+        .catch(err => {
+          toastr.error(`Error: ${err}`);
+        });
     }
   }
   success() {
@@ -106,11 +104,10 @@ class NonGHUserProfileComponent extends React.Component {
   }
 
   initiateLogin() {
-    if(!this.props.login)
-    {
-    this.success();
-    window.location = "/auth/github/login/";
-  }
+    if (!this.props.login) {
+      this.success();
+      window.location = "/auth/github/login/";
+    }
   }
   componentWillReceiveProps(nextProps) {
     if (this.state.user !== nextProps.user) {
@@ -203,8 +200,7 @@ class NonGHUserProfileComponent extends React.Component {
 
   getStyles() {
     return {
-      layout: {
-      },
+      layout: {},
       content: {
         margin: "24px 16px 0",
         overflow: "initial"
@@ -225,10 +221,10 @@ class NonGHUserProfileComponent extends React.Component {
 
   render() {
     const demoSpinnerStyle = {
-  position: "fixed",
-  top: "50%",
-  left: "50%"
-};
+      position: "fixed",
+      top: "50%",
+      left: "50%"
+    };
     document.body.scrollTop = document.documentElement.scrollTop = 0;
     const styles = this.getStyles();
 
@@ -249,9 +245,8 @@ class NonGHUserProfileComponent extends React.Component {
     ];
 
     return (
-      <Layout >
+      <Layout>
         <Header id="layout-header">
-
           <Row>
             <Col span={18} offset={1}>
               <h1 id="logo-title">
@@ -260,137 +255,135 @@ class NonGHUserProfileComponent extends React.Component {
             </Col>
           </Row>
         </Header>
-                {this.state.demoLoading ? (
-              <div className="demoSpinner" style={demoSpinnerStyle}>
-                <BounceLoader color={"#33aadd"} size={80} />
+        {this.state.demoLoading ? (
+          <div className="demoSpinner" style={demoSpinnerStyle}>
+            <BounceLoader color={"#33aadd"} size={80} />
+          </div>
+        ) : (
+          <Content>
+            {this.state.user && (
+              <div style={styles.contentDiv}>
+                <Row>
+                  {this.state.allDeployed.map(row => (
+                    <div key={Math.random()}>
+                      <Row>
+                        {row.map(project => (
+                          <Col span={5} offset={1} key={project.id}>
+                            <Card
+                              style={{ width: "100%" }}
+                              bodyStyle={{ padding: 0 }}
+                            >
+                              <div className="custom-card">
+                                <br />
+                                <h3>{project.name}</h3>
+                              </div>
+                              <div className="custom-image">
+                                <img width="100%" src={project.cover_image} />
+                              </div>
+                              <div className="custom-card">
+                                <p>
+                                  {trimAndPad(
+                                    project.description,
+                                    DEMO_CARD_DESCRIP_MAX_LEN
+                                  )}
+                                </p>
+                                <br />
+                                IP: {project.token.split(":")[1]} <br />
+                                Port: {project.token.split(":")[4]} <br />
+                                <br />
+                                <Row>
+                                  <Col span={22} offset={1}>
+                                    <Button
+                                      type="primary"
+                                      style={{ width: "100%" }}
+                                      ghost
+                                      onClick={() => this.goToDemoPage(project)}
+                                    >
+                                      Demo<Icon type="rocket" />
+                                    </Button>
+                                  </Col>
+                                </Row>
+                                <br />
+                                <Row>
+                                  <Col span={11} offset={1}>
+                                    <Button
+                                      type="primary"
+                                      style={{ width: "100%" }}
+                                      ghost
+                                      onClick={() =>
+                                        this.modifyProject(project)
+                                      }
+                                    >
+                                      Modify<Icon type="edit" />
+                                    </Button>
+                                  </Col>
+                                  <Col span={10} offset={1}>
+                                    <Button
+                                      type="primary"
+                                      style={{ width: "100%" }}
+                                      ghost
+                                      onClick={() =>
+                                        this.toggleShowDataDialog({
+                                          type: "token",
+                                          content: project.token
+                                        })
+                                      }
+                                    >
+                                      Token<Icon type="bars" />
+                                    </Button>
+                                  </Col>
+                                </Row>
+                                <br />
+                                <Row>
+                                  <Col span={11} offset={1}>
+                                    <Button
+                                      type="primary"
+                                      style={{ width: "100%" }}
+                                      ghost
+                                      onClick={() =>
+                                        this.toggleShowDataDialog({
+                                          type: "permalink",
+                                          content: `${
+                                            window.location.protocol
+                                          }//${window.location.host}${
+                                            this.state.permalinkHolder[
+                                              this.state.user.id
+                                            ][project.id].short_relative_url
+                                          }`
+                                        })
+                                      }
+                                    >
+                                      Permalink<Icon type="link" />
+                                    </Button>
+                                  </Col>
+                                  <Col span={10} offset={1}>
+                                    <Button
+                                      type="danger"
+                                      style={{ width: "100%" }}
+                                      ghost
+                                      onClick={() =>
+                                        this.toggleDeleteConfirmationDialog(
+                                          project.id
+                                        )
+                                      }
+                                    >
+                                      Delete <Icon type="delete" />
+                                    </Button>
+                                  </Col>
+                                </Row>
+                                <br />
+                              </div>
+                            </Card>
+                          </Col>
+                        ))}
+                      </Row>
+                    </div>
+                  ))}
+                </Row>
               </div>
-            ) : (
-        <Content >
-          {this.state.user && (
-            <div style={styles.contentDiv}>
-              <Row>
-                {this.state.allDeployed.map(row => (
-                  <div key={Math.random()}>
-                    <Row>
-                      {row.map(project => (
-                        <Col span={5} offset={1} key={project.id}>
-                          <Card
-                            style={{ width: "100%" }}
-                            bodyStyle={{ padding: 0 }}
-                          >
-                            <div className="custom-card">
-                              <br />
-                              <h3>{project.name}</h3>
-                            </div>
-                            <div className="custom-image">
-                              <img width="100%" src={project.cover_image} />
-                            </div>
-                            <div className="custom-card">
-                              <p>
-                                {trimAndPad(
-                                  project.description,
-                                  DEMO_CARD_DESCRIP_MAX_LEN
-                                )}
-                              </p>
-                              <br />
-                              IP: {project.token.split(":")[1]} <br />
-                              Port: {project.token.split(":")[4]} <br />
-                              <br />
-                              <Row>
-                                <Col span={22} offset={1}>
-                                  <Button
-                                    type="primary"
-                                    style={{ width: "100%" }}
-                                    ghost
-                                    onClick={() => this.goToDemoPage(project)}
-                                  >
-                                    Demo<Icon type="rocket" />
-                                  </Button>
-                                </Col>
-                              </Row>
-                              <br />
-                              <Row>
-                                <Col span={11} offset={1}>
-                                  <Button
-                                    type="primary"
-                                    style={{ width: "100%" }}
-                                    ghost
-                                    onClick={() => this.modifyProject(project)}
-                                  >
-                                    Modify<Icon type="edit" />
-                                  </Button>
-                                </Col>
-                                <Col span={10} offset={1}>
-                                  <Button
-                                    type="primary"
-                                    style={{ width: "100%" }}
-                                    ghost
-                                    onClick={() =>
-                                      this.toggleShowDataDialog({
-                                        type: "token",
-                                        content: project.token
-                                      })
-                                    }
-                                  >
-                                    Token<Icon type="bars" />
-                                  </Button>
-                                </Col>
-                              </Row>
-                              <br />
-                              <Row>
-                                <Col span={11} offset={1}>
-                                  <Button
-                                    type="primary"
-                                    style={{ width: "100%" }}
-                                    ghost
-                                    onClick={() =>
-                                      this.toggleShowDataDialog({
-                                        type: "permalink",
-                                        content: `${
-                                          window.location.protocol
-                                        }//${window.location.host}${
-                                          this.state.permalinkHolder[
-                                            this.state.user.id
-                                          ][project.id].short_relative_url
-                                        }`
-                                      })
-                                    }
-                                  >
-                                    Permalink<Icon type="link" />
-                                  </Button>
-                                </Col>
-                                <Col span={10} offset={1}>
-                                  <Button
-                                    type="danger"
-                                    style={{ width: "100%" }}
-                                    ghost
-                                    onClick={() =>
-                                      this.toggleDeleteConfirmationDialog(
-                                        project.id
-                                      )
-                                    }
-                                  >
-                                    Delete <Icon type="delete" />
-                                  </Button>
-                                </Col>
-                              </Row>
-                              <br />
-                            </div>
-                          </Card>
-                        </Col>
-                      ))}
-                    </Row>
-                  </div>
-                ))}
-              </Row>
-            </div>
-          )}
-        </Content>
-
+            )}
+          </Content>
         )}
-
-    
-
 
         <Dialog
           title="Modify Application"
