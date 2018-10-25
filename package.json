@@ -19,7 +19,7 @@
   "author": "Ashish Chaudhary",
   "license": "AGPL-3.0",
   "dependencies": {
-    "@coreui/coreui": "^2.0.1",
+    "@coreui/coreui": "^2.0.21",
     "@coreui/coreui-plugin-chartjs-custom-tooltips": "^1.2.0",
     "@coreui/icons": "^0.1.1",
     "@coreui/react": "^2.0.0",
