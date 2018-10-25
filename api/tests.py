@@ -999,18 +999,18 @@ class DemoViewSetTests(TestCase):
 class ChannelTests(ChannelTestCase):
     def test_ws_connect(self):
         client = WSClient()
-        client.send_and_consume("websocket.connect")
+        client.send_and_consume("websocket_connect")
         self.assertIsNone(client.receive())
 
     def test_ws_message(self):
         client = WSClient()
-        client.send_and_consume('websocket.receive', text={'event': 'ConnectionEstablished', 'socketId': '54'})
+        client.send_and_consume('websocket_receive', text={'event': 'ConnectionEstablished', 'socketId': '54'})
         self.assertIsNone(client.receive())
 
-        client.send_and_consume('websocket.receive', text={'event': 'fetchCurrentPort'})
+        client.send_and_consume('websocket_receive', text={'event': 'fetchCurrentPort'})
         receive = client.receive()["data"]
         self.assertEqual(receive, settings.PORT)
 
-        client.send_and_consume('websocket.receive', text={'event': 'getPublicIPaddress'})
+        client.send_and_consume('websocket_receive', text={'event': 'getPublicIPaddress'})
         receive = client.receive()["data"]
         self.assertEqual(receive, settings.HOST_NAME)
