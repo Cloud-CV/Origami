@@ -21,9 +21,7 @@ class Profile extends Component {
   }
 
   componentWillMount() {
-    console.log("components mount");
     userApi.userProfile().then(user => {
-      console.log("user ==", user);
       user = JSON.parse(user);
       let username = user.login;
       let name = user.name;

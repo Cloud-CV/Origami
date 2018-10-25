@@ -390,7 +390,7 @@ class RegisterPage extends React.Component {
                               onClick={this.btnclicked.bind(this, 1, 1)}
                               onMouseLeave={this.exit}
                               style={
-                                this.state.btnactive == 11 || this.state.os == 1
+                                this.state.btnactive === 11 || this.state.os === 1
                                   ? styles.btnactive
                                   : styles.btn
                               }
@@ -404,7 +404,7 @@ class RegisterPage extends React.Component {
                               onClick={this.btnclicked.bind(this, 1, 2)}
                               onMouseLeave={this.exit}
                               style={
-                                this.state.btnactive == 12 || this.state.os == 2
+                                this.state.btnactive === 12 || this.state.os === 2
                                   ? styles.btnactive
                                   : styles.btn
                               }
@@ -426,8 +426,8 @@ class RegisterPage extends React.Component {
                               onClick={this.btnclicked.bind(this, 2, 1)}
                               onMouseLeave={this.exit}
                               style={
-                                this.state.btnactive == 21 ||
-                                this.state.python == 1
+                                this.state.btnactive === 21 ||
+                                this.state.python === 1
                                   ? styles.btnactive
                                   : styles.btn
                               }
@@ -441,8 +441,8 @@ class RegisterPage extends React.Component {
                               onClick={this.btnclicked.bind(this, 2, 2)}
                               onMouseLeave={this.exit}
                               style={
-                                this.state.btnactive == 22 ||
-                                this.state.python == 2
+                                this.state.btnactive === 22 ||
+                                this.state.python === 2
                                   ? styles.btnactive
                                   : styles.btn
                               }
@@ -464,8 +464,8 @@ class RegisterPage extends React.Component {
                               onClick={this.btnclicked.bind(this, 3, 1)}
                               onMouseLeave={this.exit}
                               style={
-                                this.state.btnactive == 31 ||
-                                this.state.cuda == 1
+                                this.state.btnactive === 31 ||
+                                this.state.cuda === 1
                                   ? styles.btnactive
                                   : styles.btn
                               }
@@ -479,8 +479,8 @@ class RegisterPage extends React.Component {
                               onClick={this.btnclicked.bind(this, 3, 2)}
                               onMouseLeave={this.exit}
                               style={
-                                this.state.btnactive == 32 ||
-                                this.state.cuda == 2
+                                this.state.btnactive === 32 ||
+                                this.state.cuda === 2
                                   ? styles.btnactive
                                   : styles.btn
                               }
@@ -600,7 +600,7 @@ class RegisterPage extends React.Component {
                             onMouseEnter={this.sub.bind(this, 1)}
                             onMouseLeave={this.exit}
                             style={
-                              this.state.subhover == 1
+                              this.state.subhover === 1
                                 ? styles.subhover
                                 : styles.sub
                             }
@@ -617,7 +617,7 @@ class RegisterPage extends React.Component {
                             onMouseLeave={this.exit}
                             onClick={this.submit.bind(this)}
                             style={
-                              this.state.subhover == 2
+                              this.state.subhover === 2
                                 ? styles.subhover
                                 : styles.sub
                             }
