@@ -2,6 +2,7 @@
 
 RED=$'\e[0;31m'
 GREEN=$'\e[1;32m'
+BLUE=$'\e[0;33m'
 YELLOW=$'\e[1;33m'
 WHITE=$'\e[0m'
 
@@ -14,9 +15,12 @@ PYTHONFILES=$(find . -name "*.py" -type f)
 
 # Converts all python files
 
+echo ''
+
 for i in $PYTHONFILES
 do
-  if 2to3 -w $i > /dev/null 2>&1; then
+  if 2to3 -w $i > /dev/null 2>&1;
+  then
     echo $GREEN ✓ $i Converted $WHITE
     (( SUCCESS=SUCCESS+1 ))
   else
@@ -42,4 +46,31 @@ fi
 if [ "${UNSUCCESS}" == 0 ]; then
   echo $GREEN All Conversions Successful $WHITE
 fi
+echo ''
+
+# Deletes backup files if asked to do so
+
+BACKUPFILES=$(find . -name "*.py.bak" -type f)
+DELETEDFILES=0
+
+echo $YELLOW Do you want to delete the backup files? [y/n] $WHITE
+read -r DELETEINPUT
+echo ''
+
+if [ "${DELETEINPUT,,}" = "y" ] || [ "${DELETEINPUT,,}" = "yes" ]
+then
+  for i in $BACKUPFILES
+  do
+    echo  $BLUE Deleting $i $WHITE
+    rm -rf $i
+    (( DELETEDFILES=DELETEDFILES+1 ))
+  done
+elif [ "${DELETEINPUT,,}" = "n" ] || [ "${DELETEINPUT,,}" = "no" ]
+then
+  echo $BLUE Backup Files Saved $WHITE
+else
+  echo $RED Invalid Input $WHITE
+fi
+
+echo $GREEN $DELETEDFILES Deleted
 echo ''
