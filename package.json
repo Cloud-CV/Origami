@@ -50,7 +50,7 @@
     "mongoose": "^4.13.6",
     "portfinder": "^1.0.13",
     "prop-types": "^15.6.0",
-    "radium": "^0.19.6",
+    "radium": "^0.25.0",
     "range_check": "^1.4.0",
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.1",
