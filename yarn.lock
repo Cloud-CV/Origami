@@ -82,10 +82,10 @@
   resolved "https://registry.yarnpkg.com/@coreui/icons/-/icons-0.2.0.tgz#76a1fc3cbbd35597e921a616fe553fde8ec54b78"
   integrity sha512-FPpi7tagGA3xGGGjYOMBUoLVjqNinrPOsM+AjpYiYW9jrAeuY+eZfToEPyGvdbIFgGBsi7qwpUfwmDR8KcGwow==
 
-"@coreui/icons@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@coreui/icons/-/icons-0.1.1.tgz#c6de55de07806de7158dd92c8dd525b501f28ffa"
-  integrity sha512-WGU4Le65I+gTvmKQ1QtBDe/q/zBwfvstpX7R5o3n6eGJycV1mPHjN+GgVkXUDQUYnMDjR0zwE5s9yDUffn3Umg==
+"@coreui/icons@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@coreui/icons/-/icons-0.3.0.tgz#d5bece91b1442a9543593d1146bc8042b18489e3"
+  integrity sha512-RbBi5K5hUA8LUI9mM/i1BTaLjlyoS6kHwKbxWsH62+/j9L9WF8gAiJUhrNjMt1br8TY9RLeolyQys0E9480fIg==
 
 "@coreui/react@^2.0.0":
   version "2.0.4"
