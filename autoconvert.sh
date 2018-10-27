@@ -21,9 +21,9 @@ then
   # Converts all python files
   for i in $PYTHONFILES
   do
-    if 2to3 -w $i > /dev/null 2>&1; # No Output
+    if 2to3 -x future -w $i > /dev/null 2>&1; # Doesn't Remove from _future_ statements
     then
-      echo $GREEN ✓ $i "Converted" $WHITE
+      echo $GREEN ✓ $i $WHITE
       (( SUCCESS=SUCCESS+1 ))
     else
       echo $RED ❌ $i "Could not be Converted" $WHITE
