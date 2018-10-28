@@ -4,6 +4,7 @@ import HomePageComponent from "./home/HomePage";
 import NonGHUserProfileComponent from "./user/nonghUserProfile";
 import LoginComponent from "./stateless/login";
 import URLShortenerComponent from "./urlShortener";
+import PageNotfoundHandler from "./PageNotfoundHandler";
 import NGHDemoPageComponent from "./deployment/UsePrebuiltProject/nghDemoPage";
 import RegisterNonGHPageComponent from "./deployment/UsePrebuiltProject/registerPage";
 import ShareProfile from "./user/userShareProfile";
@@ -37,7 +38,8 @@ const routes = [
     exact: true,
     name: "My Demo",
     component: NonGHUserProfileComponent
-  }
+  },
+  { path: "*", name: "NotFound", component: PageNotfoundHandler }
 ];
 
 export default routes;
