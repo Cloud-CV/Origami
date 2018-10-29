@@ -25,7 +25,7 @@ from pprint import pprint
 import ast
 from django.utils.encoding import smart_unicode
 import zipfile
-import StringIO
+import io
 import wget
 import md5
 from shutil import copyfile
@@ -555,7 +555,7 @@ def root_settings(request):
                 app_ip=body["app_ip"],
                 port=body["port"])
             app = SocialApp.objects.create(
-                provider=u'github',
+                provider='github',
                 name=str(datetime.datetime.now().isoformat()),
                 client_id=body["client_id"],
                 secret=body["client_secret"])
@@ -579,7 +579,7 @@ def upload_sample_input(request):
     data = request.data
     demo_id = data["demo_id"]
     demo = Demo.objects.get(id=demo_id)
-    for key, value in data.items():
+    for key, value in list(data.items()):
         if key.startswith("sample-image"):
             img = request.FILES[key]
             absolute_path = default_storage.save(settings.MEDIA_ROOT, ContentFile(img.read()))
