@@ -294,20 +294,20 @@ class RegisterPage extends React.Component {
                   <div className="ui grid container">
                     <div className="column aligned" style={styles.parentBox}>
                       <div style={styles.box}>
-                        <a style={{ marginLeft: '40%', fontSize: '18px' }}>
+                        <span style={{ marginLeft: '40%', fontSize: '18px' }}>
                           <span>
                             <a style={styles.logo}>
                               <img src={require('../../assets/details.png')} />
                             </a>
                           </span>{' '}
                           Demo Details
-                        </a>
+                        </span>
                         <hr
                           style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
                         />
-                        <div class="ui grid">
-                          <div class="two wide column" />
-                          <div class="four wide column">
+                        <div className="ui grid">
+                          <div className="two wide column" />
+                          <div className="four wide column">
                             <TextField
                               hintText="MyApp"
                               floatingLabelText="Appname"
@@ -316,8 +316,8 @@ class RegisterPage extends React.Component {
                               onChange={this.updateName}
                             />
                           </div>
-                          <div class="three wide column" />
-                          <div class="four wide column">
+                          <div className="three wide column" />
+                          <div className="four wide column">
                             <TextField
                               hintText="Description"
                               floatingLabelText="Description"
@@ -332,20 +332,20 @@ class RegisterPage extends React.Component {
                       <br />
 
                       <div style={styles.box}>
-                        <a style={{ marginLeft: '40%', fontSize: '18px' }}>
+                        <span style={{ marginLeft: '40%', fontSize: '18px' }}>
                           <span>
-                            <a style={styles.logo}>
+                            <span style={styles.logo}>
                               <img src={require('../../assets/task.png')} />
-                            </a>
+                            </span>
                           </span>Choose your Task
-                        </a>
+                        </span>
                         <hr
                           style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
                         />
                         <br />
 
                         <div className="ui grid">
-                          <div class="two wide column" />
+                          <div className="two wide column" />
 
                           <div className=" three wide column">
                             <Cards header={'VQA'} count={1} />
@@ -367,13 +367,13 @@ class RegisterPage extends React.Component {
                       <br />
 
                       <div style={styles.box}>
-                        <a style={{ marginLeft: '35%', fontSize: '18px' }}>
+                        <span style={{ marginLeft: '35%', fontSize: '18px' }}>
                           <span>
-                            <a style={styles.logo}>
+                            <span style={styles.logo}>
                               <img src={require('../../assets/tools.png')} />
-                            </a>
+                            </span>
                           </span>Select System Configuration
-                        </a>
+                        </span>
                         <hr
                           style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
                         />
@@ -382,7 +382,7 @@ class RegisterPage extends React.Component {
                         <div className="ui grid">
                           <div className="three wide column" />
                           <div className="one wide column">
-                            <text style={styles.tagOs}>OS </text>
+                            <span style={styles.tagOs}>OS </span>
                           </div>
                           <div className="one wide column" />
                           <div className="four wide column">
@@ -396,7 +396,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>Ubuntu 14.04</text>
+                              <span style={styles.txt}>Ubuntu 14.04</span>
                             </Button>
                           </div>
                           <div className="four wide column">
@@ -410,7 +410,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>Ubuntu 16.04</text>
+                              <span style={styles.txt}>Ubuntu 16.04</span>
                             </Button>
                           </div>
                         </div>
@@ -433,7 +433,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>2.7</text>
+                              <span style={styles.txt}>2.7</span>
                             </Button>
                           </div>
                           <div className="four wide column">
@@ -448,7 +448,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>3.5</text>
+                              <span style={styles.txt}>3.5</span>
                             </Button>
                           </div>
                         </div>
@@ -471,7 +471,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>7.0 - runtime</text>
+                              <span style={styles.txt}>7.0 - runtime</span>
                             </Button>
                           </div>
                           <div className="four wide column">
@@ -486,7 +486,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>8.0 - runtime</text>
+                              <span style={styles.txt}>8.0 - runtime</span>
                             </Button>
                           </div>
                         </div>
@@ -497,14 +497,14 @@ class RegisterPage extends React.Component {
                       <br />
 
                       <div style={styles.box}>
-                        <a style={{ marginLeft: '35%', fontSize: '18px' }}>
+                        <span style={{ marginLeft: '35%', fontSize: '18px' }}>
                           <span>
-                            <a style={styles.logo}>
+                            <span style={styles.logo}>
                               <img src={require('../../assets/settings.png')} />
-                            </a>
+                            </span>
                           </span>{' '}
                           Optional configurations{' '}
-                        </a>
+                        </span>
                         <hr
                           style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
                         />
@@ -572,7 +572,7 @@ class RegisterPage extends React.Component {
                               </div>
                               <br />
                               <div className="row">
-                                <div class="four wide column">
+                                <div className="four wide column">
                                   <span>
                                     <a style={styles.logo}>
                                       <img
@@ -608,7 +608,7 @@ class RegisterPage extends React.Component {
                                 : styles.sub
                             }
                           >
-                            <text style={styles.txt}>Reset</text>
+                            <span style={styles.txt}>Reset</span>
                           </Button>
                         </div>
 
@@ -625,7 +625,7 @@ class RegisterPage extends React.Component {
                                 : styles.sub
                             }
                           >
-                            <text style={styles.txt}>Submit</text>
+                            <span style={styles.txt}>Submit</span>
                           </Button>
                         </div>
                       </div>
