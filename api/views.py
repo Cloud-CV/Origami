@@ -23,15 +23,21 @@ import sys
 from django.views.decorators.csrf import csrf_exempt
 from pprint import pprint
 import ast
-from django.utils.encoding import smart_unicode
+from django.utils.encoding import smart_text
 import zipfile
-import StringIO
-import wget
-import md5
+import hashlib
 from shutil import copyfile
 import requests
 import datetime
 import shutil
+
+try:
+    # Python 2
+    from cStringIO import StringIO
+except ImportError:
+    # Python 3
+    from io import StringIO
+
 
 class DemoViewSet(ModelViewSet):
     """
@@ -158,8 +164,6 @@ def is_cloudcv(request):
     settings = RootSettings.objects.all().first()
     serialize = RootSettingsSerializer(settings)
     return Response(serialize.data, status=response_status.HTTP_200_OK)
-
-
 
 
 @api_view(['GET'])
@@ -300,93 +304,94 @@ def alive(request):
     """Returns a status 200 if the server is running and 404 otherwise"""
     return HttpResponse(status=200)
 
+
 @api_view(['POST'])
-def bundleup(request,id,user_id):
-    file=request.FILES['file']
-    hash_=md5.new()
-    key=id+user_id
+def bundleup(request, id, user_id):
+    file = request.FILES['file']
+    hash_ = hashlib.md5()
+    key = id + user_id
     hash_.update(key)
-    hex=hash_.hexdigest()  
-    os.chdir(settings.MEDIA_ROOT+'bundles/') 
+    hex = hash_.hexdigest()
+    os.chdir(settings.MEDIA_ROOT + 'bundles/')
     if os.path.exists(hex):
-        shutil.rmtree(hex) 
-    zf=zipfile.ZipFile(file)
+        shutil.rmtree(hex)
+    zf = zipfile.ZipFile(file)
     zf.extractall(hex)
     zf.close
-    ziph=zipfile.ZipFile(hex+'.zip', 'w', zipfile.ZIP_DEFLATED)
-    for root, dirs, files in os.walk(settings.MEDIA_ROOT+'bundles/'+hex):
+    ziph = zipfile.ZipFile(hex + '.zip', 'w', zipfile.ZIP_DEFLATED)
+    for root, dirs, files in os.walk(settings.MEDIA_ROOT + 'bundles/' + hex):
         for file in files:
-            ziph.write(os.path.join(root, file),os.path.basename(file))
+            ziph.write(os.path.join(root, file), os.path.basename(file))
     ziph.close()
-    url='http://localhost:9002/deploy_trigger/'+id
-    data={"bundle_path":settings.MEDIA_ROOT+'bundles/'+hex+'.zip'}
-    r = requests.post(url = url, data = data)
-    data={'success':True}
+    url = 'http://localhost:9002/deploy_trigger/' + id
+    data = {"bundle_path": settings.MEDIA_ROOT + 'bundles/' + hex + '.zip'}
+    r = requests.post(url=url, data=data)
+    data = {'success': True}
     return Response(data, status=response_status.HTTP_200_OK)
 
 
 @api_view(['GET'])
-def bundledown(request,id,user_id):
+def bundledown(request, id, user_id):
     demo = Demo.objects.get(id=id, user_id=user_id)
-    _os=demo.os
-    cuda=demo.cuda
-    python=demo.python
-    tag=''
-    if(_os=="1"):
-        _os="ubuntu14.04"
-        tag=tag+'ub14.04'
+    _os = demo.os
+    cuda = demo.cuda
+    python = demo.python
+    tag = ''
+    if(_os == "1"):
+        _os = "ubuntu14.04"
+        tag = tag + 'ub14.04'
     else:
-        _os="ubuntu16.04"
-        tag=tag+'ub16.04'
-    tag=tag+'-'
-    if(python=="1"):
-        python="python2.7"
-        tag=tag+'py2.7'
+        _os = "ubuntu16.04"
+        tag = tag + 'ub16.04'
+    tag = tag + '-'
+    if(python == "1"):
+        python = "python2.7"
+        tag = tag + 'py2.7'
     else:
-        python="python3.5"
-        tag=tag+'py3.5'
-    tag=tag+'-'
-    if(cuda=="1"):
-        cuda="cuda7.0-runtime"
-        tag=tag+'cu7.0'
+        python = "python3.5"
+        tag = tag + 'py3.5'
+    tag = tag + '-'
+    if(cuda == "1"):
+        cuda = "cuda7.0-runtime"
+        tag = tag + 'cu7.0'
     else:
-        cuda="cuda8.0-runtime"
-        tag=tag+'cu8.0'
-    url="https://raw.githubusercontent.com/Cloud-CV/Dockerfiles/master/"+_os+"/"+python+"/"+cuda+"/Dockerfile"
-    hash_=md5.new()
-    key=id+user_id
+        cuda = "cuda8.0-runtime"
+        tag = tag + 'cu8.0'
+    url = "https://raw.githubusercontent.com/Cloud-CV/Dockerfiles/master/" + _os + "/" + python + "/" + cuda + "/Dockerfile"
+    hash_ = hashlib.md5()
+    key = id + user_id
     hash_.update(key)
-    hex=hash_.hexdigest()
-    directory=settings.MEDIA_ROOT+'bundles/'+hex
+    hex = hash_.hexdigest()
+    directory = settings.MEDIA_ROOT + 'bundles/' + hex
     if not os.path.exists(directory):
         os.makedirs(directory)
 
-    docker_path=directory+'/Dockerfile'
+    docker_path = directory + '/Dockerfile'
     if not os.path.exists(docker_path):
-        with open(settings.MEDIA_ROOT+'bundles/template/Dockerfile') as f:
+        with open(settings.MEDIA_ROOT + 'bundles/template/Dockerfile') as f:
             lines = f.readlines()
-        lines[0]='FROM teamcloudcv/origami:'+tag
+        lines[0] = 'FROM teamcloudcv/origami:' + tag
         with open(docker_path, "w") as f:
             f.writelines(lines)
 
-    os.chdir(settings.MEDIA_ROOT+'bundles/')
-    if not os.path.exists(hex+'/requirements.txt'):    
-        requirements=copyfile('template/requirements.txt', directory+'/requirements.txt')
-    if not os.path.exists(hex+'/origami.env'):
+    os.chdir(settings.MEDIA_ROOT + 'bundles/')
+    if not os.path.exists(hex + '/requirements.txt'):
+        requirements = copyfile('template/requirements.txt', directory + '/requirements.txt')
+    if not os.path.exists(hex + '/origami.env'):
         print("aaya")
-        f= open(hex+'/origami.env',"w+")    
+        f = open(hex + '/origami.env', "w+")
         f.close()
-    if not os.path.exists(hex+'/main.py'):  
-        main=copyfile('template/main.py', directory+'/main.py')
+    if not os.path.exists(hex + '/main.py'):
+        main = copyfile('template/main.py', directory + '/main.py')
 
-    l=['/Dockerfile','/requirements.txt','/main.py','/origami.env']
-    zipped=zipfile.ZipFile(hex+'.zip','w')
-    for i in l: 
-        zipped.write(hex+i,os.path.basename(hex+i))
+    l = ['/Dockerfile', '/requirements.txt', '/main.py', '/origami.env']
+    zipped = zipfile.ZipFile(hex + '.zip', 'w')
+    for i in l:
+        zipped.write(hex + i, os.path.basename(hex + i))
     zipped.close()
-    file_path=settings.MEDIA_ROOT+'bundles/'+hex+'.zip'
-    resp=HttpResponse(open(file_path, 'rb'), content_type='application/zip')
-    return resp    
+    file_path = settings.MEDIA_ROOT + 'bundles/' + hex + '.zip'
+    resp = HttpResponse(open(file_path, 'rb'), content_type='application/zip')
+    return resp
 
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
@@ -436,8 +441,8 @@ def custom_demo_controller(request, user_id, id):
         name = body["name"]
         id = body["id"]
         user_id = body["user_id"]
-        username=SocialAccount.objects.get(uid=user_id)
-        username=username.user.username.encode('utf-8')
+        username = SocialAccount.objects.get(uid=user_id)
+        username = username.user.username.encode('utf-8')
         description = body["description"]
         cover_image = body["cover_image"]
         os = body["os"]
@@ -448,7 +453,7 @@ def custom_demo_controller(request, user_id, id):
         if not cover_image:
             cover_image = DEFAULT_IMAGE
         terminal = body["terminal"]
-        date=datetime.datetime.now().strftime("%D")
+        date = datetime.datetime.now().strftime("%D")
 
         demo = Demo.objects.create(
             name=name,
@@ -464,7 +469,7 @@ def custom_demo_controller(request, user_id, id):
             source_code=source,
             task=task,
             date=date
-            )
+        )
 
         serialize = DemoSerializer(demo)
         return Response(serialize.data, status=response_status.HTTP_201_CREATED)
@@ -511,8 +516,6 @@ def get_permalink(request, shorturl):
     permalink.short_relative_url = permalink.short_relative_url.split('/')[-1]
     serialize = PermalinkSerializer(permalink)
     return Response([serialize.data], status=response_status.HTTP_200_OK)
-
-
 
 
 @api_view(['GET', 'POST'])
