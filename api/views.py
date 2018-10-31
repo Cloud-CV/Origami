@@ -23,16 +23,21 @@ import sys
 from django.views.decorators.csrf import csrf_exempt
 from pprint import pprint
 import ast
-from django.utils.encoding import smart_unicode
+from django.utils.encoding import smart_text
 import zipfile
-import io
-import wget
-import md5
+import hashlib
 from shutil import copyfile
 import requests
 import datetime
 import shutil
 
+try:
+    # For Python 2; we import cStringIO as bytes strings are used later
+    from cStringIO import StringIO
+except ImportError:
+    # For Python 3
+    from io import StringIO
+    
 class DemoViewSet(ModelViewSet):
     """
     Contains information about inputs/outputs of a single program
@@ -303,7 +308,7 @@ def alive(request):
 @api_view(['POST'])
 def bundleup(request,id,user_id):
     file=request.FILES['file']
-    hash_=md5.new()
+    hash_=hashlib.md5()
     key=id+user_id
     hash_.update(key)
     hex=hash_.hexdigest()  
@@ -353,7 +358,7 @@ def bundledown(request,id,user_id):
         cuda="cuda8.0-runtime"
         tag=tag+'cu8.0'
     url="https://raw.githubusercontent.com/Cloud-CV/Dockerfiles/master/"+_os+"/"+python+"/"+cuda+"/Dockerfile"
-    hash_=md5.new()
+    hash_ = hashlib.md5()
     key=id+user_id
     hash_.update(key)
     hex=hash_.hexdigest()
@@ -555,7 +560,7 @@ def root_settings(request):
                 app_ip=body["app_ip"],
                 port=body["port"])
             app = SocialApp.objects.create(
-                provider='github',
+                provider=u'github',
                 name=str(datetime.datetime.now().isoformat()),
                 client_id=body["client_id"],
                 secret=body["client_secret"])
@@ -579,6 +584,7 @@ def upload_sample_input(request):
     data = request.data
     demo_id = data["demo_id"]
     demo = Demo.objects.get(id=demo_id)
+    # .items() alone creates iterables, with a list never being made
     for key, value in list(data.items()):
         if key.startswith("sample-image"):
             img = request.FILES[key]
