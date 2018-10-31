@@ -7,8 +7,11 @@ import request from "superagent";
 const appConfig = require("../../../../outCalls/config");
 
 const singleInput = props => {
-
-
+  function updateImage (index, file) {
+    document.getElementById(
+      `input-image-preview-${index}`
+    ).src = window.URL.createObjectURL(file);
+  }
 
   function onDrop(files) {
     props.updateFormData(files[0], `input-image-1`);

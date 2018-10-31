@@ -7,7 +7,7 @@ import request from "superagent";
 const appConfig = require("../../../../outCalls/config");
 
 const singleInput = props => {
-  function updateImage(index, file) {
+  function updateImage (index, file) {
     document.getElementById(
       `input-image-preview-${index}`
     ).src = window.URL.createObjectURL(file);

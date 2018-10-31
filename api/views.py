@@ -441,9 +441,11 @@ def custom_demo_controller(request, user_id, id):
         name = body["name"]
         id = body["id"]
         user_id = body["user_id"]
-        username = SocialAccount.objects.get(uid=user_id)
+        address = body["address"]
+        username = SocialAccount.objects.create(uid=user_id)
         username = username.user.username.encode('utf-8')
         description = body["description"]
+        footer_message = body["footer_message"]
         cover_image = body["cover_image"]
         os = body["os"]
         cuda = body["cuda"]
@@ -453,6 +455,9 @@ def custom_demo_controller(request, user_id, id):
         if not cover_image:
             cover_image = DEFAULT_IMAGE
         terminal = body["terminal"]
+        timestamp = body["timestamp"]
+        token = body["token"]
+        status = body["status"]
         date = datetime.datetime.now().strftime("%D")
 
         demo = Demo.objects.create(
@@ -460,12 +465,17 @@ def custom_demo_controller(request, user_id, id):
             id=id,
             username=username,
             user_id=user_id,
+            address=address,
             description=description,
+            footer_message=footer_message,
             cover_image=cover_image,
             os=os,
             python=python,
             cuda=cuda,
             terminal=terminal,
+            timestamp=timestamp,
+            token=token,
+            status=status,
             source_code=source,
             task=task,
             date=date

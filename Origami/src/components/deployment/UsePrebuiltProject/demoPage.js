@@ -38,7 +38,6 @@ class DemoPage extends React.Component {
       files: [],
       index: 0,
       resetBorder: false,
-      files: [],
       subhover: 0,
       active: 1,
       task: '',
@@ -279,7 +278,6 @@ class DemoPage extends React.Component {
       heading: {
         fontFamily: "'Roboto', sans-serif",
         marginLeft: '41%',
-        fontFamily: "'Roboto', sans-serif",
         color: '#323643',
         fontSize: '18px',
       },

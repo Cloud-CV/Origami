@@ -92,12 +92,12 @@ class InstructionsPage extends React.Component {
     let user_id=this.props.match.params.user_id 
     this.props.history.push('/demo/'+user_id+'/'+id+'/page');
   }
-  upload_bundle(selectorFiles: FileList)
+  upload_bundle(selectorFiles = FileList)
   {
     let formData = new FormData();
-    let id=this.props.match.params.repoId
-    let user_id=this.props.match.params.user_id
-    let url='/bundleup/'+id+'/'+user_id+'/'
+    let id=this.props.match.params.repoId;
+    let user_id=this.props.match.params.user_id;
+    let url='/bundleup/'+id+'/'+user_id+'/';
     formData.append('file',selectorFiles[0]);  
         
 
@@ -110,17 +110,18 @@ class InstructionsPage extends React.Component {
     body:formData  
   }).then(function(response) {
 
-    if(response.status==200)
-    toastr.success("Demo is running !");
-    else
-    toastr.error(response.statusText);
-    console.log("response",response)
-  })
-  .catch(function(error){
+    if(response.status==200) {
+        toastr.success("Demo is running !");
+    } else {
+        toastr.error(response.statusText);
+    }
+    console.log("response",response);
+})
+  .catch(function(error) {
      toastr.error("Error occurred!");
   });
-
-  }
+}
+  
 
   download_bundle()
   {
