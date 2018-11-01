@@ -26,7 +26,6 @@ import ast
 from django.utils.encoding import smart_unicode
 import zipfile
 import StringIO
-import wget
 import md5
 from shutil import copyfile
 import requests
