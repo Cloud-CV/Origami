@@ -23,7 +23,6 @@ import { LocaleProvider } from "antd";
 import enUS from "antd/lib/locale-provider/en_US";
 const store = configureStore();
 
-
 const muiTheme = getMuiTheme({
   appBar: {
     height: 45

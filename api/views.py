@@ -306,10 +306,17 @@ def alive(request):
 
 
 @api_view(['POST'])
+<<<<<<< HEAD
 def bundleup(request, id, user_id):
     file = request.FILES['file']
     hash_ = hashlib.md5()
     key = id + user_id
+=======
+def bundleup(request,id,user_id):
+    file=request.FILES['file']
+    hash_=hashlib.md5()
+    key=id+user_id
+>>>>>>> python3
     hash_.update(key)
     hex = hash_.hexdigest()
     os.chdir(settings.MEDIA_ROOT + 'bundles/')
@@ -374,12 +381,20 @@ def bundledown(request, id, user_id):
         with open(docker_path, "w") as f:
             f.writelines(lines)
 
+<<<<<<< HEAD
     os.chdir(settings.MEDIA_ROOT + 'bundles/')
     if not os.path.exists(hex + '/requirements.txt'):
         requirements = copyfile('template/requirements.txt', directory + '/requirements.txt')
     if not os.path.exists(hex + '/origami.env'):
         print("aaya")
         f = open(hex + '/origami.env', "w+")
+=======
+    os.chdir(settings.MEDIA_ROOT+'bundles/')
+    if not os.path.exists(hex+'/requirements.txt'):    
+        requirements=copyfile('template/requirements.txt', directory+'/requirements.txt')
+    if not os.path.exists(hex+'/origami.env'):
+        f= open(hex+'/origami.env',"w+")    
+>>>>>>> python3
         f.close()
     if not os.path.exists(hex + '/main.py'):
         main = copyfile('template/main.py', directory + '/main.py')
@@ -437,28 +452,42 @@ def custom_demo_controller(request, user_id, id):
             return Response(data, status=response_status.HTTP_200_OK)
     elif request.method == "POST":
         body = request.data
-
         name = body["name"]
         id = body["id"]
         user_id = body["user_id"]
+<<<<<<< HEAD
         address = body["address"]
         username = SocialAccount.objects.create(uid=user_id)
         username = username.user.username.encode('utf-8')
         description = body["description"]
         footer_message = body["footer_message"]
         cover_image = body["cover_image"]
+=======
+        try:
+            username=body["username"]
+        except:
+            username=SocialAccount.objects.get(uid=user_id)
+            username=username.user.username.encode('utf-8')
+        description = body["description"]
+        cover_image = body.get("cover_image")
+>>>>>>> python3
         os = body["os"]
         cuda = body["cuda"]
         python = body["python"]
         task = body["task"]
-        source = body["source"]
+        source = body.get("source_code")
         if not cover_image:
             cover_image = DEFAULT_IMAGE
+<<<<<<< HEAD
         terminal = body["terminal"]
         timestamp = body["timestamp"]
         token = body["token"]
         status = body["status"]
         date = datetime.datetime.now().strftime("%D")
+=======
+        terminal = body.get("terminal")
+        date=datetime.datetime.now().strftime("%D")
+>>>>>>> python3
 
         demo = Demo.objects.create(
             name=name,
@@ -489,16 +518,16 @@ def custom_demo_controller(request, user_id, id):
             body = request.data
             demo = Demo.objects.get(id=id, user_id=user_id)
             demo.name = body["name"]
-            demo.address = body["address"]
             demo.description = body["description"]
-            demo.footer_message = body["footer_message"]
             if not body["cover_image"]:
                 demo.cover_image = DEFAULT_IMAGE
             else:
                 demo.cover_image = body["cover_image"]
             demo.terminal = body["terminal"]
-            demo.token = body["token"]
-            demo.status = body["status"]
+            demo.os=body["os"],
+            demo.cuda=body["cuda"],
+            demo.python=body["python"],
+            demo.source_code=body["source_code"],
             demo.save()
             serialize = DemoSerializer(demo)
             return Response(serialize.data, status=response_status.HTTP_200_OK)

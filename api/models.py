@@ -23,26 +23,37 @@ class Demo(models.Model):
         timestamp: The time at which the demo is created
         token: Project token, provided at creation of the demo, containing
             '(gh|nongh)':Address:Id:Current_Port:Port:Temp_Web_Address
-        status: string, either "demo" or "input"
     """
     name = models.CharField(max_length=100)
     id = models.IntegerField(primary_key=True)
     username = models.CharField(max_length=30, default="not known")
     user_id = models.IntegerField()
     cover_image = models.TextField(blank=False, null=False)
+<<<<<<< HEAD
     footer_message = models.CharField(max_length=400)
     address = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
+=======
+    description = models.CharField(max_length=1000,blank=True)
+>>>>>>> python3
     terminal = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True, blank=True)
     token = models.CharField(max_length=200)
     status = models.CharField(max_length=100)
     task = models.CharField(max_length=40)
+<<<<<<< HEAD
     source_code = models.CharField(max_length=300)
     os = models.CharField(max_length=30, blank=False)
     python = models.CharField(max_length=30, blank=False)
     cuda = models.CharField(max_length=30, blank=False)
     date = models.CharField(max_length=30, default="01/01/01")
+=======
+    source_code = models.CharField(max_length=300,null=True)
+    os = models.CharField(max_length=30,blank=False)
+    python = models.CharField(max_length=30,blank=False)
+    cuda = models.CharField(max_length = 30,blank=False)
+    date = models.CharField(max_length=30,default="01/01/01")
+>>>>>>> python3
 
 
 class InputComponent(models.Model):

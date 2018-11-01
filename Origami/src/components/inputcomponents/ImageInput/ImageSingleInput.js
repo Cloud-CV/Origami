@@ -32,7 +32,6 @@ const singleInput = props => {
             type: "image/png"
           });
           props.updateFormData(blob, `input-image-${props.index}`);
-          updateImage(props.index, blob);
         }
       });
   }
