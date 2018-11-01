@@ -373,7 +373,6 @@ def bundledown(request,id,user_id):
     if not os.path.exists(hex+'/requirements.txt'):    
         requirements=copyfile('template/requirements.txt', directory+'/requirements.txt')
     if not os.path.exists(hex+'/origami.env'):
-        print("aaya")
         f= open(hex+'/origami.env',"w+")    
         f.close()
     if not os.path.exists(hex+'/main.py'):  
@@ -432,22 +431,24 @@ def custom_demo_controller(request, user_id, id):
             return Response(data, status=response_status.HTTP_200_OK)
     elif request.method == "POST":
         body = request.data
-
         name = body["name"]
         id = body["id"]
         user_id = body["user_id"]
-        username=SocialAccount.objects.get(uid=user_id)
-        username=username.user.username.encode('utf-8')
+        try:
+            username=body["username"]
+        except:
+            username=SocialAccount.objects.get(uid=user_id)
+            username=username.user.username.encode('utf-8')
         description = body["description"]
-        cover_image = body["cover_image"]
+        cover_image = body.get("cover_image")
         os = body["os"]
         cuda = body["cuda"]
         python = body["python"]
         task = body["task"]
-        source = body["source"]
+        source = body.get("source_code")
         if not cover_image:
             cover_image = DEFAULT_IMAGE
-        terminal = body["terminal"]
+        terminal = body.get("terminal")
         date=datetime.datetime.now().strftime("%D")
 
         demo = Demo.objects.create(
@@ -474,16 +475,16 @@ def custom_demo_controller(request, user_id, id):
             body = request.data
             demo = Demo.objects.get(id=id, user_id=user_id)
             demo.name = body["name"]
-            demo.address = body["address"]
             demo.description = body["description"]
-            demo.footer_message = body["footer_message"]
             if not body["cover_image"]:
                 demo.cover_image = DEFAULT_IMAGE
             else:
                 demo.cover_image = body["cover_image"]
             demo.terminal = body["terminal"]
-            demo.token = body["token"]
-            demo.status = body["status"]
+            demo.os=body["os"],
+            demo.cuda=body["cuda"],
+            demo.python=body["python"],
+            demo.source_code=body["source_code"],
             demo.save()
             serialize = DemoSerializer(demo)
             return Response(serialize.data, status=response_status.HTTP_200_OK)
