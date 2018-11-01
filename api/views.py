@@ -23,14 +23,21 @@ import sys
 from django.views.decorators.csrf import csrf_exempt
 from pprint import pprint
 import ast
-from django.utils.encoding import smart_unicode
+from django.utils.encoding import smart_text
 import zipfile
-import StringIO
-import md5
+import hashlib
 from shutil import copyfile
 import requests
 import datetime
 import shutil
+
+try:
+    # Python 2
+    from cStringIO import StringIO
+except ImportError:
+    # Python 3
+    from io import StringIO
+
 
 class DemoViewSet(ModelViewSet):
     """
@@ -302,7 +309,7 @@ def alive(request):
 @api_view(['POST'])
 def bundleup(request,id,user_id):
     file=request.FILES['file']
-    hash_=md5.new()
+    hash_=hashlib.md5()
     key=id+user_id
     hash_.update(key)
     hex=hash_.hexdigest()  
