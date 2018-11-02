@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
-
+import sys
+if sys.version[0] =='3':
+  pass
+else:
+  from __future__ import unicode_literals
 
 from django.contrib import admin
 from api.models import Demo, InputComponent, OutputComponent, RootSettings, Permalink, SampleInput
+
 
 # Register your models here.
 
