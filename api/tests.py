@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+import sys
+if sys.version[0] =='3':
+  pass
+else:
+  from __future__ import unicode_literals
 
 from django.contrib.auth.models import User
 from django.contrib.auth import login
