@@ -510,7 +510,10 @@ def root_settings(request):
                 app_ip=body["app_ip"],
                 port=body["port"])
             app = SocialApp.objects.create(
-                provider='github',
+                if sys.version[0] =='3':
+                    provider='github',
+                else:
+                    provider=u'github',
                 name=str(datetime.datetime.now().isoformat()),
                 client_id=body["client_id"],
                 secret=body["client_secret"])
@@ -534,15 +537,26 @@ def upload_sample_input(request):
     data = request.data
     demo_id = data["demo_id"]
     demo = Demo.objects.get(id=demo_id)
-    for key, value in list(data.items()):
-        if key.startswith("sample-image"):
-            img = request.FILES[key]
-            absolute_path = default_storage.save(settings.MEDIA_ROOT, ContentFile(img.read()))
-            relative_path = '/media/' + absolute_path.split('media/')[-1]
-            sample_input = SampleInput.objects.create(demo=demo, type_of_input=3, value=relative_path)
-            serialize = SampleInputSerializer(sample_input)
-            if ("test" in sys.argv):
-                os.remove(absolute_path)
+    if sys.version[0] == '3':
+        for key, value in list(data.items()):
+            if key.startswith("sample-image"):
+                img = request.FILES[key]
+                absolute_path = default_storage.save(settings.MEDIA_ROOT, ContentFile(img.read()))
+                relative_path = '/media/' + absolute_path.split('media/')[-1]
+                sample_input = SampleInput.objects.create(demo=demo, type_of_input=3, value=relative_path)
+                serialize = SampleInputSerializer(sample_input)
+                if ("test" in sys.argv):
+                    os.remove(absolute_path)
+    else:
+        for key, value in data.items():
+            if key.startswith("sample-image"):
+                img = request.FILES[key]
+                absolute_path = default_storage.save(settings.MEDIA_ROOT, ContentFile(img.read()))
+                relative_path = '/media/' + absolute_path.split('media/')[-1]
+                sample_input = SampleInput.objects.create(demo=demo, type_of_input=3, value=relative_path)
+                serialize = SampleInputSerializer(sample_input)
+                if ("test" in sys.argv):
+                    os.remove(absolute_path)
     sample_inputs = SampleInput.objects.filter(demo=demo)
     serialize = SampleInputSerializer(sample_inputs, many=True)
     return Response(serialize.data, status=response_status.HTTP_200_OK)
