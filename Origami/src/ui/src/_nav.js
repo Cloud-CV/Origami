@@ -27,7 +27,7 @@ export default {
     },
     {
       name: 'Logout',
-      url: 'sad',
+      url: '/accounts/logout/',
       icon: 'fas fa-sign-out-alt'
 
     },
