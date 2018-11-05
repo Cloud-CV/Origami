@@ -212,7 +212,7 @@ class RegisterPage extends React.Component {
         cuda = y;
         break;
     }
-    this.setState({ python, os, cuda});
+    this.setState({ python, os, cuda });
   }
 
   exit() {
@@ -227,7 +227,10 @@ class RegisterPage extends React.Component {
   }
   
   validate(data) {
+    console.log(data);
+      
     const isEmpty = field => !field || field.length === 0;
+    const isSelected = field => field && field != 0;
     console.log("validating...");
     
     if (isEmpty(data.name) || isEmpty(data.description)) {
@@ -235,11 +238,19 @@ class RegisterPage extends React.Component {
     }
     
     if (isEmpty(data.task)) {
-        return Promise.reject("Please select a the demo's task.");
+        return Promise.reject("Please select the demo's task.");
     }
     
     if (isEmpty(data.cover_image)) {
         return Promise.reject("Please select a cover image for the demo.");
+    }
+    
+    if (isEmpty(data.source)) {
+        return Promise.reject("Please add a link for the source code of the demo.");
+    }
+    
+    if (!isSelected(data.os) || !isSelected(data.cuda) || !isSelected(data.python)) {
+        return Promise.reject("Please select the OS for the demo, the Python version you'd like to use in it and the CUDA version.");
     }
     
     return Promise.resolve();
@@ -295,21 +306,20 @@ class RegisterPage extends React.Component {
           console.log("error",err)
         });
         
-        if (success) {
-            this.props.history.push('/instructions/'+dataToPut.user_id+"/"+dataToPut.id+'/bundle');
-        }
+      if (success) {
+        this.props.history.push(`/instructions/${dataToPut.user_id}/${dataToPut.id}/bundle`);
+      }
     }
     
-  checkbox(event){
-    let current=this.state.checked;
+  checkbox(event) {
+    let current = this.state.checked;
     this.setState({checked:!current})
   }
 
-  tasks(e){
-    console.log("clicked before",e,this.state.task)
-    this.setState({task:e})
+  tasks(e) {
+    console.log("clicked before", e,this.state.task)
+    this.setState({task: e});
   }
-
 
   render() {
     const { active } = this.state;
