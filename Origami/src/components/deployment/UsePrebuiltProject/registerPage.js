@@ -92,7 +92,6 @@ class RegisterPage extends React.Component {
     return {
       layout: {
         background: '#F7F7F7',
-        
       },
       content: {
         margin: '24px 0 0 12px',
@@ -213,7 +212,7 @@ class RegisterPage extends React.Component {
         cuda = y;
         break;
     }
-    this.setState({ python: python, os: os, cuda: cuda });
+    this.setState({ python, os, cuda});
   }
 
   exit() {
@@ -226,56 +225,82 @@ class RegisterPage extends React.Component {
   helpDirect() {
     window.location = ORIGAMI_READ_THE_DOCS;
   }
+  
+  validate(data) {
+    const isEmpty = field => !field || field.length === 0;
+    console.log("validating...");
+    
+    if (isEmpty(data.name) || isEmpty(data.description)) {
+        return Promise.reject("Please define the demo's appname and description.");
+    }
+    
+    if (isEmpty(data.task)) {
+        return Promise.reject("Please select a the demo's task.");
+    }
+    
+    if (isEmpty(data.cover_image)) {
+        return Promise.reject("Please select a cover image for the demo.");
+    }
+    
+    return Promise.resolve();
+  }
 
   submit() {
+      let task=this.state.task
+      let task_in=''
+        switch (task) {
+          case 1:
+            task_in= 'VQA';
+            break;
+          case 2:
+            task_in= 'Style Transfer';
+            break;
+          case 3:
+            task_in = 'Grad Cam';
+            break;
+          case 4:
+            task_in = 'Classification';
+            break;
 
-  let task=this.state.task
-  let task_in=''
-    switch (task) {
-      case 1:
-        task_in= 'VQA';
-        break;
-      case 2:
-        task_in= 'Style Transfer';
-        break;
-      case 3:
-        task_in = 'Grad Cam';
-        break;
-      case 4:
-        task_in = 'Classification';
-        break;
+        }
 
+       let dataToPut = {
+        name: this.state.name,
+        id: this.state.id,
+        user_id: this.state.user_id,
+        description: this.state.description,
+        cover_image: this.state.cover_image,
+        terminal: this.state.showTerminal,
+        task: task_in,
+        os:this.state.os,
+        python:this.state.python,
+        cuda:this.state.cuda,
+        source:this.state.source
+      };
+      
+      let success = false;
+      
+      this.validate(dataToPut)
+        .catch(err => {
+            alert(err);
+            return Promise.reject();
+        })
+        .then(() => this.props.nonghModelActions.addToDBNonGHDemoModel(dataToPut))
+        .then(() => this.props.nonghModelActions.updateNonGHDemoModel(dataToPut))
+        .then(() => {
+          console.log("Done");
+          success = true;
+        })
+        .catch(err => {
+          console.log("error",err)
+        });
+        
+        if (success) {
+            this.props.history.push('/instructions/'+dataToPut.user_id+"/"+dataToPut.id+'/bundle');
+        }
     }
-
-   let dataToPut = {
-    name: this.state.name,
-    id: this.state.id,
-    user_id: this.state.user_id,
-    description: this.state.description,
-    cover_image: this.state.cover_image,
-    terminal: this.state.showTerminal,
-    task: task_in,
-    os:this.state.os,
-    python:this.state.python,
-    cuda:this.state.cuda,
-    source:this.state.source
-  };   
-  this.props.nonghModelActions.addToDBNonGHDemoModel(dataToPut).then(() => {
-    this.props.nonghModelActions
-      .updateNonGHDemoModel(dataToPut)
-      .then(() => {
-          console.log("Done")
-          })
-
-
-  })
-    .catch(err => {
-      console.log("error",err)
-    });
-
-    this.props.history.push('/instructions/'+dataToPut.user_id+"/"+dataToPut.id+'/bundle');
-}
-    checkbox(event){
+    
+  checkbox(event){
     let current=this.state.checked;
     this.setState({checked:!current})
   }
@@ -360,9 +385,9 @@ class RegisterPage extends React.Component {
                         <hr
                           style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
                         />
-                        <div class="ui grid">
-                          <div class="two wide column" />
-                          <div class="four wide column">
+                        <div className="ui grid">
+                          <div className="two wide column" />
+                          <div className="four wide column">
                             <TextField
                               hintText="MyApp"
                               floatingLabelText="Appname"
@@ -371,8 +396,8 @@ class RegisterPage extends React.Component {
                               onChange={this.updateName}
                             />
                           </div>
-                          <div class="three wide column" />
-                          <div class="four wide column">
+                          <div className="three wide column" />
+                          <div className="four wide column">
                             <TextField
                               hintText="Description"
                               floatingLabelText="Description"
@@ -400,7 +425,7 @@ class RegisterPage extends React.Component {
                         <br />
 
                         <div className="ui grid">
-                          <div class="two wide column" />
+                          <div className="two wide column" />
 
                           <div className=" three wide column">
                             <Cards header={'VQA'} count={1} onClick={this.tasks.bind(this,1)} clicked={this.state.task==1?true:false} />
@@ -437,7 +462,7 @@ class RegisterPage extends React.Component {
                         <div className="ui grid">
                           <div className="three wide column" />
                           <div className="one wide column">
-                            <text style={styles.tagOs}>OS </text>
+                            <span style={styles.tagOs}>OS</span>
                           </div>
                           <div className="one wide column" />
                           <div className="four wide column">
@@ -451,7 +476,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>Ubuntu 14.04</text>
+                              <span style={styles.txt}>Ubuntu 14.04</span>
                             </Button>
                           </div>
                           <div className="four wide column">
@@ -465,7 +490,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>Ubuntu 16.04</text>
+                              <span style={styles.txt}>Ubuntu 16.04</span>
                             </Button>
                           </div>
                         </div>
@@ -488,7 +513,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>2.7</text>
+                              <span style={styles.txt}>2.7</span>
                             </Button>
                           </div>
                           <div className="four wide column">
@@ -503,7 +528,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>3.5</text>
+                              <span style={styles.txt}>3.5</span>
                             </Button>
                           </div>
                         </div>
@@ -526,7 +551,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>7.0 - runtime</text>
+                              <span style={styles.txt}>7.0 - runtime</span>
                             </Button>
                           </div>
                           <div className="four wide column">
@@ -541,7 +566,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>8.0 - runtime</text>
+                              <span style={styles.txt}>8.0 - runtime</span>
                             </Button>
                           </div>
                         </div>
@@ -627,7 +652,7 @@ class RegisterPage extends React.Component {
                               </div>
                               <br />
                               <div className="row">
-                                <div class="four wide column">
+                                <div className="four wide column">
                                   <span>
                                     <a style={styles.logo}>
                                       <img
@@ -663,7 +688,7 @@ class RegisterPage extends React.Component {
                                 : styles.sub
                             }
                           >
-                            <text style={styles.txt}>Reset</text>
+                            <span style={styles.txt}>Reset</span>
                           </Button>
                         </div>
 
@@ -680,7 +705,7 @@ class RegisterPage extends React.Component {
                                 : styles.sub
                             }
                           >
-                            <text style={styles.txt} >Submit</text>
+                            <span style={styles.txt}>Submit</span>
                           </Button>
                         </div>
                       </div>
