@@ -20,6 +20,7 @@ import toastr from 'toastr';
 import { Layout, Row, Col } from 'antd';
 import { ORIGAMI_READ_THE_DOCS } from '../../../constants';
 import { Card, Icon, Image, Button, Dimmer, Header } from 'semantic-ui-react';
+import Alert from '../../stateless/alert';
 import Cards from '../../stateless/task_cards';
 import isUrl from 'is-url-superb';
 
@@ -55,6 +56,7 @@ class RegisterPage extends React.Component {
     this.exit = this.exit.bind(this);
     this.btnEnter = this.btnEnter.bind(this);
     this.updateSource =this.updateSource.bind(this);
+    this.alert = React.createRef();
   }
 
   updateDescription(e) {
@@ -305,8 +307,17 @@ class RegisterPage extends React.Component {
       
       this.validate(dataToPut)
         .catch(err => {
-            alert(err);
-            return Promise.reject();
+            const title = "Invalid demo settings";
+            
+            this.setState(Object.assign({}, this.state, {
+                alertContent: err,
+                alertTitle: title,
+                showAlert: true,
+            }));
+            this.alert.current.set(title, err);
+            this.alert.current.show();
+            
+            return Promise.reject(err);
         })
         .then(() => this.props.nonghModelActions.addToDBNonGHDemoModel(dataToPut))
         .then(() => this.props.nonghModelActions.updateNonGHDemoModel(dataToPut))
@@ -347,6 +358,8 @@ class RegisterPage extends React.Component {
             </div>
           )}
           <Content style={styles.content}>
+            {this.state.showAlert && <Alert ref={this.alert} content={this.state.alertContent} title={this.state.alertTitle} />}
+            
             <div style={styles.contentDiv}>
               <Row>
                 <div
