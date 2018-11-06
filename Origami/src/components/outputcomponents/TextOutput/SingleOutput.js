@@ -9,12 +9,14 @@ const singleOutput = props => {
       id={`output-text-${props.index}`}
     >
       <div className="content">
-        <div className="header">Output</div>
+        <div className="header">
+          Output
+        </div>
       </div>
       <div className="content">
         <div className="ui small feed">
           <div className="event">
-            <div className="content" style={{ height: "5vh" }}>
+            <div className="content" style={{height:'5vh'}}>
               <div className="summary">{props.data}</div>
             </div>
           </div>

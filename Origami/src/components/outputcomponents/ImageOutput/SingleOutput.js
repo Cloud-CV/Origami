@@ -44,9 +44,10 @@ class singleOutput extends React.Component {
                   {this.props.data ? (
                     <img
                       className="ui centered center aligned fluid large image origami-demo-output-image"
-                      style={{ cursor: "pointer", width: "75%" }}
+                      style={{ cursor: "pointer",width:"75%" }}
                       src={this.props.data}
                       onClick={this.showImageFull}
+
                     />
                   ) : (
                     <LinearProgress mode="indeterminate" />
@@ -82,6 +83,7 @@ class singleOutput extends React.Component {
 
 singleOutput.propTypes = {
   data: PropTypes.any
+  
 };
 
 export default singleOutput;

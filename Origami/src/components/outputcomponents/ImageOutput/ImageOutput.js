@@ -10,14 +10,19 @@ const ImageOutput = ({ headers, calling_context, data }) => {
     >
       <br />
       <br />
-      <SingleOutput data={data} />,
-      <br key={Math.random()} />,
-      <br key={Math.random()} />
+      
+        <SingleOutput
+          data={data}
+        />,
+        <br key={Math.random()} />,
+        <br key={Math.random()} />
+     
     </div>
   );
 };
 
 ImageOutput.propTypes = {
+
   data: PropTypes.array
 };
 

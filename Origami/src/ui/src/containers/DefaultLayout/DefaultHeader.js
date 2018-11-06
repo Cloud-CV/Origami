@@ -1,23 +1,10 @@
-import React, { Component } from "react";
-import {
-  Badge,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Nav,
-  NavItem,
-  NavLink
-} from "reactstrap";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import { Badge, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink } from 'reactstrap';
+import PropTypes from 'prop-types';
 
-import {
-  AppAsideToggler,
-  AppHeaderDropdown,
-  AppNavbarBrand,
-  AppSidebarToggler
-} from "@coreui/react";
-import logo from "../../../../../../origami_logo.png";
-import sygnet from "../../../../components/assets/cloudcv_logo.png";
+import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
+import logo from '../../../../../../origami_logo.png'
+import sygnet from '../../../../components/assets/cloudcv_logo.png'
 import { getSearchedDemos } from "../../../../api/Nongh/getSearchedDemos";
 import { getAllPermalink } from "../../../../api/Nongh/permalink";
 import {
@@ -34,34 +21,32 @@ import {
 } from "antd";
 import toastr from "toastr";
 const propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
 };
-import ReactDOM from "react-dom";
+import ReactDOM from 'react-dom';
 
 const defaultProps = {};
 
 class DefaultHeader extends Component {
+
   constructor(props) {
     super(props);
     this.asideTogglerRef = React.createRef();
   }
 
   componentDidMount() {
-    console.log("props=", this.props);
-    ReactDOM.findDOMNode(this.asideTogglerRef.current).addEventListener(
-      "click",
-      this.props.click
-    );
+    console.log("props=",this.props)
+    ReactDOM.findDOMNode(this.asideTogglerRef.current).addEventListener('click', this.props.click);
   }
 
   componentWillUnmount() {
-    ReactDOM.findDOMNode(this.asideTogglerRef.current).removeEventListener(
-      "click",
-      this.props.click
-    );
-  }
+    ReactDOM.findDOMNode(this.asideTogglerRef.current).removeEventListener('click', this.props.click);
+  }  
+
+
 
   render() {
+
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
 
@@ -69,20 +54,19 @@ class DefaultHeader extends Component {
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
         <AppNavbarBrand
-          full={{ src: logo, width: 120, height: 50, alt: "CoreUI Logo" }}
-          minimized={{ src: sygnet, width: 30, height: 30, alt: "CoreUI Logo" }}
+          full={{ src: logo, width: 120, height: 50, alt: 'CoreUI Logo' }}
+          minimized={{ src: sygnet, width: 30, height: 30, alt: 'CoreUI Logo' }}
         />
         <AppSidebarToggler className="d-md-down-none" display="lg" />
 
+
+
         <Nav className="ml-auto" navbar>
           <AppHeaderDropdown direction="down">
-            <DropdownToggle nav />
+            <DropdownToggle nav/>
           </AppHeaderDropdown>
         </Nav>
-        <AppAsideToggler
-          className="d-md-down-none"
-          ref={this.asideTogglerRef}
-        />
+        <AppAsideToggler className="d-md-down-none" ref={this.asideTogglerRef} />
         {/*<AppAsideToggler className="d-lg-none" mobile />*/}
       </React.Fragment>
     );

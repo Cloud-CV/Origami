@@ -1,22 +1,22 @@
-import React from "react";
-import { PropTypes } from "prop-types";
-import { Link, withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import * as userActions from "../../actions/userActions";
-import * as nonghDemoModelActions from "../../actions/nonghDemoModelActions";
-import * as inputComponentDemoModelActions from "../../actions/inputComponentDemoModelActions";
-import * as outputComponentDemoModelActions from "../../actions/outputComponentDemoModelActions";
-import { getDeployed } from "../../api/Nongh/getDeployed";
-import { getAllPermalink, deletePermalink } from "../../api/Nongh/permalink";
-import Dialog from "material-ui/Dialog";
-import RaisedButton from "material-ui/RaisedButton";
-import toastr from "toastr";
-import { Layout, Icon, Button, Card, Row, Col, Input, Modal } from "antd";
-import Radium from "radium";
-import { trimAndPad } from "../../utils/generalUtils";
-import { DEMO_CARD_DESCRIP_MAX_LEN } from "../../constants";
-import { BounceLoader } from "react-spinners";
+import React from 'react';
+import { PropTypes } from 'prop-types';
+import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as userActions from '../../actions/userActions';
+import * as nonghDemoModelActions from '../../actions/nonghDemoModelActions';
+import * as inputComponentDemoModelActions from '../../actions/inputComponentDemoModelActions';
+import * as outputComponentDemoModelActions from '../../actions/outputComponentDemoModelActions';
+import { getDeployed } from '../../api/Nongh/getDeployed';
+import { getAllPermalink, deletePermalink } from '../../api/Nongh/permalink';
+import Dialog from 'material-ui/Dialog';
+import RaisedButton from 'material-ui/RaisedButton';
+import toastr from 'toastr';
+import { Layout, Icon, Button, Card, Row, Col, Input, Modal } from 'antd';
+import Radium from 'radium';
+import { trimAndPad } from '../../utils/generalUtils';
+import { DEMO_CARD_DESCRIP_MAX_LEN } from '../../constants';
+import { BounceLoader } from 'react-spinners';
 
 const { Header, Content, Footer, Sider } = Layout;
 const Search = Input.Search;
@@ -28,17 +28,17 @@ class NonGHUserProfileComponent extends React.Component {
     super(props, context);
     this.state = {
       user: {},
-      showOutput: "hidden",
+      showOutput: 'hidden',
       allDeployed: [],
       projectBeingEdited: {},
       showModifyModal: false,
       showDeleteConfirmationModal: false,
       showDemo: {},
-      appData: { type: "", content: "" },
+      appData: { type: '', content: '' },
       showDataModal: false,
       permalinkHolder: {},
-      projectBeingDeletedId: "",
-      demoLoading: true
+      projectBeingDeletedId: '',
+      demoLoading: true,
     };
     this.socket = this.context.socket;
     this.success = this.success.bind(this);
@@ -82,7 +82,7 @@ class NonGHUserProfileComponent extends React.Component {
                   }
                   stateToPut[perma.user_id][perma.project_id] = perma;
                   this.setState({
-                    permalinkHolder: Object.assign({}, stateToPut)
+                    permalinkHolder: Object.assign({}, stateToPut),
                   });
                 });
               });
@@ -98,7 +98,7 @@ class NonGHUserProfileComponent extends React.Component {
   }
   success() {
     const modal = Modal.info({
-      title: "Logging you in"
+      title: 'Logging you in',
     });
     setTimeout(() => modal.destroy(), 2000);
   }
@@ -106,7 +106,7 @@ class NonGHUserProfileComponent extends React.Component {
   initiateLogin() {
     if (!this.props.login) {
       this.success();
-      window.location = "/auth/github/login/";
+      window.location = '/auth/github/login/';
     }
   }
   componentWillReceiveProps(nextProps) {
@@ -120,12 +120,12 @@ class NonGHUserProfileComponent extends React.Component {
       this.setState({ projectBeingDeletedId });
     }
     this.setState({
-      showDeleteConfirmationModal: !this.state.showDeleteConfirmationModal
+      showDeleteConfirmationModal: !this.state.showDeleteConfirmationModal,
     });
   }
 
   deleteDemo() {
-    console.log("aaya");
+    console.log("aaya")
     const project_id = this.state.projectBeingDeletedId;
     this.toggleDeleteConfirmationDialog();
     this.props.nonghModelActions
@@ -138,7 +138,7 @@ class NonGHUserProfileComponent extends React.Component {
             while (tmp.length) {
               allDeployed.push(tmp.splice(0, 3));
             }
-            this.setState({ allDeployed });
+            this.setState({ allDeployed })
           })
           .catch(err => {
             toastr.error(err);
@@ -155,7 +155,7 @@ class NonGHUserProfileComponent extends React.Component {
       timestamp: project.timestamp,
       token: project.token,
       status: project.status,
-      appData: {}
+      appData: {},
     };
     this.props.nonghModelActions.updateNonGHDemoModel(dataToUpdate).then(() => {
       this.setState({ projectBeingEdited: project }, () => {
@@ -178,9 +178,9 @@ class NonGHUserProfileComponent extends React.Component {
 
   getDisplayForDemoButton(project) {
     if (project) {
-      return "";
+      return '';
     } else {
-      return "None";
+      return 'None';
     }
   }
 
@@ -191,43 +191,44 @@ class NonGHUserProfileComponent extends React.Component {
   }
 
   goToRegisterPage() {
-    this.props.history.push("/ngh/user/register");
+    this.props.history.push('/ngh/user/register');
   }
 
-  clicked(id, user_id) {
-    this.props.history.push(`/demo/${user_id}/${id}/page`);
+  clicked(id,user_id){
+    this.props.history.push('/demo/'+user_id+'/'+id+'/page');
   }
+  
 
   getStyles() {
     return {
       layout: {
-        backgroundColor: "#FFFFFF"
+        backgroundColor:'#FFFFFF'
       },
       content: {
-        margin: "24px 16px 0",
-        overflow: "initial",
-        backgroundColor: "#FFFFFF"
+        margin: '24px 16px 0',
+        overflow: 'initial',
+        backgroundColor:'#FFFFFF'
       },
       contentDiv: {
         padding: 16,
-        textAlign: "center",
-        backgroundColor: "#FFFFFF"
+        textAlign: 'center',
+        backgroundColor:'#FFFFFF'
       },
       footer: {
-        textAlign: "center",
-        background: "#fefefe",
-        color: "#455A64",
-        fontSize: "14px",
-        boxShadow: "0px -2px 5px #E0E0E0"
-      }
+        textAlign: 'center',
+        background: '#fefefe',
+        color: '#455A64',
+        fontSize: '14px',
+        boxShadow: '0px -2px 5px #E0E0E0',
+      },
     };
   }
 
   render() {
     const demoSpinnerStyle = {
-      position: "fixed",
-      top: "50%",
-      left: "50%"
+      position: 'fixed',
+      top: '50%',
+      left: '50%',
     };
     document.body.scrollTop = document.documentElement.scrollTop = 0;
     const styles = this.getStyles();
@@ -240,26 +241,31 @@ class NonGHUserProfileComponent extends React.Component {
         onClick={this.toggleDeleteConfirmationDialog}
       />,
       <span key="2">&nbsp;</span>,
-      <RaisedButton label="Delete" key="3" primary onClick={this.deleteDemo} />
+      <RaisedButton
+        label="Delete"
+        key="3"
+        primary
+        onClick={this.deleteDemo}
+      />,
     ];
 
     return (
-      <Layout>
+      <Layout >
         <Header id="layout-header">
           <Row>
             <Col span={18} offset={1}>
               <h1 id="logo-title">
-                My Demos - {localStorage.getItem("username")}
+                My Demos - {localStorage.getItem('username')}
               </h1>
             </Col>
           </Row>
         </Header>
         {this.state.demoLoading ? (
           <div className="demoSpinner" style={demoSpinnerStyle}>
-            <BounceLoader color={"#33aadd"} size={80} />
+            <BounceLoader color={'#33aadd'} size={80} />
           </div>
         ) : (
-          <Content style={{ paddingTop: "5px" }}>
+          <Content style={{paddingTop:'5px'}}>
             {this.state.user && (
               <div style={styles.contentDiv}>
                 <Row>
@@ -267,79 +273,58 @@ class NonGHUserProfileComponent extends React.Component {
                     <div key={Math.random()}>
                       <Row>
                         {row.map(demo => (
-                          <Col span={6} offset={2} key={demo.id}>
+
+              <Col span={6} offset={2} key={demo.id}>
                             <div
-                              className="ui card"
+                              class="ui card"
                               style={{
-                                width: "80%",
-                                borderWidth: "0px",
-                                borderBottom: "1px solid rgba(0, 0, 0, 0.2)",
-                                boxShadow: "0 1px 5px rgba(0, 0, 0, 0.15)"
+                                width: '80%',
+                                borderWidth: '0px',
+                                borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
+                                boxShadow: '0 1px 5px rgba(0, 0, 0, 0.15)',
                               }}
                             >
-                              <div
-                                className="content"
-                                style={{ color: "#323643" }}
-                              >
+                              <div class="content" style={{ color: '#323643' }}>
                                 <span
                                   style={{
-                                    paddingLeft: "5px",
-                                    fontSize: "17px",
-                                    fontWeight: "Bold"
+                                    paddingLeft: '5px',
+                                    fontSize: '17px',
+                                    fontWeight:'Bold'
                                   }}
                                 >
-                                  {" "}
-                                  {demo.name}{" "}
+                                  {' '}
+                                  {demo.name}{' '}
                                 </span>
+
                               </div>
                               <div className="small image">
                                 <img
                                   src={demo.cover_image}
-                                  style={{ height: "24vh" }}
+                                  style={{ height: '24vh' }}
                                 />
                               </div>
-                              <div>
-                                <div
-                                  className="ui buttons"
-                                  style={{ width: "100%" }}
-                                >
-                                  <button
-                                    className="ui button"
-                                    style={{
-                                      color: "#323643",
-                                      backgroundColor: "White"
-                                    }}
-                                  >
-                                    Modify
-                                  </button>
-                                  <button
-                                    className="ui button"
-                                    style={{
-                                      color: "#323643",
-                                      backgroundColor: "White"
-                                    }}
-                                    onClick={() =>
+                              <div   >
+                            <div class="ui buttons" style={{width:'100%'}} >
+                              <button class="ui button" style={{color:'#323643',backgroundColor:'White'}} >
+                              Modify
+                              </button>
+                              <button class="ui button" style={{color:'#323643',backgroundColor:'White'}}                                     onClick={() =>
                                       this.toggleDeleteConfirmationDialog(
                                         demo.id
                                       )
                                     }
-                                  >
-                                    Delete
-                                  </button>
-                                </div>
+
+                                    >Delete</button>
+                            </div>
                               </div>
                               <div
                                 className="extra content"
                                 style={{
-                                  backgroundColor: "#606470",
-                                  color: "White",
-                                  borderWidth: "0px"
+                                  backgroundColor: '#606470',
+                                  color: 'White',
+                                  borderWidth: '0px',
                                 }}
-                                onClick={this.clicked.bind(
-                                  this,
-                                  demo.id,
-                                  demo.user_id
-                                )}
+                                onClick={this.clicked.bind(this,demo.id,demo.user_id)}
                               >
                                 <span>Demo</span> <Icon type="rocket" />
                               </div>
@@ -347,8 +332,8 @@ class NonGHUserProfileComponent extends React.Component {
                           </Col>
                         ))}
                       </Row>
-                      <br />
-                      <br />
+                      <br/>
+                      <br/>
                     </div>
                   ))}
                 </Row>
@@ -361,7 +346,7 @@ class NonGHUserProfileComponent extends React.Component {
           title="Modify Application"
           open={this.state.showModifyModal}
           onRequestClose={this.toggleModifyDialog}
-          contentStyle={{ width: "30%" }}
+          contentStyle={{ width: '30%' }}
         >
           <div className="ui stackable grid">
             <div className="ui stackable row">
@@ -409,10 +394,10 @@ class NonGHUserProfileComponent extends React.Component {
         </Dialog>
 
         <Dialog
-          title={this.state.appData.type === "token" ? "Token" : "Permalink"}
+          title={this.state.appData.type === 'token' ? 'Token' : 'Permalink'}
           open={this.state.showDataModal}
           onRequestClose={this.toggleShowDataDialog}
-          contentStyle={{ width: "30%" }}
+          contentStyle={{ width: '30%' }}
         >
           {this.state.appData.content}
         </Dialog>
@@ -439,11 +424,11 @@ NonGHUserProfileComponent.propTypes = {
   useractions: PropTypes.object.isRequired,
   nonghModelActions: PropTypes.object.isRequired,
   inputComponentModelActions: PropTypes.object.isRequired,
-  outputComponentDemoModelActions: PropTypes.object.isRequired
+  outputComponentDemoModelActions: PropTypes.object.isRequired,
 };
 
 NonGHUserProfileComponent.contextTypes = {
-  socket: PropTypes.object.isRequired
+  socket: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
@@ -452,7 +437,7 @@ function mapStateToProps(state, ownProps) {
     user: state.user,
     nonghDemoModel: state.nonghDemoModel,
     inputComponentDemoModel: state.inputComponentDemoModel,
-    outputComponentDemoModel: state.outputComponentDemoModel
+    outputComponentDemoModel: state.outputComponentDemoModel,
   };
 }
 
@@ -467,7 +452,7 @@ function mapDispatchToProps(dispatch) {
     outputComponentDemoModelActions: bindActionCreators(
       outputComponentDemoModelActions,
       dispatch
-    )
+    ),
   };
 }
 

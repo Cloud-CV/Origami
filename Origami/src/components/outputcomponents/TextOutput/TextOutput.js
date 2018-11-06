@@ -8,6 +8,7 @@ const TextOutput = ({ headers, calling_context, data }) => {
     <div
       key={Math.random()}
       className="ten wide stackable stretched grid container origami-demo-output-components"
+      
     >
       <br />
       <br />
