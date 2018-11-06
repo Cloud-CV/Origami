@@ -10,6 +10,7 @@ import ShareProfile from "./user/userShareProfile";
 import InstructionsPage from './deployment/UsePrebuiltProject/instructionsPage'
 import DemoPage from './deployment/UsePrebuiltProject/demoPage'
 import InitialSetupComponent from "./initialSetupPage";
+import PageNotfoundHandler from "./PageNotfoundHandler";
 
 const routes = [
   { path: '/home', name: 'Dashboard', component: HomePageComponent },
@@ -22,6 +23,8 @@ const routes = [
   { path: '/instructions/:user_id/:repoId/bundle',exact: true, component:InstructionsPage },
   { path: '/demo/:user_id/:repoId/page', component:DemoPage },
   { path: '/initialsetup',exact:true, component:InitialSetupComponent },
+  { path: '/404', name: "404", component: PageNotfoundHandler },
+  { path: '/', redirect: true, to: "/404" },
 ];
 
 export default routes;

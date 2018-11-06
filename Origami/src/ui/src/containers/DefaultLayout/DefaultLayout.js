@@ -46,10 +46,9 @@ click(){
 
   simulateClick() {
     this.minimizerRef.current.handleClick()
-  
-    
   }
-  handleClick(){
+
+  handleClick() {
     this.setState({open:!open},this.simulateClick())
   }
 
@@ -75,13 +74,25 @@ click(){
             <Container fluid>
               <Switch>
                 {routes.map((route, idx) => {
-                    return route.component ? (<Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (
-                        <route.component {...props} />
-                      )} />)
-                      : (null);
+                    if (route.redirect) {
+                      const redirected = routes.filter(r => r.path === route.to)[0];
+
+                      return (
+                        <Route key={idx} path={route.path} name={redirected.name} render={props => (
+                          <redirected.component {...props} />
+                        )} />
+                      );
+                    } else if (route.component) {
+                      return (
+                        <Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (
+                          <route.component {...props} />
+                        )} />
+                      );
+                    } else {
+                      return null;
+                    }
                   }
                 )}
-
               </Switch>
             </Container>
           </main>
