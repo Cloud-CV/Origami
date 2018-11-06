@@ -16,7 +16,7 @@ export function addToDBNonGHDemoModel(newModelData) {
   return function(dispatch) {
     return new Promise((resolve, reject) => {
       getDeployed(newModelData.user_id, newModelData.id).then(data => {
-        console.log("json parse data",data)
+        console.log("json parse data", data);
         if (JSON.parse(data).text !== "Not Found") {
           modifyDeployed(newModelData.user_id, newModelData)
             .then(data => {
@@ -26,7 +26,7 @@ export function addToDBNonGHDemoModel(newModelData) {
               reject("cannot dispatch nongh model update call, DB failed");
             });
         } else {
-          console.log("ayah aaya")
+          console.log("ayah aaya");
           addDeployed(newModelData.user_id, newModelData)
             .then(data => {
               resolve("dispatched nongh model update call");
