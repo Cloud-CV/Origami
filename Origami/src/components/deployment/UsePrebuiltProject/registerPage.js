@@ -21,6 +21,7 @@ import { Layout, Row, Col } from 'antd';
 import { ORIGAMI_READ_THE_DOCS } from '../../../constants';
 import { Card, Icon, Image, Button, Dimmer, Header } from 'semantic-ui-react';
 import Cards from '../../stateless/task_cards';
+import isUrl from 'is-url-superb';
 
 const { Content, Footer } = Layout;
 
@@ -227,14 +228,15 @@ class RegisterPage extends React.Component {
   }
   
   validate(data) {
-    console.log(data);
-      
     const isEmpty = field => !field || field.length === 0;
     const isSelected = field => field && field != 0;
-    console.log("validating...");
     
-    if (isEmpty(data.name) || isEmpty(data.description)) {
-        return Promise.reject("Please define the demo's appname and description.");
+    if (isEmpty(data.name)) {
+        return Promise.reject("Please define the demo's name.");
+    }
+    
+    if (isEmpty(data.description)) {
+        return Promise.reject("Please define the demo's description.");
     }
     
     if (isEmpty(data.task)) {
@@ -245,12 +247,24 @@ class RegisterPage extends React.Component {
         return Promise.reject("Please select a cover image for the demo.");
     }
     
-    if (isEmpty(data.source)) {
+    if (isEmpty(data.source_code)) {
         return Promise.reject("Please add a link for the source code of the demo.");
     }
     
-    if (!isSelected(data.os) || !isSelected(data.cuda) || !isSelected(data.python)) {
-        return Promise.reject("Please select the OS for the demo, the Python version you'd like to use in it and the CUDA version.");
+    if (!isUrl(data.source_code)) {
+        return Promise.reject("Please use a valid URL as the link of the source code of the demo.");
+    }
+    
+    if (!isSelected(data.os)) {
+        return Promise.reject("Please select the OS for the demo.");
+    }
+    
+    if (!isSelected(data.cuda)) {
+        return Promise.reject("Please select the Python version you'd like to use in the demo.");
+    }
+    
+    if (!isSelected(data.python)) {
+        return Promise.reject("Please select the CUDA version for the demo.");
     }
     
     return Promise.resolve();
@@ -286,10 +300,8 @@ class RegisterPage extends React.Component {
         os:this.state.os,
         python:this.state.python,
         cuda:this.state.cuda,
-        source:this.state.source
+        source_code:this.state.source
       };
-      
-      let success = false;
       
       this.validate(dataToPut)
         .catch(err => {
@@ -300,15 +312,11 @@ class RegisterPage extends React.Component {
         .then(() => this.props.nonghModelActions.updateNonGHDemoModel(dataToPut))
         .then(() => {
           console.log("Done");
-          success = true;
+          this.props.history.push(`/instructions/${dataToPut.user_id}/${dataToPut.id}/bundle`);
         })
         .catch(err => {
           console.log("error",err)
         });
-        
-      if (success) {
-        this.props.history.push(`/instructions/${dataToPut.user_id}/${dataToPut.id}/bundle`);
-      }
     }
     
   checkbox(event) {
@@ -611,6 +619,7 @@ class RegisterPage extends React.Component {
                                 style={{ cursor: 'pointer', maxWidth: '75%' }}
                               >
                                 <Dropzone
+                                  accept="image/*"
                                   onDrop={this.onDrop}
                                   multiple={false}
                                   style={{ height: 'inherit' }}
