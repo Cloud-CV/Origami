@@ -1,18 +1,18 @@
-import React from 'react';
-import { PropTypes } from 'prop-types';
-import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { BounceLoader } from 'react-spinners';
+import React from "react";
+import { PropTypes } from "prop-types";
+import { Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { BounceLoader } from "react-spinners";
 import {
   is_cloudcv,
-  getAllDemosByCloudCV,
-} from '../../api/Generic/getCloudCVDemos';
-import { getAllDeployed } from '../../api/Nongh/getAllDeployed';
-import { getSearchedDemos } from '../../api/Nongh/getSearchedDemos';
-import HomePageDemoCard from '../stateless/homePageDemoCard';
-import { getAllPermalink } from '../../api/Nongh/permalink';
-import * as loginActions from '../../actions/loginActions';
+  getAllDemosByCloudCV
+} from "../../api/Generic/getCloudCVDemos";
+import { getAllDeployed } from "../../api/Nongh/getAllDeployed";
+import { getSearchedDemos } from "../../api/Nongh/getSearchedDemos";
+import HomePageDemoCard from "../stateless/homePageDemoCard";
+import { getAllPermalink } from "../../api/Nongh/permalink";
+import * as loginActions from "../../actions/loginActions";
 import {
   Layout,
   Menu,
@@ -23,21 +23,21 @@ import {
   Col,
   Input,
   Select,
-  Modal,
-} from 'antd';
-import toastr from 'toastr';
-import { SocialDialog } from '../social/SocialDialog';
-import { trimAndPad } from '../../utils/generalUtils';
-import { DEMO_CARD_DESCRIP_MAX_LEN } from '../../constants';
-import { selectUser } from '../../actions/user_profile_action';
-import userApi from '../../api/Github/userApi';
+  Modal
+} from "antd";
+import toastr from "toastr";
+import { SocialDialog } from "../social/SocialDialog";
+import { trimAndPad } from "../../utils/generalUtils";
+import { DEMO_CARD_DESCRIP_MAX_LEN } from "../../constants";
+import { selectUser } from "../../actions/user_profile_action";
+import userApi from "../../api/Github/userApi";
 
 const { Header, Content, Footer } = Layout;
 const Option = Select.Option;
 const demoSpinnerStyle = {
-  position: 'fixed',
-  top: '50%',
-  left: '50%',
+  position: "fixed",
+  top: "50%",
+  left: "50%"
 };
 
 class HomePage extends React.Component {
@@ -45,8 +45,8 @@ class HomePage extends React.Component {
     super(props, context);
     // this.buildFromGithubLogin = this.buildFromGithubLogin.bind(this);
     this.useLocalDeploymentLogin = this.useLocalDeploymentLogin.bind(this);
-    $('#appbar-progress').progress({
-      percent: '0%',
+    $("#appbar-progress").progress({
+      percent: "0%"
     });
 
     this.state = {
@@ -56,11 +56,11 @@ class HomePage extends React.Component {
       demoBeingShown: {},
       permalinkHolder: {},
       shareModalOpen: false,
-      searchBy: 'demo',
+      searchBy: "demo",
       demoLoading: true,
       logged: false,
       profile: {},
-      loaded: false,
+      loaded: false
     };
 
     this.handleShareModal = this.handleShareModal.bind(this);
@@ -81,8 +81,8 @@ class HomePage extends React.Component {
           let uname = tmp[i].username;
           userApi.userProfileFromName(uname).then(user => {
             user = JSON.parse(user);
-            let username = user['login'];
-            let avatar = user['avatar_url'];
+            let username = user.login;
+            let avatar = user.avatar_url;
             profile[username] = avatar;
           });
         }
@@ -90,7 +90,7 @@ class HomePage extends React.Component {
           allDeployed.push(tmp.splice(0, 3));
         }
         this.setState({ allDeployed });
-        this.setState({ demoLoading: false, profile: profile });
+        this.setState({ demoLoading: false, profile });
       })
       .then(() => {
         const stateToPut = {};
@@ -106,7 +106,7 @@ class HomePage extends React.Component {
             perma.permalink = permalink;
             stateToPut[perma.project_id] = perma;
             this.setState({
-              permalinkHolder: Object.assign({}, stateToPut),
+              permalinkHolder: Object.assign({}, stateToPut)
             });
           });
         });
@@ -126,16 +126,16 @@ class HomePage extends React.Component {
   }
   success() {
     const modal = Modal.info({
-      title: 'Logging you in',
+      title: "Logging you in"
     });
     setTimeout(() => modal.destroy(), 2000);
   }
 
   useLocalDeploymentLogin() {
     if (!this.props.login) {
-      $('.loginButton').trigger('click');
+      $(".loginButton").trigger("click");
     } else {
-      this.props.history.push('/ngh/user');
+      this.props.history.push("/ngh/user");
     }
   }
 
@@ -155,7 +155,7 @@ class HomePage extends React.Component {
             allDeployed.push(tmp.splice(0, 3));
           }
           this.setState({
-            allDeployed,
+            allDeployed
           });
         } else {
           this.setState({ allDeployed: [] });
@@ -170,7 +170,7 @@ class HomePage extends React.Component {
             }
             stateToPut[perma.project_id] = perma;
             this.setState({
-              permalinkHolder: Object.assign({}, stateToPut),
+              permalinkHolder: Object.assign({}, stateToPut)
             });
           });
         });
@@ -181,20 +181,20 @@ class HomePage extends React.Component {
   }
 
   handleClick(e) {
-    if (!this.state.login && e.key === '2') {
+    if (!this.state.login && e.key === "2") {
       this.initiateLogin();
-    } else if (e.key === '3') {
+    } else if (e.key === "3") {
       this.getDocs();
     }
   }
 
-  clicked(id,user_id){
-    this.props.history.push('/demo/'+user_id+'/'+id+'/page');
+  clicked(id, user_id) {
+    this.props.history.push(`/demo/${user_id}/${id}/page`);
   }
 
   getDocs() {
     window.location =
-      'http://cloudcv-origami.readthedocs.io/en/latest/index.html';
+      "http://cloudcv-origami.readthedocs.io/en/latest/index.html";
   }
   Loaded() {
     this.setState({ loaded: true });
@@ -204,7 +204,7 @@ class HomePage extends React.Component {
   render() {
     const profile = this.state.profile;
     return (
-      <Layout style={{ backgroundColor: '#FEFEFE' }}>
+      <Layout style={{ backgroundColor: "#FEFEFE" }}>
         <Header id="layout-header">
           <Row>
             <Col span={3} offset={1}>
@@ -232,39 +232,41 @@ class HomePage extends React.Component {
           </Row>
         </Header>
 
-        <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
+        <Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
           <div
             style={{
               padding: 12,
-              textAlign: 'center',
-              fontFamily: '"Open Sans", "Helvetica", sans-serif',
+              textAlign: "center",
+              fontFamily: '"Open Sans", "Helvetica", sans-serif'
             }}
           >
             {this.state.demoLoading ? (
               <div className="demoSpinner" style={demoSpinnerStyle}>
-                <BounceLoader color={'#33aadd'} size={80} />
+                <BounceLoader color={"#33aadd"} size={80} />
               </div>
             ) : (
-              <Row >
+              <Row>
                 {Object.keys(this.state.allDeployed).length > 0 ? (
                   this.state.allDeployed.map(row => (
                     <div key={Math.random()}>
                       <Row>
                         {row.map(demo => (
-
                           <Col span={6} offset={2} key={demo.id}>
                             <div
-                              class="ui card"
+                              className="ui card"
                               style={{
-                                width: '80%',
-                                borderWidth: '0px',
-                                borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
-                                boxShadow: '0 1px 5px rgba(0, 0, 0, 0.15)',
+                                width: "80%",
+                                borderWidth: "0px",
+                                borderBottom: "1px solid rgba(0, 0, 0, 0.2)",
+                                boxShadow: "0 1px 5px rgba(0, 0, 0, 0.15)"
                               }}
                             >
-                              <div class="content" style={{ color: '#323643' }}>
+                              <div
+                                className="content"
+                                style={{ color: "#323643" }}
+                              >
                                 <img
-                                  class="ui avatar image"
+                                  className="ui avatar image"
                                   src={profile[demo.username]}
                                   onLoad={this.Loaded.bind(this)}
                                   onClick={this.props.userclick.bind(
@@ -274,45 +276,49 @@ class HomePage extends React.Component {
                                 />
                                 <span
                                   style={{
-                                    paddingLeft: '5px',
-                                    fontSize: '14px',
+                                    paddingLeft: "5px",
+                                    fontSize: "14px"
                                   }}
                                 >
-                                  {' '}
-                                  {demo.username}{' '}
+                                  {" "}
+                                  {demo.username}{" "}
                                 </span>
                               </div>
-                              <div class="small image">
+                              <div className="small image">
                                 <img
                                   src={demo.cover_image}
-                                  style={{ height: '24vh' }}
+                                  style={{ height: "24vh" }}
                                 />
                               </div>
-                              <div class="content">
+                              <div className="content">
                                 <span
                                   style={{
-                                    margin: 'auto',
-                                    fontSize: '17px',
-                                    fontWeight: 'Bold',
+                                    margin: "auto",
+                                    fontSize: "17px",
+                                    fontWeight: "Bold"
                                   }}
                                 >
                                   {demo.name}
                                 </span>
                                 <br />
                                 <span
-                                  style={{ margin: 'auto', fontSize: '13px' }}
+                                  style={{ margin: "auto", fontSize: "13px" }}
                                 >
                                   Description
                                 </span>
                               </div>
                               <div
-                                class="extra content"
+                                className="extra content"
                                 style={{
-                                  backgroundColor: '#606470',
-                                  color: 'White',
-                                  borderWidth: '0px',
+                                  backgroundColor: "#606470",
+                                  color: "White",
+                                  borderWidth: "0px"
                                 }}
-                                onClick={this.clicked.bind(this,demo.id,demo.user_id)}
+                                onClick={this.clicked.bind(
+                                  this,
+                                  demo.id,
+                                  demo.user_id
+                                )}
                               >
                                 <span>Demo</span> <Icon type="rocket" />
                               </div>
@@ -326,7 +332,7 @@ class HomePage extends React.Component {
                     </div>
                   ))
                 ) : (
-                  <Col span={24} style={{ width: '100%' }}>
+                  <Col span={24} style={{ width: "100%" }}>
                     <h4> Demo not found. Try Searching for another demo</h4>
                   </Col>
                 )}
@@ -348,19 +354,19 @@ class HomePage extends React.Component {
 HomePage.propTypes = {
   loginactions: PropTypes.object.isRequired,
   login: PropTypes.bool.isRequired,
-  history: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
   return {
-    login: state.login,
+    login: state.login
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     loginactions: bindActionCreators(loginActions, dispatch),
-    userclick: bindActionCreators(selectUser, dispatch),
+    userclick: bindActionCreators(selectUser, dispatch)
   };
 }
 

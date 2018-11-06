@@ -1,23 +1,23 @@
-import React from 'react';
-import { PropTypes } from 'prop-types';
-import { withRouter } from 'react-router';
-import { connect } from 'react-redux';
-import { Layout, Icon, Button, Card, Row, Col, Input, Select } from 'antd';
+import React from "react";
+import { PropTypes } from "prop-types";
+import { withRouter } from "react-router";
+import { connect } from "react-redux";
+import { Layout, Icon, Button, Card, Row, Col, Input, Select } from "antd";
 const { Header, Content, Footer } = Layout;
-import Gallery from 'react-photo-gallery';
-import { getDeployed } from '../../../api/Nongh/getDeployed';
-import SampleImage from '../../sampleinput/SampleImage';
-import TextSingleInput from '../../inputcomponents/TextInput/TextSingleInput';
-import ImageSingleInput from '../../inputcomponents/ImageInput/ImageSingleInput';
-import TextOutput from '../../outputcomponents/TextOutput/SingleOutput';
-import request from 'superagent';
-import Dropzone from 'react-dropzone';
-import DropboxChooser from '../../imports/DropboxChooser';
-import toastr from 'toastr';
-import VQA from '../../tasks/VQA';
-import Classification from '../../tasks/classification';
-import ImageOutput from '../../outputcomponents/ImageOutput/ImageOutput';
-import Style from '../../tasks/Style';
+import Gallery from "react-photo-gallery";
+import { getDeployed } from "../../../api/Nongh/getDeployed";
+import SampleImage from "../../sampleinput/SampleImage";
+import TextSingleInput from "../../inputcomponents/TextInput/TextSingleInput";
+import ImageSingleInput from "../../inputcomponents/ImageInput/ImageSingleInput";
+import TextOutput from "../../outputcomponents/TextOutput/SingleOutput";
+import request from "superagent";
+import Dropzone from "react-dropzone";
+import DropboxChooser from "../../imports/DropboxChooser";
+import toastr from "toastr";
+import VQA from "../../tasks/VQA";
+import Classification from "../../tasks/classification";
+import ImageOutput from "../../outputcomponents/ImageOutput/ImageOutput";
+import Style from "../../tasks/Style";
 
 class DemoPage extends React.Component {
   constructor(props, context) {
@@ -40,18 +40,18 @@ class DemoPage extends React.Component {
       resetBorder: false,
       subhover: 0,
       active: 1,
-      task: '',
-      name: '',
-      date: '',
-      source_code: '',
-      src1: '',
-      src2: '',
-      value: '',
-      return_data: '',
-      clicked: '',
-      text: '',
-      blb: '',
-      last: 2,
+      task: "",
+      name: "",
+      date: "",
+      source_code: "",
+      src1: "",
+      src2: "",
+      value: "",
+      return_data: "",
+      clicked: "",
+      text: "",
+      blb: "",
+      last: 2
     };
     this.onSelect = this.onSelect.bind(this);
     this.updateFormData = this.updateFormData.bind(this);
@@ -64,21 +64,21 @@ class DemoPage extends React.Component {
     this.ws.onopen = function() {
       this.ws.send(
         JSON.stringify({
-          event: 'ConnectionEstablished',
-          socketId: this.socket,
+          event: "ConnectionEstablished",
+          socketId: this.socket
         })
       );
     }.bind(this);
     this.server = [
-      { src: '/static/img/1.jpg' },
-      { src: '/static/img/2.jpg' },
-      { src: '/static/img/3.jpg' },
-      { src: '/static/img/4.jpg' },
-      { src: '/static/img/5.jpg' },
+      { src: "/static/img/1.jpg" },
+      { src: "/static/img/2.jpg" },
+      { src: "/static/img/3.jpg" },
+      { src: "/static/img/4.jpg" },
+      { src: "/static/img/5.jpg" }
     ];
     this.demo = [
-      { src: require('../../assets/wire.png') },
-      { src: require('../../assets/wire.png') },
+      { src: require("../../assets/wire.png") },
+      { src: require("../../assets/wire.png") }
     ];
   }
 
@@ -95,9 +95,9 @@ class DemoPage extends React.Component {
     }
 
     this.setState({
-      cloudcv: cloudcv,
-      demo_creator: demo_creator,
-      text: 'Please send the Image inputs',
+      cloudcv,
+      demo_creator,
+      text: "Please send the Image inputs"
     });
   }
 
@@ -113,46 +113,42 @@ class DemoPage extends React.Component {
       let source = data.source_code;
       let username = data.username;
       this.setState({
-        user_id: user_id,
+        user_id,
         repo_id: id,
         source_code: source,
-        date: date,
+        date,
         showTerminal: terminal,
-        task: task,
-        name: name,
-        username: username,
+        task,
+        name,
+        username
       });
     });
   }
 
   onSelect(path, key) {
     if (key == this.state.clicked) {
-      this.setState({ src1: '', clicked: '' });
+      this.setState({ src1: "", clicked: "" });
     } else {
-      if(this.state.task=="Style Transfer")
-      {
-      if (this.state.src1) {
-        this.setState(
-          { src2: path, clicked: key },
-          this.getBlobfromURl.bind(this, path)
-        );
+      if (this.state.task == "Style Transfer") {
+        if (this.state.src1) {
+          this.setState(
+            { src2: path, clicked: key },
+            this.getBlobfromURl.bind(this, path)
+          );
+        } else {
+          this.setState(
+            { src1: path, clicked: key },
+            this.getBlobfromURl.bind(this, path)
+          );
+        }
       } else {
         this.setState(
           { src1: path, clicked: key },
           this.getBlobfromURl.bind(this, path)
         );
-      }}
-    
-    else
-    {
-      this.setState(
-          { src1: path, clicked: key },
-          this.getBlobfromURl.bind(this, path)
-        );
       }
     }
-  
-    
+
     if (this.state.resetBorder) {
       this.setState({ resetBorder: false, src: path });
     }
@@ -161,50 +157,50 @@ class DemoPage extends React.Component {
   getBlobfromURl(newfile) {
     let _self = this;
     fetch(newfile, {
-      method: 'GET',
-      mode: 'cors',
+      method: "GET",
+      mode: "cors"
     })
-      .then(function(response) {
+      .then(response => {
         return response.blob();
       })
-      .then(function(blob) {
-        _self.updateFormData(blob, 'input-image-1');
+      .then(blob => {
+        _self.updateFormData(blob, "input-image-1");
       })
-      .catch(function(err) {
-        console.log('error while creating blob =', err);
+      .catch(err => {
+        console.log("error while creating blob =", err);
       });
   }
 
   updateFormData(newfile, newfilename) {
     let _self = this;
-    var ws;
-    if (this.state.task == 'Style Transfer' && !this.state.src2) {
-      toastr.success('uploaded context image');
+    let ws;
+    if (this.state.task == "Style Transfer" && !this.state.src2) {
+      toastr.success("uploaded context image");
       return;
     }
-    var formData = new FormData();
-    let prev = '';
+    let formData = new FormData();
+    let prev = "";
     if (newfile.preview) {
       prev = newfile.preview;
     }
-    let newf = new File([newfile], 'image.png', {
-      type: 'image/jpeg',
-      lastModified: Date.now(),
+    let newf = new File([newfile], "image.png", {
+      type: "image/jpeg",
+      lastModified: Date.now()
     });
-    formData.append('socket-id', this.context.socketId);
+    formData.append("socket-id", this.context.socketId);
     formData.set(newfilename, newf, newfilename);
-    fetch('http://localhost:9001/event', {
+    fetch("http://localhost:9001/event", {
       body: formData,
-      method: 'POST',
-      mode: 'cors',
+      method: "POST",
+      mode: "cors"
     })
-      .then(function(response) {
-        _self.setState({ text: 'New Image data uploaded.' });
+      .then(response => {
+        _self.setState({ text: "New Image data uploaded." });
       })
-      .catch(function(err) {
+      .catch(err => {
         _self.setState({ text: err.toString() });
       });
-    toastr.success(' Style Image Uploaded!');
+    toastr.success(" Style Image Uploaded!");
 
     this.context.socket.onmessage = function(evt) {
       let k = evt.data;
@@ -216,135 +212,135 @@ class DemoPage extends React.Component {
     prev = prev ? prev : this.state.src;
     this.setState({
       files: [...this.state.files, { newfilename, newfile }],
-      src: prev,
+      src: prev
     });
   }
 
   getStyles() {
     return {
       layout: {
-        background: '#F7F7F7',
-        borderRadius: '15px',
+        background: "#F7F7F7",
+        borderRadius: "15px"
       },
       content: {
-        margin: '24px 0 0 12px',
-        overflow: 'initial',
+        margin: "24px 0 0 12px",
+        overflow: "initial"
       },
       contentDiv: {
-        padding: '5px 0',
-        background: '#F7F7F7',
+        padding: "5px 0",
+        background: "#F7F7F7"
       },
       parentBox: {
-        flexGrow: '5.0',
-        minWidth: '200px',
-        padding: '30px',
-        backgroundColor: '#fffff',
+        flexGrow: "5.0",
+        minWidth: "200px",
+        padding: "30px",
+        backgroundColor: "#fffff"
       },
       boxContainer: {
-        border: '1px solid #F3F2F2',
-        backgroundColor: 'White',
-        borderRadius: '10px',
-        padding: '10px',
+        border: "1px solid #F3F2F2",
+        backgroundColor: "White",
+        borderRadius: "10px",
+        padding: "10px"
       },
       demo_name: {
         fontFamily: "'Roboto', sans-serif",
-        fontSize: '2em',
-        margin: 'auto',
-        fontWeight: 'Bold',
-        color: '#323643',
+        fontSize: "2em",
+        margin: "auto",
+        fontWeight: "Bold",
+        color: "#323643"
       },
       task: {
         fontFamily: "'Roboto', sans-serif",
-        fontSize: '1.4em',
-        color: '#323643',
-        width: '30%',
+        fontSize: "1.4em",
+        color: "#323643",
+        width: "30%"
       },
       creator: {
         fontFamily: "'Roboto', sans-serif",
-        fontSize: '1.3em',
-        color: '#323643',
-        marginLeft: '32%',
+        fontSize: "1.3em",
+        color: "#323643",
+        marginLeft: "32%"
       },
       source: {
         fontFamily: "'Roboto', sans-serif",
-        fontSize: '1.3em',
-        color: '#323643',
-        marginLeft: '32%',
+        fontSize: "1.3em",
+        color: "#323643",
+        marginLeft: "32%"
       },
 
       logo: {
-        marginRight: '13px',
+        marginRight: "13px"
       },
       heading: {
         fontFamily: "'Roboto', sans-serif",
-        marginLeft: '41%',
-        color: '#323643',
-        fontSize: '18px',
+        marginLeft: "41%",
+        color: "#323643",
+        fontSize: "18px"
       },
       sub: {
-        borderStyle: 'Solid',
-        width: '150%',
-        borderWidth: '2px',
-        borderRadius: '20px',
-        backgroundColor: '#443E3E',
-        color: 'White',
+        borderStyle: "Solid",
+        width: "150%",
+        borderWidth: "2px",
+        borderRadius: "20px",
+        backgroundColor: "#443E3E",
+        color: "White",
         fontFamily: "'Roboto', sans-serif",
-        boxShadow: '0 3px 6px , 0 3px 6px ',
-        transition: 'all 0.3s',
+        boxShadow: "0 3px 6px , 0 3px 6px ",
+        transition: "all 0.3s"
       },
 
       subhover: {
-        borderStyle: 'Solid',
-        width: '150%',
-        borderWidth: '2px',
-        borderRadius: '20px',
-        backgroundColor: '#443E3E',
-        color: 'White',
-        boxShadow: '0 14px 28px , 0 10px 10px ',
-        transition: 'all 0.3s',
+        borderStyle: "Solid",
+        width: "150%",
+        borderWidth: "2px",
+        borderRadius: "20px",
+        backgroundColor: "#443E3E",
+        color: "White",
+        boxShadow: "0 14px 28px , 0 10px 10px ",
+        transition: "all 0.3s"
       },
       terminal: {
-        height: '40vh',
-        width: '40vw',
-        backgroundColor: '#323643',
-        color: 'white',
-        overflowY: 'scroll',
-        wordWrap: 'break-word',
-        transition: 'all 0.3s',
+        height: "40vh",
+        width: "40vw",
+        backgroundColor: "#323643",
+        color: "white",
+        overflowY: "scroll",
+        wordWrap: "break-word",
+        transition: "all 0.3s"
       },
       terminalDisable: {
-        height: '0',
-        width: '40vw',
-        transition: 'all 0.3s',
+        height: "0",
+        width: "40vw",
+        transition: "all 0.3s"
       },
       send: {
         fontFamily: "'Roboto', sans-serif",
-        fontSize: '1em',
+        fontSize: "1em"
       },
       sample: {
-        borderBottom: '3px solid #73C2FB',
-        fontSize: '16px',
+        borderBottom: "3px solid #73C2FB",
+        fontSize: "16px",
         fontFamily: "'Roboto', sans-serif",
-        paddingBottom: '4px',
+        paddingBottom: "4px"
       },
       sample_cloudcv: {
-        paddingRight: '5px',
-        fontSize: '15px',
+        paddingRight: "5px",
+        fontSize: "15px",
         fontFamily: "'Roboto', sans-serif",
-        color: '#323643',
-        width: '10vw',
-        textAlign: 'center',
+        color: "#323643",
+        width: "10vw",
+        textAlign: "center"
       },
       sample_demo_creator: {
-        marginLeft: '5px',
-        fontSize: '15px',
+        marginLeft: "5px",
+        fontSize: "15px",
         fontFamily: "'Roboto', sans-serif",
-        color: '#323643',
-        width: '10vw',
-        textAlign: 'center',
+        color: "#323643",
+        width: "10vw",
+        textAlign: "center"
       },
       share: {
-        paddingLeft: '39%',
+        paddingLeft: "39%"
       }
     };
   }
@@ -360,26 +356,26 @@ class DemoPage extends React.Component {
   }
 
   submit() {
-    this.ws = new WebSocket('ws://localhost:9001/websocket');
+    this.ws = new WebSocket("ws://localhost:9001/websocket");
     let socket = this.context.socketId;
     let value = this.state.value;
-    var _self = this;
+    let _self = this;
 
     this.ws.onopen = function() {
       _self.ws.send(
         JSON.stringify({
-          'socket-id': socket,
-          data: value,
+          "socket-id": socket,
+          data: value
         })
       );
     };
 
-    let val = '';
+    let val = "";
     this.ws.onmessage = function(evt) {
       val = evt.data;
       _self.setState({
         return_data: val,
-        text: 'Task completed \n Results ' + val.toString(),
+        text: `Task completed \n Results ${val.toString()}`
       });
     };
   }
@@ -396,7 +392,7 @@ class DemoPage extends React.Component {
     let demo_creator = [];
     let input;
     switch (this.state.task) {
-      case 'VQA':
+      case "VQA":
         input = (
           <VQA
             src={this.state.src1}
@@ -411,7 +407,7 @@ class DemoPage extends React.Component {
           />
         );
         break;
-      case 'Style Transfer':
+      case "Style Transfer":
         input = (
           <Style
             src1={this.state.src1}
@@ -427,7 +423,7 @@ class DemoPage extends React.Component {
           />
         );
         break;
-      case 'Classification':
+      case "Classification":
         input = (
           <Classification
             src={this.state.src}
@@ -445,15 +441,15 @@ class DemoPage extends React.Component {
     }
     demo_creator.push(
       <div>
-        <div className="" style={{ height: '50%', cursor: 'pointer' }}>
-          <Dropzone multiple={false} style={{ height: '50%' }}>
-            <div className="ui card" style={{ width: '90%' }}>
+        <div className="" style={{ height: "50%", cursor: "pointer" }}>
+          <Dropzone multiple={false} style={{ height: "50%" }}>
+            <div className="ui card" style={{ width: "90%" }}>
               <div className="ui fluid image">
                 <img
                   className="ui fluid medium image"
-                  src={'/static/img/placeholder.jpg'}
-                  id={'input-image-preview-1'}
-                  style={{ width: '100%', borderWidth: '0px' }}
+                  src={"/static/img/placeholder.jpg"}
+                  id={"input-image-preview-1"}
+                  style={{ width: "100%", borderWidth: "0px" }}
                 />
               </div>
               <div className="content origami-demo-input-image-component-desc">
@@ -470,9 +466,9 @@ class DemoPage extends React.Component {
     return (
       <div
         style={{
-          backgroundColor: '#F7F7F7',
-          marginTop: '10px',
-          borderRadius: '40px',
+          backgroundColor: "#F7F7F7",
+          marginTop: "10px",
+          borderRadius: "40px"
         }}
       >
         <Layout style={styles.layout}>
@@ -480,7 +476,7 @@ class DemoPage extends React.Component {
             <div style={styles.contentDiv}>
               <div
                 className="ui grid container"
-                style={{ position: 'relative' }}
+                style={{ position: "relative" }}
               >
                 <div style={styles.demo_name}>
                   <span> {this.state.name}</span>
@@ -494,23 +490,23 @@ class DemoPage extends React.Component {
                       <a style={styles.heading}>
                         <span>
                           <a style={styles.logo}>
-                            <img src={require('../../assets/about.png')} />
+                            <img src={require("../../assets/about.png")} />
                           </a>
                         </span>
                         About the Demo
                       </a>
                       <hr
-                        style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
+                        style={{ borderTop: "dotted 1px", color: "#aaaaaa" }}
                       />
 
                       <div
                         className="two column row"
-                        style={{ marginLeft: '6%' }}
+                        style={{ marginLeft: "6%" }}
                       >
                         <div className="column" style={styles.task}>
                           <span>
                             <a style={styles.logo}>
-                              <img src={require('../../assets/details.png')} />
+                              <img src={require("../../assets/details.png")} />
                             </a>
                           </span>
                           Task : {this.state.task}
@@ -519,7 +515,7 @@ class DemoPage extends React.Component {
                         <div className="column" style={styles.creator}>
                           <span>
                             <a style={styles.logo}>
-                              <img src={require('../../assets/profile2.png')} />
+                              <img src={require("../../assets/profile2.png")} />
                             </a>
                           </span>
                           Creator : {this.state.username}
@@ -528,12 +524,12 @@ class DemoPage extends React.Component {
                       <br />
                       <div
                         className="two column row"
-                        style={{ marginLeft: '6%' }}
+                        style={{ marginLeft: "6%" }}
                       >
                         <div className="column" style={styles.task}>
                           <span>
                             <a style={styles.logo}>
-                              <img src={require('../../assets/event.png')} />
+                              <img src={require("../../assets/event.png")} />
                             </a>
                           </span>
                           Date of Creation : {this.state.date}
@@ -542,10 +538,10 @@ class DemoPage extends React.Component {
                         <div className="column" style={styles.source}>
                           <span>
                             <a style={styles.logo}>
-                              <img src={require('../../assets/code .png')} />
+                              <img src={require("../../assets/code .png")} />
                             </a>
                           </span>
-                          Source Code :{' '}
+                          Source Code :{" "}
                           <a href={this.state.source_code}>Link</a>
                         </div>
                       </div>
@@ -560,17 +556,17 @@ class DemoPage extends React.Component {
                       <a style={styles.heading}>
                         <span>
                           <a style={styles.logo}>
-                            <img src={require('../../assets/picture.png')} />
+                            <img src={require("../../assets/picture.png")} />
                           </a>
                         </span>
                         Sample Inputs
                       </a>
                       <hr
-                        style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
+                        style={{ borderTop: "dotted 1px", color: "#aaaaaa" }}
                       />
                       <div
                         className="two column row"
-                        style={{ marginLeft: '36%', cursor: 'pointer' }}
+                        style={{ marginLeft: "36%", cursor: "pointer" }}
                       >
                         <div className="column" style={styles.sample_cloudcv}>
                           <div
@@ -580,19 +576,22 @@ class DemoPage extends React.Component {
                             CloudCV
                           </div>
                         </div>
-                        <div className="column" style={styles.sample_demo_creator}>
+                        <div
+                          className="column"
+                          style={styles.sample_demo_creator}
+                        >
                           <div
                             style={this.state.active == 2 ? styles.sample : {}}
                             onClick={this.sample.bind(this, 2)}
                           >
-                            {' '}
+                            {" "}
                             Demo Creator
                           </div>
                         </div>
                       </div>
                       <br />
                       <br />
-                      <div className="row" style={{ marginLeft: '6%' }}>
+                      <div className="row" style={{ marginLeft: "6%" }}>
                         {this.state.active == 1 &&
                           sampleinputs.map((row, index) => (
                             <div>
@@ -603,8 +602,8 @@ class DemoPage extends React.Component {
                                     value={value.src}
                                     onSelect={this.onSelect}
                                     clicked={this.state.clicked}
-                                    id={index.toString() + '' + ind.toString()}
-                                    style={{ borderStyle: 'Solid' }}
+                                    id={`${index.toString()}${ind.toString()}`}
+                                    style={{ borderStyle: "Solid" }}
                                   />
                                 ))}
                               </div>
@@ -616,24 +615,24 @@ class DemoPage extends React.Component {
                           <div>
                             <div
                               className=""
-                              style={{ height: '50%', cursor: 'pointer' }}
+                              style={{ height: "50%", cursor: "pointer" }}
                             >
                               <Dropzone
                                 multiple={false}
-                                style={{ height: '50%' }}
+                                style={{ height: "50%" }}
                               >
                                 <div
                                   className="ui card"
-                                  style={{ width: '35%', borderWidth: '0px' }}
+                                  style={{ width: "35%", borderWidth: "0px" }}
                                 >
                                   <div className="ui fluid image">
                                     <img
                                       className="ui fluid medium image"
-                                      src={'/static/img/placeholder.jpg'}
-                                      id={'input-image-preview-1'}
+                                      src={"/static/img/placeholder.jpg"}
+                                      id={"input-image-preview-1"}
                                       style={{
-                                        width: '100%',
-                                        borderWidth: '0px',
+                                        width: "100%",
+                                        borderWidth: "0px"
                                       }}
                                     />
                                   </div>
@@ -655,13 +654,13 @@ class DemoPage extends React.Component {
                       <a style={styles.heading}>
                         <span>
                           <a style={styles.logo}>
-                            <img src={require('../../assets/demo.png')} />
+                            <img src={require("../../assets/demo.png")} />
                           </a>
                         </span>
                         Demo
                       </a>
                       <hr
-                        style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
+                        style={{ borderTop: "dotted 1px", color: "#aaaaaa" }}
                       />
                       {input}
                       <br />
@@ -669,42 +668,42 @@ class DemoPage extends React.Component {
 
                       <div
                         className="ui four wide column"
-                        style={{ marginTop: '6vh', marginLeft: '25%' }}
+                        style={{ marginTop: "6vh", marginLeft: "25%" }}
                       >
                         <h2 className="ui header grid">
                           <div
                             className="ui grid"
                             style={{
-                              backgroundColor: '#F7F7F7',
-                              width: '44vw',
-                              borderRadius: '10%',
+                              backgroundColor: "#F7F7F7",
+                              width: "44vw",
+                              borderRadius: "10%"
                             }}
                           >
                             <div className="two column row">
                               <div
                                 className="column"
                                 style={{
-                                  color: '#323643',
-                                  fontSize: '16px',
-                                  paddingLeft: '3%',
+                                  color: "#323643",
+                                  fontSize: "16px",
+                                  paddingLeft: "3%"
                                 }}
                               >
                                 <span>
                                   <a style={styles.logo}>
                                     <img
-                                      src={require('../../assets/terminal.png')}
+                                      src={require("../../assets/terminal.png")}
                                     />
                                   </a>
                                 </span>
                                 Terminal
                               </div>
                               <div className="column">
-                                <div style={{ paddingLeft: '90%' }}>
+                                <div style={{ paddingLeft: "90%" }}>
                                   <Button
                                     type="danger"
                                     shape="circle"
                                     icon={
-                                      this.state.showTerminal ? 'up' : 'down'
+                                      this.state.showTerminal ? "up" : "down"
                                     }
                                     size="small"
                                     ghost
@@ -725,12 +724,12 @@ class DemoPage extends React.Component {
                         >
                           <div
                             style={{
-                              paddingTop: '15px',
-                              paddingLeft: '10px',
-                              fontSize: '13px',
+                              paddingTop: "15px",
+                              paddingLeft: "10px",
+                              fontSize: "13px"
                             }}
                           >
-                            {this.state.showTerminal ? this.state.text : ''}
+                            {this.state.showTerminal ? this.state.text : ""}
                           </div>
                         </div>
                       </div>
@@ -738,71 +737,68 @@ class DemoPage extends React.Component {
                       <br />
                       <br />
                       <ImageOutput
-                        headers={'output'}
-                        calling_context={'demo'}
+                        headers={"output"}
+                        calling_context={"demo"}
                         data={this.state.return_data}
                       />
 
                       <br />
                       <hr />
                       <div style={styles.share}>
-                        <a target="_blank" class="share-btn share">
+                        <a target="_blank" className="share-btn share">
                           <img
-                            src={require('../../assets/share.png')}
-                            style={{ height: '30px' }}
+                            src={require("../../assets/share.png")}
+                            style={{ height: "30px" }}
                           />
                         </a>
 
                         <a
-                          href={
-                            'http://www.facebook.com/sharer/sharer.php?u=' +
+                          href={`http://www.facebook.com/sharer/sharer.php?u=${
                             window.location
-                          }
+                          }`}
                           target="_blank"
-                          class="share-btn share"
+                          className="share-btn share"
                         >
                           <img
-                            src={require('../../assets/fb.png')}
-                            style={{ height: '30px' }}
+                            src={require("../../assets/fb.png")}
+                            style={{ height: "30px" }}
                           />
                         </a>
 
                         <a
                           href="http://twitter.com/share?url=<URL>&text=<TEXT>&via=<VIA>"
                           target="_blank"
-                          class="share-btn twitter"
+                          className="share-btn twitter"
                         >
                           <img
-                            src={require('../../assets/twitter.jpg')}
-                            style={{ height: '30px' }}
+                            src={require("../../assets/twitter.jpg")}
+                            style={{ height: "30px" }}
                           />
                         </a>
 
                         <a
-                          href={
-                            'https://plus.google.com/share?url=' +
+                          href={`https://plus.google.com/share?url=${
                             window.location
-                          }
+                          }`}
                           target="_blank"
-                          class="share-btn google-plus"
+                          className="share-btn google-plus"
                         >
                           <img
-                            src={require('../../assets/google.jpeg')}
-                            style={{ height: '30px' }}
+                            src={require("../../assets/google.jpeg")}
+                            style={{ height: "30px" }}
                           />
                         </a>
 
                         <a
-                          href={
-                            'http://www.facebook.com/sharer/sharer.php?u=' +
+                          href={`http://www.facebook.com/sharer/sharer.php?u=${
                             window.location
-                          }
+                          }`}
                           target="_blank"
-                          class="share-btn facebook"
+                          className="share-btn facebook"
                         >
                           <img
-                            src={require('../../assets/linkedin.png')}
-                            style={{ height: '30px' }}
+                            src={require("../../assets/linkedin.png")}
+                            style={{ height: "30px" }}
                           />
                         </a>
                       </div>
@@ -820,7 +816,7 @@ class DemoPage extends React.Component {
 
 DemoPage.contextTypes = {
   socket: PropTypes.object.isRequired,
-  socketId: PropTypes.string.isRequired,
+  socketId: PropTypes.string.isRequired
 };
 
 export default DemoPage;
