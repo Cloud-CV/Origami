@@ -212,7 +212,7 @@ class RegisterPage extends React.Component {
         cuda = y;
         break;
     }
-    this.setState({ python: python, os: os, cuda: cuda });
+    this.setState({ python, os, cuda });
   }
 
   exit() {
@@ -227,63 +227,62 @@ class RegisterPage extends React.Component {
   }
 
   submit() {
-
-  let task=this.state.task
-  let task_in=''
+    let task = this.state.task;
+    let task_in = "";
     switch (task) {
       case 1:
-        task_in= 'VQA';
+        task_in = "VQA";
         break;
       case 2:
-        task_in= 'Style Transfer';
+        task_in = "Style Transfer";
         break;
       case 3:
-        task_in = 'Grad Cam';
+        task_in = "Grad Cam";
         break;
       case 4:
-        task_in = 'Classification';
+        task_in = "Classification";
         break;
-
     }
 
-   let dataToPut = {
-    name: this.state.name,
-    id: this.state.id,
-    user_id: this.state.user_id,
-    description: this.state.description,
-    cover_image: this.state.cover_image,
-    terminal: this.state.showTerminal,
-    task: task_in,
-    os:this.state.os,
-    python:this.state.python,
-    cuda:this.state.cuda,
-    source:this.state.source
-  };   
-  this.props.nonghModelActions.addToDBNonGHDemoModel(dataToPut).then(() => {
+    let dataToPut = {
+      name: this.state.name,
+      id: this.state.id,
+      user_id: this.state.user_id,
+      description: this.state.description,
+      cover_image: this.state.cover_image,
+      terminal: this.state.showTerminal,
+      task: task_in,
+      os: this.state.os,
+      python: this.state.python,
+      cuda: this.state.cuda,
+      source: this.state.source
+    };
     this.props.nonghModelActions
-      .updateNonGHDemoModel(dataToPut)
+      .addToDBNonGHDemoModel(dataToPut)
       .then(() => {
-          console.log("Done")
-          })
+        this.props.nonghModelActions
+          .updateNonGHDemoModel(dataToPut)
+          .then(() => {
+            console.log("Done");
+          });
+      })
+      .catch(err => {
+        console.log("error", err);
+      });
 
-
-  })
-    .catch(err => {
-      console.log("error",err)
-    });
-
-    this.props.history.push('/instructions/'+dataToPut.user_id+"/"+dataToPut.id+'/bundle');
-}
-    checkbox(event){
-    let current=this.state.checked;
-    this.setState({checked:!current})
+    this.props.history.push(
+      `/instructions/${dataToPut.user_id}/${dataToPut.id}/bundle`
+    );
+  }
+  checkbox(event) {
+    let current = this.state.checked;
+    this.setState({ checked: !current });
   }
 
   tasks(e) {
     console.log("clicked before", e, this.state.task);
     this.setState({ task: e });
   }
-
 
   render() {
     const { active } = this.state;
@@ -399,7 +398,7 @@ class RegisterPage extends React.Component {
                         <br />
 
                         <div className="ui grid">
-                          <div class="two wide column" />
+                          <div className="two wide column" />
 
                           <div className=" three wide column">
                             <Cards
@@ -697,7 +696,7 @@ class RegisterPage extends React.Component {
                                 : styles.sub
                             }
                           >
-                            <text style={styles.txt} >Submit</text>
+                            <text style={styles.txt}>Submit</text>
                           </Button>
                         </div>
                       </div>
