@@ -245,10 +245,6 @@ class RegisterPage extends React.Component {
         return Promise.reject("Please select the demo's task.");
     }
     
-    if (isEmpty(data.cover_image)) {
-        return Promise.reject("Please select a cover image for the demo.");
-    }
-    
     if (isEmpty(data.source_code)) {
         return Promise.reject("Please add a link for the source code of the demo.");
     }
