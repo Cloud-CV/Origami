@@ -1,1 +1,1 @@
-export const VQA = 1
+export const VQA = 1;
