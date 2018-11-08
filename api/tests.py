@@ -14,7 +14,7 @@ from .consumers import *
 from django.conf import settings
 
 # Create your tests here.
- 
+
 
 class CustomDemoControllerViewTests(TestCase):
     def setUp(self):
@@ -22,17 +22,17 @@ class CustomDemoControllerViewTests(TestCase):
         self.demo = {
             "name": "test",
             "id": 99,
-            "username":"test",
+            "username": "test",
             "user_id": 1,
             "description": "description",
             "cover_image": "cover_image",
             "terminal": True,
-            "task":"VQA",
-            "source_code":"",
+            "task": "VQA",
+            "source_code": "",
             "date": datetime.datetime.now().isoformat(),
-            "os":"Linux",
-            "python":"3.7",
-            "cuda":"8",
+            "os": "Linux",
+            "python": "3.7",
+            "cuda": "8",
         }
 
         self.test_user = User.objects.create_user(
@@ -54,21 +54,21 @@ class CustomDemoControllerViewTests(TestCase):
             task=self.demo["task"],
             source_code=self.demo["source_code"]
 
-            )
+        )
         self.demo2 = {
             "name": "test2",
             "id": 999,
-            "username":"test2",
+            "username": "test2",
             "user_id": 11,
             "description": "description",
             "cover_image": "cover_image",
             "terminal": True,
-            "task":"GradCam",
-            "source_code":"",
+            "task": "GradCam",
+            "source_code": "",
             "date": datetime.datetime.now().isoformat(),
-            "os":"Linux",
-            "python":"2.7",
-            "cuda":"8.5",
+            "os": "Linux",
+            "python": "2.7",
+            "cuda": "8.5",
         }
 
         self.test_user_2 = User.objects.create_user(
@@ -91,7 +91,7 @@ class CustomDemoControllerViewTests(TestCase):
             task=self.demo2["task"],
             source_code=self.demo2["source_code"]
 
-            )
+        )
 
     def test_get_redir_user_demo(self):
         payload = {"user": {"username": self.demo["username"]}}
@@ -217,22 +217,22 @@ class CustomDemoControllerViewTests(TestCase):
         response = json.loads(responses.content.decode('utf-8'))
         self.assertEqual(response["text"], "Not Found")
 
-#-----
+# -----
     def test_create_demo(self):
         payload = {
             "name": "1",
             "id": 1,
-            "username":"test",
+            "username": "test",
             "user_id": 100,
             "description": "description",
             "cover_image": "",
             "terminal": True,
-            "task":"GradCam",
-            "source_code":"",
+            "task": "GradCam",
+            "source_code": "",
             "date": datetime.datetime.now().isoformat(),
-            "os":"Linux",
-            "python":"2.7",
-            "cuda":"8.5",
+            "os": "Linux",
+            "python": "2.7",
+            "cuda": "8.5",
         }
         response = self.client.post('/api/demo/1001', json.dumps(payload), content_type="application/json")
         response = json.loads(response.content.decode('utf-8'))
@@ -270,7 +270,6 @@ class CustomDemoControllerViewTests(TestCase):
         self.assertEqual(response["cover_image"], DEFAULT_IMAGE)
         self.assertEqual(response["terminal"], payload["terminal"])
 
-
     def test_put_without_id_user_id(self):
         payload = self.demo
         payload["name"] = "Not Test"
@@ -293,7 +292,6 @@ class CustomDemoControllerViewTests(TestCase):
         response = self.client.delete(url)
         response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response, "Invalid URL")
-
 
 
 class CustomRootSettingsControllerClass(TestCase):
@@ -341,8 +339,6 @@ class CustomRootSettingsControllerClass(TestCase):
         response = self.client.get('/api/is_cloudcv/')
         response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(response["is_cloudcv"], self.root_settings["is_cloudcv"])
-
-
 
 
 class ChannelTests(ChannelTestCase):

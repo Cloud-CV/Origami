@@ -11,7 +11,7 @@
     "lint": "esw webpack.* Origami",
     "lint:build": "esw webpack.* Origami -c ./.eslintrc",
     "lint:watch": "npm run lint -- --watch",
-    "lint:fix": "eslint Origami webpack.* --fix",
+    "lint:fix": "eslint Origami webpack.* --fix && autopep8 --in-place api/* django_server/* docker/* docs/* media/*",
     "dev": "npm-run-all --parallel open:src lint:watch test:watch",
     "test": "mocha --require ignore-styles -r jsdom-global/register  --reporter spec Origami/scripts/test.js \"Origami/src/**/*.test.js\"",
     "test:watch": "npm run test -- --watch"
