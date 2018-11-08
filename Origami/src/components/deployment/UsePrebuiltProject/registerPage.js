@@ -245,24 +245,24 @@ class RegisterPage extends React.Component {
         return Promise.reject("Please select the demo's task.");
     }
     
+    if (!isSelected(data.os)) {
+        return Promise.reject("Please select the OS for the demo.");
+    }
+    
+    if (!isSelected(data.python)) {
+        return Promise.reject("Please select the Python version you'd like to use in the demo.");
+    }
+    
+    if (!isSelected(data.cuda)) {
+        return Promise.reject("Please select the CUDA version for the demo.");
+    }
+    
     if (isEmpty(data.source_code)) {
         return Promise.reject("Please add a link for the source code of the demo.");
     }
     
     if (!isUrl(data.source_code)) {
         return Promise.reject("Please use a valid URL as the link of the source code of the demo.");
-    }
-    
-    if (!isSelected(data.os)) {
-        return Promise.reject("Please select the OS for the demo.");
-    }
-    
-    if (!isSelected(data.cuda)) {
-        return Promise.reject("Please select the Python version you'd like to use in the demo.");
-    }
-    
-    if (!isSelected(data.python)) {
-        return Promise.reject("Please select the CUDA version for the demo.");
     }
     
     return Promise.resolve();
