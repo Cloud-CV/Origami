@@ -1,32 +1,32 @@
-import React from 'react';
+import React from "react";
 
-import img from '../assets/wireframe.png';
+import img from "../assets/wireframe.png";
 
-const Cards = ({ header,count,onClick,clicked }) => {
-  console.log("clicked=",clicked)
-  let styles={};
-  if(clicked == true){
-    styles={
-      borderStyle:'Solid',
-      borderWidth:'2px',
-      borderColor:'#606470'
-    }
+const Cards = ({ header, count, onClick, clicked }) => {
+  console.log("clicked=", clicked);
+  let styles = {};
+  if (clicked == true) {
+    styles = {
+      borderStyle: "Solid",
+      borderWidth: "2px",
+      borderColor: "#606470"
+    };
   }
   return (
-    <div class="ui special cards" onClick={onClick} >
-      <div class="card" style={styles}>
-        <div class="blurring dimmable image">
-          <div class="ui dimmer">
-            <div class="content">
-              <div class="center">
-                <div class="ui inverted button">Know More</div>
+    <div className="ui special cards" onClick={onClick}>
+      <div className="card" style={styles}>
+        <div className="blurring dimmable image">
+          <div className="ui dimmer">
+            <div className="content">
+              <div className="center">
+                <div className="ui inverted button">Know More</div>
               </div>
             </div>
           </div>
           <img src={img} />
         </div>
-        <div class="content">
-          <a class="header">{header}</a>
+        <div className="content">
+          <a className="header">{header}</a>
         </div>
       </div>
     </div>
