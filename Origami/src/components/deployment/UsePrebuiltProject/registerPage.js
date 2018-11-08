@@ -20,7 +20,9 @@ import toastr from 'toastr';
 import { Layout, Row, Col } from 'antd';
 import { ORIGAMI_READ_THE_DOCS } from '../../../constants';
 import { Card, Icon, Image, Button, Dimmer, Header } from 'semantic-ui-react';
+import Alert from '../../stateless/alert';
 import Cards from '../../stateless/task_cards';
+import isUrl from 'is-url-superb';
 
 const { Content, Footer } = Layout;
 
@@ -54,6 +56,7 @@ class RegisterPage extends React.Component {
     this.exit = this.exit.bind(this);
     this.btnEnter = this.btnEnter.bind(this);
     this.updateSource =this.updateSource.bind(this);
+    this.alert = React.createRef();
   }
 
   updateDescription(e) {
@@ -92,7 +95,6 @@ class RegisterPage extends React.Component {
     return {
       layout: {
         background: '#F7F7F7',
-        
       },
       content: {
         margin: '24px 0 0 12px',
@@ -213,7 +215,7 @@ class RegisterPage extends React.Component {
         cuda = y;
         break;
     }
-    this.setState({ python: python, os: os, cuda: cuda });
+    this.setState({ python, os, cuda });
   }
 
   exit() {
@@ -226,65 +228,113 @@ class RegisterPage extends React.Component {
   helpDirect() {
     window.location = ORIGAMI_READ_THE_DOCS;
   }
+  
+  validate(data) {
+    const isEmpty = field => !field || field.length === 0;
+    const isSelected = field => field && field != 0;
+    
+    if (isEmpty(data.name)) {
+        return Promise.reject("Please define the demo's name.");
+    }
+    
+    if (isEmpty(data.description)) {
+        return Promise.reject("Please define the demo's description.");
+    }
+    
+    if (isEmpty(data.task)) {
+        return Promise.reject("Please select the demo's task.");
+    }
+    
+    if (!isSelected(data.os)) {
+        return Promise.reject("Please select the OS for the demo.");
+    }
+    
+    if (!isSelected(data.python)) {
+        return Promise.reject("Please select the Python version you'd like to use in the demo.");
+    }
+    
+    if (!isSelected(data.cuda)) {
+        return Promise.reject("Please select the CUDA version for the demo.");
+    }
+    
+    if (isEmpty(data.source_code)) {
+        return Promise.reject("Please add a link for the source code of the demo.");
+    }
+    
+    if (!isUrl(data.source_code)) {
+        return Promise.reject("Please use a valid URL as the link of the source code of the demo.");
+    }
+    
+    return Promise.resolve();
+  }
 
   submit() {
+      let task=this.state.task
+      let task_in=''
+        switch (task) {
+          case 1:
+            task_in= 'VQA';
+            break;
+          case 2:
+            task_in= 'Style Transfer';
+            break;
+          case 3:
+            task_in = 'Grad Cam';
+            break;
+          case 4:
+            task_in = 'Classification';
+            break;
 
-  let task=this.state.task
-  let task_in=''
-    switch (task) {
-      case 1:
-        task_in= 'VQA';
-        break;
-      case 2:
-        task_in= 'Style Transfer';
-        break;
-      case 3:
-        task_in = 'Grad Cam';
-        break;
-      case 4:
-        task_in = 'Classification';
-        break;
+        }
 
+       let dataToPut = {
+        name: this.state.name,
+        id: this.state.id,
+        user_id: this.state.user_id,
+        description: this.state.description,
+        cover_image: this.state.cover_image,
+        terminal: this.state.showTerminal,
+        task: task_in,
+        os:this.state.os,
+        python:this.state.python,
+        cuda:this.state.cuda,
+        source_code:this.state.source
+      };
+      
+      this.validate(dataToPut)
+        .catch(err => {
+            const title = "Invalid demo settings";
+            
+            this.setState(Object.assign({}, this.state, {
+                alertContent: err,
+                alertTitle: title,
+                showAlert: true,
+            }));
+            this.alert.current.set(title, err);
+            this.alert.current.show();
+            
+            return Promise.reject(err);
+        })
+        .then(() => this.props.nonghModelActions.addToDBNonGHDemoModel(dataToPut))
+        .then(() => this.props.nonghModelActions.updateNonGHDemoModel(dataToPut))
+        .then(() => {
+          console.log("Done");
+          this.props.history.push(`/instructions/${dataToPut.user_id}/${dataToPut.id}/bundle`);
+        })
+        .catch(err => {
+          console.log("error",err)
+        });
     }
-
-   let dataToPut = {
-    name: this.state.name,
-    id: this.state.id,
-    user_id: this.state.user_id,
-    description: this.state.description,
-    cover_image: this.state.cover_image,
-    terminal: this.state.showTerminal,
-    task: task_in,
-    os:this.state.os,
-    python:this.state.python,
-    cuda:this.state.cuda,
-    source:this.state.source
-  };   
-  this.props.nonghModelActions.addToDBNonGHDemoModel(dataToPut).then(() => {
-    this.props.nonghModelActions
-      .updateNonGHDemoModel(dataToPut)
-      .then(() => {
-          console.log("Done")
-          })
-
-
-  })
-    .catch(err => {
-      console.log("error",err)
-    });
-
-    this.props.history.push('/instructions/'+dataToPut.user_id+"/"+dataToPut.id+'/bundle');
-}
-    checkbox(event){
-    let current=this.state.checked;
+    
+  checkbox(event) {
+    let current = this.state.checked;
     this.setState({checked:!current})
   }
 
-  tasks(e){
-    console.log("clicked before",e,this.state.task)
-    this.setState({task:e})
+  tasks(e) {
+    console.log("clicked before", e,this.state.task)
+    this.setState({task: e});
   }
-
 
   render() {
     const { active } = this.state;
@@ -304,6 +354,8 @@ class RegisterPage extends React.Component {
             </div>
           )}
           <Content style={styles.content}>
+            {this.state.showAlert && <Alert ref={this.alert} content={this.state.alertContent} title={this.state.alertTitle} />}
+            
             <div style={styles.contentDiv}>
               <Row>
                 <div
@@ -360,9 +412,9 @@ class RegisterPage extends React.Component {
                         <hr
                           style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
                         />
-                        <div class="ui grid">
-                          <div class="two wide column" />
-                          <div class="four wide column">
+                        <div className="ui grid">
+                          <div className="two wide column" />
+                          <div className="four wide column">
                             <TextField
                               hintText="MyApp"
                               floatingLabelText="Appname"
@@ -371,8 +423,8 @@ class RegisterPage extends React.Component {
                               onChange={this.updateName}
                             />
                           </div>
-                          <div class="three wide column" />
-                          <div class="four wide column">
+                          <div className="three wide column" />
+                          <div className="four wide column">
                             <TextField
                               hintText="Description"
                               floatingLabelText="Description"
@@ -400,7 +452,7 @@ class RegisterPage extends React.Component {
                         <br />
 
                         <div className="ui grid">
-                          <div class="two wide column" />
+                          <div className="two wide column" />
 
                           <div className=" three wide column">
                             <Cards header={'VQA'} count={1} onClick={this.tasks.bind(this,1)} clicked={this.state.task==1?true:false} />
@@ -437,7 +489,7 @@ class RegisterPage extends React.Component {
                         <div className="ui grid">
                           <div className="three wide column" />
                           <div className="one wide column">
-                            <text style={styles.tagOs}>OS </text>
+                            <span style={styles.tagOs}>OS</span>
                           </div>
                           <div className="one wide column" />
                           <div className="four wide column">
@@ -451,7 +503,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>Ubuntu 14.04</text>
+                              <span style={styles.txt}>Ubuntu 14.04</span>
                             </Button>
                           </div>
                           <div className="four wide column">
@@ -465,7 +517,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>Ubuntu 16.04</text>
+                              <span style={styles.txt}>Ubuntu 16.04</span>
                             </Button>
                           </div>
                         </div>
@@ -488,7 +540,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>2.7</text>
+                              <span style={styles.txt}>2.7</span>
                             </Button>
                           </div>
                           <div className="four wide column">
@@ -503,7 +555,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>3.5</text>
+                              <span style={styles.txt}>3.5</span>
                             </Button>
                           </div>
                         </div>
@@ -526,7 +578,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>7.0 - runtime</text>
+                              <span style={styles.txt}>7.0 - runtime</span>
                             </Button>
                           </div>
                           <div className="four wide column">
@@ -541,7 +593,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>8.0 - runtime</text>
+                              <span style={styles.txt}>8.0 - runtime</span>
                             </Button>
                           </div>
                         </div>
@@ -576,6 +628,7 @@ class RegisterPage extends React.Component {
                                 style={{ cursor: 'pointer', maxWidth: '75%' }}
                               >
                                 <Dropzone
+                                  accept="image/*"
                                   onDrop={this.onDrop}
                                   multiple={false}
                                   style={{ height: 'inherit' }}
@@ -627,7 +680,7 @@ class RegisterPage extends React.Component {
                               </div>
                               <br />
                               <div className="row">
-                                <div class="four wide column">
+                                <div className="four wide column">
                                   <span>
                                     <a style={styles.logo}>
                                       <img
@@ -663,7 +716,7 @@ class RegisterPage extends React.Component {
                                 : styles.sub
                             }
                           >
-                            <text style={styles.txt}>Reset</text>
+                            <span style={styles.txt}>Reset</span>
                           </Button>
                         </div>
 
@@ -680,7 +733,7 @@ class RegisterPage extends React.Component {
                                 : styles.sub
                             }
                           >
-                            <text style={styles.txt} >Submit</text>
+                            <span style={styles.txt}>Submit</span>
                           </Button>
                         </div>
                       </div>
