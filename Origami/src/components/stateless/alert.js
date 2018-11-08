@@ -1,10 +1,10 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import React from "react";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 class AlertDialog extends React.Component {
   constructor(props) {
@@ -12,20 +12,25 @@ class AlertDialog extends React.Component {
     this.state = {
       open: true,
       content: props.content,
-      title: props.title,
-    };  
+      title: props.title
+    };
   }
-  
+
   show() {
-      this.setState(Object.assign({}, this.state, {
-          open: true,
-      }));
+    this.setState(
+      Object.assign({}, this.state, {
+        open: true
+      })
+    );
   }
-  
+
   set(title, content) {
-      this.setState(Object.assign({}, this.state, {
-          title, content,
-      }));
+    this.setState(
+      Object.assign({}, this.state, {
+        title,
+        content
+      })
+    );
   }
 
   handleClose() {
