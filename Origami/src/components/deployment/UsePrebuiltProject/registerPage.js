@@ -1,26 +1,28 @@
-import React from "react";
-import { PropTypes } from "prop-types";
-import { Link, withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import CircularProgress from "material-ui/CircularProgress";
-import rangeCheck from "range_check";
-import { getWebAppStatus } from "../../../api/Generic/getWebAppStatus";
+import React from 'react';
+import { PropTypes } from 'prop-types';
+import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import CircularProgress from 'material-ui/CircularProgress';
+import rangeCheck from 'range_check';
+import { getWebAppStatus } from '../../../api/Generic/getWebAppStatus';
 import * as nonghDemoModelActions from "../../../actions/nonghDemoModelActions";
-import RaisedButton from "material-ui/RaisedButton";
-import StopNow from "material-ui/svg-icons/action/pan-tool";
-import Dropzone from "react-dropzone";
-import Checkbox from "material-ui/Checkbox";
-import GoAhead from "material-ui/svg-icons/action/check-circle";
-import { red500, green500, grey900 } from "material-ui/styles/colors";
-import TextField from "material-ui/TextField";
-import request from "superagent";
-import { Step, Stepper, StepLabel } from "material-ui/Stepper";
-import toastr from "toastr";
-import { Layout, Row, Col } from "antd";
-import { ORIGAMI_READ_THE_DOCS } from "../../../constants";
-import { Card, Icon, Image, Button, Dimmer, Header } from "semantic-ui-react";
-import Cards from "../../stateless/task_cards";
+import RaisedButton from 'material-ui/RaisedButton';
+import StopNow from 'material-ui/svg-icons/action/pan-tool';
+import Dropzone from 'react-dropzone';
+import Checkbox from 'material-ui/Checkbox';
+import GoAhead from 'material-ui/svg-icons/action/check-circle';
+import { red500, green500, grey900 } from 'material-ui/styles/colors';
+import TextField from 'material-ui/TextField';
+import request from 'superagent';
+import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
+import toastr from 'toastr';
+import { Layout, Row, Col } from 'antd';
+import { ORIGAMI_READ_THE_DOCS } from '../../../constants';
+import { Card, Icon, Image, Button, Dimmer, Header } from 'semantic-ui-react';
+import Alert from '../../stateless/alert';
+import Cards from '../../stateless/task_cards';
+import isUrl from 'is-url-superb';
 
 const { Content, Footer } = Layout;
 
@@ -30,8 +32,8 @@ class RegisterPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      description: "",
-      cover_image: "",
+      description: '',
+      cover_image: '',
       showTerminal: false,
       active: 0,
       btnactive: 0,
@@ -42,8 +44,8 @@ class RegisterPage extends React.Component {
       cuda: 0,
       id: Math.floor(Math.random() * 10000000).toString(),
       user_id: parseInt(localStorage.getItem("user_id"), 10),
-      task: 0,
-      source: ""
+      task:0,
+      source:''
     };
     this.updateName = this.updateName.bind(this);
     this.updateDescription = this.updateDescription.bind(this);
@@ -53,7 +55,8 @@ class RegisterPage extends React.Component {
     this.hover = this.hover.bind(this);
     this.exit = this.exit.bind(this);
     this.btnEnter = this.btnEnter.bind(this);
-    this.updateSource = this.updateSource.bind(this);
+    this.updateSource =this.updateSource.bind(this);
+    this.alert = React.createRef();
   }
 
   updateDescription(e) {
@@ -64,16 +67,16 @@ class RegisterPage extends React.Component {
     this.setState({ name: e.target.value });
   }
   updateSource(e) {
-    console.log("this source", this.state.source);
+    console.log("this source",this.state.source)
     this.setState({ source: e.target.value });
   }
 
   onDrop(files) {
     if (files[0].size > 5242880) {
-      alert("File size should be < 5MB");
+      alert('File size should be < 5MB');
     } else {
       document.getElementById(
-        "input-image-preview"
+        'input-image-preview'
       ).src = window.URL.createObjectURL(files[0]);
       const reader = new FileReader();
       reader.onload = () => {
@@ -91,101 +94,101 @@ class RegisterPage extends React.Component {
   getStyles() {
     return {
       layout: {
-        background: "#F7F7F7"
+        background: '#F7F7F7',
       },
       content: {
-        margin: "24px 0 0 12px",
-        overflow: "initial"
+        margin: '24px 0 0 12px',
+        overflow: 'initial',
       },
       contentDiv: {
-        padding: "5px 0",
-        background: "#F7F7F7"
+        padding: '5px 0',
+        background: '#F7F7F7',
       },
       tag: {
-        color: "#606470",
-        paddingTop: "5px",
+        color: '#606470',
+        paddingTop: '5px',
         fontFamily: '"Open Sans", "Helvetica", sans-serif',
-        fontSize: "1.6em"
+        fontSize: '1.6em',
       },
       tagOs: {
-        color: "#606470",
-        paddingTop: "5px",
+        color: '#606470',
+        paddingTop: '5px',
         fontFamily: '"Open Sans", "Helvetica", sans-serif',
-        fontSize: "1.6em",
-        paddingLeft: "7px"
+        fontSize: '1.6em',
+        paddingLeft: '7px',
       },
       btn: {
-        borderStyle: "Solid",
-        borderColor: "#949494",
-        color: "#6C6666",
-        width: "100%",
-        backgroundColor: "White",
-        borderWidth: "2px",
-        borderRadius: "30px",
-        boxShadow: "0 1px 3px rgba(0,0,0,0.16), 0 1px 3px rgba(0,0,0,0.23)",
-        transition: "all 0.3s"
+        borderStyle: 'Solid',
+        borderColor: '#949494',
+        color: '#6C6666',
+        width: '100%',
+        backgroundColor: 'White',
+        borderWidth: '2px',
+        borderRadius: '30px',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.16), 0 1px 3px rgba(0,0,0,0.23)',
+        transition: 'all 0.3s',
       },
       txt: {
         fontFamily: '"Open Sans", "Helvetica", sans-serif',
-        fontSize: "1em"
+        fontSize: '1em',
       },
       active: {
-        borderStyle: "Solid",
-        borderColor: "#eaeaea",
-        borderWidth: "2px",
-        transition: ".3s ease",
-        backfaceVisibility: "hidden",
-        opacity: "0.8",
-        boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)"
+        borderStyle: 'Solid',
+        borderColor: '#eaeaea',
+        borderWidth: '2px',
+        transition: '.3s ease',
+        backfaceVisibility: 'hidden',
+        opacity: '0.8',
+        boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
       },
       btnactive: {
-        borderStyle: "Solid",
-        width: "100%",
-        borderWidth: "2px",
-        borderRadius: "30px",
-        backgroundColor: "#443E3E",
-        color: "White",
-        boxShadow: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
-        transition: "all 0.3s"
+        borderStyle: 'Solid',
+        width: '100%',
+        borderWidth: '2px',
+        borderRadius: '30px',
+        backgroundColor: '#443E3E',
+        color: 'White',
+        boxShadow: '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
+        transition: 'all 0.3s',
       },
 
       parentBox: {
-        flexGrow: "5.75",
-        minWidth: "300px",
-        padding: "30px",
-        backgroundColor: "#fffff"
+        flexGrow: '5.75',
+        minWidth: '300px',
+        padding: '30px',
+        backgroundColor: '#fffff',
       },
       box: {
-        border: "1px solid #F3F2F2",
-        backgroundColor: "White",
-        borderRadius: "10px",
-        padding: "10px"
+        border: '1px solid #F3F2F2',
+        backgroundColor: 'White',
+        borderRadius: '10px',
+        padding: '10px',
       },
 
       sub: {
-        borderStyle: "Solid",
-        width: "100%",
-        borderWidth: "2px",
-        borderRadius: "30px",
-        backgroundColor: "#443E3E",
-        color: "White",
-        boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
-        transition: "all 0.3s"
+        borderStyle: 'Solid',
+        width: '100%',
+        borderWidth: '2px',
+        borderRadius: '30px',
+        backgroundColor: '#443E3E',
+        color: 'White',
+        boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
+        transition: 'all 0.3s',
       },
 
       subhover: {
-        borderStyle: "Solid",
-        width: "100%",
-        borderWidth: "2px",
-        borderRadius: "30px",
-        backgroundColor: "#443E3E",
-        color: "White",
-        boxShadow: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
-        transition: "all 0.3s"
+        borderStyle: 'Solid',
+        width: '100%',
+        borderWidth: '2px',
+        borderRadius: '30px',
+        backgroundColor: '#443E3E',
+        color: 'White',
+        boxShadow: '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
+        transition: 'all 0.3s',
       },
       logo: {
-        marginRight: "13px"
-      }
+        marginRight: '13px',
+      },
     };
   }
 
@@ -225,63 +228,112 @@ class RegisterPage extends React.Component {
   helpDirect() {
     window.location = ORIGAMI_READ_THE_DOCS;
   }
+  
+  validate(data) {
+    const isEmpty = field => !field || field.length === 0;
+    const isSelected = field => field && field != 0;
+    
+    if (isEmpty(data.name)) {
+        return Promise.reject("Please define the demo's name.");
+    }
+    
+    if (isEmpty(data.description)) {
+        return Promise.reject("Please define the demo's description.");
+    }
+    
+    if (isEmpty(data.task)) {
+        return Promise.reject("Please select the demo's task.");
+    }
+    
+    if (!isSelected(data.os)) {
+        return Promise.reject("Please select the OS for the demo.");
+    }
+    
+    if (!isSelected(data.python)) {
+        return Promise.reject("Please select the Python version you'd like to use in the demo.");
+    }
+    
+    if (!isSelected(data.cuda)) {
+        return Promise.reject("Please select the CUDA version for the demo.");
+    }
+    
+    if (isEmpty(data.source_code)) {
+        return Promise.reject("Please add a link for the source code of the demo.");
+    }
+    
+    if (!isUrl(data.source_code)) {
+        return Promise.reject("Please use a valid URL as the link of the source code of the demo.");
+    }
+    
+    return Promise.resolve();
+  }
 
   submit() {
-    let task = this.state.task;
-    let task_in = "";
-    switch (task) {
-      case 1:
-        task_in = "VQA";
-        break;
-      case 2:
-        task_in = "Style Transfer";
-        break;
-      case 3:
-        task_in = "Grad Cam";
-        break;
-      case 4:
-        task_in = "Classification";
-        break;
+      let task=this.state.task
+      let task_in=''
+        switch (task) {
+          case 1:
+            task_in= 'VQA';
+            break;
+          case 2:
+            task_in= 'Style Transfer';
+            break;
+          case 3:
+            task_in = 'Grad Cam';
+            break;
+          case 4:
+            task_in = 'Classification';
+            break;
+
+        }
+
+       let dataToPut = {
+        name: this.state.name,
+        id: this.state.id,
+        user_id: this.state.user_id,
+        description: this.state.description,
+        cover_image: this.state.cover_image,
+        terminal: this.state.showTerminal,
+        task: task_in,
+        os:this.state.os,
+        python:this.state.python,
+        cuda:this.state.cuda,
+        source_code:this.state.source
+      };
+      
+      this.validate(dataToPut)
+        .catch(err => {
+            const title = "Invalid demo settings";
+            
+            this.setState(Object.assign({}, this.state, {
+                alertContent: err,
+                alertTitle: title,
+                showAlert: true,
+            }));
+            this.alert.current.set(title, err);
+            this.alert.current.show();
+            
+            return Promise.reject(err);
+        })
+        .then(() => this.props.nonghModelActions.addToDBNonGHDemoModel(dataToPut))
+        .then(() => this.props.nonghModelActions.updateNonGHDemoModel(dataToPut))
+        .then(() => {
+          console.log("Done");
+          this.props.history.push(`/instructions/${dataToPut.user_id}/${dataToPut.id}/bundle`);
+        })
+        .catch(err => {
+          console.log("error",err)
+        });
     }
-
-    let dataToPut = {
-      name: this.state.name,
-      id: this.state.id,
-      user_id: this.state.user_id,
-      description: this.state.description,
-      cover_image: this.state.cover_image,
-      terminal: this.state.showTerminal,
-      task: task_in,
-      os: this.state.os,
-      python: this.state.python,
-      cuda: this.state.cuda,
-      source: this.state.source
-    };
-    this.props.nonghModelActions
-      .addToDBNonGHDemoModel(dataToPut)
-      .then(() => {
-        this.props.nonghModelActions
-          .updateNonGHDemoModel(dataToPut)
-          .then(() => {
-            console.log("Done");
-          });
-      })
-      .catch(err => {
-        console.log("error", err);
-      });
-
-    this.props.history.push(
-      `/instructions/${dataToPut.user_id}/${dataToPut.id}/bundle`
-    );
-  }
+    
   checkbox(event) {
     let current = this.state.checked;
-    this.setState({ checked: !current });
+    this.setState({checked:!current})
   }
 
   tasks(e) {
-    console.log("clicked before", e, this.state.task);
-    this.setState({ task: e });
+    console.log("clicked before", e,this.state.task)
+    this.setState({task: e});
   }
 
   render() {
@@ -294,23 +346,25 @@ class RegisterPage extends React.Component {
     );
 
     return (
-      <div style={{ backgroundColor: "#F7F7F7" }}>
+      <div style={{ backgroundColor: '#F7F7F7' }}>
         <Layout style={styles.layout}>
-          {this.state.showOutput === "hidden" && (
-            <div className="centered row" style={{ marginTop: "30vh" }}>
+          {this.state.showOutput === 'hidden' && (
+            <div className="centered row" style={{ marginTop: '30vh' }}>
               <CircularProgress size={89.25} />
             </div>
           )}
           <Content style={styles.content}>
+            {this.state.showAlert && <Alert ref={this.alert} content={this.state.alertContent} title={this.state.alertTitle} />}
+            
             <div style={styles.contentDiv}>
               <Row>
                 <div
                   style={{
                     visibility: this.state.showOutput,
-                    width: "100%",
+                    width: '100%',
                     maxWidth: 700,
-                    margin: "auto",
-                    marginTop: "5px"
+                    margin: 'auto',
+                    marginTop: '5px',
                   }}
                 >
                   <div
@@ -319,9 +373,9 @@ class RegisterPage extends React.Component {
                   >
                     <h1
                       style={{
-                        textAlign: "center",
-                        fontSize: "20px",
-                        fontWeight: "bold"
+                        textAlign: 'center',
+                        fontSize: '20px',
+                        fontWeight: 'bold',
                       }}
                     >
                       Register Application
@@ -342,21 +396,21 @@ class RegisterPage extends React.Component {
               <div>
                 <div
                   className="ui grid container"
-                  style={{ position: "relative" }}
+                  style={{ position: 'relative' }}
                 >
                   <div className="ui grid container">
                     <div className="column aligned" style={styles.parentBox}>
                       <div style={styles.box}>
-                        <a style={{ marginLeft: "40%", fontSize: "18px" }}>
+                        <a style={{ marginLeft: '40%', fontSize: '18px' }}>
                           <span>
                             <a style={styles.logo}>
-                              <img src={require("../../assets/details.png")} />
+                              <img src={require('../../assets/details.png')} />
                             </a>
-                          </span>{" "}
+                          </span>{' '}
                           Demo Details
                         </a>
                         <hr
-                          style={{ borderTop: "dotted 1px", color: "#aaaaaa" }}
+                          style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
                         />
                         <div className="ui grid">
                           <div className="two wide column" />
@@ -385,15 +439,15 @@ class RegisterPage extends React.Component {
                       <br />
 
                       <div style={styles.box}>
-                        <a style={{ marginLeft: "40%", fontSize: "18px" }}>
+                        <a style={{ marginLeft: '40%', fontSize: '18px' }}>
                           <span>
                             <a style={styles.logo}>
-                              <img src={require("../../assets/task.png")} />
+                              <img src={require('../../assets/task.png')} />
                             </a>
                           </span>Choose your Task
                         </a>
                         <hr
-                          style={{ borderTop: "dotted 1px", color: "#aaaaaa" }}
+                          style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
                         />
                         <br />
 
@@ -401,36 +455,16 @@ class RegisterPage extends React.Component {
                           <div className="two wide column" />
 
                           <div className=" three wide column">
-                            <Cards
-                              header={"VQA"}
-                              count={1}
-                              onClick={this.tasks.bind(this, 1)}
-                              clicked={this.state.task == 1}
-                            />
+                            <Cards header={'VQA'} count={1} onClick={this.tasks.bind(this,1)} clicked={this.state.task==1?true:false} />
                           </div>
                           <div className=" three wide column">
-                            <Cards
-                              header={"Style Transfer"}
-                              count={2}
-                              onClick={this.tasks.bind(this, 2)}
-                              clicked={this.state.task == 2}
-                            />
+                            <Cards header={'Style Transfer'} count={2} onClick={this.tasks.bind(this,2)} clicked={this.state.task==2?true:false} />
                           </div>
                           <div className=" three wide column">
-                            <Cards
-                              header={"Grad Cam"}
-                              count={2}
-                              onClick={this.tasks.bind(this, 3)}
-                              clicked={this.state.task == 3}
-                            />
+                            <Cards header={'Grad Cam'} count={2} onClick={this.tasks.bind(this,3)} clicked={this.state.task==3?true:false} />
                           </div>
                           <div className=" three wide column">
-                            <Cards
-                              header={"Classification"}
-                              count={2}
-                              onClick={this.tasks.bind(this, 4)}
-                              clicked={this.state.task == 4}
-                            />
+                            <Cards header={'Classification'} count={2} onClick={this.tasks.bind(this,4)} clicked={this.state.task==4?true:false} />
                           </div>
                         </div>
                         <br />
@@ -440,22 +474,22 @@ class RegisterPage extends React.Component {
                       <br />
 
                       <div style={styles.box}>
-                        <a style={{ marginLeft: "35%", fontSize: "18px" }}>
+                        <a style={{ marginLeft: '35%', fontSize: '18px' }}>
                           <span>
                             <a style={styles.logo}>
-                              <img src={require("../../assets/tools.png")} />
+                              <img src={require('../../assets/tools.png')} />
                             </a>
                           </span>Select System Configuration
                         </a>
                         <hr
-                          style={{ borderTop: "dotted 1px", color: "#aaaaaa" }}
+                          style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
                         />
                         <br />
                         <br />
                         <div className="ui grid">
                           <div className="three wide column" />
                           <div className="one wide column">
-                            <text style={styles.tagOs}>OS </text>
+                            <span style={styles.tagOs}>OS</span>
                           </div>
                           <div className="one wide column" />
                           <div className="four wide column">
@@ -469,7 +503,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>Ubuntu 14.04</text>
+                              <span style={styles.txt}>Ubuntu 14.04</span>
                             </Button>
                           </div>
                           <div className="four wide column">
@@ -483,7 +517,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>Ubuntu 16.04</text>
+                              <span style={styles.txt}>Ubuntu 16.04</span>
                             </Button>
                           </div>
                         </div>
@@ -506,7 +540,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>2.7</text>
+                              <span style={styles.txt}>2.7</span>
                             </Button>
                           </div>
                           <div className="four wide column">
@@ -521,7 +555,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>3.5</text>
+                              <span style={styles.txt}>3.5</span>
                             </Button>
                           </div>
                         </div>
@@ -544,7 +578,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>7.0 - runtime</text>
+                              <span style={styles.txt}>7.0 - runtime</span>
                             </Button>
                           </div>
                           <div className="four wide column">
@@ -559,7 +593,7 @@ class RegisterPage extends React.Component {
                                   : styles.btn
                               }
                             >
-                              <text style={styles.txt}>8.0 - runtime</text>
+                              <span style={styles.txt}>8.0 - runtime</span>
                             </Button>
                           </div>
                         </div>
@@ -570,16 +604,16 @@ class RegisterPage extends React.Component {
                       <br />
 
                       <div style={styles.box}>
-                        <a style={{ marginLeft: "35%", fontSize: "18px" }}>
+                        <a style={{ marginLeft: '35%', fontSize: '18px' }}>
                           <span>
                             <a style={styles.logo}>
-                              <img src={require("../../assets/settings.png")} />
+                              <img src={require('../../assets/settings.png')} />
                             </a>
-                          </span>{" "}
-                          Optional configurations{" "}
+                          </span>{' '}
+                          Optional configurations{' '}
                         </a>
                         <hr
-                          style={{ borderTop: "dotted 1px", color: "#aaaaaa" }}
+                          style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
                         />
 
                         <br />
@@ -587,16 +621,17 @@ class RegisterPage extends React.Component {
                           <div className="two column row">
                             <div
                               className="column"
-                              style={{ paddingLeft: "13%" }}
+                              style={{ paddingLeft: '13%' }}
                             >
                               <div
                                 className=""
-                                style={{ cursor: "pointer", maxWidth: "75%" }}
+                                style={{ cursor: 'pointer', maxWidth: '75%' }}
                               >
                                 <Dropzone
+                                  accept="image/*"
                                   onDrop={this.onDrop}
                                   multiple={false}
-                                  style={{ height: "inherit" }}
+                                  style={{ height: 'inherit' }}
                                 >
                                   <div className="ui card">
                                     <div className="ui fluid image">
@@ -604,16 +639,16 @@ class RegisterPage extends React.Component {
                                         className="ui fluid medium  image"
                                         src={
                                           this.state.cover_image ||
-                                          "/static/img/placeholder.jpg"
+                                          '/static/img/placeholder.jpg'
                                         }
-                                        id={"input-image-preview"}
+                                        id={'input-image-preview'}
                                       />
                                     </div>
                                     <div
                                       className="content"
                                       style={{
-                                        fontSize: "15px",
-                                        color: "#323643"
+                                        fontSize: '15px',
+                                        color: '#323643',
                                       }}
                                     >
                                       Drag and Drop or Click to upload cover
@@ -626,20 +661,22 @@ class RegisterPage extends React.Component {
 
                             <div
                               className="column"
-                              style={{ paddingLeft: "5%" }}
+                              style={{ paddingLeft: '5%' }}
                             >
                               <br />
                               <div className="row">
+
                                 <Checkbox
-                                  checked={this.state.showTerminal}
-                                  onCheck={this.toggleTerminal}
-                                  label="Show Terminal on demo page"
-                                  style={{
-                                    fontSize: "15px",
-                                    color: "#323643",
-                                    fontWeight: "Normal"
-                                  }}
-                                />
+                                    checked={this.state.showTerminal}
+                                    onCheck={this.toggleTerminal}
+                                    label="Show Terminal on demo page"
+                                    style={{
+                                      fontSize: '15px',
+                                      color: '#323643',
+                                      fontWeight:'Normal'
+                                    }}
+                                  />
+
                               </div>
                               <br />
                               <div className="row">
@@ -647,7 +684,7 @@ class RegisterPage extends React.Component {
                                   <span>
                                     <a style={styles.logo}>
                                       <img
-                                        src={require("../../assets/code .png")}
+                                        src={require('../../assets/code .png')}
                                       />
                                     </a>
                                   </span>
@@ -679,7 +716,7 @@ class RegisterPage extends React.Component {
                                 : styles.sub
                             }
                           >
-                            <text style={styles.txt}>Reset</text>
+                            <span style={styles.txt}>Reset</span>
                           </Button>
                         </div>
 
@@ -696,7 +733,7 @@ class RegisterPage extends React.Component {
                                 : styles.sub
                             }
                           >
-                            <text style={styles.txt}>Submit</text>
+                            <span style={styles.txt}>Submit</span>
                           </Button>
                         </div>
                       </div>
@@ -718,7 +755,7 @@ RegisterPage.propTypes = {
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   nonghDemoModel: PropTypes.object.isRequired,
-  nonghModelActions: PropTypes.object.isRequired
+  nonghModelActions: PropTypes.object.isRequired 
 };
 
 RegisterPage.contextTypes = {
@@ -739,6 +776,5 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(RegisterPage)
-);
+
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(RegisterPage));
