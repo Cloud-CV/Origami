@@ -9,7 +9,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
 const goBack = () => window.history.back();
-const goToHomepage = () => (window.location = "/home");
+const goToHome = () => (window.location = "/home");
 
 const styles = theme => ({
   card: {
@@ -72,7 +72,7 @@ function PageNotfoundHandler(props) {
             Go back
           </Button>
           <Button size="medium" color="primary" onClick={goToHomepage}>
-            Go to homepage
+            Go to the homepage
           </Button>
         </CardActions>
       </div>
