@@ -28,7 +28,28 @@
 
 This app is presently under active development and we welcome contributions. Please check out our [issues thread](https://github.com/Cloud-CV/Origami/issues) to find things to work on, or ping us on [Gitter](https://gitter.im/Cloud-CV/Origami).
 
-## Installation Instructions
+# Installation Instructions
+
+## For Windows
+
+### VirtualBox
+
+One of the easier ways to get started with Origami on Windows is by using a virtual machine of Ubunutu 16.04 LTS on Oracle's VirtualBox. We can install VirtualBox in just two easy steps.
+
+#### Step One - Downloading Virtual Box
+<p>You can install Virtual Box on [Oracle's VirtualBox website](https://www.virtualbox.org/wiki/Downloads). 
+<p><img width="50%" height="50%" src="https://user-images.githubusercontent.com/24444124/48304752-b1ba6e00-e4ec-11e8-869b-32e10a5bd6f1.png" /></p>
+Next, under "Virtual binaries," click on "Windows hosts" under "VirtualBox X.X.XX platform packages" to download the executable file for the latest version of VirtualBox. Wait for this to install and open the file when the download has completed.</p>
+
+#### Step Two - Starting installation
+
+The .exe file will have the following format: VirtualBox-VersionNumber-BuildNumber-Win.exe.
+- Once the setup wizard is open, follow the instructions. Everything can be kept as default, but feel free to change anything to your preference. 
+- If you see Windows User Account Control Warning, click yes to accept and continue.
+- When you reach the Network Interface dialouge box, be sure to proceed. VirtualBox will install network interfaces that will interact with the installed virtual machines and Windows. Although you will be temporarily disconnected from the Internet, everyhting will be okay.
+
+When you launch VirtualBox, you should see a screen similar to the one below. Congratualtions, you have successfully installed VirtualBox! 
+<p><img width="50%" height="50%" src="https://user-images.githubusercontent.com/24444124/48304960-d87aa380-e4f0-11e8-88c7-255b4ee2d3a2.jpg" /></p>
 
 ### Setting the environment variables
 
