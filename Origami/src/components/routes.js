@@ -35,7 +35,6 @@ export default (
       component={InstructionsPage}
     />
     <Route exact path="/ngh/user" component={NonGHUserProfileComponent} />
-
     <Route exact path="/demo_register" component={RegisterNonGHPageComponent} />
     <Route
       path="/demo/:user_id/:repoId/page"
@@ -61,11 +60,12 @@ export default (
       path="/frame/ngh/user/:user_id/:repoName/:repoId/demo"
       component={NGHDemoFrameComponent}
     />
-
     <Route exact path="/initialsetup" component={InitialSetupComponent} />
     <Route path="/p/:shorturl" component={URLShortenerComponent} />
     <Route path="/u/:username/:user_id" component={ShareProfile} />
     <Route path="/login*" component={LoginComponent} />
-    <Route path="*" component={PageNotfoundHandler} />
+    <Route exact path="/404" component={PageNotfoundHandler} /> // TODO: Check
+    if this is even necessary.
+    <Redirect to="/404" />
   </Switch>
 );
