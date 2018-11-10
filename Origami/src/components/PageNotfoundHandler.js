@@ -16,9 +16,9 @@ const styles = theme => ({
     display: "flex"
   },
   error: {
-      paddingLeft: "10px",
-      paddingTop: "15px",
-      height: "100%"
+    paddingLeft: "10px",
+    paddingTop: "15px",
+    height: "100%"
   },
   title: {
     color: "black"
@@ -63,15 +63,19 @@ function PageNotfoundHandler(props) {
           </Typography>
           <Typography variant="body1" gutterBottom>
             The page you are looking for may have been removed, or you typed in
-            the wrong URL.
-            If the issue persists, feel free to <a href="https://github.com/Cloud-CV/Origami/issues/new">file an issue</a> or <a href="https://gitter.im/Cloud-CV/Origami">ping us on Gitter</a>.
+            the wrong URL. If the issue persists, feel free to{" "}
+            <a href="https://github.com/Cloud-CV/Origami/issues/new">
+              file an issue
+            </a>{" "}
+            or{" "}
+            <a href="https://gitter.im/Cloud-CV/Origami">ping us on Gitter</a>.
           </Typography>
         </CardContent>
         <CardActions className={classes.actions}>
           <Button size="medium" color="primary" onClick={goBack}>
             Go back
           </Button>
-          <Button size="medium" color="primary" onClick={goToHomepage}>
+          <Button size="medium" color="primary" onClick={goToHome}>
             Go to the homepage
           </Button>
         </CardActions>
