@@ -1,4 +1,4 @@
-<p align="center"><img width="65%" src="origami_logo.png" /></p>
+<p align="center"><img width="30%" height="15%" src="origami_logo.png" /></p>
 
 <p align="center">
  <a href="https://travis-ci.org/Cloud-CV/Origami">
