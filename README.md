@@ -1,4 +1,4 @@
-<p align="center"><img width="30%" height="15%" src="origami_logo.png" /></p>
+<p align="center"><img width="65%" src="origami_logo.png" /></p>
 
 <p align="center">
  <a href="https://travis-ci.org/Cloud-CV/Origami">
@@ -16,19 +16,23 @@
  <a href="https://github.com/prettier/prettier" title="styled with">
 	<img src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square"/>
  </a>
+ <a href="https://gitter.im/Cloud-CV/Origami?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
+	<img src="https://badges.gitter.im/Cloud-CV/Origami.svg"/>
+ </a>
 </p>
 
-<p align="center"><img width="80%" height="60%" src="origami.png" /></p>
+ Origami is an AI-as-a-service that allows researchers to easily convert their deep learning models into an online service that is widely accessible to everyone without the need to setup the infrastructure, resolve the dependencies, and build a web service around the deep learning model. By lowering the barrier to entry to latest AI algorithms, we provide developers, researchers and students the ability to access any model using a simple REST API call.
+
+<p align="center"><img width="65%" height="45%" src="origami.png" /></p>
 <h4 align="center">Artificial Intelligence as a Service</h4>
 
-- Origami is an AI-as-a-service that allows researchers to easily convert their deep learning models into an online service that is widely accessible to everyone without the need to setup the infrastructure, resolve the dependencies, and build a web service around the deep learning model. By lowering the barrier to entry to latest AI algorithms, we provide developers, researchers and students the ability to access any model using a simple REST API call.
+## Goal
 
-- The aim of this project is to create a framework that can help people create a web based demo out of their machine learning code and share it. Others can test the model without going into the implementation details. Usually testing models by other people involves a lot of preparation and setup. This project aims to cut that down.
-
-
-This app is presently under active development and we welcome contributions. Please check out our [issues thread](https://github.com/Cloud-CV/Origami/issues) to find things to work on, or ping us on [Gitter](https://gitter.im/Cloud-CV/Origami).
+ The aim of this project is to create a framework that can help people create a web based demo out of their machine learning code and share it. Others can test the model without going into the implementation details. Usually testing models by other people involves a lot of preparation and setup. This project aims to cut that down.
 
 ## Installation Instructions
+
+Setting up Origami on your local machine is really easy. You can setup Origami by following steps.
 
 ### Setting the environment variables
 
@@ -49,50 +53,50 @@ To create the file, `cp origami.env.sample origami.env` and edit the file with t
 
 1. `CLIENT_IP` should be set to the same value as `HOST` in `origami.env`
 2. `CLIENT_PORT` should be set to the same value as `PORT` in `origami.env`
-3. For `DROPBOX_API_KEY` , check step 3 of [configuring Origami](http://cloudcv-origami.readthedocs.io/en/latest/web-app.html#configuration) 
-
-## Production setup instructions 
-
-**Use docker to setup Origami on production**
-
-### Running the server
-
-You can run the server with the help of docker and docker-compose.
-
-Run  `docker-compose up`
+3. For `DROPBOX_API_KEY` , check step 3 of [configuring Origami](http://cloudcv-origami.readthedocs.io/en/latest/web-app.html#configuration)
 
 ## Development setup instructions
 
-**This application requires node v5+ and Python 2.7/3.4+**
+**Install [Node v5+](https://nodejs.org/en/download/) and [Python 2.7/3.4+](https://www.python.org/downloads/), if you don't have laready as this application requires node v5+ and Python 2.7/3.4+**
 
-### Create a Virtual Environment
+### I. Create a Python Virtual Environment
 
-1. `pip install virtualenv`
-2. `virtualenv venv` venv = Name of virtualenv
-3. `source venv/bin/activate`
+```
+pip install virtualenv
+virtualenv venv
+``` 
+* venv = Name of virtualenv
+```
+source venv/bin/activate
+```
 
-**Note: Step 2 will create a folder named venv in your working directory**
+**Note: Command ```virtualenv venv``` will create a folder named venv in your working directory**
 
-### Getting the code and dependencies
+### II. Getting the code and dependencies
 
-1. Clone this repository
+1. Get the source code on your machine via git.
+```
+git clone https://github.com/Cloud-CV/Origami.git && cd Origami
+```
 
-2. Navigate to the repo. Usually `cd Origami/`
+2. Install all python dependencies.
+ ```
+ pip install -r requirements.txt
+```
 
-3. Add all the python dependencies.
-   `pip install -r requirements.txt` 
+3. Add all the javascript dependencies
 
-4. Add all the javascript dependencies
-   `yarn` (preferably) or `npm install`
+```yarn``` (preferably) or ```npm install```
 
-5. Setup redis 
-   `docker run -d -p 6379:6379 --name origami-redis redis:alpine`
+4. Setup redis : 
+ ```
+ docker run -d -p 6379:6379 --name origami-redis redis:alpine
+```
+5. Setup the environment
 
-6. Setup the environment
+```source origami.env```
 
-   `source origami.env`
-
-### Setting up the database
+### III. Setting up the database
 
 #### Create all the tables
 
@@ -105,13 +109,13 @@ python manage.py migrate
 
 `python manage.py initadmin`
 
-### Start the server
+### IV. Start the server
 
-1. Start the server by `python manage.py runserver --noworker`
-2. Start the worker by `python manage.py runworker`
-3. `yarn run dev`
-4. Go to [localhost:8000](http://localhost:8000/)
-  Visit [Read the docs](http://cloudcv-origami.readthedocs.io/en/latest/) for further instructions on Getting started
+- Start the server by ```python manage.py runserver --noworker```
+- Start the worker by ```python manage.py runworker```
+- Run : ```yarn run dev```
+- Go to [localhost:8000](http://localhost:8000/)
+  Visit [Read the docs](http://cloudcv-origami.readthedocs.io/en/latest/) for further instructions on Getting started.
 
 ## Contributing to Origami
 
@@ -121,6 +125,11 @@ python manage.py migrate
 
 2. Fix lint issues with the code using:
 	* `yarn run lint:fix`
+
+## Contribution guidelines
+
+This app is presently under active development and we welcome contributions. Please check out our [issues thread](https://github.com/Cloud-CV/Origami/issues) to find things to work on, or ping us on [Gitter](https://gitter.im/Cloud-CV/Origami).
+If you are interested in contributing to Origmai follow our [contribution guidelines](https://github.com/Cloud-CV/Origami/blob/master/.github/CONTRIBUTING.md) .
 
 ## License
 
