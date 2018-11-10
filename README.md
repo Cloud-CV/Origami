@@ -175,17 +175,59 @@ To create the file, `cp origami.env.sample origami.env` and edit the file with t
 
 You can run the server with the help of docker and docker-compose.
 
-Run  `docker-compose up`
+Run  `$ docker-compose up`
 
 ## Development setup instructions
 
-**This application requires node v5+ and Python 2.7/3.4+**
+**This application requires Pip, Node.js v5+, Yarn, and Python 2.7/3.4+ to install**
+
+#### Installing Pip
+
+If you do not already have `pip` installed, run the following command:
+
+```
+$ sudo apt-get update
+$ sudo apt get python-pip
+```
+MacOS: `$ sudo easy_install pip`
+
+#### Installing Node.js
+
+To install the a stable and up-to-date version of Node.js, we will use Node's PPA (Personal Package Archive). Keep in mind this is optimal for Linux Mint and Ubuntu operating systems. Please run the following commands to install the **latest** version of Node.js:
+
+```
+$ sudo apt-get update
+$ sudo apt install curl
+$ curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
+$ sudo apt install nodejs
+$ node -v
+```
+Verify that your Node.js version is v5 or greater. 
+
+#### Installing Yarn
+
+Yarn helps us install dependencies and other packages with ease. Here we will use npm (Node Package Manager) to install Yarn. As npm is installed with Node.js, be sure Node is already installed. Notice in the command that we include the `-g` flag for installation globally, so Yarn can thus be used in all of your projects.
+
+```
+$ sudo apt-get update
+$ sudo npm install yarn -g
+```
+
+#### Installing Python
+
+Finally, we can install Python. Follow these commands to get the most up-to-date version of Python. If you would like a specific version of Python, be sure to include your preference after `python` (e.g. `python 3.6` for Python 3.6). Ubuntu comes with Python installed, which is typically Python 2.7. Below we install `python3`, and to use this we would replace all `python` comands with `python3`. Below are the commands:
+
+```
+sudo apt-get update
+sudo apt-get install python3
+python3 --version
+```
 
 ### Create a Virtual Environment
 
-1. `pip install virtualenv`
-2. `virtualenv venv` venv = Name of virtualenv
-3. `source venv/bin/activate`
+1. `$ pip install virtualenv`
+2. `$ virtualenv venv` venv = Name of virtualenv
+3. `$ source venv/bin/activate`
 
 **Note: Step 2 will create a folder named venv in your working directory**
 
@@ -193,38 +235,38 @@ Run  `docker-compose up`
 
 1. Clone this repository
 
-2. Navigate to the repo. Usually `cd Origami/`
+2. Navigate to the repo. Usually `$ cd Origami/`
 
 3. Add all the python dependencies.
-   `pip install -r requirements.txt` 
+   `$ pip install -r requirements.txt` 
 
 4. Add all the javascript dependencies
    `yarn` (preferably) or `npm install`
 
 5. Setup redis 
-   `docker run -d -p 6379:6379 --name origami-redis redis:alpine`
+   `$ docker run -d -p 6379:6379 --name origami-redis redis:alpine`
 
 6. Setup the environment
 
-   `source origami.env`
+   `$ source origami.env`
 
 ### Setting up the database
 
 #### Create all the tables
 
 ```
-python manage.py makemigrations
-python manage.py migrate
+$ python manage.py makemigrations
+$ python manage.py migrate
 ```
 
 #### Create admin account
 
-`python manage.py initadmin`
+`$ python manage.py initadmin`
 
 ### Start the server
 
-1. Start the server by `python manage.py runserver --noworker`
-2. Start the worker by `python manage.py runworker`
+1. Start the server by `$ python manage.py runserver --noworker`
+2. Start the worker by `$ python manage.py runworker`
 3. `yarn run dev`
 4. Go to [localhost:8000](http://localhost:8000/)
   Visit [Read the docs](http://cloudcv-origami.readthedocs.io/en/latest/) for further instructions on Getting started
@@ -232,11 +274,11 @@ python manage.py migrate
 ## Contributing to Origami
 
 1. Make sure you run tests on your changes before you push the code using:
-	* `python manage.py test`
-	* `yarn run test`
+	* `$ python manage.py test`
+	* `$ yarn run test`
 
 2. Fix lint issues with the code using:
-	* `yarn run lint:fix`
+	* `$ yarn run lint:fix`
 
 ## License
 
