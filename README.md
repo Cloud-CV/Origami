@@ -86,15 +86,7 @@ git clone https://github.com/Cloud-CV/Origami.git && cd Origami
 
 3. Add all the javascript dependencies
 
-```
-yarn
-``` 
-or
-
-```
-npm install
-```
-`yarn` is preferred.
+ ```yarn``` (preferably) or ```npm install```
 
 4. Setup redis : 
  ```
@@ -133,17 +125,14 @@ You can also visit [Read the docs](http://cloudcv-origami.readthedocs.io/en/late
 ## Contributing to Origami
 
 1. Make sure you run tests on your changes before you push the code using:
-	* ```
-	python manage.py test
-	```
-	* ```
-	yarn run test
-	```
+
+	* ```python manage.py test```
+
+	* ```yarn run test```
 
 2. Fix lint issues with the code using:
-	* ```
-	yarn run lint:fix
-	```
+
+	* ```yarn run lint:fix```
 
 ## Contribution guidelines
 
