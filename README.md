@@ -59,7 +59,7 @@ Origami works well on an Ubuntu 16.04 LTS virtual machine, which is what we will
 
 ##### Disable Hyper-V
 
-Hyper-V is a tool that provides hardware virtualization, or allows virtual machines to run on virtual hardware. While this sounds useful, it can hamper your ability to use a 64-bit version of Ubuntu for your virtual machine. To avoid issues further along the line, you can disable this feature. 
+Hyper-V is a tool that provides hardware virtualization, or allows virtual machines to run on virtual hardware. While this sounds useful, it can hamper your ability to use a 64-bit version of Ubuntu for your virtual machine. To avoid issues further along the line, we will disable this feature. We **need** to use a 64-bit virtual machine, as this is required for Docker, which will be used to install Origami. 
 
 **Note: This will disable other applications that may require Hyper-V, such as Docker for Windows. You can always switch Hyper-V back on, but you will only be able to use VirtualBox or the other application(s) at a time.**
 
@@ -140,7 +140,11 @@ Double-click your virtual machine to start it up. You may get various pop-ups pr
 <p><img width="50%" height="50%" src="https://user-images.githubusercontent.com/24444124/48305898-bf79ee80-e500-11e8-83c9-e633b70a4ed6.PNG" /></p>
 <p><img width="50%" height="50%" src="https://user-images.githubusercontent.com/24444124/48305903-cbfe4700-e500-11e8-8af6-a4a5e63d916a.PNG" /></p>
 
+## Installing Docker
 
+We use Docker to install Origami. As Origami runs well on Ubuntu, we recommend you follow the official Docker documentation [here](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-using-the-repository). Use the "repository method" for the installation of Docker CE on this site. CE stands for "Community Edition," as is designed for developers and ordinary users. Make sure to install the latest version of Docker (skip step #3 on "Installing Docker CE"), and if you followed the tutorial above and created an Ubuntu virtual machine, follow the `x86_64` architecture command when setting up the repository.
+
+If you are using MacOS, follow the instructions on Docker's site [here](https://docs.docker.com/docker-for-mac/install/).
 
 ### Setting the environment variables
 
