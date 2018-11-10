@@ -30,6 +30,7 @@
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
+import sphinx_rtd_theme
 extensions = []
 
 # Add any paths that contain templates here, relative to this directory.
@@ -82,7 +83,6 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-import sphinx_rtd_theme
 
 html_theme = "sphinx_rtd_theme"
 
@@ -155,6 +155,3 @@ texinfo_documents = [
      author, 'Origami', 'One line description of project.',
      'Miscellaneous'),
 ]
-
-
-

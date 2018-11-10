@@ -26,17 +26,17 @@ class Demo(models.Model):
     """
     name = models.CharField(max_length=100)
     id = models.IntegerField(primary_key=True)
-    username=models.CharField(max_length=30,default="not known")
+    username = models.CharField(max_length=30, default="not known")
     user_id = models.IntegerField()
     cover_image = models.TextField(blank=False, null=False)
-    description = models.CharField(max_length=1000,blank=True)
+    description = models.CharField(max_length=1000, blank=True)
     terminal = models.BooleanField(default=False)
     task = models.CharField(max_length=40)
-    source_code = models.CharField(max_length=300,null=True)
-    os = models.CharField(max_length=30,blank=False)
-    python = models.CharField(max_length=30,blank=False)
-    cuda = models.CharField(max_length = 30,blank=False)
-    date = models.CharField(max_length=30,default="01/01/01")
+    source_code = models.CharField(max_length=300, null=True)
+    os = models.CharField(max_length=30, blank=False)
+    python = models.CharField(max_length=30, blank=False)
+    cuda = models.CharField(max_length=30, blank=False)
+    date = models.CharField(max_length=30, default="01/01/01")
 
 
 class InputComponent(models.Model):
@@ -145,9 +145,5 @@ class SampleInput(models.Model):
     value = models.CharField(max_length=300)
 
 
-
 class bundles(models.Model):
-    bundle=models.FileField()
-
-
-
+    bundle = models.FileField()
