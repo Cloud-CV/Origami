@@ -57,7 +57,7 @@ To create the file, `cp origami.env.sample origami.env` and edit the file with t
 
 ## Development setup instructions
 
-**Install [Node v5+](https://nodejs.org/en/download/) and [Python 2.7/3.4+](https://www.python.org/downloads/), if you don't have laready as this application requires node v5+ and Python 2.7/3.4+**
+**Install [Node v5+](https://nodejs.org/en/download/) and [Python 2.7/3.4+](https://www.python.org/downloads/), if you don't have already as this application requires node v5+ and Python 2.7/3.4+**
 
 ### I. Create a Python Virtual Environment
 
@@ -65,7 +65,7 @@ To create the file, `cp origami.env.sample origami.env` and edit the file with t
 pip install virtualenv
 virtualenv venv
 ``` 
-* venv = Name of virtualenv
+##### Note: venv = Name of virtualenv
 ```
 source venv/bin/activate
 ```
@@ -86,7 +86,15 @@ git clone https://github.com/Cloud-CV/Origami.git && cd Origami
 
 3. Add all the javascript dependencies
 
-```yarn``` (preferably) or ```npm install```
+```
+yarn
+``` 
+or
+
+```
+npm install
+```
+`yarn` is preferred.
 
 4. Setup redis : 
  ```
@@ -94,7 +102,9 @@ git clone https://github.com/Cloud-CV/Origami.git && cd Origami
 ```
 5. Setup the environment
 
-```source origami.env```
+```
+source origami.env
+```
 
 ### III. Setting up the database
 
@@ -107,24 +117,33 @@ python manage.py migrate
 
 #### Create admin account
 
-`python manage.py initadmin`
+```
+python manage.py initadmin
+```
 
 ### IV. Start the server
 
 - Start the server by ```python manage.py runserver --noworker```
 - Start the worker by ```python manage.py runworker```
 - Run : ```yarn run dev```
-- Go to [localhost:8000](http://localhost:8000/)
-  Visit [Read the docs](http://cloudcv-origami.readthedocs.io/en/latest/) for further instructions on Getting started.
+- That's it, Open web browser and hit the url [localhost:8000](http://localhost:8000/).
+
+You can also visit [Read the docs](http://cloudcv-origami.readthedocs.io/en/latest/) for further instructions on Getting started.
 
 ## Contributing to Origami
 
 1. Make sure you run tests on your changes before you push the code using:
-	* `python manage.py test`
-	* `yarn run test`
+	* ```
+	python manage.py test
+	```
+	* ```
+	yarn run test
+	```
 
 2. Fix lint issues with the code using:
-	* `yarn run lint:fix`
+	* ```
+	yarn run lint:fix
+	```
 
 ## Contribution guidelines
 
