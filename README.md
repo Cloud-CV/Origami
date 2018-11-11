@@ -27,12 +27,20 @@
 
 
 This app is presently under active development and we welcome contributions. Please check out our [issues thread](https://github.com/Cloud-CV/Origami/issues) to find things to work on, or ping us on [Gitter](https://gitter.im/Cloud-CV/Origami).
-# Development Setup for Contributors
-__This application will require NodeJS v5+ [https://nodejs.org/], Docker [https://www.docker.com/products/docker-desktop], PostgreSQL [https://www.enterprisedb.com/downloads/postgres-postgresql-downloads] and Python 2.7/3.4+ [https://www.python.org/downloads/]__
+
+
+## Installation Instructions
+
+
+## Development Setup for Contributors
+** This application will require: **
+* [NodeJS v5+](https://nodejs.org/)
+* [Docker](https://www.docker.com/products/docker-desktop)
+* [PostgreSQL](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)
+* [Python 2.7/3.4+](https://www.python.org/downloads/)
 
 
 ## Create A Virtual Environment
------------------------------------------------------------
 Virutal environments help with contributing code because it isolated your local packages from others that might be used in the project. To begin the installation of the application for contributions, we will create a virtual environment.
 1. `pip install virtualenv`
 2. `virtualenv venv` This __venv__ is the name of the environment and can be whatever you'd like. This creates a folder that will be called `venv` which you can now navigate to.
@@ -53,7 +61,7 @@ Now we will grab the code from Github for local development. Start out by naviga
 ----------------------------
 Next we will setup the environment variables for the development environment. To do this, you should see that the git clone copied `origami.env.sample`. Rename this file `origami.env` and follow the following steps to set the environment up properly. Ensure that you have a PostgreSQL and a database created already.
 1. `HOST` should be set to the host name of the server ("in most cases, 'localhost') can be used.
-2. `PORT` should be set to an available port on your machine (It is recommended you use 80)
+2. `PORT` should be set to an available port on your machine (It is recommended you use 80)* 
 3. `DB_Name` refers to whatever the database's name is that you created
 4. `DB_PASS` password for the database's admin creator
 5. `DB_USER` username for the database's admin creator
@@ -64,15 +72,18 @@ Next we will setup the environment variables for the development environment. To
 Also edit the `Origami/outCalls/config.js` file variables for store configuration
 1. `CLIENT_IP` should be set to the same value as `HOST` in `origami.env`
 2. `CLIENT_PORT` should eb set to the same value as `PORT` in `origami.env`
-3. For `DROPBOX_API_KEY`, check 3 of __Configuring Origami__[https://cloudcv-origami.readthedocs.io/en/latest/web-app.html#configuration]
+3. For `DROPBOX_API_KEY`, check 3 of [__Configuring Origami__](https://cloudcv-origami.readthedocs.io/en/latest/web-app.html#configuration)
 
 
 ## Setting Up The Database
 ------------------------------------------------------
 
 ### Create all the tables
-` python manage.py makemigrations # create copy of data to be migrated to database `
-`python manage.py migrate # actually migrates data to database`
+Create copy of data to be migrated to database 
+` python manage.py makemigrations`
+
+Actually migrates data to database
+`python manage.py migrate`
 
 ### Create Admin Account
 `python manage.py initadmin`
@@ -81,16 +92,18 @@ Also edit the `Origami/outCalls/config.js` file variables for store configuratio
 1. Start the server by: `python manage.py runserver --noworker`
 2. Start the worker by `python manage.py runworker`
 3. Start frontend with `yarn run dev`
-4. Navigate to localhost:8000[localhost:8000] to view the page
+4. Navigate to [localhost:8000](localhost:8000) to view the page
 
-** For furthur instructions, visit Read the Docs [https://cloudcv-origami.readthedocs.io/en/latest/] in the "Getting Started" section
+** For furthur instructions, visit [Read the Docs](https://cloudcv-origami.readthedocs.io/en/latest/) in the "Getting Started" section
 
 
 ## Contributing to Origami
 ------------------------------
 1. Before pushing your code, be sure to run tests using
     * `python manage.py test`
+    
     * `yarn run test`
+    
 2. Fix linting issues in code:
     * `yarn run lint:fix`
 
