@@ -30,11 +30,11 @@ This app is presently under active development and we welcome contributions. Ple
 
 # Installation Instructions
 
-## For Windows
+<details><summary>Windows Installation</summary>
 
 ### VirtualBox
 
-One of the easier ways to get started with Origami on Windows is by using a virtual machine of Ubunutu 16.04 LTS on Oracle's VirtualBox. We can install VirtualBox in just two easy steps.
+One of the easier ways to get started with Origami on Windows is by using a virtual machine of Ubunutu 16.04 LTS on Oracle's VirtualBox. With Ubuntu installed, Origami can be installed by following the instructions in the next sections. We can install VirtualBox in just two easy steps.
 
 #### Step One - Downloading Virtual Box
 You can install Virtual Box on [Oracle's VirtualBox website](https://www.virtualbox.org/wiki/Downloads).
@@ -140,6 +140,8 @@ Double-click your virtual machine to start it up. You may get various pop-ups pr
 <p><img width="50%" height="50%" src="https://user-images.githubusercontent.com/24444124/48305898-bf79ee80-e500-11e8-83c9-e633b70a4ed6.PNG" /></p>
 <p><img width="50%" height="50%" src="https://user-images.githubusercontent.com/24444124/48305903-cbfe4700-e500-11e8-8af6-a4a5e63d916a.PNG" /></p>
 
+</details>
+
 ## Installing Docker
 
 We use Docker to install Origami. As Origami runs well on Ubuntu, we recommend you follow the official Docker documentation [here](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-using-the-repository). Use the "repository method" for the installation of Docker CE on this site. CE stands for "Community Edition," as is designed for developers and ordinary users. Make sure to install the latest version of Docker (skip step #3 on "Installing Docker CE"), and if you followed the tutorial above and created an Ubuntu virtual machine, follow the `x86_64` architecture command when setting up the repository.
@@ -183,7 +185,7 @@ Run  `$ docker-compose up`
 
 **This application requires Pip, Node.js v5+, Yarn, and Python 2.7/3.4+ to install**
 
-#### Installing Pip
+<details><summary>Installing Pip</summary>
 
 If you do not already have `pip` installed, run the following command:
 
@@ -193,8 +195,9 @@ $ sudo apt get python-pip
 ```
 
 MacOS: `$ sudo easy_install pip`
+</details>
 
-#### Installing Node.js
+<details><summary>Installing Node.js</summary>
 
 To install a stable and up-to-date version of Node.js, we will use Node's PPA (Personal Package Archive). Keep in mind this is optimal for Linux Mint and Ubuntu operating systems. Please run the following commands to install the **latest** version of Node.js:
 
@@ -207,8 +210,9 @@ $ node -v
 ```
 
 Verify that your Node.js version is v5 or greater. 
+</details>
 
-#### Installing Yarn
+<details><summary>Installing Yarn</summary>
 
 Yarn helps install dependencies and other packages with ease. Here we will use npm (Node Package Manager) to install Yarn. As npm is installed with Node.js, be sure Node is already installed. Notice in the command that we include the `-g` flag for installation globally, so Yarn can thus be used in all of your projects.
 
@@ -216,8 +220,9 @@ Yarn helps install dependencies and other packages with ease. Here we will use n
 $ sudo apt-get update
 $ sudo npm install yarn -g
 ```
+</details>
 
-#### Installing Python
+<details><summary>Installing Python</summary>
 
 Finally, we can install Python. Follow these commands to get the most up-to-date version of Python. If you would like a specific version of Python, be sure to include your preference after `python` (e.g. `python 3.6` for Python 3.6). Ubuntu comes with Python installed, which is typically Python 2.7. Below, we install `python3`, and to use this, we would replace all `python` commands with `python3`. Below are the commands:
 
@@ -226,6 +231,7 @@ $ sudo apt-get update
 $ sudo apt-get install python3
 $ python3 --version
 ```
+</details>
 
 ### Create a Virtual Environment
 
