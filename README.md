@@ -148,16 +148,18 @@ If you are using MacOS, follow the instructions on Docker's site [here](https://
 
 ### Setting the environment variables
 
+Refer to the below during the installation process as needed. 
+
 * `origami.env` stores all the environment variables necessary to run Origami.
 
-1. `HOST` should be set to the hostname of the server
-2. `PORT` should be set to the port you want the server to listen on. (Generally 80)
-3. `DB_NAME` will be used to set the name for your postgres database
-4. `DB_PASS` will be used to set the password for the database user. This is also the admin password
-5. `DB_USER` is the username for a user who can modify the database. This is also the admin username
-6. `DB_USER_EMAIL` stores the email for the admin
-7. `DB_HOST `should be set to postgres in production and localhost in development
-8. `REDIS_HOST` should be set to redis and localhost in development
+1. `HOST` should be set to the hostname of the server.
+2. `PORT` should be set to the port you want the server to listen on. 
+3. `DB_NAME` will be used to set the name for your postgres database.
+4. `DB_PASS` will be used to set the password for the database user. This is also the admin password.
+5. `DB_USER` is the username for a user who can modify the database. This is also the admin username.
+6. `DB_USER_EMAIL` stores the email for the admin.
+7. `DB_HOST `should be set to postgres in production and localhost in development.
+8. `REDIS_HOST` should be set to redis and localhost in development.
 
 To create the file, `cp origami.env.sample origami.env` and edit the file with the above fields.
 
@@ -169,7 +171,7 @@ To create the file, `cp origami.env.sample origami.env` and edit the file with t
 
 ## Production setup instructions 
 
-**Use docker to setup Origami on production**
+**Use Docker to setup Origami on production**
 
 ### Running the server
 
@@ -189,11 +191,12 @@ If you do not already have `pip` installed, run the following command:
 $ sudo apt-get update
 $ sudo apt get python-pip
 ```
+
 MacOS: `$ sudo easy_install pip`
 
 #### Installing Node.js
 
-To install the a stable and up-to-date version of Node.js, we will use Node's PPA (Personal Package Archive). Keep in mind this is optimal for Linux Mint and Ubuntu operating systems. Please run the following commands to install the **latest** version of Node.js:
+To install a stable and up-to-date version of Node.js, we will use Node's PPA (Personal Package Archive). Keep in mind this is optimal for Linux Mint and Ubuntu operating systems. Please run the following commands to install the **latest** version of Node.js:
 
 ```
 $ sudo apt-get update
@@ -202,11 +205,12 @@ $ curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
 $ sudo apt install nodejs
 $ node -v
 ```
+
 Verify that your Node.js version is v5 or greater. 
 
 #### Installing Yarn
 
-Yarn helps us install dependencies and other packages with ease. Here we will use npm (Node Package Manager) to install Yarn. As npm is installed with Node.js, be sure Node is already installed. Notice in the command that we include the `-g` flag for installation globally, so Yarn can thus be used in all of your projects.
+Yarn helps install dependencies and other packages with ease. Here we will use npm (Node Package Manager) to install Yarn. As npm is installed with Node.js, be sure Node is already installed. Notice in the command that we include the `-g` flag for installation globally, so Yarn can thus be used in all of your projects.
 
 ```
 $ sudo apt-get update
@@ -215,12 +219,12 @@ $ sudo npm install yarn -g
 
 #### Installing Python
 
-Finally, we can install Python. Follow these commands to get the most up-to-date version of Python. If you would like a specific version of Python, be sure to include your preference after `python` (e.g. `python 3.6` for Python 3.6). Ubuntu comes with Python installed, which is typically Python 2.7. Below we install `python3`, and to use this we would replace all `python` comands with `python3`. Below are the commands:
+Finally, we can install Python. Follow these commands to get the most up-to-date version of Python. If you would like a specific version of Python, be sure to include your preference after `python` (e.g. `python 3.6` for Python 3.6). Ubuntu comes with Python installed, which is typically Python 2.7. Below, we install `python3`, and to use this, we would replace all `python` commands with `python3`. Below are the commands:
 
 ```
-sudo apt-get update
-sudo apt-get install python3
-python3 --version
+$ sudo apt-get update
+$ sudo apt-get install python3
+$ python3 --version
 ```
 
 ### Create a Virtual Environment
@@ -233,20 +237,76 @@ python3 --version
 
 ### Getting the code and dependencies
 
-1. Clone this repository
+1. Clone the repository via git
 
-2. Navigate to the repo. Usually `$ cd Origami/`
+`$ git clone --recursive https://github.com/Cloud-CV/Origami.git && cd Origami/`
 
-3. Add all the python dependencies.
+2. Renaming `origami.env.sample.py` as `origami.env` and setting environment variables in `origami.env`
+
+```
+$ cp origami.env.sample origami.env
+$ nano origami.env
+```
+Here, set the environment variables according to the above instructions on environment variables. Once they have been edited, **Ctrl O**, **Enter**, and **Ctrl X** to save and exit. The following is an example of what this may look like (be sure to include `localhost` as the necessary values below if you are going to run Origami on your local machine).
+
+```
+set -a
+HOST=localhost
+PORT=8000
+DB_NAME=origami546
+DB_PASS=origami546
+DB_USER=origami546
+DB_USER_EMAIL=example@gmail.com
+DB_HOST=localhost
+REDIS_HOST=localhost
+set +a
+```
+
+Afterward, run the following to set more variables as entailed in the above section for environment variables for `Origami/outCalls/config.js`
+
+```
+$ nano Origami/outCalls/config.js
+```
+
+
+3. Add all of the Python dependencies.
+   
    `$ pip install -r requirements.txt` 
 
-4. Add all the javascript dependencies
-   `yarn` (preferably) or `npm install`
+4. Set up the Postgresql database
 
-5. Setup redis 
-   `$ docker run -d -p 6379:6379 --name origami-redis redis:alpine`
+Install `postgresql` if you have not already. The `-contrib` package will add more utilities and added functionality.
 
-6. Setup the environment
+```
+sudo apt-get update
+sudo apt-get install postgresql postgresql-contrib
+```
+
+Next we will create a database containing the details we will use for Origami. Following the previous example, creating the database may look like the following:
+
+```
+$ sudo service postgresql start
+$ sudo -u postgres psql
+postgres=# CREATE DATABASE origami546;
+postgres=# CREATE USER origami546 WITH PASSWORD 'origami546';
+postgres=# ALTER ROLE origami546 SET client_encoding TO 'utf8';
+postgres=# ALTER ROLE origami546 SET default_transaction_isolation TO 'read committed';
+postgres=# ALTER ROLE origami546 SET timezone TO 'UTC';
+postgres=# ALTER USER origami546 CREATEDB;
+postgres=# \q
+```
+
+4. Add all of the Javascript dependencies
+   
+   `$ yarn` (preferably) 
+   or 
+   `$ npm install`
+
+5. Setup the Redis server
+ 
+ `$ docker run -d -p 6379:6379 --name origami-redis redis:alpine`
+
+6. Activate the environment
 
    `$ source origami.env`
 
@@ -265,11 +325,70 @@ $ python manage.py migrate
 
 ### Start the server
 
-1. Start the server by `$ python manage.py runserver --noworker`
-2. Start the worker by `$ python manage.py runworker`
-3. `yarn run dev`
+To ensure everything works out, follow these steps carefully. Make sure all three terminals are running at the same time.
+
+1. Start the server by 
+
+`$ python manage.py runserver --noworker`
+
+2. Start the worker
+
+Open a second terminal and run the following:
+
+```
+$ source venv/bin/activate
+$ cd Origami/
+$ source origami.env
+$ python manage.py runworker
+```
+3. Running the server with Yarn
+
+Open a third terminal and run the following:
+
+```
+$ source venv/bin/activate
+$ cd Origami/
+$ source origami.env
+$ yarn run dev
+```
+
 4. Go to [localhost:8000](http://localhost:8000/)
-  Visit [Read the docs](http://cloudcv-origami.readthedocs.io/en/latest/) for further instructions on Getting started
+  Visit [Read the docs](http://cloudcv-origami.readthedocs.io/en/latest/) for further instructions on getting started. If you have never created an OAuth App on GitHub, see the below instructions.
+  
+### Setup Authentication for Virtual Environment
+1. Go to Github Developer Applications and create a new application [here](https://github.com/settings/developers).
+
+2. For local deployments, use the following information:
+    * Application name: Origami
+    * Homepage URL: http://localhost:8000
+    * Application description: Origami
+    * Authorization callback URL: http://localhost:8000/accounts/github/login/callback/
+
+3. Github will provide you with a client ID and secret Key, save these.
+
+4. Start the application.
+
+```
+$ python manage.py runserver
+```
+
+6. Open http://localhost:8000/admin
+
+7. Login with the credentials from your admin account. This should be your username and password you used for the Postgresql if everything was kept consistent.
+
+8. Setting up Social Accounts in Django admin :
+
+    * Under ``Social Accounts`` open ``Social applications``, click on ``Add Social Application``.
+
+    * Choose  the ``Provider`` of social application as ``GitHub`` &  name it ``GitHub``.
+
+    * Copy and paste your ``Client ID`` and ``Secret Key`` into the appropriate fields.
+    
+    * Next to the "Chosen sites" box on the right, click the green plus button directly on the side. In the pop-up box, type in "localhost:8000" for both the "Domain name" and "Display name" fields and save.
+    
+    * Navigate to the bottom right of the page and click **SAVE**.
+
+9. From the Django admin home page, go to `Sites` under the `Sites` category and make sure "localhost:8000" is the only site listed under "DOMAIN NAME".
 
 ## Contributing to Origami
 
