@@ -16,7 +16,8 @@ class Profile extends Component {
       bio: "bio",
       company: "company",
       avatar: pic,
-      github: ""
+      github: "",
+      count:"4"
     };
   }
 
@@ -67,13 +68,8 @@ class Profile extends Component {
   }
 
   render() {
-    let uname = this.state.username;
-    let cnt = 0;
-    if (uname == "vpn1997") {
-      cnt = 8;
-    } else {
-      cnt = 4;
-    }
+
+
     return (
       <div className="container">
         <div className="profile-sidebar">
@@ -91,7 +87,7 @@ class Profile extends Component {
                 Demo Count
               </a>
               <a href="#" className="btn btn-success">
-                {cnt}
+                {this.state.count}
               </a>
             </div>
 
