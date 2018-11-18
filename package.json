@@ -8,11 +8,11 @@
     "build": "npm-run-all clean:bundle test lint:build && babel-node Origami/scripts/build.js",
     "start": "babel-node server.js",
     "open:src": "babel-node server.js",
-    "yapf": "yapf --in-place --recursive $(ls **/*.py) --exclude \"Origami/*\"",
+    "yapf:fix": "yapf --in-place --recursive $(ls **/*.py) --exclude \"Origami/*\"",
     "lint": "esw webpack.* Origami",
     "lint:build": "esw webpack.* Origami -c ./.eslintrc",
     "lint:watch": "npm run lint -- --watch",
-    "lint:fix": "npm run yapf && eslint Origami webpack.* --fix",
+    "lint:fix": "npm run yapf:fix && eslint Origami webpack.* --fix",
     "dev": "npm-run-all --parallel open:src lint:watch test:watch",
     "test": "mocha --require ignore-styles -r jsdom-global/register  --reporter spec Origami/scripts/test.js \"Origami/src/**/*.test.js\"",
     "test:watch": "npm run test -- --watch"
