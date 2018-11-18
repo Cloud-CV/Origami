@@ -3,7 +3,6 @@ asgiref==1.1.2
 attrs==17.2.0
 autobahn==17.6.1
 Automat==0.6.0
-autopep8==1.4.2
 certifi==2017.4.17
 channels==1.1.5
 chardet==3.0.4

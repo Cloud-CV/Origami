@@ -50,7 +50,7 @@ fi
 # Format all staged files, then exit with an error code if any have uncommitted
 # changes.
 echo 'Formatting staged Python files . . .'
-yapf -i -r ${PYTHON_FILES[@]}
+npm run yapf
 CHANGED_FILES=(`git diff --name-only ${PYTHON_FILES[@]}`)
 if [ "$CHANGED_FILES" ]; then
   echo 'Reformatted staged files. Please review and stage the changes.'

@@ -121,6 +121,10 @@ python manage.py migrate
 
 2. Fix lint issues with the code using:
 	* `yarn run lint:fix`
+   
+   _Optional:_ you can configure Git to automatically format the Python codebase before each commit by running:
+    * `cp hooks/pre-commit.sh .git/hooks`
+    * `chmod a+x .git/hooks/pre-commit.sh`
 
 ## License
 

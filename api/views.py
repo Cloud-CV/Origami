@@ -337,21 +337,21 @@ def bundledown(request, id, user_id):
     cuda = demo.cuda
     python = demo.python
     tag = ''
-    if(_os == "1"):
+    if (_os == "1"):
         _os = "ubuntu14.04"
         tag = tag + 'ub14.04'
     else:
         _os = "ubuntu16.04"
         tag = tag + 'ub16.04'
     tag = tag + '-'
-    if(python == "1"):
+    if (python == "1"):
         python = "python2.7"
         tag = tag + 'py2.7'
     else:
         python = "python3.5"
         tag = tag + 'py3.5'
     tag = tag + '-'
-    if(cuda == "1"):
+    if (cuda == "1"):
         cuda = "cuda7.0-runtime"
         tag = tag + 'cu7.0'
     else:
@@ -469,8 +469,7 @@ def custom_demo_controller(request, user_id, id):
             terminal=terminal,
             source_code=source,
             task=task,
-            date=date
-        )
+            date=date)
 
         serialize = DemoSerializer(demo)
         return Response(serialize.data, status=response_status.HTTP_201_CREATED)

@@ -52,9 +52,7 @@ class CustomDemoControllerViewTests(TestCase):
             python=self.demo["python"],
             os=self.demo["os"],
             task=self.demo["task"],
-            source_code=self.demo["source_code"]
-
-        )
+            source_code=self.demo["source_code"])
         self.demo2 = {
             "name": "test2",
             "id": 999,
@@ -89,9 +87,7 @@ class CustomDemoControllerViewTests(TestCase):
             python=self.demo2["python"],
             os=self.demo2["os"],
             task=self.demo2["task"],
-            source_code=self.demo2["source_code"]
-
-        )
+            source_code=self.demo2["source_code"])
 
     def test_get_redir_user_demo(self):
         payload = {"user": {"username": self.demo["username"]}}
@@ -217,7 +213,9 @@ class CustomDemoControllerViewTests(TestCase):
         response = json.loads(responses.content.decode('utf-8'))
         self.assertEqual(response["text"], "Not Found")
 
+
 # -----
+
     def test_create_demo(self):
         payload = {
             "name": "1",

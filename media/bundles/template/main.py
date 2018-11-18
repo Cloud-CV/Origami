@@ -1,6 +1,5 @@
 from origami_lib.origami import Origami
 
-
 app = Origami("VisualDialog")
 
 

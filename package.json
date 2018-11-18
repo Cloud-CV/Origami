@@ -8,11 +8,11 @@
     "build": "npm-run-all clean:bundle test lint:build && babel-node Origami/scripts/build.js",
     "start": "babel-node server.js",
     "open:src": "babel-node server.js",
-    "autopep8": "autopep8 --ignore E901,E203,E201,E128,E202,W604,E226,W504 --recursive --in-place --pep8-passes 2000 api/* django_server/* docker/* docs/*{.py,.bat,Makefile} media/*",
+    "yapf": "yapf --in-place --recursive $(ls **/*.py) --exclude \"Origami/*\"",
     "lint": "esw webpack.* Origami",
     "lint:build": "esw webpack.* Origami -c ./.eslintrc",
     "lint:watch": "npm run lint -- --watch",
-    "lint:fix": "npm run autopep8 && eslint Origami webpack.* --fix",
+    "lint:fix": "npm run yapf && eslint Origami webpack.* --fix",
     "dev": "npm-run-all --parallel open:src lint:watch test:watch",
     "test": "mocha --require ignore-styles -r jsdom-global/register  --reporter spec Origami/scripts/test.js \"Origami/src/**/*.test.js\"",
     "test:watch": "npm run test -- --watch"
