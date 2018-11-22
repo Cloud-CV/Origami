@@ -382,19 +382,7 @@ $ python manage.py runserver
 
 7. Login with the credentials from your admin account. This should be your username and password you used for the Postgresql if everything was kept consistent.
 
-8. Setting up Social Accounts in Django admin :
-
-    * Under ``Social Accounts`` open ``Social applications``, click on ``Add Social Application``.
-
-    * Choose  the ``Provider`` of social application as ``GitHub`` &  name it ``GitHub``.
-
-    * Copy and paste your ``Client ID`` and ``Secret Key`` into the appropriate fields.
-    
-    * Next to the "Chosen sites" box on the right, click the green plus button directly on the side. In the pop-up box, type in "localhost:8000" for both the "Domain name" and "Display name" fields and save.
-    
-    * Navigate to the bottom right of the page and click **SAVE**.
-
-9. From the Django admin home page, go to `Sites` under the `Sites` category and make sure "localhost:8000" is the only site listed under "DOMAIN NAME".
+8. From the Django admin home page, go to `Sites` under the `Sites` category and make sure "localhost:8000" is the only site listed under "DOMAIN NAME".
 
 ## Contributing to Origami
 
