@@ -1,23 +1,22 @@
 {
-  "name": "cvfy",
+  "name": "Origami",
   "version": "1.0.0",
   "description": "Create a demo of your machine learning model with CloudCV",
   "scripts": {
-    "remove:bundle": "node_modules/.bin/rimraf ./django_server/static/bundles",
+    "remove:bundle": "rimraf ./django_server/static/bundles",
     "clean:bundle": "npm-run-all remove:bundle && mkdir ./django_server/static/bundles",
     "build": "npm-run-all clean:bundle test lint:build && babel-node Origami/scripts/build.js",
     "start": "babel-node server.js",
     "open:src": "babel-node server.js",
-    "yapf:fix": "yapf --in-place --recursive $(ls **/*.py) --exclude \"Origami/*\"",
+    "yapf:fix": "yapf --in-place --recursive $(ls **/*.py) --exclude \"Origami/*\" --exclude \"node_modules/*\"",
+    "eslint:fix": "eslint Origami webpack.* --fix || true",
     "lint": "esw webpack.* Origami",
     "lint:build": "esw webpack.* Origami -c ./.eslintrc",
     "lint:watch": "npm run lint -- --watch",
-    "lint:fix": "npm run yapf:fix && eslint Origami webpack.* --fix",
+    "lint:fix": "npm run yapf:fix && npm run eslint:fix",
     "dev": "npm-run-all --parallel open:src lint:watch test:watch",
-    "test": "mocha --require ignore-styles -r jsdom-global/register  --reporter spec Origami/scripts/test.js \"Origami/src/**/*.test.js\"",
-    "test:watch": "npm run test -- --watch",
-    "pre-commit": "npm run lint:fix",
-    "pre-push": "npm run lint:fix"
+    "test": "mocha --require ignore-styles -r jsdom-global/register --reporter spec Origami/scripts/test.js \"Origami/src/**/*.test.js\"",
+    "test:watch": "npm run test -- --watch"
   },
   "author": "Ashish Chaudhary",
   "license": "AGPL-3.0",
@@ -145,6 +144,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/batra-mlp-lab/CloudCVfy-Frontend"
+    "url": "https://github.com/Cloud-CV/Origami"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint:fix",
+      "pre-push": "npm run lint:fix"
+    }
   }
 }
