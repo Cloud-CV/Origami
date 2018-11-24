@@ -50,7 +50,7 @@ fi
 # Format all staged files, then exit with an error code if any have uncommitted
 # changes.
 echo 'Formatting staged Python files . . .'
-npm run yapf:fix
+yapf --in-place --recursive ${PYTHON_FILES[@]} --exclude "Origami/*" # This command should always stay in-sync with the command in the `yapf:fix` script in `package.json`.
 CHANGED_FILES=(`git diff --name-only ${PYTHON_FILES[@]}`)
 if [ "$CHANGED_FILES" ]; then
   echo 'Reformatted staged files. Please review and stage the changes.'
