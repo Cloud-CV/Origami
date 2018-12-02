@@ -16,8 +16,9 @@ import { Layout, Icon, Button, Card, Row, Col, Input, Modal } from "antd";
 import Radium from "radium";
 import { trimAndPad } from "../../utils/generalUtils";
 import { DEMO_CARD_DESCRIP_MAX_LEN } from "../../constants";
+import isUrl from "is-url-superb";
 import { BounceLoader } from "react-spinners";
-
+import { modifyDeployed } from "../../api/Nongh/modifyDeployed";
 const { Header, Content, Footer, Sider } = Layout;
 const Search = Input.Search;
 
@@ -46,7 +47,11 @@ class NonGHUserProfileComponent extends React.Component {
       modifiedDemoPython: "1",
       modifiedDemoCuda: "1",
       modifiedDemoOS: "1",
-      modifiedDemoSourceCode: ""
+      modifiedDemoSourceCode: "",
+
+      nameWasChanged: false,
+      descriptionWasChanged: false,
+      linkWasChanged: false
 
     };
 
@@ -162,9 +167,30 @@ class NonGHUserProfileComponent extends React.Component {
           });
       });
   }
+  validated(stateObj){
+
+    if((stateObj.modifiedDemoName==="") && (stateObj.nameWasChanged)){
+      alert('Name cannot be empty!');
+      return false;
+    }
+    if((stateObj.modifiedDemoDescription==="") && (stateObj.descriptionWasChanged)){
+      alert('Description cannot be empty!');
+      return false;
+    }
+    if((stateObj.modifiedDemoSourceCode==="") && (stateObj.linkWasChanged)){
+      alert('Link cannot be empty!');
+      return false;
+    }
+    if(!isUrl(stateObj.modifiedDemoSourceCode) && (stateObj.linkWasChanged)) {
+      alert('Please use a valid URL as the link of the source code of the demo.');
+      return false;
+    }
+
+    return true;
+  }
 
   modifyProject() {
-
+    if (this.validated(this.state)===true){
     let dataToUpdate = this.state.projectBeingEdited;
     dataToUpdate.name = (this.state.modifiedDemoName===""?dataToUpdate.name:this.state.modifiedDemoName);
     dataToUpdate.description = (this.state.modifiedDemoDescription===""?dataToUpdate.description:this.state.modifiedDemoDescription);
@@ -173,8 +199,9 @@ class NonGHUserProfileComponent extends React.Component {
     dataToUpdate.os=(this.state.modifiedDemoOS.includes("1")?1:2);
     dataToUpdate.source_code= (this.state.modifiedDemoSourceCode===""?dataToUpdate.source_code:this.state.modifiedDemoSourceCode);
     console.log('this is the updated object now', dataToUpdate);
-    this.props.nonghModelActions.addToDBNonGHDemoModel(dataToUpdate)
-    .then(() => this.props.nonghModelActions.updateNonGHDemoModel(dataToUpdate))
+    //this.props.nonghModelActions.addToDBNonGHDemoModel(dataToUpdate)
+    //.then(() => this.props.nonghModelActions.updateNonGHDemoModel(dataToUpdate))
+    modifyDeployed(dataToUpdate.user_id, dataToUpdate)
     .then(() => {
         this.toggleModifyDialog();
         this.props.history.push(
@@ -182,6 +209,7 @@ class NonGHUserProfileComponent extends React.Component {
         );
     });
   }
+}
 
   toggleModifyDialog(demoBeingModified) {
     if(demoBeingModified){
@@ -259,11 +287,13 @@ class NonGHUserProfileComponent extends React.Component {
 
 
   modifyDemoName(e){
+    this.setState({nameWasChanged: true});
     this.setState({modifiedDemoName: e.target.value});
   }
 
 
   modifyDemoDescription(e){
+    this.setState({descriptionWasChanged: true});
     this.setState({modifiedDemoDescription: e.target.value});
   }
 
@@ -282,6 +312,7 @@ class NonGHUserProfileComponent extends React.Component {
   }
 
   modifyDemoSourceCode(e){
+    this.setState({linkWasChanged: true});
     this.setState({modifiedDemoSourceCode: e.target.value});
   }
   render() {
@@ -460,9 +491,7 @@ class NonGHUserProfileComponent extends React.Component {
               </select>
               <br/>
               </td></tr><tr><td>Source code</td><td>
-              <input type = "text" defaultValue = {this.state.projectBeingEdited.source_code} onChange = {this.modifyDemoSourceCode} /> <br/>
-              <br/>
-              <br/>
+              <input type = "text" defaultValue = {this.state.projectBeingEdited.source_code} onChange = {this.modifyDemoSourceCode}/><br/>
               </td></tr>
               </table>
 
