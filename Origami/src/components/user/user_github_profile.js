@@ -93,20 +93,28 @@ class Profile extends Component {
 
             <div className="profile-usermenu">
               <ul className="nav">
+	        {this.state.email != null ? ( 
+                  <li>
+                    <a href="#">
+                      <i className="glyphicon glyphicon-envelope" />
+                      <span style={{ float: 'right' }}>{this.state.email}</span>
+                    </a>
+                  </li>
+		) : (
+		  <li></li>
+		)}
+	    	{this.state.company != null ? (
+                  <li>
+                    <a href="#">
+                      <i className="glyphicon glyphicon-user" />
+                      {this.state.company}{' '}
+                    </a>
+                  </li>
+		) : (
+		  <li></li>
+		)}
                 <li>
-                  <a href="#">
-                    <i className="glyphicon glyphicon-envelope" />
-                    <span style={{ float: 'right' }}>{this.state.email}</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <i className="glyphicon glyphicon-user" />
-                    {this.state.company}{' '}
-                  </a>
-                </li>
-                <li>
-                  <a href={this.state.github}>
+                  <a target="_blank" href={this.state.github}>
                     <i className="fab fa-github" />
                     Github Profile{' '}
                   </a>

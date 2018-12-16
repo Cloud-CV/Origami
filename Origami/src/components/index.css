@@ -127,6 +127,7 @@ Licensed under MIT
 }
 
 .profile-usermenu ul li {
+  width: 100%;
   border-bottom: 1px solid #f0f4f7;
 }
 
