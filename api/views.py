@@ -312,10 +312,10 @@ def bundleup(request,id,user_id):
     hash_=hashlib.md5()
     key=id+user_id
     hash_.update(key)
-    hex=hash_.hexdigest()  
-    os.chdir(settings.MEDIA_ROOT+'bundles/') 
+    hex=hash_.hexdigest()
+    os.chdir(settings.MEDIA_ROOT+'bundles/')
     if os.path.exists(hex):
-        shutil.rmtree(hex) 
+        shutil.rmtree(hex)
     zf=zipfile.ZipFile(file)
     zf.extractall(hex)
     zf.close
@@ -376,22 +376,22 @@ def bundledown(request,id,user_id):
             f.writelines(lines)
 
     os.chdir(settings.MEDIA_ROOT+'bundles/')
-    if not os.path.exists(hex+'/requirements.txt'):    
+    if not os.path.exists(hex+'/requirements.txt'):
         requirements=copyfile('template/requirements.txt', directory+'/requirements.txt')
     if not os.path.exists(hex+'/origami.env'):
-        f= open(hex+'/origami.env',"w+")    
+        f= open(hex+'/origami.env',"w+")
         f.close()
-    if not os.path.exists(hex+'/main.py'):  
+    if not os.path.exists(hex+'/main.py'):
         main=copyfile('template/main.py', directory+'/main.py')
 
     l=['/Dockerfile','/requirements.txt','/main.py','/origami.env']
     zipped=zipfile.ZipFile(hex+'.zip','w')
-    for i in l: 
+    for i in l:
         zipped.write(hex+i,os.path.basename(hex+i))
     zipped.close()
     file_path=settings.MEDIA_ROOT+'bundles/'+hex+'.zip'
     resp=HttpResponse(open(file_path, 'rb'), content_type='application/zip')
-    return resp    
+    return resp
 
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])

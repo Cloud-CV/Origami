@@ -16,8 +16,9 @@ import { Layout, Icon, Button, Card, Row, Col, Input, Modal } from "antd";
 import Radium from "radium";
 import { trimAndPad } from "../../utils/generalUtils";
 import { DEMO_CARD_DESCRIP_MAX_LEN } from "../../constants";
+import isUrl from "is-url-superb";
 import { BounceLoader } from "react-spinners";
-
+import { modifyDeployed } from "../../api/Nongh/modifyDeployed";
 const { Header, Content, Footer, Sider } = Layout;
 const Search = Input.Search;
 
@@ -38,8 +39,22 @@ class NonGHUserProfileComponent extends React.Component {
       showDataModal: false,
       permalinkHolder: {},
       projectBeingDeletedId: "",
-      demoLoading: true
+      demoLoading: true,
+
+
+      modifiedDemoName: "",
+      modifiedDemoDescription: "",
+      modifiedDemoPython: "1",
+      modifiedDemoCuda: "1",
+      modifiedDemoOS: "1",
+      modifiedDemoSourceCode: "",
+
+      nameWasChanged: false,
+      descriptionWasChanged: false,
+      linkWasChanged: false
+
     };
+
     this.socket = this.context.socket;
     this.success = this.success.bind(this);
     this.initiateLogin = this.initiateLogin.bind(this);
@@ -54,6 +69,14 @@ class NonGHUserProfileComponent extends React.Component {
     );
     this.toggleShowDataDialog = this.toggleShowDataDialog.bind(this);
     this.getStyles = this.getStyles.bind(this);
+
+
+    this.modifyDemoName = this.modifyDemoName.bind(this);
+    this.modifyDemoDescription = this.modifyDemoDescription.bind(this);
+    this.modifyDemoPython = this.modifyDemoPython.bind(this);
+    this.modifyDemoCuda = this.modifyDemoCuda.bind(this);
+    this.modifyDemoOS = this.modifyDemoOS.bind(this);
+    this.modifyDemoSourceCode = this.modifyDemoSourceCode.bind(this);
   }
 
   componentWillMount() {
@@ -125,7 +148,6 @@ class NonGHUserProfileComponent extends React.Component {
   }
 
   deleteDemo() {
-    console.log("aaya");
     const project_id = this.state.projectBeingDeletedId;
     this.toggleDeleteConfirmationDialog();
     this.props.nonghModelActions
@@ -145,26 +167,65 @@ class NonGHUserProfileComponent extends React.Component {
           });
       });
   }
+  validated(stateObj){
 
-  modifyProject(project) {
-    let dataToUpdate = {
-      name: project.name,
-      id: project.id,
-      user_id: project.user_id,
-      description: project.description,
-      timestamp: project.timestamp,
-      token: project.token,
-      status: project.status,
-      appData: {}
-    };
-    this.props.nonghModelActions.updateNonGHDemoModel(dataToUpdate).then(() => {
-      this.setState({ projectBeingEdited: project }, () => {
-        this.toggleModifyDialog();
-      });
-    });
+    if((stateObj.modifiedDemoName==="") && (stateObj.nameWasChanged)){
+      alert('Name cannot be empty!');
+      return false;
+    }
+    if((stateObj.modifiedDemoDescription==="") && (stateObj.descriptionWasChanged)){
+      alert('Description cannot be empty!');
+      return false;
+    }
+    if((stateObj.modifiedDemoSourceCode==="") && (stateObj.linkWasChanged)){
+      alert('Link cannot be empty!');
+      return false;
+    }
+    if(!isUrl(stateObj.modifiedDemoSourceCode) && (stateObj.linkWasChanged)) {
+      alert('Please use a valid URL as the link of the source code of the demo.');
+      return false;
+    }
+
+    return true;
   }
 
-  toggleModifyDialog() {
+  modifyProject() {
+    if (this.validated(this.state)===true){
+    let dataToUpdate = this.state.projectBeingEdited;
+    dataToUpdate.name = (this.state.modifiedDemoName===""?dataToUpdate.name:this.state.modifiedDemoName);
+    dataToUpdate.description = (this.state.modifiedDemoDescription===""?dataToUpdate.description:this.state.modifiedDemoDescription);
+    dataToUpdate.python =(this.state.modifiedDemoPython==="1"?1:2);
+    dataToUpdate.cuda = (this.state.modifiedDemoCuda.includes("1")?1:2);
+    dataToUpdate.os=(this.state.modifiedDemoOS.includes("1")?1:2);
+    dataToUpdate.source_code= (this.state.modifiedDemoSourceCode===""?dataToUpdate.source_code:this.state.modifiedDemoSourceCode);
+    console.log('this is the updated object now', dataToUpdate);
+    //this.props.nonghModelActions.addToDBNonGHDemoModel(dataToUpdate)
+    //.then(() => this.props.nonghModelActions.updateNonGHDemoModel(dataToUpdate))
+    modifyDeployed(dataToUpdate.user_id, dataToUpdate)
+    .then(() => {
+        this.toggleModifyDialog();
+        this.props.history.push(
+          `/instructions/${dataToUpdate.user_id}/${dataToUpdate.id}/bundle`
+        );
+    });
+  }
+}
+
+  toggleModifyDialog(demoBeingModified) {
+    if(demoBeingModified){
+
+      demoBeingModified.python = (demoBeingModified.python.includes("1")?"1":"2");
+      demoBeingModified.cuda = (demoBeingModified.cuda.includes("1")?"1":"2");
+      demoBeingModified.os = (demoBeingModified.os.includes("1")?"1":"2");
+
+      this.setState({projectBeingEdited: demoBeingModified});
+
+
+    } else {
+      this.setState({projectBeingEdited: {}})
+    }
+
+
     this.setState({ showModifyModal: !this.state.showModifyModal });
   }
 
@@ -183,6 +244,7 @@ class NonGHUserProfileComponent extends React.Component {
       return "None";
     }
   }
+
 
   goToDemoPage(project) {
     this.props.history.push(
@@ -223,6 +285,36 @@ class NonGHUserProfileComponent extends React.Component {
     };
   }
 
+
+  modifyDemoName(e){
+    this.setState({nameWasChanged: true});
+    this.setState({modifiedDemoName: e.target.value});
+  }
+
+
+  modifyDemoDescription(e){
+    this.setState({descriptionWasChanged: true});
+    this.setState({modifiedDemoDescription: e.target.value});
+  }
+
+
+
+  modifyDemoPython(e){
+    this.setState({modifiedDemoPython: e.target.value});
+  }
+
+  modifyDemoCuda(e){
+    this.setState({modifiedDemoCuda: e.target.value});
+  }
+
+  modifyDemoOS(e){
+    this.setState({modifiedDemoOS: e.target.value});
+  }
+
+  modifyDemoSourceCode(e){
+    this.setState({linkWasChanged: true});
+    this.setState({modifiedDemoSourceCode: e.target.value});
+  }
   render() {
     const demoSpinnerStyle = {
       position: "fixed",
@@ -309,9 +401,18 @@ class NonGHUserProfileComponent extends React.Component {
                                       color: "#323643",
                                       backgroundColor: "White"
                                     }}
+                                    onClick={() =>
+
+                                      {
+                                        console.log('this is the unaltered demo obj', demo);
+                                        this.toggleModifyDialog(demo);}
+                                    }
                                   >
-                                    Modify
+                                    Modify <br/>
+
                                   </button>
+
+
                                   <button
                                     className="ui button"
                                     style={{
@@ -361,51 +462,48 @@ class NonGHUserProfileComponent extends React.Component {
           title="Modify Application"
           open={this.state.showModifyModal}
           onRequestClose={this.toggleModifyDialog}
-          contentStyle={{ width: "30%" }}
         >
-          <div className="ui stackable grid">
-            <div className="ui stackable row">
-              <div className="center aligned six wide column">
-                <RaisedButton
-                  label="Metadata"
-                  primary
-                  onTouchTap={() =>
-                    this.props.history.push(
-                      `/ngh/user/${this.state.projectBeingEdited.name}/${
-                        this.state.projectBeingEdited.id
-                      }/register/modify`
-                    )
-                  }
-                />
-              </div>
-              <div className="center aligned five wide column">
-                <RaisedButton
-                  label="Input"
-                  primary
-                  onTouchTap={() =>
-                    this.props.history.push(
-                      `/ngh/user/${this.state.projectBeingEdited.name}/${
-                        this.state.projectBeingEdited.id
-                      }/inputcomponent/modify`
-                    )
-                  }
-                />
-              </div>
-              <div className="center aligned five wide column">
-                <RaisedButton
-                  label="Output"
-                  primary
-                  onTouchTap={() =>
-                    this.props.history.push(
-                      `/ngh/user/${this.state.projectBeingEdited.name}/${
-                        this.state.projectBeingEdited.id
-                      }/outputcomponent/modify`
-                    )
-                  }
-                />
-              </div>
+          <div>
+              Task type is: {this.state.projectBeingEdited.task} and cannot be edited <br/>
+              <table>
+              <tr><th>Data Type</th><th>Data</th></tr>
+              <tr><td>Appname</td>
+              <td><input type = "text" defaultValue = {this.state.projectBeingEdited.name} onChange={this.modifyDemoName}/> <br/></td></tr>
+              <tr><td>Description</td>
+              <td><input type = "text" defaultValue = {this.state.projectBeingEdited.description} onChange={this.modifyDemoDescription} /> <br/></td></tr>
+
+               <tr><td>Python</td><td>
+              <select defaultValue={this.state.projectBeingEdited.python} onChange={this.modifyDemoPython}>
+                <option value="1">Python 2.7</option>
+                <option value="2">Python 3.5</option>
+              </select>
+              <br/></td></tr>
+<tr><td>CUDA</td><td>
+              <select defaultValue={this.state.projectBeingEdited.cuda} onChange={this.modifyDemoCuda}>
+                <option value="1">CUDA 7.0</option>
+                <option value="2">CUDA 8.0</option>
+              </select>
+              <br/></td></tr>
+<tr><td>Ubuntu</td><td>
+              <select defaultValue={this.state.projectBeingEdited.os} onChange={this.modifyDemoOS}>
+                <option value="1">Ubuntu 14.04</option>
+                <option value="2">Ubuntu 16.04</option>
+              </select>
+              <br/>
+              </td></tr><tr><td>Source code</td><td>
+              <input type = "text" defaultValue = {this.state.projectBeingEdited.source_code} onChange = {this.modifyDemoSourceCode}/><br/>
+              </td></tr>
+              </table>
+
+
+
+                <button type="button" onClick={() =>
+                   {
+                  this.modifyProject();
+                }
+                }>Click Me to modify!</button>
             </div>
-          </div>
+
         </Dialog>
 
         <Dialog
