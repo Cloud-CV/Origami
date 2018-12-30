@@ -4,6 +4,7 @@ import BundleTracker from "webpack-bundle-tracker";
 
 const config = {
   devtool: "cheap-module-eval-source-map",
+  mode: "development",
   entry: [
     "webpack-dev-server/client?http://localhost:3000",
     "webpack/hot/only-dev-server",

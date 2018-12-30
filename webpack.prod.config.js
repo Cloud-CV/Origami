@@ -1,6 +1,7 @@
 import webpack from "webpack";
 import path from "path";
 import BundleTracker from "webpack-bundle-tracker";
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const GLOBALS = {
   "process.env.NODE_ENV": JSON.stringify("production")
@@ -8,6 +9,7 @@ const GLOBALS = {
 
 const config = {
   entry: "./Origami/src/index",
+  mode:"production",
   target: "web",
   output: {
     path: path.resolve(path.join(__dirname, "django_server/static/bundles/")),
@@ -15,10 +17,13 @@ const config = {
   },
   plugins: [
     new webpack.DefinePlugin(GLOBALS),
-    new webpack.optimize.UglifyJsPlugin(),
+    
     new webpack.optimize.AggressiveMergingPlugin(),
     new BundleTracker({ filename: "./webpack-stats-local.json" })
   ],
+  optimization: {
+    minimizer: [new UglifyJsPlugin()],
+  },
   module: {
     rules: [
       {
