@@ -247,7 +247,7 @@ $ python3 --version
 
 `$ git clone --recursive https://github.com/Cloud-CV/Origami.git && cd Origami/`
 
-2. Renaming `origami.env.sample.py` as `origami.env` and setting environment variables in `origami.env`
+2. Renaming `origami.env.sample` as `origami.env` and setting environment variables in `origami.env`
 
 ```
 $ cp origami.env.sample origami.env
@@ -368,7 +368,7 @@ $ yarn run dev
     * Application name: Origami
     * Homepage URL: http://localhost:8000
     * Application description: Origami
-    * Authorization callback URL: http://localhost:8000/accounts/github/login/callback/
+    * Authorization callback URL: http://localhost:8000/auth/github/login/callback/
 
 3. Github will provide you with a client ID and secret Key, save these.
 
