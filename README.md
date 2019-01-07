@@ -144,7 +144,7 @@ Double-click your virtual machine to start it up. You may get various pop-ups pr
 
 ## Installing Docker
 
-We use Docker to install Origami. As Origami runs well on Ubuntu, we recommend you follow the official Docker documentation [here](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-using-the-repository). Use the "repository method" for the installation of Docker CE on this site. CE stands for "Community Edition," as is designed for developers and ordinary users. Make sure to install the latest version of Docker (skip step #3 on "Installing Docker CE"), and if you followed the tutorial above and created an Ubuntu virtual machine, follow the `x86_64` architecture command when setting up the repository.
+We use Docker to install Origami. As Origami runs well on Ubuntu, we recommend you to follow the official Docker documentation [here](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-using-the-repository). Use the "repository method" for the installation of Docker CE on this site. CE stands for "Community Edition," as is designed for developers and ordinary users. Make sure to install the latest version of Docker (skip step #3 on "Installing Docker CE"), and if you followed the tutorial above and created an Ubuntu virtual machine, follow the `x86_64` architecture command when setting up the repository.
 
 If you are using MacOS, follow the instructions on Docker's site [here](https://docs.docker.com/docker-for-mac/install/).
 
@@ -359,7 +359,8 @@ $ yarn run dev
 ```
 
 4. Go to [localhost:8000](http://localhost:8000/)
-  Visit [Read the docs](http://cloudcv-origami.readthedocs.io/en/latest/) for further instructions on getting started. If you have never created an OAuth App on GitHub, see the below instructions.
+
+  Visit [Read the docs](http://cloudcv-origami.readthedocs.io/en/latest/) for further instructions on Origami Web app and Library. If you have never created an OAuth App on GitHub, see the below instructions.
   
 ### Setup Authentication for Virtual Environment
 1. Go to Github Developer Applications and create a new application [here](https://github.com/settings/developers).
