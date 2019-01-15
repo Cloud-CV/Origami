@@ -1,12 +1,14 @@
 import webpack from "webpack";
 import path from "path";
 import BundleTracker from "webpack-bundle-tracker";
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 const GLOBALS = {
   "process.env.NODE_ENV": JSON.stringify("production")
 };
 
 const config = {
+  mode: "production",
   entry: "./Origami/src/index",
   target: "web",
   output: {
@@ -15,10 +17,13 @@ const config = {
   },
   plugins: [
     new webpack.DefinePlugin(GLOBALS),
-    new webpack.optimize.UglifyJsPlugin(),
+
     new webpack.optimize.AggressiveMergingPlugin(),
     new BundleTracker({ filename: "./webpack-stats-local.json" })
   ],
+  optimization: {
+    minimizer: [new UglifyJsPlugin()]
+  },
   module: {
     rules: [
       {
