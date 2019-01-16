@@ -23,7 +23,8 @@ import {
   Col,
   Input,
   Select,
-  Modal
+  Modal,
+  AutoComplete
 } from "antd";
 import toastr from "toastr";
 import { SocialDialog } from "../social/SocialDialog";
@@ -31,6 +32,7 @@ import { trimAndPad } from "../../utils/generalUtils";
 import { DEMO_CARD_DESCRIP_MAX_LEN } from "../../constants";
 import { selectUser } from "../../actions/user_profile_action";
 import userApi from "../../api/Github/userApi";
+import Search from "antd/lib/input/Search";
 
 const { Header, Content, Footer } = Layout;
 const Option = Select.Option;
@@ -53,6 +55,8 @@ class HomePage extends React.Component {
       is_cloudcv: false,
       rootData: {},
       allDeployed: [],
+      showDeployed: [],
+
       demoBeingShown: {},
       permalinkHolder: {},
       shareModalOpen: false,
@@ -60,7 +64,8 @@ class HomePage extends React.Component {
       demoLoading: true,
       logged: false,
       profile: {},
-      loaded: false
+      loaded: false,
+      dataSource: []
     };
 
     this.handleShareModal = this.handleShareModal.bind(this);
@@ -76,6 +81,7 @@ class HomePage extends React.Component {
       .then(alldeployedRepos => {
         let tmp = JSON.parse(alldeployedRepos);
         let allDeployed = [];
+
         let profile = {};
         for (let i = 0; i < tmp.length; i++) {
           let uname = tmp[i].username;
@@ -89,8 +95,8 @@ class HomePage extends React.Component {
         while (tmp.length) {
           allDeployed.push(tmp.splice(0, 3));
         }
-        this.setState({ allDeployed });
         this.setState({ demoLoading: false, profile });
+        this.setState({ allDeployed, showDeployed: allDeployed });
       })
       .then(() => {
         const stateToPut = {};
@@ -146,38 +152,75 @@ class HomePage extends React.Component {
   }
 
   findDemo(search_term) {
-    getSearchedDemos(this.state.searchBy, search_term)
-      .then(allRepos => {
-        if (Object.keys(JSON.parse(allRepos)).length > 0) {
-          let tmp = JSON.parse(allRepos);
-          let allDeployed = [];
-          while (tmp.length) {
-            allDeployed.push(tmp.splice(0, 3));
-          }
-          this.setState({
-            allDeployed
-          });
-        } else {
-          this.setState({ allDeployed: [] });
-        }
-      })
-      .then(() => {
-        const stateToPut = {};
-        getAllPermalink().then(data => {
-          JSON.parse(data).map(perma => {
-            if (!stateToPut[perma.user_id]) {
-              stateToPut[perma.user_id] = {};
+    this.setState({ dataSource: [] });
+
+    if (search_term === "") {
+      this.setState({ showDeployed: this.state.allDeployed });
+      return;
+    }
+    let placeHolder = [];
+    if (this.state.searchBy === "demo") {
+      this.state.allDeployed.map(row => {
+        row.map(demo => {
+          let res = demo.name.search(search_term);
+
+          if (res !== -1 && search_term !== "") {
+            if (placeHolder.includes(demo.name)) {
+              placeHolder.push(demo.name + " ~by " + demo.username);
+            } else {
+              placeHolder.push(demo.name);
             }
-            stateToPut[perma.project_id] = perma;
-            this.setState({
-              permalinkHolder: Object.assign({}, stateToPut)
-            });
-          });
+            this.setState({ dataSource: placeHolder });
+          }
         });
-      })
-      .catch(err => {
-        toastr.error(err);
       });
+    } else if (this.state.searchBy === "user") {
+      this.state.allDeployed.map(row => {
+        row.map(demo => {
+          let res = demo.username.search(search_term);
+
+          if (res !== -1 && search_term !== "") {
+            if (placeHolder.includes(demo.username) === false) {
+              placeHolder.push(demo.username);
+              this.setState({ dataSource: placeHolder });
+            }
+          }
+        });
+      });
+    }
+  }
+
+  showQueryDemos(value) {
+    let by_user;
+    let selectedQuery;
+    if (value.includes("~by")) {
+      selectedQuery = value.slice(0, value.indexOf("~"));
+      by_user = value.slice(value.indexOf("~") + 4);
+    } else {
+      selectedQuery = value;
+    }
+
+    let filteredDemos = [];
+    let finalFliteredList = [];
+
+    this.state.allDeployed.map(row => {
+      row.map(demo => {
+        if (this.state.searchBy === "demo") {
+          if (demo.name === selectedQuery) {
+            filteredDemos.push(demo);
+          }
+        } else {
+          if (demo.username === selectedQuery) {
+            filteredDemos.push(demo);
+          }
+        }
+      });
+    });
+
+    while (filteredDemos.length) {
+      finalFliteredList.push(filteredDemos.splice(0, 3));
+    }
+    this.setState({ showDeployed: finalFliteredList });
   }
 
   handleClick(e) {
@@ -211,10 +254,13 @@ class HomePage extends React.Component {
               <h2 id="logo-title">Origami</h2>
             </Col>
             <Col span={12} offset={3}>
-              <Input.Search
+              <AutoComplete
+                dataSource={this.state.dataSource}
+                style={{ width: "100%" }}
                 id="search"
-                placeholder="Search for demos, users"
+                placeholder={`Search for ${this.state.searchBy}s`}
                 onSearch={value => this.findDemo(value)}
+                onSelect={value => this.showQueryDemos(value)}
               />
             </Col>
             <Col span={3} offset={0}>
@@ -246,8 +292,8 @@ class HomePage extends React.Component {
               </div>
             ) : (
               <Row>
-                {Object.keys(this.state.allDeployed).length > 0 ? (
-                  this.state.allDeployed.map(row => (
+                {Object.keys(this.state.showDeployed).length > 0 ? (
+                  this.state.showDeployed.map(row => (
                     <div key={Math.random()}>
                       <Row>
                         {row.map(demo => (
