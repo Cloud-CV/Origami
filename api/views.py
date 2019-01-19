@@ -359,7 +359,7 @@ def bundledown(request,id,user_id):
         cuda="cuda8.0-runtime"
         tag=tag+'cu8.0'
     url="https://raw.githubusercontent.com/Cloud-CV/Dockerfiles/master/"+_os+"/"+python+"/"+cuda+"/Dockerfile"
-    hash_=md5.new()
+    hash_=hashlib.md5()
     key=id+user_id
     hash_.update(key)
     hex=hash_.hexdigest()
