@@ -32,6 +32,7 @@ class RegisterPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      name: "",
       description: "",
       cover_image: "",
       showTerminal: false,
@@ -57,6 +58,7 @@ class RegisterPage extends React.Component {
     this.btnEnter = this.btnEnter.bind(this);
     this.updateSource = this.updateSource.bind(this);
     this.alert = React.createRef();
+    this.resetConfig = this.resetConfig.bind(this);
   }
 
   updateDescription(e) {
@@ -274,6 +276,24 @@ class RegisterPage extends React.Component {
     return Promise.resolve();
   }
 
+  resetConfig() {
+    this.setState({
+      name: "",
+      description: "",
+      cover_image: "",
+      showTerminal: false,
+      active: 0,
+      btnactive: 0,
+      btnclicked: 0,
+      subhover: 0,
+      python: 0,
+      os: 0,
+      cuda: 0,
+      task: 0,
+      source: ""
+    });
+  }
+
   submit() {
     let task = this.state.task;
     let task_in = "";
@@ -459,7 +479,8 @@ class RegisterPage extends React.Component {
                             <a style={styles.logo}>
                               <img src={require("../../assets/task.png")} />
                             </a>
-                          </span>Choose your Task
+                          </span>
+                          Choose your Task
                         </a>
                         <hr
                           style={{ borderTop: "dotted 1px", color: "#aaaaaa" }}
@@ -514,7 +535,8 @@ class RegisterPage extends React.Component {
                             <a style={styles.logo}>
                               <img src={require("../../assets/tools.png")} />
                             </a>
-                          </span>Select System Configuration
+                          </span>
+                          Select System Configuration
                         </a>
                         <hr
                           style={{ borderTop: "dotted 1px", color: "#aaaaaa" }}
@@ -743,6 +765,7 @@ class RegisterPage extends React.Component {
                           <Button
                             onMouseEnter={this.sub.bind(this, 1)}
                             onMouseLeave={this.exit}
+                            onClick={this.resetConfig}
                             style={
                               this.state.subhover == 1
                                 ? styles.subhover
@@ -810,5 +833,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(RegisterPage)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(RegisterPage)
 );
