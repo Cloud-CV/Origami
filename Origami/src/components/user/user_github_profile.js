@@ -71,7 +71,6 @@ class Profile extends Component {
   render() {
 
     return (
-      <div className="container">
         <div className="profile-sidebar">
           <div>
             <div className="profile-userpic">
@@ -82,7 +81,7 @@ class Profile extends Component {
               <div className="profile-usertitle-job">{this.state.username}</div>
             </div>
 
-            <div className="btn-group" style={{ marginLeft: 30 }}>
+            <div className="btn-group" style={{ marginLeft: 56 }}>
               <a href="#" className="btn btn-primary">
                 Demo Count
               </a>
@@ -96,7 +95,7 @@ class Profile extends Component {
                 <li>
                   <a href="#">
                     <i className="glyphicon glyphicon-envelope" />
-                    <span style={{ float: 'right' }}>{this.state.email}</span>
+                    {this.state.email}
                   </a>
                 </li>
                 <li>
@@ -115,7 +114,6 @@ class Profile extends Component {
             </div>
           </div>
         </div>
-      </div>
     );
   }
 }
