@@ -1,25 +1,25 @@
-import React from 'react';
-import { PropTypes } from 'prop-types';
-import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import CircularProgress from 'material-ui/CircularProgress';
-import rangeCheck from 'range_check';
-import { getWebAppStatus } from '../../../api/Generic/getWebAppStatus';
-import RaisedButton from 'material-ui/RaisedButton';
-import StopNow from 'material-ui/svg-icons/action/pan-tool';
-import Dropzone from 'react-dropzone';
-import Checkbox from 'material-ui/Checkbox';
-import GoAhead from 'material-ui/svg-icons/action/check-circle';
-import { red500, green500, grey900 } from 'material-ui/styles/colors';
-import TextField from 'material-ui/TextField';
-import request from 'superagent';
-import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
-import toastr from 'toastr';
-import { Layout, Row, Col } from 'antd';
-import { ORIGAMI_READ_THE_DOCS } from '../../../constants';
-import { Card, Icon, Image, Button, Dimmer, Header } from 'semantic-ui-react';
-import Cards from '../../stateless/task_cards';
+import React from "react";
+import { PropTypes } from "prop-types";
+import { Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import CircularProgress from "material-ui/CircularProgress";
+import rangeCheck from "range_check";
+import { getWebAppStatus } from "../../../api/Generic/getWebAppStatus";
+import RaisedButton from "material-ui/RaisedButton";
+import StopNow from "material-ui/svg-icons/action/pan-tool";
+import Dropzone from "react-dropzone";
+import Checkbox from "material-ui/Checkbox";
+import GoAhead from "material-ui/svg-icons/action/check-circle";
+import { red500, green500, grey900 } from "material-ui/styles/colors";
+import TextField from "material-ui/TextField";
+import request from "superagent";
+import { Step, Stepper, StepLabel } from "material-ui/Stepper";
+import toastr from "toastr";
+import { Layout, Row, Col } from "antd";
+import { ORIGAMI_READ_THE_DOCS } from "../../../constants";
+import { Card, Icon, Image, Button, Dimmer, Header } from "semantic-ui-react";
+import Cards from "../../stateless/task_cards";
 
 const { Content, Footer } = Layout;
 
@@ -29,8 +29,8 @@ class RegisterPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      description: '',
-      cover_image: '',
+      description: "",
+      cover_image: "",
       showTerminal: false,
       active: 0,
       btnactive: 0,
@@ -38,7 +38,7 @@ class RegisterPage extends React.Component {
       subhover: 0,
       python: 0,
       os: 0,
-      cuda: 0,
+      cuda: 0
     };
     this.updateName = this.updateName.bind(this);
     this.updateDescription = this.updateDescription.bind(this);
@@ -60,10 +60,10 @@ class RegisterPage extends React.Component {
 
   onDrop(files) {
     if (files[0].size > 5242880) {
-      alert('File size should be < 5MB');
+      alert("File size should be < 5MB");
     } else {
       document.getElementById(
-        'input-image-preview'
+        "input-image-preview"
       ).src = window.URL.createObjectURL(files[0]);
       const reader = new FileReader();
       reader.onload = () => {
@@ -81,101 +81,101 @@ class RegisterPage extends React.Component {
   getStyles() {
     return {
       layout: {
-        background: '#F7F7F7',
+        background: "#F7F7F7"
       },
       content: {
-        margin: '24px 0 0 12px',
-        overflow: 'initial',
+        margin: "24px 0 0 12px",
+        overflow: "initial"
       },
       contentDiv: {
-        padding: '5px 0',
-        background: '#F7F7F7',
+        padding: "5px 0",
+        background: "#F7F7F7"
       },
       tag: {
-        color: '#606470',
-        paddingTop: '5px',
+        color: "#606470",
+        paddingTop: "5px",
         fontFamily: '"Open Sans", "Helvetica", sans-serif',
-        fontSize: '1.6em',
+        fontSize: "1.6em"
       },
       tagOs: {
-        color: '#606470',
-        paddingTop: '5px',
+        color: "#606470",
+        paddingTop: "5px",
         fontFamily: '"Open Sans", "Helvetica", sans-serif',
-        fontSize: '1.6em',
-        paddingLeft: '7px',
+        fontSize: "1.6em",
+        paddingLeft: "7px"
       },
       btn: {
-        borderStyle: 'Solid',
-        borderColor: '#949494',
-        color: '#6C6666',
-        width: '100%',
-        backgroundColor: 'White',
-        borderWidth: '2px',
-        borderRadius: '30px',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.16), 0 1px 3px rgba(0,0,0,0.23)',
-        transition: 'all 0.3s',
+        borderStyle: "Solid",
+        borderColor: "#949494",
+        color: "#6C6666",
+        width: "100%",
+        backgroundColor: "White",
+        borderWidth: "2px",
+        borderRadius: "30px",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.16), 0 1px 3px rgba(0,0,0,0.23)",
+        transition: "all 0.3s"
       },
       txt: {
         fontFamily: '"Open Sans", "Helvetica", sans-serif',
-        fontSize: '1em',
+        fontSize: "1em"
       },
       active: {
-        borderStyle: 'Solid',
-        borderColor: '#eaeaea',
-        borderWidth: '2px',
-        transition: '.3s ease',
-        backfaceVisibility: 'hidden',
-        opacity: '0.8',
-        boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
+        borderStyle: "Solid",
+        borderColor: "#eaeaea",
+        borderWidth: "2px",
+        transition: ".3s ease",
+        backfaceVisibility: "hidden",
+        opacity: "0.8",
+        boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)"
       },
       btnactive: {
-        borderStyle: 'Solid',
-        width: '100%',
-        borderWidth: '2px',
-        borderRadius: '30px',
-        backgroundColor: '#443E3E',
-        color: 'White',
-        boxShadow: '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
-        transition: 'all 0.3s',
+        borderStyle: "Solid",
+        width: "100%",
+        borderWidth: "2px",
+        borderRadius: "30px",
+        backgroundColor: "#443E3E",
+        color: "White",
+        boxShadow: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
+        transition: "all 0.3s"
       },
 
       parentBox: {
-        flexGrow: '5.75',
-        minWidth: '300px',
-        padding: '30px',
-        backgroundColor: '#fffff',
+        flexGrow: "5.75",
+        minWidth: "300px",
+        padding: "30px",
+        backgroundColor: "#fffff"
       },
       box: {
-        border: '1px solid #F3F2F2',
-        backgroundColor: 'White',
-        borderRadius: '10px',
-        padding: '10px',
+        border: "1px solid #F3F2F2",
+        backgroundColor: "White",
+        borderRadius: "10px",
+        padding: "10px"
       },
 
       sub: {
-        borderStyle: 'Solid',
-        width: '100%',
-        borderWidth: '2px',
-        borderRadius: '30px',
-        backgroundColor: '#443E3E',
-        color: 'White',
-        boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
-        transition: 'all 0.3s',
+        borderStyle: "Solid",
+        width: "100%",
+        borderWidth: "2px",
+        borderRadius: "30px",
+        backgroundColor: "#443E3E",
+        color: "White",
+        boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
+        transition: "all 0.3s"
       },
 
       subhover: {
-        borderStyle: 'Solid',
-        width: '100%',
-        borderWidth: '2px',
-        borderRadius: '30px',
-        backgroundColor: '#443E3E',
-        color: 'White',
-        boxShadow: '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
-        transition: 'all 0.3s',
+        borderStyle: "Solid",
+        width: "100%",
+        borderWidth: "2px",
+        borderRadius: "30px",
+        backgroundColor: "#443E3E",
+        color: "White",
+        boxShadow: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
+        transition: "all 0.3s"
       },
       logo: {
-        marginRight: '13px',
-      },
+        marginRight: "13px"
+      }
     };
   }
 
@@ -187,9 +187,7 @@ class RegisterPage extends React.Component {
   }
 
   btnclicked(x, y) {
-    let python = this.state.python,
-      os = this.state.os,
-      cuda = this.state.cuda;
+    let { python, os, cuda } = this.state;
 
     switch (x) {
       case 1:
@@ -202,7 +200,7 @@ class RegisterPage extends React.Component {
         cuda = y;
         break;
     }
-    this.setState({ python: python, os: os, cuda: cuda });
+    this.setState({ python, os, cuda });
   }
 
   exit() {
@@ -217,13 +215,12 @@ class RegisterPage extends React.Component {
   }
 
   submit() {
-    this.props.history.push('/instructions');
+    this.props.history.push("/instructions");
   }
-    checkbox(event){
-    let current=this.state.checked;
-    this.setState({checked:!current})
+  checkbox(event) {
+    let current = this.state.checked;
+    this.setState({ checked: !current });
   }
-
 
   render() {
     const { active } = this.state;
@@ -234,17 +231,17 @@ class RegisterPage extends React.Component {
       </div>
     );
 
-    const head = ['Style Transfer', 'VQA', 'Clssification', 'GradCam'];
+    const head = ["Style Transfer", "VQA", "Clssification", "GradCam"];
     const tasks = [];
-    for (var i = 1; i < 5; i++) {
+    for (let i = 1; i < 5; i++) {
       tasks.push(<Cards header={head[i]} count={i} />);
     }
 
     return (
-      <div style={{ backgroundColor: '#F7F7F7' }}>
+      <div style={{ backgroundColor: "#F7F7F7" }}>
         <Layout style={styles.layout}>
-          {this.state.showOutput === 'hidden' && (
-            <div className="centered row" style={{ marginTop: '30vh' }}>
+          {this.state.showOutput === "hidden" && (
+            <div className="centered row" style={{ marginTop: "30vh" }}>
               <CircularProgress size={89.25} />
             </div>
           )}
@@ -254,10 +251,10 @@ class RegisterPage extends React.Component {
                 <div
                   style={{
                     visibility: this.state.showOutput,
-                    width: '100%',
+                    width: "100%",
                     maxWidth: 700,
-                    margin: 'auto',
-                    marginTop: '5px',
+                    margin: "auto",
+                    marginTop: "5px"
                   }}
                 >
                   <div
@@ -266,9 +263,9 @@ class RegisterPage extends React.Component {
                   >
                     <h1
                       style={{
-                        textAlign: 'center',
-                        fontSize: '20px',
-                        fontWeight: 'bold',
+                        textAlign: "center",
+                        fontSize: "20px",
+                        fontWeight: "bold"
                       }}
                     >
                       Register Application
@@ -289,21 +286,21 @@ class RegisterPage extends React.Component {
               <div>
                 <div
                   className="ui grid container"
-                  style={{ position: 'relative' }}
+                  style={{ position: "relative" }}
                 >
                   <div className="ui grid container">
                     <div className="column aligned" style={styles.parentBox}>
                       <div style={styles.box}>
-                        <span style={{ marginLeft: '40%', fontSize: '18px' }}>
+                        <span style={{ marginLeft: "40%", fontSize: "18px" }}>
                           <span>
                             <a style={styles.logo}>
-                              <img src={require('../../assets/details.png')} />
+                              <img src={require("../../assets/details.png")} />
                             </a>
-                          </span>{' '}
+                          </span>{" "}
                           Demo Details
                         </span>
                         <hr
-                          style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
+                          style={{ borderTop: "dotted 1px", color: "#aaaaaa" }}
                         />
                         <div className="ui grid">
                           <div className="two wide column" />
@@ -332,15 +329,15 @@ class RegisterPage extends React.Component {
                       <br />
 
                       <div style={styles.box}>
-                        <span style={{ marginLeft: '40%', fontSize: '18px' }}>
+                        <span style={{ marginLeft: "40%", fontSize: "18px" }}>
                           <span>
                             <span style={styles.logo}>
-                              <img src={require('../../assets/task.png')} />
+                              <img src={require("../../assets/task.png")} />
                             </span>
                           </span>Choose your Task
                         </span>
                         <hr
-                          style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
+                          style={{ borderTop: "dotted 1px", color: "#aaaaaa" }}
                         />
                         <br />
 
@@ -348,16 +345,16 @@ class RegisterPage extends React.Component {
                           <div className="two wide column" />
 
                           <div className=" three wide column">
-                            <Cards header={'VQA'} count={1} />
+                            <Cards header={"VQA"} count={1} />
                           </div>
                           <div className=" three wide column">
-                            <Cards header={'Style Transfer'} count={2} />
+                            <Cards header={"Style Transfer"} count={2} />
                           </div>
                           <div className=" three wide column">
-                            <Cards header={'Grad Cam'} count={2} />
+                            <Cards header={"Grad Cam"} count={2} />
                           </div>
                           <div className=" three wide column">
-                            <Cards header={'Classification'} count={2} />
+                            <Cards header={"Classification"} count={2} />
                           </div>
                         </div>
                         <br />
@@ -367,15 +364,15 @@ class RegisterPage extends React.Component {
                       <br />
 
                       <div style={styles.box}>
-                        <span style={{ marginLeft: '35%', fontSize: '18px' }}>
+                        <span style={{ marginLeft: "35%", fontSize: "18px" }}>
                           <span>
                             <span style={styles.logo}>
-                              <img src={require('../../assets/tools.png')} />
+                              <img src={require("../../assets/tools.png")} />
                             </span>
                           </span>Select System Configuration
                         </span>
                         <hr
-                          style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
+                          style={{ borderTop: "dotted 1px", color: "#aaaaaa" }}
                         />
                         <br />
                         <br />
@@ -391,7 +388,8 @@ class RegisterPage extends React.Component {
                               onClick={this.btnclicked.bind(this, 1, 1)}
                               onMouseLeave={this.exit}
                               style={
-                                this.state.btnactive == 11 || this.state.os == 1
+                                this.state.btnactive === 11 ||
+                                this.state.os === 1
                                   ? styles.btnactive
                                   : styles.btn
                               }
@@ -405,7 +403,8 @@ class RegisterPage extends React.Component {
                               onClick={this.btnclicked.bind(this, 1, 2)}
                               onMouseLeave={this.exit}
                               style={
-                                this.state.btnactive == 12 || this.state.os == 2
+                                this.state.btnactive === 12 ||
+                                this.state.os === 2
                                   ? styles.btnactive
                                   : styles.btn
                               }
@@ -427,8 +426,8 @@ class RegisterPage extends React.Component {
                               onClick={this.btnclicked.bind(this, 2, 1)}
                               onMouseLeave={this.exit}
                               style={
-                                this.state.btnactive == 21 ||
-                                this.state.python == 1
+                                this.state.btnactive === 21 ||
+                                this.state.python === 1
                                   ? styles.btnactive
                                   : styles.btn
                               }
@@ -442,8 +441,8 @@ class RegisterPage extends React.Component {
                               onClick={this.btnclicked.bind(this, 2, 2)}
                               onMouseLeave={this.exit}
                               style={
-                                this.state.btnactive == 22 ||
-                                this.state.python == 2
+                                this.state.btnactive === 22 ||
+                                this.state.python === 2
                                   ? styles.btnactive
                                   : styles.btn
                               }
@@ -465,8 +464,8 @@ class RegisterPage extends React.Component {
                               onClick={this.btnclicked.bind(this, 3, 1)}
                               onMouseLeave={this.exit}
                               style={
-                                this.state.btnactive == 31 ||
-                                this.state.cuda == 1
+                                this.state.btnactive === 31 ||
+                                this.state.cuda === 1
                                   ? styles.btnactive
                                   : styles.btn
                               }
@@ -480,8 +479,8 @@ class RegisterPage extends React.Component {
                               onClick={this.btnclicked.bind(this, 3, 2)}
                               onMouseLeave={this.exit}
                               style={
-                                this.state.btnactive == 32 ||
-                                this.state.cuda == 2
+                                this.state.btnactive === 32 ||
+                                this.state.cuda === 2
                                   ? styles.btnactive
                                   : styles.btn
                               }
@@ -497,16 +496,16 @@ class RegisterPage extends React.Component {
                       <br />
 
                       <div style={styles.box}>
-                        <span style={{ marginLeft: '35%', fontSize: '18px' }}>
+                        <span style={{ marginLeft: "35%", fontSize: "18px" }}>
                           <span>
                             <span style={styles.logo}>
-                              <img src={require('../../assets/settings.png')} />
+                              <img src={require("../../assets/settings.png")} />
                             </span>
-                          </span>{' '}
-                          Optional configurations{' '}
+                          </span>{" "}
+                          Optional configurations{" "}
                         </span>
                         <hr
-                          style={{ borderTop: 'dotted 1px', color: '#aaaaaa' }}
+                          style={{ borderTop: "dotted 1px", color: "#aaaaaa" }}
                         />
 
                         <br />
@@ -514,16 +513,16 @@ class RegisterPage extends React.Component {
                           <div className="two column row">
                             <div
                               className="column"
-                              style={{ paddingLeft: '13%' }}
+                              style={{ paddingLeft: "13%" }}
                             >
                               <div
                                 className=""
-                                style={{ cursor: 'pointer', maxWidth: '75%' }}
+                                style={{ cursor: "pointer", maxWidth: "75%" }}
                               >
                                 <Dropzone
                                   onDrop={this.onDrop}
                                   multiple={false}
-                                  style={{ height: 'inherit' }}
+                                  style={{ height: "inherit" }}
                                 >
                                   <div className="ui card">
                                     <div className="ui fluid image">
@@ -531,16 +530,16 @@ class RegisterPage extends React.Component {
                                         className="ui fluid medium  image"
                                         src={
                                           this.state.cover_image ||
-                                          '/static/img/placeholder.jpg'
+                                          "/static/img/placeholder.jpg"
                                         }
-                                        id={'input-image-preview'}
+                                        id={"input-image-preview"}
                                       />
                                     </div>
                                     <div
                                       className="content"
                                       style={{
-                                        fontSize: '15px',
-                                        color: '#323643',
+                                        fontSize: "15px",
+                                        color: "#323643"
                                       }}
                                     >
                                       Drag and Drop or Click to upload cover
@@ -553,22 +552,20 @@ class RegisterPage extends React.Component {
 
                             <div
                               className="column"
-                              style={{ paddingLeft: '5%' }}
+                              style={{ paddingLeft: "5%" }}
                             >
                               <br />
                               <div className="row">
-
                                 <Checkbox
-                                    checked={this.state.showTerminal}
-                                    onCheck={this.toggleTerminal}
-                                    label="Show Terminal on demo page"
-                                    style={{
-                                      fontSize: '15px',
-                                      color: '#323643',
-                                      fontWeight:'Normal'
-                                    }}
-                                  />
-
+                                  checked={this.state.showTerminal}
+                                  onCheck={this.toggleTerminal}
+                                  label="Show Terminal on demo page"
+                                  style={{
+                                    fontSize: "15px",
+                                    color: "#323643",
+                                    fontWeight: "Normal"
+                                  }}
+                                />
                               </div>
                               <br />
                               <div className="row">
@@ -576,7 +573,7 @@ class RegisterPage extends React.Component {
                                   <span>
                                     <a style={styles.logo}>
                                       <img
-                                        src={require('../../assets/code .png')}
+                                        src={require("../../assets/code .png")}
                                       />
                                     </a>
                                   </span>
@@ -603,7 +600,7 @@ class RegisterPage extends React.Component {
                             onMouseEnter={this.sub.bind(this, 1)}
                             onMouseLeave={this.exit}
                             style={
-                              this.state.subhover == 1
+                              this.state.subhover === 1
                                 ? styles.subhover
                                 : styles.sub
                             }
@@ -620,7 +617,7 @@ class RegisterPage extends React.Component {
                             onMouseLeave={this.exit}
                             onClick={this.submit.bind(this)}
                             style={
-                              this.state.subhover == 2
+                              this.state.subhover === 2
                                 ? styles.subhover
                                 : styles.sub
                             }
@@ -645,17 +642,17 @@ RegisterPage.propTypes = {
   login: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 RegisterPage.contextTypes = {
-  socket: PropTypes.object.isRequired,
+  socket: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     login: state.login,
-    user: state.user,
+    user: state.user
   };
 }
 

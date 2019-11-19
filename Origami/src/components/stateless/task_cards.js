@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import img from '../assets/wireframe.png';
+import img from "../assets/wireframe.png";
 
 const Cards = ({ header, choice }) => {
   return (
