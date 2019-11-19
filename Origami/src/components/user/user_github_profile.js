@@ -1,45 +1,43 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import userApi from '../../api/Github/userApi';
-import { BounceLoader } from 'react-spinners';
-import { Link, withRouter } from 'react-router-dom';
-import pic from '../assets/profile.png';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import userApi from "../../api/Github/userApi";
+import { BounceLoader } from "react-spinners";
+import { Link, withRouter } from "react-router-dom";
+import pic from "../assets/profile.png";
 
 class Profile extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      username: 'username',
-      name: 'name',
-      email: 'email.com',
-      bio: 'bio',
-      company: 'company',
+      username: "username",
+      name: "name",
+      email: "email.com",
+      bio: "bio",
+      company: "company",
       avatar: pic,
-      github: '',
+      github: ""
     };
   }
 
   componentWillMount() {
-    console.log('components mount');
     userApi.userProfile().then(user => {
-      console.log('user ==', user);
       user = JSON.parse(user);
-      let username = user['login'];
-      let name = user['name'];
-      let email = user['email'];
-      let bio = user['bio'];
-      let company = user['company'];
-      let avatar = user['avatar_url'];
-      let github = user['html_url'];
+      let username = user.login;
+      let name = user.name;
+      let email = user.email;
+      let bio = user.bio;
+      let company = user.company;
+      let avatar = user.avatar_url;
+      let github = user.html_url;
       this.setState({
-        username: username,
-        name: name,
-        email: email,
-        bio: bio,
-        company: company,
-        avatar: avatar,
-        github: github
+        username,
+        name,
+        email,
+        bio,
+        company,
+        avatar,
+        github
       });
     });
   }
@@ -49,27 +47,26 @@ class Profile extends Component {
     let uname = nextProps.user;
     userApi.userProfileFromName(uname).then(user => {
       user = JSON.parse(user);
-      let username = user['login'];
-      let name = user['name'];
-      let email = user['email'];
-      let bio = user['bio'];
-      let company = user['company'];
-      let avatar = user['avatar_url'];
-      let github = user['html_url'];
+      let username = user.login;
+      let name = user.name;
+      let email = user.email;
+      let bio = user.bio;
+      let company = user.company;
+      let avatar = user.avatar_url;
+      let github = user.html_url;
       this.setState({
-        username: username,
-        name: name,
-        email: email,
-        bio: bio,
-        company: company,
-        avatar: avatar,
-        github: github,
+        username,
+        name,
+        email,
+        bio,
+        company,
+        avatar,
+        github
       });
     });
   }
 
   render() {
-
     return (
       <div className="container">
         <div className="profile-sidebar">
@@ -96,19 +93,19 @@ class Profile extends Component {
                 <li>
                   <a href="#">
                     <i className="glyphicon glyphicon-envelope" />
-                    <span style={{ float: 'right' }}>{this.state.email}</span>
+                    <span style={{ float: "right" }}>{this.state.email}</span>
                   </a>
                 </li>
                 <li>
                   <a href="#">
                     <i className="glyphicon glyphicon-user" />
-                    {this.state.company}{' '}
+                    {this.state.company}{" "}
                   </a>
                 </li>
                 <li>
                   <a href={this.state.github}>
                     <i className="fab fa-github" />
-                    Github Profile{' '}
+                    Github Profile{" "}
                   </a>
                 </li>
               </ul>
@@ -122,7 +119,7 @@ class Profile extends Component {
 
 function mapStateToProps(state) {
   return {
-    user: state.activeUser,
+    user: state.activeUser
   };
 }
 
