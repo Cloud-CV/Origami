@@ -160,7 +160,7 @@ pub   rsa4096 2017-02-22 [SCEA]
 uid           [ unknown] Docker Release (CE deb) <docker@docker.com>
 sub   rsa4096 2017-02-22 [S]
 ```
-4. Use the following command to set up the stable repository. To add the nightly or test repository, add the word nightly or test (or both) after the word stable in the commands below. Please Learn about [nightly(https://docs.docker.com/install/linux/docker-ce/ubuntu/)] and test channels.
+4. Use the following command to set up the stable repository. To add the nightly or test repository, add the word nightly or test (or both) after the word stable in the commands below. Please Learn about [nightly](https://docs.docker.com/install/linux/docker-ce/ubuntu/) and test channels.
 
 
 If you are using MacOS, follow the instructions on Docker's site [here](https://docs.docker.com/docker-for-mac/install/).
