@@ -144,7 +144,31 @@ Double-click your virtual machine to start it up. You may get various pop-ups pr
 
 ## Installing Docker
 
-We use Docker to install Origami. As Origami runs well on Ubuntu, we recommend you follow the official Docker documentation [here](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-using-the-repository). Use the "repository method" for the installation of Docker CE on this site. CE stands for "Community Edition," as is designed for developers and ordinary users. Make sure to install the latest version of Docker (skip step #3 on "Installing Docker CE"), and if you followed the tutorial above and created an Ubuntu virtual machine, follow the `x86_64` architecture command when setting up the repository.
+We use Docker to install `Origami`. As Origami runs well on `Ubuntu`, we recommend you follow the official Docker documentation [here](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-using-the-repository). 
+1. Update the apt package index:
+
+	`$ sudo apt-get update`
+
+2. Install packages to allow apt to use a repository over HTTPS:
+
+	`$ sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common`
+
+3. Add Docker’s official GPG key:
+
+	`$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -`
+
+Verify that you now have the key with the fingerprint `9DC8 5822 9FC7 DD38 854A E2D8 8D81 803C 0EBF CD88`, by searching for the last 8 characters of the fingerprint.
+
+	```
+	$ sudo apt-key fingerprint 0EBFCD88
+
+	pub   rsa4096 2017-02-22 [SCEA]
+	      9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88
+	uid           [ unknown] Docker Release (CE deb) <docker@docker.com>
+	sub   rsa4096 2017-02-22 [S]
+	```
+
+4. Use the following command to set up the stable repository. To add the nightly or test repository, add the word nightly or test (or both) after the word stable in the commands below. Please Learn about [nightly](https://docs.docker.com/install/linux/docker-ce/ubuntu/) and test channels.
 
 If you are using MacOS, follow the instructions on Docker's site [here](https://docs.docker.com/docker-for-mac/install/).
 
