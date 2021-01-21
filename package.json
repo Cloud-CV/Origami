@@ -75,7 +75,7 @@
     "semantic-ui-less": "^2.2.12",
     "semantic-ui-react": "^0.81.1",
     "simple-line-icons": "^2.4.1",
-    "socket.io": "^2.0.4",
+    "socket.io": "^2.4.0",
     "socket.io-client": "^2.0.4",
     "toastr": "^2.1.4",
     "universal-cookie": "^2.1.2",
