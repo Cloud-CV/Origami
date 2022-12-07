@@ -3,7 +3,7 @@ asgiref==1.1.2
 attrs==17.2.0
 autobahn==17.6.1
 Automat==0.6.0
-certifi==2017.4.17
+certifi==2022.12.7
 channels==1.1.5
 chardet==3.0.4
 constantly==15.1.0
